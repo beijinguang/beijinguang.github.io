@@ -15,13 +15,16 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="404">
-<meta property="og:url" content="http://code.idea4j.com/404/index.html">
+<meta name="description" content="why use Stored Procedure?">
+<meta property="og:type" content="article">
+<meta property="og:title" content="存储过程">
+<meta property="og:url" content="http://code.idea4j.com/2016/08/08/storedprodcedure/index.html">
 <meta property="og:site_name" content="markee's blog">
-<meta property="og:updated_time" content="2016-09-21T08:13:12.997Z">
+<meta property="og:description" content="why use Stored Procedure?">
+<meta property="og:updated_time" content="2016-09-22T09:16:21.063Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="404">
+<meta name="twitter:title" content="存储过程">
+<meta name="twitter:description" content="why use Stored Procedure?">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -53,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>404 | markee&#39;s blog</title>
+<title>存储过程 | markee&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -63,7 +66,7 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -260,11 +263,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-storedprodcedure" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/404/index.html" class="article-date">
-      <time datetime="2016-07-30T14:18:06.000Z" itemprop="datePublished">2016-07-30</time>
+      <a href="/2016/08/08/storedprodcedure/" class="article-date">
+      <time datetime="2016-08-08T08:24:05.000Z" itemprop="datePublished">2016-08-08</time>
 </a>
 
 
@@ -279,7 +282,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      404
+      存储过程
     </h1>
   
 
@@ -287,8 +290,16 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/database/">database</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -296,36 +307,96 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta { display: none; }
-    #container .article .article-title { padding-right: 0; }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover { border-left: none; }
-    .article-title { font-size: 1.6em }
-    .article-entry hr { margin: 0;}
-    .article-meta,
-    #container .article-info-post.article-info { display: none;}
-    #container .article .article-title { padding: 0; }
-</style>
-
-
-          
-        
+        <p>why use Stored Procedure?<br><a id="more"></a></p>
+<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><pre><code>    存储过程（Stored Procedure）是在大型数据库系统中，一组为了完成特定功能的SQL 语句集，存储在数据库中，经过
+第一次编译后再次调用不需要再次编译，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。
+存储过程是数据库中的一个重要对象，任何一个设计良好的数据库应用程序都应该用到存储过程
+</code></pre><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><h4 id="存储过程的能力大大增强了SQL语言的功能和灵活性"><a href="#存储过程的能力大大增强了SQL语言的功能和灵活性" class="headerlink" title="存储过程的能力大大增强了SQL语言的功能和灵活性"></a><strong>存储过程的能力大大增强了SQL语言的功能和灵活性</strong></h4><pre><code>存储过程可以用流控制语句编写，有很强的灵活性，可以完成复杂的判断和较复杂的运算。
+</code></pre><h4 id="执行速度快"><a href="#执行速度快" class="headerlink" title="执行速度快"></a><strong>执行速度快</strong></h4><pre><code>    存储过程只在创造时进行编译，以后每次执行存储过程都不需再重新编译，而一般SQL语句每执行一次就编译一次,
+所以使用存储过程可提高数据库执行速度。
+</code></pre><h4 id="减少网络通信量"><a href="#减少网络通信量" class="headerlink" title="减少网络通信量"></a><strong>减少网络通信量</strong></h4><pre><code>    当对数据库进行复杂操作时，（如对多个表进行insert、update、select、delete时）可将这些复杂操作用存储过程
+封装起来与数据库提供的事务处理结合一起使用。这些操作，如果用程序完成就是多条SQL语句，可能要多次连接数据库，
+而换成存储过程只需一次连接。
+</code></pre><h4 id="更强的适应性与复用性"><a href="#更强的适应性与复用性" class="headerlink" title="更强的适应性与复用性"></a><strong>更强的适应性与复用性</strong></h4><pre><code>存储过程可以重复使用，减少数据库开发人员的工作量。
+</code></pre><h4 id="可维护性高"><a href="#可维护性高" class="headerlink" title="可维护性高"></a><strong>可维护性高</strong></h4><pre><code>更新存储过程通常比更改、测试以及重新部署程序集需要较少的时间和精力。
+</code></pre><h4 id="安全性高"><a href="#安全性高" class="headerlink" title="安全性高"></a><strong>安全性高</strong></h4><pre><code>    可设定只有某用户才能对指定存储过程的使用权，且存储过程比多条sql稳定，只要数据库不出现问题，基本上是不会
+出现什么问题的。
+</code></pre><h4 id="分布式工作"><a href="#分布式工作" class="headerlink" title="分布式工作"></a><strong>分布式工作</strong></h4><pre><code>应用程序和数据库的编码工作可以单独进行，减少耦合度。
+</code></pre><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><h4 id="开发调试差"><a href="#开发调试差" class="headerlink" title="开发调试差"></a><strong>开发调试差</strong></h4><pre><code>无良好的IDE开发工具，存储过程的调试比一般SQL要复杂的多。（MySQL调试工具Debugger for MySQL）
+</code></pre><h4 id="可移植性差"><a href="#可移植性差" class="headerlink" title="可移植性差"></a><strong>可移植性差</strong></h4><pre><code>由于存储过程将应用程序绑定到数据库上，因此使用存储过程封装业务逻辑将限制应用程序的可移植性。
+</code></pre><h4 id="重新编译问题"><a href="#重新编译问题" class="headerlink" title="重新编译问题"></a><strong>重新编译问题</strong></h4><pre><code>    因为后端代码是运行前编译的，如果带有引用关系的对象发生改变时，受影响的存储过程、包将需要重新
+编译（不过也可以设置成运行时刻自动编译）。
+</code></pre><h4 id="维护难"><a href="#维护难" class="headerlink" title="维护难"></a><strong>维护难</strong></h4><pre><code>    如果在一个程序系统中大量的使用存储过程，到程序交付使用的时候随着用户需求的增加会导致数据结构的变化，
+接着就是系统的相关问题了，最后如果用户想维护该系统可以说是很难很难、而且代价是空前的，维护起来更麻烦。
+</code></pre><h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><pre><code>http://blog.csdn.net/jesse621/article/details/9452049
+http://blog.csdn.net/u010796790/article/details/52194842
+http://baike.baidu.com/link?url=31ou9zns4zUnhs0gXjdjlWT8j-QvJ6QJqz5FYj6p_DM2TXYoLIYJgBsELDuXTcelRtm9Pk51O7FZcOVowd_YBq
+</code></pre>
       
     </div>
     
   </div>
   
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/08/08/storedprodcedure/">存储过程</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
+        <p><span>发布时间:</span>2016-08-08, 16:24:05</p>
+        <p><span>最后更新:</span>2016-09-22, 17:16:21</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/08/08/storedprodcedure/" title="存储过程">http://code.idea4j.com/2016/08/08/storedprodcedure/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://code.idea4j.com/2016/08/08/storedprodcedure/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
 
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/09/21/essay/">
+                    随笔
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/07/liyue87/">
+                    恭喜张梦雪夺得里约奥运首金
+                </a>
+            </div>
+        
+    </nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#存储过程"><span class="toc-number">1.</span> <span class="toc-text">存储过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概念"><span class="toc-number">1.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-number">1.2.</span> <span class="toc-text">优点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#存储过程的能力大大增强了SQL语言的功能和灵活性"><span class="toc-number">1.2.1.</span> <span class="toc-text">存储过程的能力大大增强了SQL语言的功能和灵活性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#执行速度快"><span class="toc-number">1.2.2.</span> <span class="toc-text">执行速度快</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#减少网络通信量"><span class="toc-number">1.2.3.</span> <span class="toc-text">减少网络通信量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#更强的适应性与复用性"><span class="toc-number">1.2.4.</span> <span class="toc-text">更强的适应性与复用性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可维护性高"><span class="toc-number">1.2.5.</span> <span class="toc-text">可维护性高</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安全性高"><span class="toc-number">1.2.6.</span> <span class="toc-text">安全性高</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分布式工作"><span class="toc-number">1.2.7.</span> <span class="toc-text">分布式工作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">1.3.</span> <span class="toc-text">缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#开发调试差"><span class="toc-number">1.3.1.</span> <span class="toc-text">开发调试差</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可移植性差"><span class="toc-number">1.3.2.</span> <span class="toc-text">可移植性差</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重新编译问题"><span class="toc-number">1.3.3.</span> <span class="toc-text">重新编译问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#维护难"><span class="toc-number">1.3.4.</span> <span class="toc-text">维护难</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考链接"><span class="toc-number">1.4.</span> <span class="toc-text">参考链接</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
 
 
 
@@ -343,7 +414,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"404　| markee's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"存储过程　| markee's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -359,7 +430,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="404/index.html" data-title="404" data-url="http://code.idea4j.com/404/index.html"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/08/08/storedprodcedure/" data-title="存储过程" data-url="http://code.idea4j.com/2016/08/08/storedprodcedure/"></div>
     <script>
         var duoshuoQuery = {short_name:"idea4j"};
         var loadComment = function(){
@@ -377,6 +448,26 @@
 </div>
     
 
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/09/21/essay/" title="上一篇: 随笔">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/07/liyue87/" title="下一篇: 恭喜张梦雪夺得里约奥运首金">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
 
 
 
