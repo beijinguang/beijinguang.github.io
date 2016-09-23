@@ -1,62 +1,313 @@
-<?xml version="1.0" encoding="utf-8"?>
-<search>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+
+<meta name="description" content="存储过程的使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 存储过程的使用">
+<meta property="og:url" content="http://code.idea4j.com/2016/08/08/MySQLSP/index.html">
+<meta property="og:site_name" content="markee's blog">
+<meta property="og:description" content="存储过程的使用">
+<meta property="og:updated_time" content="2016-09-23T06:38:26.058Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 存储过程的使用">
+<meta name="twitter:description" content="存储过程的使用">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="markee&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>MySQL 存储过程的使用 | markee&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">预测未来最好的方法是在现在创造未来</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网站/">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/里约/">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">预测未来最好的方法是在现在创造未来</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-MySQLSP" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2016/08/08/MySQLSP/" class="article-date">
+      <time datetime="2016-08-08T09:27:18.000Z" itemprop="datePublished">2016-08-08</time>
+</a>
+
+
+    </div>
   
+  <div class="article-inner">
     
-    <entry>
-      <title><![CDATA[微信小程序]]></title>
-      <url>http://code.idea4j.com/2016/09/22/essay0923/</url>
-      <content type="html"><![CDATA[<p>微信小程序开发参考资源</p>
-<p><a href="https://github.com/Aufree/awesome-wechat-weapp" target="_blank" rel="external">https://github.com/Aufree/awesome-wechat-weapp</a><br><a href="https://github.com/justjavac/awesome-wechat-weapp" target="_blank" rel="external">https://github.com/justjavac/awesome-wechat-weapp</a></p>
-]]></content>
-    </entry>
+      <input type="hidden" class="isFancy" />
     
-    <entry>
-      <title><![CDATA[个人小记]]></title>
-      <url>http://code.idea4j.com/2016/09/22/essay0922/</url>
-      <content type="html"><![CDATA[<pre><code>    耳机中播放着有网易云音乐搜到Alizee的歌，歌词是法文的，尽管听不懂，但是Alizee的声音和音乐的节奏
-总是能让我心情舒缓。
-</code></pre><a id="more"></a>
-<pre><code>     很长的时间没有这样把自己的所思所想化为文字了，记不清上次这样是什么时候了，也许是某天突如其来的
-兴致写过吧。现在已经记不清内容，不过可以确定的是那些文字是用笔倾吐的。今天并不是我第一次用键盘表达
-然而确是第一次强烈地想通过键盘回想记录和表达心情。
-</code></pre><h3 id="毕业后"><a href="#毕业后" class="headerlink" title="毕业后"></a>毕业后</h3><pre><code>    某一天，经过了四年“中国式”大学生活的我毕业了（想找四个字来形容下我的大学生活，一时竟想不出），
-毕业的我是兴奋的，被校园禁锢了近20年，终于不用再天天啃书本了，虽然大学并没有真正的啃过一本书。在学
-校签了三方协议去一家汽车公司工作，也算是专业对口，然而我还是太年轻，车间的工作真的是适应不了。
-    终于迎来了人生比较充实的生活，不顾家人的反对，一个人背着行李来北京培训了java编程，本来是想学习
- Android的，却阴差阳错的学习了javaEE，无论如何，生活充实了。周一到周六早起晚睡的学习语法，练习代码，
- 周日星期天也不曾放松，由于大学有C语言的基础，学起来也不是很吃力，也第一次感到大学学到的知识的实用
- 保持着在培训机构每天第一批人去上学，最后一批走的习惯，总算修炼小成。
-</code></pre><h3 id="电子商务很火"><a href="#电子商务很火" class="headerlink" title="电子商务很火"></a>电子商务很火</h3><pre><code>   记得那年电子商务很火，我的第一份工作就是开发电子商务系统，因为公司是重头开始做电子商务系统，而我
-是被招进公司技术部门的第3个员工，所以结果就是加班，不停地加班，996++这个状态一直持续到我从这家公司
-离职。现在想起来，中间偶尔有个双休，简直不要太爽，周六休息完，一想周日还能休息，那感觉！然而，也正
-是这段时间，我的技术得到了很大的提升。
-</code></pre><h3 id="我要搞IOS"><a href="#我要搞IOS" class="headerlink" title="我要搞IOS"></a>我要搞IOS</h3><pre><code>   几个月的IOS开发生活后，又回到了JavaEE开发上，转了个圈。事实说明，学习的环境很重要... ,然后这个时
-期，我试着用了阿里云，搭建了svn、jira，搞了代码自动生成工具...
-</code></pre><h3 id="猴子出世"><a href="#猴子出世" class="headerlink" title="猴子出世"></a>猴子出世</h3><pre><code>用户1000W了，网站相对稳定
-</code></pre><h3 id="到此还没完"><a href="#到此还没完" class="headerlink" title="到此还没完"></a>到此还没完</h3>]]></content>
-    </entry>
     
-    <entry>
-      <title><![CDATA[随笔]]></title>
-      <url>http://code.idea4j.com/2016/09/21/essay/</url>
-      <content type="html"><![CDATA[<p>恍惚之间<br>三十了<br>我还没有二够啊<br>回蓦过去就在眼前<br>窥望将来总也看不到边<br>似乎又能清清楚楚地看到<br>也许就是今天的循环复制</p>
-]]></content>
-    </entry>
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MySQL 存储过程的使用
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/database/">database</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-    <entry>
-      <title><![CDATA[设计模式(一)]]></title>
-      <url>http://code.idea4j.com/2016/08/09/DesignPatterns/</url>
-      <content type="html"><![CDATA[<p>设计模式（Design pattern）是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结<br><a id="more"></a></p>
-<h1 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h1><h2 id="设计模式的分类"><a href="#设计模式的分类" class="headerlink" title="设计模式的分类"></a>设计模式的分类</h2><p>总体来说设计模式分为三大类：<br>创建型模式，共五种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。<br>结构型模式，共七种：适配器模式、装饰器模式、代理模式、外观模式、桥接模式、组合模式、享元模式。<br>行为型模式，共十一种：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</p>
-<h2 id="设计模式的六大原则"><a href="#设计模式的六大原则" class="headerlink" title="设计模式的六大原则"></a>设计模式的六大原则</h2><p><strong>1、开闭原则（Open Close Principle）</strong><br>    开闭原则就是说对扩展开放，对修改关闭。在程序需要进行拓展的时候，不能去修改原有的代码，实现一个热插拔的效果。所以一句话概括就是：为了使程序的扩展性好，易于维护和升级。想要达到这样的效果，我们需要使用接口和抽象类，后面的具体设计中我们会提到这点。<br><strong>2、里氏代换原则（Liskov Substitution Principle）</strong><br>    里氏代换原则(Liskov Substitution Principle LSP)面向对象设计的基本原则之一。 里氏代换原则中说，任何基类可以出现的地方，子类一定可以出现。 LSP是继承复用的基石，只有当衍生类可以替换掉基类，软件单位的功能不受到影响时，基类才能真正被复用，而衍生类也能够在基类的基础上增加新的行为。里氏代换原则是对“开-闭”原则的补充。实现“开-闭”原则的关键步骤就是抽象化。而基类与子类的继承关系就是抽象化的具体实现，所以里氏代换原则是对实现抽象化的具体步骤的规范。—— From Baidu 百科<br><strong>3、依赖倒转原则（Dependence Inversion Principle）</strong><br>    这个是开闭原则的基础，具体内容：真对接口编程，依赖于抽象而不依赖于具体。<br><strong>4、接口隔离原则（Interface Segregation Principle）</strong><br>    这个原则的意思是：使用多个隔离的接口，比使用单个接口要好。还是一个降低类之间的耦合度的意思，从这儿我们看出，其实设计模式就是一个软件的设计思想，从大型软件架构出发，为了升级和维护方便。所以上文中多次出现：降低依赖，降低耦合。<br><strong>5、迪米特法则（最少知道原则）（Demeter Principle）</strong><br>    为什么叫最少知道原则，就是说：一个实体应当尽量少的与其他实体之间发生相互作用，使得系统功能模块相对独立。<br><strong>6、合成复用原则（Composite Reuse Principle）</strong><br>    原则是尽量使用合成/聚合的方式，而不是使用继承。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[MySQL 存储过程的使用]]></title>
-      <url>http://code.idea4j.com/2016/08/08/MySQLSP/</url>
-      <content type="html"><![CDATA[<p>存储过程的使用<br><a id="more"></a></p>
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>存储过程的使用<br><a id="more"></a></p>
 <h2 id="MySQL存储过程的创建"><a href="#MySQL存储过程的创建" class="headerlink" title="MySQL存储过程的创建"></a>MySQL存储过程的创建</h2><h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>  <strong><em>CREATE PROCEDURE 过程名 ([过程参数[,…]])[特性 …] 过程体</em></strong></p>
 <h3 id="声明分隔符"><a href="#声明分隔符" class="headerlink" title="声明分隔符"></a>声明分隔符</h3><p>DELIMITER //和DELIMITER ;<br>    因为MySQL默认以”;”为分隔符，如果我们没有声明分割符，那么编译器会把存储过程当成SQL语句进行处理，<br>则存储过程的编译过程会报错，所以要事先用DELIMITER关键字申明当前段分隔符，这样MySQL才会将”;”当做存储<br>过程中的代码，不会执行这些代码，用完了之后要把分隔符还原。</p>
 <h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>MySQL存储过程的参数用在存储过程的定义，共有三种参数类型,IN,OUT,INOUT,形式如：<br><strong><em>CREATE PROCEDURE([[IN |OUT |INOUT ] 参数名 数据类形…])</em></strong><br>IN 输入参数:表示该参数的值必须在调用存储过程时指定，在存储过程中修改该参数的值不能被返回，为默认值<br>OUT 输出参数:该值可在存储过程内部被改变，并可返回<br>INOUT 输入输出参数:调用时指定，并且可被改变和返回</p>
@@ -81,111 +332,236 @@
 <p>TRIM([[BOTH|LEADING|TRAILING] [padding] FROM]string2) //去除指定位置的指定字符<br>UCASE (string2 ) //转换成大写<br>RIGHT(string2,length) //取string2最后length个字符<br>SPACE(count) //生成count个空格</p>
 <h3 id="数学类"><a href="#数学类" class="headerlink" title="数学类"></a>数学类</h3><p>ABS (number2 ) //绝对值<br>BIN (decimal_number ) //十进制转二进制<br>CEILING (number2 ) //向上取整<br>CONV(number2,from_base,to_base) //进制转换<br>FLOOR (number2 ) //向下取整<br>FORMAT (number,decimal_places ) //保留小数位数<br>HEX (DecimalNumber ) //转十六进制<br>注：HEX()中可传入字符串，则返回其ASC-11码，如HEX(‘DEF’)返回4142143<br>也可以传入十进制整数，返回其十六进制编码，如HEX(25)返回19<br>LEAST (number , number2 [,..]) //求最小值<br>MOD (numerator ,denominator ) //求余<br>POWER (number ,power ) //求指数<br>RAND([seed]) //随机数<br>ROUND (number [,decimals ]) //四舍五入,decimals为小数位数]<br>注：返回类型并非均为整数，如：<br>(1)默认变为整形值<br>(2)可以设定小数位数，返回浮点型数据</p>
 <h3 id="日期时间类"><a href="#日期时间类" class="headerlink" title="日期时间类"></a>日期时间类</h3><p>ADDTIME (date2 ,time_interval ) //将time_interval加到date2<br>CONVERT_TZ (datetime2 ,fromTZ ,toTZ ) //转换时区<br>CURRENT_DATE ( ) //当前日期<br>CURRENT_TIME ( ) //当前时间<br>CURRENT_TIMESTAMP ( ) //当前时间戳<br>DATE (datetime ) //返回datetime的日期部分<br>DATE_ADD (date2 , INTERVAL d_value d_type ) //在date2中加上日期或时间<br>DATE_FORMAT (datetime ,FormatCodes ) //使用formatcodes格式显示datetime<br>DATE_SUB (date2 , INTERVAL d_value d_type ) //在date2上减去一个时间<br>DATEDIFF (date1 ,date2 ) //两个日期差<br>DAY (date ) //返回日期的天<br>DAYNAME (date ) //英文星期<br>DAYOFWEEK (date ) //星期(1-7) ,1为星期天<br>DAYOFYEAR (date ) //一年中的第几天<br>EXTRACT (interval_name FROM date ) //从date中提取日期的指定部分<br>MAKEDATE (year ,day ) //给出年及年中的第几天,生成日期串<br>MAKETIME (hour ,minute ,second ) //生成时间串<br>MONTHNAME (date ) //英文月份名<br>NOW ( ) //当前时间<br>SEC_TO_TIME (seconds ) //秒数转成时间<br>STR_TO_DATE (string ,format ) //字串转成时间,以format格式显示<br>TIMEDIFF (datetime1 ,datetime2 ) //两个时间差<br>TIME_TO_SEC (time ) //时间转秒数]<br>WEEK (date_time [,start_of_week ]) //第几周<br>YEAR (datetime ) //年份<br>DAYOFMONTH(datetime) //月的第几天<br>HOUR(datetime) //小时<br>LAST_DAY(date) //date的月的最后日期<br>MICROSECOND(datetime) //微秒<br>MONTH(datetime) //月<br>MINUTE(datetime) //分返回符号,正负或0<br>SQRT(number2) //开平方</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[存储过程的优缺点]]></title>
-      <url>http://code.idea4j.com/2016/08/08/storedprodcedure/</url>
-      <content type="html"><![CDATA[<p>why use Stored Procedure?<br><a id="more"></a></p>
-<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><pre><code>    存储过程（Stored Procedure）是在大型数据库系统中，一组为了完成特定功能的SQL 语句集，存储在数据库中，经过
-第一次编译后再次调用不需要再次编译，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。
-存储过程是数据库中的一个重要对象，任何一个设计良好的数据库应用程序都应该用到存储过程
-</code></pre><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><h4 id="存储过程的能力大大增强了SQL语言的功能和灵活性"><a href="#存储过程的能力大大增强了SQL语言的功能和灵活性" class="headerlink" title="存储过程的能力大大增强了SQL语言的功能和灵活性"></a><strong>存储过程的能力大大增强了SQL语言的功能和灵活性</strong></h4><pre><code>存储过程可以用流控制语句编写，有很强的灵活性，可以完成复杂的判断和较复杂的运算。
-</code></pre><h4 id="执行速度快"><a href="#执行速度快" class="headerlink" title="执行速度快"></a><strong>执行速度快</strong></h4><pre><code>    存储过程只在创造时进行编译，以后每次执行存储过程都不需再重新编译，而一般SQL语句每执行一次就编译一次,
-所以使用存储过程可提高数据库执行速度。
-</code></pre><h4 id="减少网络通信量"><a href="#减少网络通信量" class="headerlink" title="减少网络通信量"></a><strong>减少网络通信量</strong></h4><pre><code>    当对数据库进行复杂操作时，（如对多个表进行insert、update、select、delete时）可将这些复杂操作用存储过程
-封装起来与数据库提供的事务处理结合一起使用。这些操作，如果用程序完成就是多条SQL语句，可能要多次连接数据库，
-而换成存储过程只需一次连接。
-</code></pre><h4 id="更强的适应性与复用性"><a href="#更强的适应性与复用性" class="headerlink" title="更强的适应性与复用性"></a><strong>更强的适应性与复用性</strong></h4><pre><code>存储过程可以重复使用，减少数据库开发人员的工作量。
-</code></pre><h4 id="可维护性高"><a href="#可维护性高" class="headerlink" title="可维护性高"></a><strong>可维护性高</strong></h4><pre><code>更新存储过程通常比更改、测试以及重新部署程序集需要较少的时间和精力。
-</code></pre><h4 id="安全性高"><a href="#安全性高" class="headerlink" title="安全性高"></a><strong>安全性高</strong></h4><pre><code>    可设定只有某用户才能对指定存储过程的使用权，且存储过程比多条sql稳定，只要数据库不出现问题，基本上是不会
-出现什么问题的。
-</code></pre><h4 id="分布式工作"><a href="#分布式工作" class="headerlink" title="分布式工作"></a><strong>分布式工作</strong></h4><pre><code>应用程序和数据库的编码工作可以单独进行，减少耦合度。
-</code></pre><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><h4 id="开发调试差"><a href="#开发调试差" class="headerlink" title="开发调试差"></a><strong>开发调试差</strong></h4><pre><code>无良好的IDE开发工具，存储过程的调试比一般SQL要复杂的多。（MySQL调试工具Debugger for MySQL）
-</code></pre><h4 id="可移植性差"><a href="#可移植性差" class="headerlink" title="可移植性差"></a><strong>可移植性差</strong></h4><pre><code>由于存储过程将应用程序绑定到数据库上，因此使用存储过程封装业务逻辑将限制应用程序的可移植性。
-</code></pre><h4 id="重新编译问题"><a href="#重新编译问题" class="headerlink" title="重新编译问题"></a><strong>重新编译问题</strong></h4><pre><code>    因为后端代码是运行前编译的，如果带有引用关系的对象发生改变时，受影响的存储过程、包将需要重新
-编译（不过也可以设置成运行时刻自动编译）。
-</code></pre><h4 id="维护难"><a href="#维护难" class="headerlink" title="维护难"></a><strong>维护难</strong></h4><pre><code>    如果在一个程序系统中大量的使用存储过程，到程序交付使用的时候随着用户需求的增加会导致数据结构的变化，
-接着就是系统的相关问题了，最后如果用户想维护该系统可以说是很难很难、而且代价是空前的，维护起来更麻烦。
-</code></pre><h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><pre><code>http://blog.csdn.net/jesse621/article/details/9452049
-http://blog.csdn.net/u010796790/article/details/52194842
-http://baike.baidu.com/link?url=31ou9zns4zUnhs0gXjdjlWT8j-QvJ6QJqz5FYj6p_DM2TXYoLIYJgBsELDuXTcelRtm9Pk51O7FZcOVowd_YBq
-</code></pre>]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[恭喜张梦雪夺得里约奥运首金]]></title>
-      <url>http://code.idea4j.com/2016/08/07/liyue87/</url>
-      <content type="html"><![CDATA[<p>中国队终于取得了里约奥运的首金<br><a id="more"></a></p>
-<p>#张梦雪夺得里约奥运首金</p>
-<p><img src="http://obc3a6u0s.bkt.clouddn.com/QQ20160807-0@2x.png" alt="张梦雪首金"></p>
-<p>没能看到孙杨夺冠,总算在睡觉前有金牌了。</p>
-<p>预赛中， 俄罗斯选手巴特萨拉斯基纳以390环获第一，俄罗斯选手科尔舒诺娃以387环列第二，中国选手张梦雪以384环列第七。中国选手郭文珺发挥失常，打出378环未进决赛。</p>
-<p>决赛三枪过后，西班牙选手弗兰克特以30.2环排名第一，埃尔霍霍德以30环排名第二，中国选手张梦雪以28.2环排名第七。第二组三枪过后，西班牙选手弗兰克特以59.8环排名第一，希腊选手克拉卡奇以59.7环排名第二， 中国选手张梦雪以58.5环排名第五。</p>
-<p>淘汰赛首轮，希腊选手克拉卡奇以79.0环排名第一，中国选手张梦雪以79.0环并列第一。俄罗斯选手科尔舒诺娃第一个被淘汰，获得该项目第八名。</p>
-<p>第二轮，墨西哥选手扎瓦拉以99.1环排名第一，中国选手张梦雪以98.9环排名第二，俄罗斯选手巴特萨拉斯基纳以98.2环排名第三。塞尔维亚的维利克维奇被淘汰，获得第七名。</p>
-<p>第三轮，中国选手张梦雪以119.8环排名第一，墨西哥选手扎瓦拉以118.6环排名第二，俄罗斯选手巴特萨拉斯基纳以118.1环排名第三。西班牙选手弗兰克特第三位被淘汰，获得第六名。</p>
-<p>第四轮，中国选手张梦雪以138.9环排名第一，希腊选手克拉卡奇以138.1环排名第二，俄罗斯选手巴特萨拉斯基纳以137.9环排名第三。埃及选手埃尔霍霍德第四位被淘汰，获得第五名。</p>
-<p>第五轮，中国选手张梦雪以159.1环排名第一，希腊选手克拉卡奇和俄罗斯选手巴特萨拉斯基纳以158.3和157.3环排名二、三位，墨西哥选手扎瓦拉被淘汰，取得第四名。</p>
-<p>第六轮，希腊选手克拉卡奇以177.7环的成绩被淘汰，因此获得一枚铜牌。最后两发子弹在中国选手张梦雪和俄罗斯选手巴特萨拉斯基纳之间展开。</p>
-<p>最终，中国选手张梦雪以199.4环获得金牌，俄罗斯选手巴特萨拉斯基纳以197.1环夺得银牌，希腊选手克拉卡奇以177.7环摘得铜牌。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[喜欢的NBA海报]]></title>
-      <url>http://code.idea4j.com/2016/08/03/nba1/</url>
-      <content type="html"><![CDATA[<p>腾讯直播中的海报~<br><a id="more"></a></p>
-<h1 id="NBA直播海报"><a href="#NBA直播海报" class="headerlink" title="NBA直播海报"></a>NBA直播海报</h1><p><img src="http://obc3a6u0s.bkt.clouddn.com/10.pic.jpg" alt="让我照耀这个时代"><br><img src="http://obc3a6u0s.bkt.clouddn.com/9.pic.jpg" alt="影响联盟格局的男人"><br><img src="http://obc3a6u0s.bkt.clouddn.com/6.pic.jpg" alt="73-9"><br><img src="http://obc3a6u0s.bkt.clouddn.com/8.pic.jpg" alt="3分之神"><br><img src="http://obc3a6u0s.bkt.clouddn.com/4.pic.jpg" alt="30-23"><br><img src="http://obc3a6u0s.bkt.clouddn.com/3.pic.jpg" alt="30-24"><br><img src="http://obc3a6u0s.bkt.clouddn.com/7.pic.jpg" alt="如果当年我们没有各奔东西"><br><img src="http://obc3a6u0s.bkt.clouddn.com/5.pic.jpg" alt="硬汉"></p>
-<h3 id="好吧-我承认我喜欢库里"><a href="#好吧-我承认我喜欢库里" class="headerlink" title="好吧,我承认我喜欢库里"></a>好吧,我承认我喜欢库里</h3><p>库里集锦：</p>
-<iframe height="498" width="510" src="http://player.youku.com/embed/XMTU5NjU4ODA4NA==" frameborder="0" allowfullscreen></iframe>
 
-<p><a href="http://v.qq.com/cover/7/7kxz9octhcmo01t.html?vid=h0020hfumc3" target="_blank" rel="external">库里单赛季402记三分全记录(1)</a><br><a href="http://v.qq.com/cover/6/6fp1b9m6nttqy0p.html?vid=i0020rjlj6t" target="_blank" rel="external">库里单赛季402记三分全记录(2)</a><br><a href="http://v.qq.com/cover/1/16857d5zainor08.html?vid=o0020yrgd8p" target="_blank" rel="external">库里单赛季402记三分全记录(3)</a><br><a href="http://v.qq.com/cover/r/roghcf5e4j44o31.html?vid=v0020t6dy77" target="_blank" rel="external">库里单赛季402记三分全记录(4)</a></p>
-]]></content>
-    </entry>
+      
+    </div>
     
-    <entry>
-      <title><![CDATA[10家慕课网站]]></title>
-      <url>http://code.idea4j.com/2016/08/02/mooc10/</url>
-      <content type="html"><![CDATA[<p>收集的10个网站,蹭课<br><a id="more"></a></p>
-<h2 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h2><p>   <a href="http://www.mooc.cn" target="_blank" rel="external">MOOC中国 http://www.mooc.cn/</a><br>   <a href="http://www.imooc.com" target="_blank" rel="external">慕课网 http://www.imooc.com</a><br>   <a href="http://www.icourses.cn" target="_blank" rel="external">爱课程 http://www.icourses.cn</a><br>   <a href="http://www.icourse163.org" target="_blank" rel="external">中国大学Mooc http://www.icourse163.org</a><br>   <a href="http://www.cnmooc.org" target="_blank" rel="external">好大学在线 http://www.cnmooc.org</a><br>   <a href="http://www.xuetangx.com" target="_blank" rel="external">学堂在线 http://www.xuetangx.com</a><br>   <a href="http://www.daydays.com" target="_blank" rel="external">天天象上 http://www.daydays.com</a><br>   <a href="http://www.miguxue.com" target="_blank" rel="external">咪咕学堂 http://www.miguxue.com</a><br>   <a href="http://www.wanmen.org" target="_blank" rel="external">万门大学 http://www.wanmen.org</a><br>   <a href="http://www.topu.com" target="_blank" rel="external">顶你学堂 http://www.topu.com</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[在多台电脑上使用hexo]]></title>
-      <url>http://code.idea4j.com/2016/08/01/hexouser/</url>
-      <content type="html"><![CDATA[<p>家里和公司可以同时写了<br><a id="more"></a></p>
-<h3 id="1-上传初始电脑上的Hexo源文件到github的“hexo”仓库"><a href="#1-上传初始电脑上的Hexo源文件到github的“hexo”仓库" class="headerlink" title="1.上传初始电脑上的Hexo源文件到github的“hexo”仓库"></a>1.上传初始电脑上的Hexo源文件到github的“hexo”仓库</h3><pre><code>git init
-git add README.md
-git commit -m &quot;first commit&quot;
-git remote add origin git@github.com:beijinguang/hexo.git
-git push -u origin master
-</code></pre><h3 id="2-在其他电脑上安装hexo环境，gitclone-“hexo”"><a href="#2-在其他电脑上安装hexo环境，gitclone-“hexo”" class="headerlink" title="2.在其他电脑上安装hexo环境，gitclone “hexo”"></a>2.在其他电脑上安装hexo环境，gitclone “hexo”</h3><pre><code>git clone git@github.com:beijinguang/hexo.git
-</code></pre><h3 id="3-所有电脑上都先检查更新再修改上传"><a href="#3-所有电脑上都先检查更新再修改上传" class="headerlink" title="3.所有电脑上都先检查更新再修改上传"></a>3.所有电脑上都先检查更新再修改上传</h3><pre><code>a.建议先检查更新git pull，将本地博客源文件更新至最新版本:git pull
-b.然后可以新建或修改博客内容，进行预览等操作
-c.新建博客后，先同步Hexo源文件，将修改后的源文件同步至github:
- git add . ,git commit -m &quot;record&quot;, git push orign master
-d.然后再执行Hexo的生成文件和部署指令:hexo generate ,hexo deploy
-</code></pre>]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[hexo]]></title>
-      <url>http://code.idea4j.com/2016/07/30/hi-hexo/</url>
-      <content type="html"><![CDATA[<p>hexo生成的第一篇文章<br><a id="more"></a></p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-]]></content>
-    </entry>
-    
+  </div>
   
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">markee</a></p>
+        <p><span>Created:</span>2016-08-08, 17:27:18</p>
+        <p><span>Updated:</span>2016-09-23, 14:38:26</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/08/08/MySQLSP/" title="MySQL 存储过程的使用">http://code.idea4j.com/2016/08/08/MySQLSP/</a>
+            <span class="copy-path" data-clipboard-text="From http://code.idea4j.com/2016/08/08/MySQLSP/　　By markee" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/08/09/DesignPatterns/">
+                    设计模式(一)
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/08/storedprodcedure/">
+                    存储过程的优缺点
+                </a>
+            </div>
+        
+    </nav>
+
   
-</search>
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL存储过程的创建"><span class="toc-number">1.</span> <span class="toc-text">MySQL存储过程的创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#格式"><span class="toc-number">1.1.</span> <span class="toc-text">格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#声明分隔符"><span class="toc-number">1.2.</span> <span class="toc-text">声明分隔符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数"><span class="toc-number">1.3.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变量"><span class="toc-number">1.4.</span> <span class="toc-text">变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL存储过程的查询、删除"><span class="toc-number">2.</span> <span class="toc-text">MySQL存储过程的查询、删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL存储过程的控制语句"><span class="toc-number">3.</span> <span class="toc-text">MySQL存储过程的控制语句</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#变量作用域"><span class="toc-number">3.1.</span> <span class="toc-text">变量作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#条件语句"><span class="toc-number">3.2.</span> <span class="toc-text">条件语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#循环语句"><span class="toc-number">3.3.</span> <span class="toc-text">循环语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ITERATE迭代"><span class="toc-number">3.4.</span> <span class="toc-text">ITERATE迭代</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL存储过程的基本函数"><span class="toc-number">4.</span> <span class="toc-text">MySQL存储过程的基本函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串类"><span class="toc-number">4.1.</span> <span class="toc-text">字符串类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数学类"><span class="toc-number">4.2.</span> <span class="toc-text">数学类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日期时间类"><span class="toc-number">4.3.</span> <span class="toc-text">日期时间类</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"MySQL 存储过程的使用　| markee's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/08/08/MySQLSP/" data-title="MySQL 存储过程的使用" data-url="http://code.idea4j.com/2016/08/08/MySQLSP/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"idea4j"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/09/DesignPatterns/" title="Pre: 设计模式(一)">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/08/storedprodcedure/" title="Next: 存储过程的优缺点">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0923/">微信小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/DesignPatterns/">设计模式(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程的优缺点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016 markee
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
