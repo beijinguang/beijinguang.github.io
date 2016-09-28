@@ -15,12 +15,16 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="markee's blog">
-<meta property="og:url" content="http://code.idea4j.com/categories/node/index.html">
+<meta name="description" content="Node.js &amp;#x5F02;&amp;#x6B65;&amp;#x7F16;&amp;#x7A0B;&amp;#x7684;&amp;#x76F4;&amp;#x63A5;&amp;#x4F53;&amp;#x73B0;&amp;#x5C31;&amp;#x662F;&amp;#x56DE;&amp;#x8C03;&amp;#x3002;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js 回调函数">
+<meta property="og:url" content="http://code.idea4j.com/2016/08/15/node3/index.html">
 <meta property="og:site_name" content="markee's blog">
+<meta property="og:description" content="Node.js &amp;#x5F02;&amp;#x6B65;&amp;#x7F16;&amp;#x7A0B;&amp;#x7684;&amp;#x76F4;&amp;#x63A5;&amp;#x4F53;&amp;#x73B0;&amp;#x5C31;&amp;#x662F;&amp;#x56DE;&amp;#x8C03;&amp;#x3002;">
+<meta property="og:updated_time" content="2016-09-28T05:35:37.124Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="markee's blog">
+<meta name="twitter:title" content="Node.js 回调函数">
+<meta name="twitter:description" content="Node.js &amp;#x5F02;&amp;#x6B65;&amp;#x7F16;&amp;#x7A0B;&amp;#x7684;&amp;#x76F4;&amp;#x63A5;&amp;#x4F53;&amp;#x73B0;&amp;#x5C31;&amp;#x662F;&amp;#x56DE;&amp;#x8C03;&amp;#x3002;">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -52,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Category: node | markee&#39;s blog</title>
+<title>Node.js 回调函数 | markee&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -62,10 +66,10 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
-        isCategory: true,
+        isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
         search: true
@@ -263,208 +267,196 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-node3" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2016/08/15/node3/" class="article-date">
+      <time datetime="2016-08-15T05:07:52.000Z" itemprop="datePublished">2016-08-15</time>
+</a>
+
+
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Node.js 回调函数
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/node/">node</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/08/15/node5/" class="archive-article-date">
-      <time datetime="2016-08-15T06:03:52.000Z" itemprop="datePublished">08-15</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/15/node5/">Node.js EventEmitter</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
+    <div class="article-entry" itemprop="articleBody">
+      
           
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/node/">node</a>
+        <p>Node.js &#x5F02;&#x6B65;&#x7F16;&#x7A0B;&#x7684;&#x76F4;&#x63A5;&#x4F53;&#x73B0;&#x5C31;&#x662F;&#x56DE;&#x8C03;&#x3002;<br><a id="more"></a></p>
+<h3 id="&#x56DE;&#x8C03;&#x51FD;&#x6570;"><a href="#&#x56DE;&#x8C03;&#x51FD;&#x6570;" class="headerlink" title="&#x56DE;&#x8C03;&#x51FD;&#x6570;"></a>&#x56DE;&#x8C03;&#x51FD;&#x6570;</h3><p>&#x5F02;&#x6B65;&#x7F16;&#x7A0B;&#x4F9D;&#x6258;&#x4E8E;&#x56DE;&#x8C03;&#x6765;&#x5B9E;&#x73B0;&#xFF0C;&#x4F46;&#x4E0D;&#x80FD;&#x8BF4;&#x4F7F;&#x7528;&#x4E86;&#x56DE;&#x8C03;&#x540E;&#x7A0B;&#x5E8F;&#x5C31;&#x5F02;&#x6B65;&#x5316;&#x4E86;&#x3002;<br>&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x5728;&#x5B8C;&#x6210;&#x4EFB;&#x52A1;&#x540E;&#x5C31;&#x4F1A;&#x88AB;&#x8C03;&#x7528;&#xFF0C;Node &#x4F7F;&#x7528;&#x4E86;&#x5927;&#x91CF;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;Node &#x6240;&#x6709; API &#x90FD;&#x652F;&#x6301;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x3002;<br>&#x4F8B;&#x5982;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x4E00;&#x8FB9;&#x8BFB;&#x53D6;&#x6587;&#x4EF6;&#xFF0C;&#x4E00;&#x8FB9;&#x6267;&#x884C;&#x5176;&#x4ED6;&#x547D;&#x4EE4;&#xFF0C;&#x5728;&#x6587;&#x4EF6;&#x8BFB;&#x53D6;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x4F5C;&#x4E3A;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x8FD4;&#x56DE;&#x3002;&#x8FD9;&#x6837;&#x5728;&#x6267;&#x884C;<br>&#x4EE3;&#x7801;&#x65F6;&#x5C31;&#x6CA1;&#x6709;&#x963B;&#x585E;&#x6216;&#x7B49;&#x5F85;&#x6587;&#x4EF6; I/O &#x64CD;&#x4F5C;&#x3002;&#x8FD9;&#x5C31;&#x5927;&#x5927;&#x63D0;&#x9AD8;&#x4E86; Node.js &#x7684;&#x6027;&#x80FD;&#xFF0C;&#x53EF;&#x4EE5;&#x5904;&#x7406;&#x5927;&#x91CF;&#x7684;&#x5E76;&#x53D1;&#x8BF7;&#x6C42;&#x3002;</p>
+
+      
     </div>
-
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+    
   </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/08/15/node3/">Node.js 回调函数</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">markee</a></p>
+        <p><span>Created:</span>2016-08-15, 13:07:52</p>
+        <p><span>Updated:</span>2016-09-28, 13:35:37</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/08/15/node3/" title="Node.js 回调函数">http://code.idea4j.com/2016/08/15/node3/</a>
+            <span class="copy-path" data-clipboard-text="From http://code.idea4j.com/2016/08/15/node3/　　By markee" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/08/15/node4/">
+                    Node.js 事件循环
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/15/markdown/">
+                    markdown语法积累
+                </a>
+            </div>
+        
+    </nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/08/15/node4/" class="archive-article-date">
-      <time datetime="2016-08-15T05:08:41.000Z" itemprop="datePublished">08-15</time>
-</a>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#回调函数"><span class="toc-number">1.</span> <span class="toc-text">回调函数</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
 
 
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
         </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/15/node4/">Node.js 事件循环</a>
-    </h1>
-  
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Node.js 回调函数　| markee's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
 
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/node/">node</a>
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/08/15/node3/" data-title="Node.js 回调函数" data-url="http://code.idea4j.com/2016/08/15/node3/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"idea4j"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/15/node4/" title="Pre: Node.js 事件循环">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/15/markdown/" title="Next: markdown语法积累">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
     </div>
 
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/08/15/node3/" class="archive-article-date">
-      <time datetime="2016-08-15T05:07:52.000Z" itemprop="datePublished">08-15</time>
-</a>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0923/">微信小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node5/">Node.js EventEmitter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node4/">Node.js 事件循环</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node3/">Node.js 回调函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/markdown/">markdown语法积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node2/">NPM 使用介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/sublime/">sublime text 3 使用积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/node1/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/staruml1/">使用快速生成GoF设计模式的类图与代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/builderpattern/">builderpattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/DesignPatterns/">设计模式(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程的优缺点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
 
 
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/15/node3/">Node.js 回调函数</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/node/">node</a>
-    </div>
 
 
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/08/15/node2/" class="archive-article-date">
-      <time datetime="2016-08-15T03:20:29.000Z" itemprop="datePublished">08-15</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/15/node2/">NPM 使用介绍</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/node/">node</a>
-    </div>
-
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/08/14/node1/" class="archive-article-date">
-      <time datetime="2016-08-14T09:21:33.000Z" itemprop="datePublished">08-14</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/14/node1/">Node.js 创建第一个应用</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/node/">node</a>
-    </div>
-
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
