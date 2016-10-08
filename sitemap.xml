@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://code.idea4j.com/2016/08/20/node11/</loc>
+    
+    <lastmod>2016-10-08T06:56:50.760Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/08/23/node14/</loc>
+    
+    <lastmod>2016-10-08T06:51:58.805Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/08/22/node13/</loc>
+    
+    <lastmod>2016-10-08T06:47:14.228Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/08/20/node12/</loc>
+    
+    <lastmod>2016-10-08T05:27:24.679Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/08/19/node10/</loc>
+    
+    <lastmod>2016-10-08T03:14:11.239Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://code.idea4j.com/2016/08/17/node9/</loc>
     
     <lastmod>2016-09-30T04:16:39.862Z</lastmod>
@@ -191,14 +226,14 @@
   </url>
   
   <url>
-    <loc>http://code.idea4j.com/about/index.html</loc>
+    <loc>http://code.idea4j.com/tags/index.html</loc>
     
     <lastmod>2016-09-21T08:13:13.013Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://code.idea4j.com/tags/index.html</loc>
+    <loc>http://code.idea4j.com/about/index.html</loc>
     
     <lastmod>2016-09-21T08:13:13.013Z</lastmod>
     
