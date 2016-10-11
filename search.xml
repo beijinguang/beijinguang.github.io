@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title><![CDATA[创建自己maven archetype]]></title>
+      <url>http://code.idea4j.com/2016/10/11/mvnarchetype/</url>
+      <content type="html"><![CDATA[<p>&#x521B;&#x5EFA;&#x81EA;&#x5DF1;maven archetype</p>
+<p>maven archetype  &#x662F;&#x4E00;&#x4E2A;&#x539F;&#x578B;&#x6784;&#x5EFA;&#x6846;&#x67B6;&#xFF0C;&#x8FD9;&#x6837;&#x53EF;&#x4EE5;&#x628A;&#x4E00;&#x4E9B;&#x91CD;&#x590D;&#x6027;&#x7684;&#x914D;&#x7F6E;&#x4EE3;&#x7801;&#x653E;&#x5230;archetype&#x91CC;&#xFF0C;&#x5C31;&#x4E0D;&#x7528;&#x6BCF;&#x6B21;&#x90FD;&#x4ECE;&#x5934;&#x53BB;&#x642D;&#x5EFA;&#x9879;&#x76EE;&#x3002;</p>
+<p>1.&#x521B;&#x5EFA;&#x4E00;&#x4E2A;maven&#x9879;&#x76EE;mvn-archetyp-demo&#xFF0C;&#x6DFB;&#x52A0;&#x81EA;&#x5DF1;&#x60F3;&#x8981;&#x91CD;&#x590D;&#x5229;&#x7528;&#x7684;&#x5143;&#x7D20;&#xFF0C;&#x5982;&#x4E00;&#x4E9B;&#x914D;&#x7F6E;&#xFF0C;&#x901A;&#x7528;&#x4EE3;&#x7801;&#x7B49;</p>
+<p>2.&#x5728;&#x5DE5;&#x7A0B;&#x4E0B;&#x6267;&#x884C;&#xFF1A;<br>mvn-archetyp-demo&gt; mvn clean<br>mvn-archetyp-demo&gt; mvn archetype:create-from-project<br>mvn-archetyp-demo&gt; cd target/generated-sources/archetype<br>mvn-archetyp-demo/target/generated-sources/archetype&gt; mvn clean install</p>
+<p>&#x8FD9;&#x6837;&#x901A;&#x8FC7;IDE&#x5C31;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x81EA;&#x5DF1;&#x751F;&#x6210;&#x7684;archetype&#x4E86;&#x3002;</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[hexo + github建站]]></title>
+      <url>http://code.idea4j.com/2016/10/09/hexo/</url>
+      <content type="html"><![CDATA[<h3 id="&#x4F7F;&#x7528;hexo&#x524D;&#x63D0;"><a href="#&#x4F7F;&#x7528;hexo&#x524D;&#x63D0;" class="headerlink" title="&#x4F7F;&#x7528;hexo&#x524D;&#x63D0;"></a>&#x4F7F;&#x7528;hexo&#x524D;&#x63D0;</h3><p>&#x5B89;&#x88C5; Hexo &#x76F8;&#x5F53;&#x7B80;&#x5355;&#x3002;&#x7136;&#x800C;&#x5728;&#x5B89;&#x88C5;&#x524D;&#xFF0C;&#x60A8;&#x5FC5;&#x987B;&#x68C0;&#x67E5;&#x7535;&#x8111;&#x4E2D;&#x662F;&#x5426;&#x5DF2;&#x5B89;&#x88C5;&#x4E0B;&#x5217;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#xFF1A;</p>
+<ul>
+<li><a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js</a></li>
+<li><a href="https://git-scm.com/" target="_blank" rel="external">Git</a><br>&#x5982;&#x679C;&#x60A8;&#x7684;&#x7535;&#x8111;&#x4E2D;&#x5DF2;&#x7ECF;&#x5B89;&#x88C5;&#x4E0A;&#x8FF0;&#x5FC5;&#x5907;&#x7A0B;&#x5E8F;&#xFF0C;&#x90A3;&#x4E48;&#x606D;&#x559C;&#x60A8;&#xFF01;&#x63A5;&#x4E0B;&#x6765;&#x53EA;&#x9700;&#x8981;&#x4F7F;&#x7528; npm &#x5373;&#x53EF;&#x5B8C;&#x6210; Hexo &#x7684;&#x5B89;&#x88C5;&#x3002;<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;blog"><a href="#&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;blog" class="headerlink" title="&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;blog"></a>&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;blog</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init [folder]</div></pre></td></tr></table></figure>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[mongodb]]></title>
       <url>http://code.idea4j.com/2016/10/09/mongodb/</url>
       <content type="html"><![CDATA[<a id="more"></a>
