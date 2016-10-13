@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://code.idea4j.com/"/>
-  <updated>2016-10-13T05:51:45.115Z</updated>
+  <updated>2016-10-13T10:01:27.640Z</updated>
   <id>http://code.idea4j.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://code.idea4j.com/2016/10/13/mysqlTransaction/"/>
     <id>http://code.idea4j.com/2016/10/13/mysqlTransaction/</id>
     <published>2016-10-13T05:19:03.000Z</published>
-    <updated>2016-10-13T05:51:45.115Z</updated>
+    <updated>2016-10-13T10:01:27.640Z</updated>
     
     <content type="html"><![CDATA[<h2 id="MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;"><a href="#MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;" class="headerlink" title="MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;"></a>MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;</h2><table>
 <thead>
@@ -67,7 +67,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;MySQL&amp;#x7684;&amp;#x4E8B;&amp;#x52A1;&amp;#x9694;&amp;#x79BB;&amp;#x7EA7;&amp;#x522B;&quot;&gt;&lt;a href=&quot;#MySQL&amp;#x7684;&amp;#x4E8B;&amp;#x52A1;&amp;#x9694;&amp;#x79BB;&amp;#x7EA7;&amp;#x522
+      事务隔离级别
     
     </summary>
     
