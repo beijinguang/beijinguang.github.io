@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://code.idea4j.com/2016/09/21/essay/</loc>
+    
+    <lastmod>2016-10-13T07:52:22.489Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/10/13/mysqlTransaction/</loc>
+    
+    <lastmod>2016-10-13T05:51:45.115Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/10/11/angularjs2d1/</loc>
+    
+    <lastmod>2016-10-11T09:12:52.555Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://code.idea4j.com/2016/09/22/essay0922/</loc>
     
     <lastmod>2016-10-11T04:52:52.238Z</lastmod>
@@ -250,13 +271,6 @@
     <loc>http://code.idea4j.com/2016/08/03/nba1/</loc>
     
     <lastmod>2016-09-22T05:42:39.206Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://code.idea4j.com/2016/09/21/essay/</loc>
-    
-    <lastmod>2016-09-22T05:41:12.662Z</lastmod>
     
   </url>
   

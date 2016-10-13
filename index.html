@@ -191,7 +191,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoF/">GoF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/starUML/">starUML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/社会/">社会</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网站/">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/里约/">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoF/">GoF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/angularjs2/">angularjs2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/starUML/">starUML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/社会/">社会</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网站/">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/里约/">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
                     </div>
                 </section>
                 
@@ -267,6 +267,196 @@
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-mysqlTransaction" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/13/mysqlTransaction/" class="article-date">
+      <time datetime="2016-10-13T05:19:03.000Z" itemprop="datePublished">2016-10-13</time>
+</a>
+
+ 
+    <a href="/2016/10/13/mysqlTransaction/#comments" title="Comments">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2016/10/13/mysqlTransaction/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;"><a href="#MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;" class="headerlink" title="MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;"></a>MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">&#x9694;&#x79BB;&#x7EA7;&#x522B;</th>
+<th style="text-align:left">&#x810F;&#x8BFB;</th>
+<th style="text-align:left">&#x4E0D;&#x53EF;&#x91CD;&#x590D;&#x8BFB;</th>
+<th style="text-align:left">&#x5E7B;&#x8BFB;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&#x8BFB;&#x672A;&#x63D0;&#x4EA4; Read uncommitted</td>
+<td style="text-align:left">O</td>
+<td style="text-align:left">O</td>
+<td style="text-align:left">O</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x8BFB;&#x5DF2;&#x63D0;&#x4EA4; Read committed</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">O</td>
+<td style="text-align:left">O</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x53EF;&#x91CD;&#x590D;&#x8BFB; Repeatableread</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">O</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x53EF;&#x4E32;&#x884C;&#x5316;</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">X</td>
+</tr>
+</tbody>
+</table>
+<p>&#x5927;&#x591A;&#x6570;&#x7684;&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x7684;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x90FD;&#x662F;&#xFF1A;Read committed<br>&#x800C;MySQL&#x7684;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x662F;&#xFF1A;Repeatable Read</p>
+<h2 id="&#x67E5;&#x8BE2;"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</h2><p>SELECT @@global.tx_isolation;<br>SELECT @@session.tx_isolation;<br>SELECT @@tx_isolation;// &#x7F3A;&#x7701;&#x662F;session</p>
+<h2 id="&#x4FEE;&#x6539;"><a href="#&#x4FEE;&#x6539;" class="headerlink" title="&#x4FEE;&#x6539;"></a>&#x4FEE;&#x6539;</h2><p>&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x7528;SET TRANSACTION&#x8BED;&#x53E5;&#x6539;&#x53D8;&#x5355;&#x4E2A;&#x4F1A;&#x8BDD;&#x6216;&#x8005;&#x6240;&#x6709;&#x65B0;&#x8FDB;&#x8FDE;&#x63A5;&#x7684;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x3002;&#x5B83;&#x7684;&#x8BED;&#x6CD5;&#x5982;&#x4E0B;&#xFF1A;<br><em>SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL {READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE}</em><br>&#x4F8B;&#x5982;&#xFF1A;<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> <span class="keyword">TRANSACTION</span> <span class="keyword">ISOLATION</span> <span class="keyword">LEVEL</span> <span class="keyword">READ</span> COMMITTED;</div></pre></td></tr></table></figure></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">set</span> tx_isolation=<span class="string">&apos;read-committed&apos;</span>;</div></pre></td></tr></table></figure>
+<p><em>&#x6CE8;&#x610F;</em>&#xFF1A;&#x9ED8;&#x8BA4;&#x7684;&#x884C;&#x4E3A;&#xFF08;&#x4E0D;&#x5E26;session&#x548C;global&#xFF09;&#x662F;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#xFF08;&#x672A;&#x5F00;&#x59CB;&#xFF09;&#x4E8B;&#x52A1;&#x8BBE;&#x7F6E;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x3002;&#x5982;&#x679C;&#x4F60;&#x4F7F;&#x7528;GLOBAL&#x5173;&#x952E;&#x5B57;&#xFF0C;&#x8BED;&#x53E5;&#x5728;&#x5168;&#x5C40;<br>&#x5BF9;&#x4ECE;&#x90A3;&#x70B9;&#x5F00;&#x59CB;&#x521B;&#x5EFA;&#x7684;&#x6240;&#x6709;&#x65B0;&#x8FDE;&#x63A5;&#xFF08;&#x9664;&#x4E86;&#x4E0D;&#x5B58;&#x5728;&#x7684;&#x8FDE;&#x63A5;&#xFF09;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x7EA7;&#x522B;&#x3002;&#x4F60;&#x9700;&#x8981;SUPER&#x6743;&#x9650;&#x6765;&#x505A;&#x8FD9;&#x4E2A;&#x3002;&#x4F7F;&#x7528;SESSION &#x5173;&#x952E;&#x5B57;&#x4E3A;<br>&#x5C06;&#x6765;&#x5728;&#x5F53;&#x524D;&#x8FDE;&#x63A5;&#x4E0A;&#x6267;&#x884C;&#x7684;&#x4E8B;&#x52A1;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x7EA7;&#x522B;&#x3002; &#x4EFB;&#x4F55;&#x5BA2;&#x6237;&#x7AEF;&#x90FD;&#x80FD;&#x81EA;&#x7531;&#x6539;&#x53D8;&#x4F1A;&#x8BDD;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#xFF08;&#x751A;&#x81F3;&#x5728;&#x4E8B;&#x52A1;&#x7684;&#x4E2D;&#x95F4;&#xFF09;&#xFF0C;&#x6216;&#x8005;&#x4E3A;&#x4E0B;&#x4E00;<br>&#x4E2A;&#x4E8B;&#x52A1;&#x8BBE;&#x7F6E;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x3002;</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-angularjs2d1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/11/angularjs2d1/" class="article-date">
+      <time datetime="2016-10-11T09:02:51.000Z" itemprop="datePublished">2016-10-11</time>
+</a>
+
+ 
+    <a href="/2016/10/11/angularjs2d1/#comments" title="Comments">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2016/10/11/angularjs2d1/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/11/angularjs2d1/">angularjs2d1</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              angularjs2 开始了
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/angularjs2/">angularjs2</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angularjs2/">angularjs2</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2016/10/11/angularjs2d1/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-mvnarchetype" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -856,160 +1046,6 @@
       
         <p class="article-more-link">
           <a href="/2016/08/24/node15/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-node14" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/23/node14/" class="article-date">
-      <time datetime="2016-08-23T02:43:09.000Z" itemprop="datePublished">2016-08-23</time>
-</a>
-
- 
-    <a href="/2016/08/23/node14/#comments" title="Comments">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/08/23/node14/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/23/node14/">使用 Node 创建 Web 服务器和客户端</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>node web demo<br></p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/node/">node</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/08/23/node14/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-node13" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/22/node13/" class="article-date">
-      <time datetime="2016-08-22T00:36:08.000Z" itemprop="datePublished">2016-08-22</time>
-</a>
-
- 
-    <a href="/2016/08/22/node13/#comments" title="Comments">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/08/22/node13/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/22/node13/">Node.js GET/POST请求</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>node get/post demo<br></p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/node/">node</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/08/22/node13/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

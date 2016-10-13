@@ -4,6 +4,62 @@
   
     
     <entry>
+      <title><![CDATA[更改MySQL的默认事务隔离级别]]></title>
+      <url>http://code.idea4j.com/2016/10/13/mysqlTransaction/</url>
+      <content type="html"><![CDATA[<h2 id="MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;"><a href="#MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;" class="headerlink" title="MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;"></a>MySQL&#x7684;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">&#x9694;&#x79BB;&#x7EA7;&#x522B;</th>
+<th style="text-align:left">&#x810F;&#x8BFB;</th>
+<th style="text-align:left">&#x4E0D;&#x53EF;&#x91CD;&#x590D;&#x8BFB;</th>
+<th style="text-align:left">&#x5E7B;&#x8BFB;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&#x8BFB;&#x672A;&#x63D0;&#x4EA4; Read uncommitted</td>
+<td style="text-align:left">O</td>
+<td style="text-align:left">O</td>
+<td style="text-align:left">O</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x8BFB;&#x5DF2;&#x63D0;&#x4EA4; Read committed</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">O</td>
+<td style="text-align:left">O</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x53EF;&#x91CD;&#x590D;&#x8BFB; Repeatableread</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">O</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x53EF;&#x4E32;&#x884C;&#x5316;</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">X</td>
+<td style="text-align:left">X</td>
+</tr>
+</tbody>
+</table>
+<p>&#x5927;&#x591A;&#x6570;&#x7684;&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x7684;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x90FD;&#x662F;&#xFF1A;Read committed<br>&#x800C;MySQL&#x7684;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x662F;&#xFF1A;Repeatable Read</p>
+<h2 id="&#x67E5;&#x8BE2;"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</h2><p>SELECT @@global.tx_isolation;<br>SELECT @@session.tx_isolation;<br>SELECT @@tx_isolation;// &#x7F3A;&#x7701;&#x662F;session</p>
+<h2 id="&#x4FEE;&#x6539;"><a href="#&#x4FEE;&#x6539;" class="headerlink" title="&#x4FEE;&#x6539;"></a>&#x4FEE;&#x6539;</h2><p>&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x7528;SET TRANSACTION&#x8BED;&#x53E5;&#x6539;&#x53D8;&#x5355;&#x4E2A;&#x4F1A;&#x8BDD;&#x6216;&#x8005;&#x6240;&#x6709;&#x65B0;&#x8FDB;&#x8FDE;&#x63A5;&#x7684;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x3002;&#x5B83;&#x7684;&#x8BED;&#x6CD5;&#x5982;&#x4E0B;&#xFF1A;<br><em>SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL {READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE}</em><br>&#x4F8B;&#x5982;&#xFF1A;<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> <span class="keyword">TRANSACTION</span> <span class="keyword">ISOLATION</span> <span class="keyword">LEVEL</span> <span class="keyword">READ</span> COMMITTED;</div></pre></td></tr></table></figure></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">set</span> tx_isolation=<span class="string">&apos;read-committed&apos;</span>;</div></pre></td></tr></table></figure>
+<p><em>&#x6CE8;&#x610F;</em>&#xFF1A;&#x9ED8;&#x8BA4;&#x7684;&#x884C;&#x4E3A;&#xFF08;&#x4E0D;&#x5E26;session&#x548C;global&#xFF09;&#x662F;&#x4E3A;&#x4E0B;&#x4E00;&#x4E2A;&#xFF08;&#x672A;&#x5F00;&#x59CB;&#xFF09;&#x4E8B;&#x52A1;&#x8BBE;&#x7F6E;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x3002;&#x5982;&#x679C;&#x4F60;&#x4F7F;&#x7528;GLOBAL&#x5173;&#x952E;&#x5B57;&#xFF0C;&#x8BED;&#x53E5;&#x5728;&#x5168;&#x5C40;<br>&#x5BF9;&#x4ECE;&#x90A3;&#x70B9;&#x5F00;&#x59CB;&#x521B;&#x5EFA;&#x7684;&#x6240;&#x6709;&#x65B0;&#x8FDE;&#x63A5;&#xFF08;&#x9664;&#x4E86;&#x4E0D;&#x5B58;&#x5728;&#x7684;&#x8FDE;&#x63A5;&#xFF09;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x7EA7;&#x522B;&#x3002;&#x4F60;&#x9700;&#x8981;SUPER&#x6743;&#x9650;&#x6765;&#x505A;&#x8FD9;&#x4E2A;&#x3002;&#x4F7F;&#x7528;SESSION &#x5173;&#x952E;&#x5B57;&#x4E3A;<br>&#x5C06;&#x6765;&#x5728;&#x5F53;&#x524D;&#x8FDE;&#x63A5;&#x4E0A;&#x6267;&#x884C;&#x7684;&#x4E8B;&#x52A1;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x7EA7;&#x522B;&#x3002; &#x4EFB;&#x4F55;&#x5BA2;&#x6237;&#x7AEF;&#x90FD;&#x80FD;&#x81EA;&#x7531;&#x6539;&#x53D8;&#x4F1A;&#x8BDD;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#xFF08;&#x751A;&#x81F3;&#x5728;&#x4E8B;&#x52A1;&#x7684;&#x4E2D;&#x95F4;&#xFF09;&#xFF0C;&#x6216;&#x8005;&#x4E3A;&#x4E0B;&#x4E00;<br>&#x4E2A;&#x4E8B;&#x52A1;&#x8BBE;&#x7F6E;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x3002;</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[angularjs2d1]]></title>
+      <url>http://code.idea4j.com/2016/10/11/angularjs2d1/</url>
+      <content type="html"><![CDATA[<p>&#x5B98;&#x7F51;&#x5730;&#x5740;&#xFF1A;<a href="https://angular.io" target="_blank" rel="external">https://angular.io</a></p>
+<p>&#x521B;&#x5EFA;D1&#x4E2A;&#x5E94;&#x7528;</p>
+<p>mkdir angular-quickstart<br>cd angular-quickstart</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[创建自己maven archetype]]></title>
       <url>http://code.idea4j.com/2016/10/11/mvnarchetype/</url>
       <content type="html"><![CDATA[<p>&#x521B;&#x5EFA;&#x81EA;&#x5DF1;maven archetype</p>
