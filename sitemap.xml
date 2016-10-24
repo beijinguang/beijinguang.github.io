@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://code.idea4j.com/2016/10/21/mvnenvironmentseparate/</loc>
+    <loc>http://code.idea4j.com/2016/10/24/jvm1/</loc>
     
-    <lastmod>2016-10-21T03:28:11.818Z</lastmod>
+    <lastmod>2016-10-24T09:57:38.486Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://code.idea4j.com/2016/08/08/storedprodcedure/</loc>
     
-    <lastmod>2016-10-20T01:55:28.875Z</lastmod>
+    <lastmod>2016-10-24T08:53:13.506Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/10/21/mvnenvironmentseparate/</loc>
+    
+    <lastmod>2016-10-21T03:28:11.818Z</lastmod>
     
   </url>
   

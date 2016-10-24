@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://code.idea4j.com/"/>
-  <updated>2016-10-21T03:28:11.818Z</updated>
+  <updated>2016-10-24T09:57:38.486Z</updated>
   <id>http://code.idea4j.com/</id>
   
   <author>
@@ -14,6 +14,138 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java虚拟机性能监控与故障管理工具</title>
+    <link href="http://code.idea4j.com/2016/10/24/jvm1/"/>
+    <id>http://code.idea4j.com/2016/10/24/jvm1/</id>
+    <published>2016-10-24T08:52:59.000Z</published>
+    <updated>2016-10-24T09:57:38.486Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="jps&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x72B6;&#x51B5;&#x5DE5;&#x5177;"><a href="#jps&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x72B6;&#x51B5;&#x5DE5;&#x5177;" class="headerlink" title="jps&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x72B6;&#x51B5;&#x5DE5;&#x5177;"></a>jps&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x72B6;&#x51B5;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;JVM Process Status Tool<br>&#x7528;&#x9014;&#xFF1A;&#x5217;&#x51FA;&#x6B63;&#x5728;&#x8FD0;&#x884C;&#x7684;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#xFF0C;&#x5E76;&#x663E;&#x793A;&#x865A;&#x62DF;&#x673A;&#x6267;&#x884C;&#x4E3B;&#x7C7B;&#xFF08;Main Class&#xFF0C;main()&#x51FD;&#x6570;&#x6240;&#x5728;&#x7C7B;&#xFF09;&#x540D;&#x79F0;&#x4EE5;&#x53CA;&#x8FD9;&#x4E9B;&#x8FDB;&#x7A0B;&#x7684;&#x672C;&#x5730;<br>&#x865A;&#x62DF;&#x673A;&#x552F;&#x4E00;ID&#xFF08;Local Virtual Machine Identifier,LVMID&#xFF09;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jps [option] [hostid]</em><br>|&#x9009;&#x9879;|&#x4F5C;&#x7528;|<br>|:-:|:-|<br>|-q|&#x53EA;&#x8F93;&#x51FA;&#x7701;&#x7565;&#x4E3B;&#x7C7B;&#x7684;&#x540D;&#x79F0;|<br>|-m|&#x8F93;&#x51FA;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x542F;&#x52A8;&#x65F6;&#x4F20;&#x9012;&#x7ED9;&#x4E3B;&#x7C7B;main()&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;|<br>|-l|&#x8F93;&#x51FA;&#x4E3B;&#x7C7B;&#x7684;&#x5168;&#x540D;&#xFF0C;&#x5982;&#x679C;&#x8FDB;&#x7A0B;&#x6267;&#x884C;&#x7684;&#x662F;jar&#x5305;&#xFF0C;&#x8F93;&#x51FA;jar&#x8DEF;&#x5F84;|<br>|-v|&#x8F93;&#x51FA;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x542F;&#x52A8;&#x65F6;JVM&#x53C2;&#x6570;|</p>
+<h3 id="jstat-&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;"><a href="#jstat-&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;" class="headerlink" title="jstat:&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;"></a>jstat:&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;JVM Statistics Monitoring Tool<br>&#x7528;&#x9014;&#xFF1A;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jstat [option vmid[interval[s|ms][count]]]</em><br>&#x6817;&#x5B50;&#xFF1A;jstat -gc 2092 300 10 //&#x6BCF;300&#x6BEB;&#x79D2;&#x67E5;&#x8BE2;&#x4E00;&#x6B21;&#x8FDB;&#x7A0B;2092&#x5783;&#x573E;&#x6536;&#x96C6;&#x60C5;&#x51B5;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x9009;&#x9879;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-class</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x7C7B;&#x88C5;&#x8F7D;&#x3001;&#x5378;&#x8F7D;&#x6570;&#x91CF;&#x3001;&#x603B;&#x7A7A;&#x95F4;&#x4EE5;&#x53CA;&#x7C7B;&#x88C5;&#x8F7D;&#x6240;&#x8017;&#x8D39;&#x7684;&#x65F6;&#x95F4;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gc</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x5806;&#x72B6;&#x51B5;&#xFF0C;&#x5305;&#x62EC;Eden&#x533A;&#x3001;&#x4E24;&#x4E2A;survivor&#x533A;&#x3001;&#x8001;&#x5E74;&#x4EE3;&#x3001;&#x6C38;&#x4E45;&#x4EE3;&#x7B49;&#x7684;&#x5BB9;&#x91CF;&#x3001;&#x5DF2;&#x7528;&#x7A7A;&#x95F4;&#x3001;GC&#x65F6;&#x95F4;&#x5408;&#x8BA1;&#x7B49;&#x4FE1;&#x606F;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gccapacity</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x5185;&#x5BB9;&#x4E0E;-gc&#x57FA;&#x672C;&#x76F8;&#x540C;&#xFF0C;&#x4F46;&#x8F93;&#x51FA;&#x4E3B;&#x8981;&#x5173;&#x6CE8;java&#x5806;&#x5404;&#x4E2A;&#x533A;&#x57DF;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x6700;&#x5927;&#x3001;&#x6700;&#x5C0F;&#x7A7A;&#x95F4;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gcutil</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x5185;&#x5BB9;&#x4E0E;-gc&#x57FA;&#x672C;&#x76F8;&#x540C;&#xFF0C;&#x4F46;&#x8F93;&#x51FA;&#x4E3B;&#x8981;&#x5173;&#x6CE8;&#x5DF2;&#x4F7F;&#x7528;&#x7A7A;&#x95F4;&#x5360;&#x603B;&#x7A7A;&#x95F4;&#x7684;&#x767E;&#x5206;&#x6BD4;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gccause</td>
+<td style="text-align:left">&#x4E0E;-gcutil&#x529F;&#x80FD;&#x4E00;&#x6837;&#xFF0C;&#x4F46;&#x662F;&#x4F1A;&#x989D;&#x5916;&#x8F93;&#x51FA;&#x5BFC;&#x81F4;&#x4E0A;&#x4E00;&#x6B21;GC&#x4EA7;&#x751F;&#x7684;&#x539F;&#x56E0;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gcnew</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x65B0;&#x751F;&#x4EE3;GC&#x72B6;&#x51B5;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gcnewcapacity</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x5185;&#x5BB9;&#x4E0E;-gcnew&#x57FA;&#x672C;&#x76F8;&#x540C;&#xFF0C;&#x4F46;&#x8F93;&#x51FA;&#x4E3B;&#x8981;&#x5173;&#x6CE8;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x6700;&#x5927;&#x3001;&#x6700;&#x5C0F;&#x7A7A;&#x95F4;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gcold</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x8001;&#x5E74;&#x4EE3;GC&#x72B6;&#x51B5;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gcoldcapacity</td>
+<td style="text-align:left">&#x76D1;&#x89C6;&#x5185;&#x5BB9;&#x4E0E;-gcold&#x57FA;&#x672C;&#x76F8;&#x540C;&#xFF0C;&#x4F46;&#x8F93;&#x51FA;&#x4E3B;&#x8981;&#x5173;&#x6CE8;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x6700;&#x5927;&#x3001;&#x6700;&#x5C0F;&#x7A7A;&#x95F4;</td>
+</tr>
+<tr>
+<td style="text-align:center">-gcpermcapacity</td>
+<td style="text-align:left">&#x8F93;&#x51FA;&#x6C38;&#x4E45;&#x4EE3;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x6700;&#x5927;&#x3001;&#x6700;&#x5C0F;&#x7A7A;&#x95F4;</td>
+</tr>
+<tr>
+<td style="text-align:center">-complier</td>
+<td style="text-align:left">&#x8F93;&#x51FA;JIT&#x7F16;&#x8BD1;&#x5668;&#x7F16;&#x8BD1;&#x8FC7;&#x7684;&#x65B9;&#x6CD5;&#x3001;&#x8017;&#x65F6;&#x7B49;&#x4FE1;&#x606F;</td>
+</tr>
+<tr>
+<td style="text-align:center">-printcompilation</td>
+<td style="text-align:left">&#x8F93;&#x51FA;&#x5DF2;&#x7ECF;&#x88AB;JIT&#x7F16;&#x8BD1;&#x7684;&#x65B9;&#x6CD5;</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x5B57;&#x6BCD;</th>
+<th style="text-align:left">&#x542B;&#x4E49;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">E</td>
+<td style="text-align:left">Eden&#x65B0;&#x751F;&#x4EE3;</td>
+</tr>
+<tr>
+<td style="text-align:center">S0</td>
+<td style="text-align:left">Survivor0</td>
+</tr>
+<tr>
+<td style="text-align:center">S1</td>
+<td style="text-align:left">Survivor1</td>
+</tr>
+<tr>
+<td style="text-align:center">O</td>
+<td style="text-align:left">Old&#x8001;&#x5E74;&#x4EE3;</td>
+</tr>
+<tr>
+<td style="text-align:center">P</td>
+<td style="text-align:left">Permanent&#x6C38;&#x4E45;&#x4EE3;</td>
+</tr>
+<tr>
+<td style="text-align:center">YGC</td>
+<td style="text-align:left">Young GC</td>
+</tr>
+<tr>
+<td style="text-align:center">FGC</td>
+<td style="text-align:left">Full GC</td>
+</tr>
+<tr>
+<td style="text-align:center">YGCT</td>
+<td style="text-align:left">Young GC Time</td>
+</tr>
+<tr>
+<td style="text-align:center">FGCT</td>
+<td style="text-align:left">Full GC Time</td>
+</tr>
+<tr>
+<td style="text-align:center">GCT</td>
+<td style="text-align:left">GC Time</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      jps，jstat
+    
+    </summary>
+    
+      <category term="jvm" scheme="http://code.idea4j.com/categories/jvm/"/>
+    
+    
+      <category term="jvm" scheme="http://code.idea4j.com/tags/jvm/"/>
+    
+  </entry>
   
   <entry>
     <title>Maven 打包实现环境配置分离</title>
@@ -695,44 +827,6 @@
     <summary type="html">
     
       &lt;p&gt;util &amp;#x662F;&amp;#x4E00;&amp;#x4E2A;Node.js &amp;#x6838;&amp;#x5FC3;&amp;#x6A21;&amp;#x5757;&amp;#xFF0C;&amp;#x63D0;&amp;#x4F9B;&amp;#x5E38;&amp;#x7528;&amp;#x51FD;&amp;#x6570;&amp;#x7684;&amp;#x96C6;&amp;#x5408;&amp;#xFF0C;&amp;#x7528;&amp;#x4E8E;&amp;#x5F25;&amp;#x8865;&amp;#x6838;&amp;#x5FC3;JavaScript &amp;#x7684;&amp;#x529F;&amp;#x80FD; &amp;#x8FC7;&amp;#x4E8E;&amp;#x7CBE;&amp;#x7B80;&amp;#x7684;&amp;#x4E0D;&amp;#x8DB3;&amp;#x3002;&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="node" scheme="http://code.idea4j.com/categories/node/"/>
-    
-    
-      <category term="node" scheme="http://code.idea4j.com/tags/node/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Node.js 全局对象</title>
-    <link href="http://code.idea4j.com/2016/08/19/node10/"/>
-    <id>http://code.idea4j.com/2016/08/19/node10/</id>
-    <published>2016-08-19T02:27:33.000Z</published>
-    <updated>2016-10-08T03:14:11.239Z</updated>
-    
-    <content type="html"><![CDATA[<p>JavaScript &#x4E2D;&#x6709;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x79F0;&#x4E3A;&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#xFF08;Global Object&#xFF09;&#xFF0C;&#x5B83;&#x53CA;&#x5176;&#x6240;&#x6709;&#x5C5E;&#x6027;&#x90FD;&#x53EF;&#x4EE5;&#x5728;&#x7A0B;&#x5E8F;&#x7684;&#x4EFB;&#x4F55;&#x5730;&#x65B9;&#x8BBF;&#x95EE;&#xFF0C;&#x5373;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x3002;<br>&#x5728;&#x6D4F;&#x89C8;&#x5668; JavaScript &#x4E2D;&#xFF0C;&#x901A;&#x5E38; window &#x662F;&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#xFF0C; &#x800C; Node.js &#x4E2D;&#x7684;&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#x662F; global&#xFF0C;&#x6240;&#x6709;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#xFF08;&#x9664;&#x4E86; global &#x672C;&#x8EAB;&#x4EE5;<br>&#x5916;&#xFF09;&#x90FD;&#x662F; global &#x5BF9;&#x8C61;&#x7684;&#x5C5E;&#x6027;&#x3002;&#x5728; Node.js &#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x8BBF;&#x95EE;&#x5230; global &#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x800C;&#x4E0D;&#x9700;&#x8981;&#x5728;&#x5E94;&#x7528;&#x4E2D;&#x5305;&#x542B;&#x5B83;&#x3002;<br><a id="more"></a></p>
-<h3 id="&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#x4E0E;&#x5168;&#x5C40;&#x53D8;&#x91CF;"><a href="#&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#x4E0E;&#x5168;&#x5C40;&#x53D8;&#x91CF;" class="headerlink" title="&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#x4E0E;&#x5168;&#x5C40;&#x53D8;&#x91CF;"></a>&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#x4E0E;&#x5168;&#x5C40;&#x53D8;&#x91CF;</h3><p>global &#x6700;&#x6839;&#x672C;&#x7684;&#x4F5C;&#x7528;&#x662F;&#x4F5C;&#x4E3A;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x7684;&#x5BBF;&#x4E3B;&#x3002;&#x6309;&#x7167; ECMAScript &#x7684;&#x5B9A;&#x4E49;&#xFF0C;&#x6EE1;&#x8DB3;&#x4EE5;&#x4E0B;&#x6761; &#x4EF6;&#x7684;&#x53D8;&#x91CF;&#x662F;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#xFF1A;</p>
-<ul>
-<li>&#x5728;&#x6700;&#x5916;&#x5C42;&#x5B9A;&#x4E49;&#x7684;&#x53D8;&#x91CF;&#xFF1B;</li>
-<li>&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#x7684;&#x5C5E;&#x6027;&#xFF1B;</li>
-<li>&#x9690;&#x5F0F;&#x5B9A;&#x4E49;&#x7684;&#x53D8;&#x91CF;&#xFF08;&#x672A;&#x5B9A;&#x4E49;&#x76F4;&#x63A5;&#x8D4B;&#x503C;&#x7684;&#x53D8;&#x91CF;&#xFF09;&#x3002;<br>&#x5F53;&#x4F60;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x65F6;&#xFF0C;&#x8FD9;&#x4E2A;&#x53D8;&#x91CF;&#x540C;&#x65F6;&#x4E5F;&#x4F1A;&#x6210;&#x4E3A;&#x5168;&#x5C40;&#x5BF9;&#x8C61;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x53CD;&#x4E4B;&#x4EA6;&#x7136;&#x3002;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x5728; Node.js &#x4E2D;&#x4F60;&#x4E0D;&#x53EF;&#x80FD;&#x5728;&#x6700;&#x5916;&#x5C42;&#x5B9A;<br>&#x4E49;&#x53D8;&#x91CF;&#xFF0C;&#x56E0;&#x4E3A;&#x6240;&#x6709;&#x7528;&#x6237;&#x4EE3;&#x7801;&#x90FD;&#x662F;&#x5C5E;&#x4E8E;&#x5F53;&#x524D;&#x6A21;&#x5757;&#x7684;&#xFF0C; &#x800C;&#x6A21;&#x5757;&#x672C;&#x8EAB;&#x4E0D;&#x662F;&#x6700;&#x5916;&#x5C42;&#x4E0A;&#x4E0B;&#x6587;&#x3002;<br><em>&#x6CE8;&#x610F;&#xFF1A; &#x6C38;&#x8FDC;&#x4F7F;&#x7528; var &#x5B9A;&#x4E49;&#x53D8;&#x91CF;&#x4EE5;&#x907F;&#x514D;&#x5F15;&#x5165;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#xFF0C;&#x56E0;&#x4E3A;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x4F1A;&#x6C61;&#x67D3; &#x547D;&#x540D;&#x7A7A;&#x95F4;&#xFF0C;&#x63D0;&#x9AD8;&#x4EE3;&#x7801;&#x7684;&#x8026;&#x5408;&#x98CE;&#x9669;&#x3002;</em></li>
-</ul>
-<h4 id="filename"><a href="#filename" class="headerlink" title="__filename"></a>__filename</h4><p>__filename &#x8868;&#x793A;&#x5F53;&#x524D;&#x6B63;&#x5728;&#x6267;&#x884C;&#x7684;&#x811A;&#x672C;&#x7684;&#x6587;&#x4EF6;&#x540D;&#x3002;&#x5B83;&#x5C06;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x6240;&#x5728;&#x4F4D;&#x7F6E;&#x7684;&#x7EDD;&#x5BF9;&#x8DEF;&#x5F84;&#xFF0C;&#x4E14;&#x548C;&#x547D;&#x4EE4;&#x884C;&#x53C2;&#x6570;&#x6240;&#x6307;&#x5B9A;&#x7684;&#x6587;&#x4EF6;&#x540D;&#x4E0D;&#x4E00;&#x5B9A;&#x76F8;&#x540C;&#x3002;<br>&#x5982;&#x679C;&#x5728;&#x6A21;&#x5757;&#x4E2D;&#xFF0C;&#x8FD4;&#x56DE;&#x7684;&#x503C;&#x662F;&#x6A21;&#x5757;&#x6587;&#x4EF6;&#x7684;&#x8DEF;&#x5F84;&#x3002;</p>
-<h4 id="&#x5B9E;&#x4F8B;"><a href="#&#x5B9E;&#x4F8B;" class="headerlink" title="&#x5B9E;&#x4F8B;"></a>&#x5B9E;&#x4F8B;</h4><p>&#x521B;&#x5EFA;&#x6587;&#x4EF6; filename.js &#xFF0C;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(__filename);<span class="comment">// &#x6253;&#x5370;&#x51FA;&#x5168;&#x8DEF;&#x5F84;&#x6587;&#x4EF6;&#x540D;</span></div></pre></td></tr></table></figure></p>
-<h4 id="dirname"><a href="#dirname" class="headerlink" title="__dirname"></a>__dirname</h4><p>__dirname &#x8868;&#x793A;&#x5F53;&#x524D;&#x6267;&#x884C;&#x811A;&#x672C;&#x6240;&#x5728;&#x7684;&#x76EE;&#x5F55;&#x3002;</p>
-<h4 id="setTimeout-cb-ms"><a href="#setTimeout-cb-ms" class="headerlink" title="setTimeout(cb, ms)"></a>setTimeout(cb, ms)</h4><p>setTimeout(cb, ms) &#x5168;&#x5C40;&#x51FD;&#x6570;&#x5728;&#x6307;&#x5B9A;&#x7684;&#x6BEB;&#x79D2;(ms)&#x6570;&#x540E;&#x6267;&#x884C;&#x6307;&#x5B9A;&#x51FD;&#x6570;(cb)&#x3002;&#xFF1A;setTimeout() &#x53EA;&#x6267;&#x884C;&#x4E00;&#x6B21;&#x6307;&#x5B9A;&#x51FD;&#x6570;&#x3002;<br>&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x4EE3;&#x8868;&#x5B9A;&#x65F6;&#x5668;&#x7684;&#x53E5;&#x67C4;&#x503C;&#x3002;</p>
-<h4 id="&#x5B9E;&#x4F8B;-1"><a href="#&#x5B9E;&#x4F8B;-1" class="headerlink" title="&#x5B9E;&#x4F8B;"></a>&#x5B9E;&#x4F8B;</h4><p>&#x521B;&#x5EFA;&#x6587;&#x4EF6; settimeout.js &#xFF0C;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bomb</span>(<span class="params"></span>)</span>{</div><div class="line">   <span class="built_in">console</span>.log( <span class="string">&quot;bomb&quot;</span>);</div><div class="line">}</div><div class="line"><span class="comment">// &#x4E24;&#x79D2;&#x540E;&#x6267;&#x884C;&#x4EE5;&#x4E0A;&#x51FD;&#x6570;</span></div><div class="line">setTimeout(bomb, <span class="number">2000</span>);</div></pre></td></tr></table></figure></p>
-<h4 id="clearTimeout-t"><a href="#clearTimeout-t" class="headerlink" title="clearTimeout(t)"></a>clearTimeout(t)</h4><p>clearTimeout( t ) &#x5168;&#x5C40;&#x51FD;&#x6570;&#x7528;&#x4E8E;&#x505C;&#x6B62;&#x4E00;&#x4E2A;&#x4E4B;&#x524D;&#x901A;&#x8FC7; setTimeout() &#x521B;&#x5EFA;&#x7684;&#x5B9A;&#x65F6;&#x5668;&#x3002; &#x53C2;&#x6570; t &#x662F;&#x901A;&#x8FC7; setTimeout() &#x51FD;&#x6570;&#x521B;&#x5EFA;&#x7684;&#x8BA1;&#x7B97;&#x5668;&#x3002;</p>
-<h4 id="&#x5B9E;&#x4F8B;-2"><a href="#&#x5B9E;&#x4F8B;-2" class="headerlink" title="&#x5B9E;&#x4F8B;"></a>&#x5B9E;&#x4F8B;</h4><p>&#x521B;&#x5EFA;&#x6587;&#x4EF6; cleartimeout.js &#xFF0C;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bomb</span>(<span class="params"></span>)</span>{</div><div class="line">   <span class="built_in">console</span>.log( <span class="string">&quot;bomb!&quot;</span>);</div><div class="line">}</div><div class="line"><span class="comment">// &#x4E24;&#x79D2;&#x540E;&#x6267;&#x884C;&#x4EE5;&#x4E0A;&#x51FD;&#x6570;</span></div><div class="line"><span class="keyword">var</span> t = setTimeout(bomb, <span class="number">2000</span>);</div><div class="line"></div><div class="line"><span class="comment">// &#x6E05;&#x9664;&#x5B9A;&#x65F6;&#x5668;</span></div><div class="line">clearTimeout(t);</div></pre></td></tr></table></figure></p>
-<h4 id="setInterval-cb-ms"><a href="#setInterval-cb-ms" class="headerlink" title="setInterval(cb, ms)"></a>setInterval(cb, ms)</h4><p>setInterval(cb, ms) &#x5168;&#x5C40;&#x51FD;&#x6570;&#x5728;&#x6307;&#x5B9A;&#x7684;&#x6BEB;&#x79D2;(ms)&#x6570;&#x540E;&#x6267;&#x884C;&#x6307;&#x5B9A;&#x51FD;&#x6570;(cb)&#x3002;<br>&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x4EE3;&#x8868;&#x5B9A;&#x65F6;&#x5668;&#x7684;&#x53E5;&#x67C4;&#x503C;&#x3002;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; clearInterval(t) &#x51FD;&#x6570;&#x6765;&#x6E05;&#x9664;&#x5B9A;&#x65F6;&#x5668;&#x3002;<br>setInterval() &#x65B9;&#x6CD5;&#x4F1A;&#x4E0D;&#x505C;&#x5730;&#x8C03;&#x7528;&#x51FD;&#x6570;&#xFF0C;&#x76F4;&#x5230; clearInterval() &#x88AB;&#x8C03;&#x7528;&#x6216;&#x7A97;&#x53E3;&#x88AB;&#x5173;&#x95ED;&#x3002;</p>
-<h4 id="&#x5B9E;&#x4F8B;-3"><a href="#&#x5B9E;&#x4F8B;-3" class="headerlink" title="&#x5B9E;&#x4F8B;"></a>&#x5B9E;&#x4F8B;</h4><p>&#x521B;&#x5EFA;&#x6587;&#x4EF6; setinterval.js &#xFF0C;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bomb</span>(<span class="params"></span>)</span>{</div><div class="line">   <span class="built_in">console</span>.log( <span class="string">&quot;bomb&quot;</span>);</div><div class="line">}</div><div class="line"><span class="comment">// &#x4E24;&#x79D2;&#x540E;&#x6267;&#x884C;&#x4EE5;&#x4E0A;&#x51FD;&#x6570;</span></div><div class="line">setInterval(bomb, <span class="number">2000</span>);</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;JavaScript &amp;#x4E2D;&amp;#x6709;&amp;#x4E00;&amp;#x4E2A;&amp;#x7279;&amp;#x6B8A;&amp;#x7684;&amp;#x5BF9;&amp;#x8C61;&amp;#xFF0C;&amp;#x79F0;&amp;#x4E3A;&amp;#x5168;&amp;#x5C40;&amp;#x5BF9;&amp;#x8C61;&amp;#xFF08;Global Object&amp;#xFF09;&amp;#xFF0C;&amp;#x5B83;&amp;#x53CA;&amp;#x5176;&amp;#x6240;&amp;#x6709;&amp;#x5C5E;&amp;#x6027;&amp;#x90FD;&amp;#x53EF;&amp;#x4EE5;&amp;#x5728;&amp;#x7A0B;&amp;#x5E8F;&amp;#x7684;&amp;#x4EFB;&amp;#x4F55;&amp;#x5730;&amp;#x65B9;&amp;#x8BBF;&amp;#x95EE;&amp;#xFF0C;&amp;#x5373;&amp;#x5168;&amp;#x5C40;&amp;#x53D8;&amp;#x91CF;&amp;#x3002;&lt;br&gt;&amp;#x5728;&amp;#x6D4F;&amp;#x89C8;&amp;#x5668; JavaScript &amp;#x4E2D;&amp;#xFF0C;&amp;#x901A;&amp;#x5E38; window &amp;#x662F;&amp;#x5168;&amp;#x5C40;&amp;#x5BF9;&amp;#x8C61;&amp;#xFF0C; &amp;#x800C; Node.js &amp;#x4E2D;&amp;#x7684;&amp;#x5168;&amp;#x5C40;&amp;#x5BF9;&amp;#x8C61;&amp;#x662F; global&amp;#xFF0C;&amp;#x6240;&amp;#x6709;&amp;#x5168;&amp;#x5C40;&amp;#x53D8;&amp;#x91CF;&amp;#xFF08;&amp;#x9664;&amp;#x4E86; global &amp;#x672C;&amp;#x8EAB;&amp;#x4EE5;&lt;br&gt;&amp;#x5916;&amp;#xFF09;&amp;#x90FD;&amp;#x662F; global &amp;#x5BF9;&amp;#x8C61;&amp;#x7684;&amp;#x5C5E;&amp;#x6027;&amp;#x3002;&amp;#x5728; Node.js &amp;#x6211;&amp;#x4EEC;&amp;#x53EF;&amp;#x4EE5;&amp;#x76F4;&amp;#x63A5;&amp;#x8BBF;&amp;#x95EE;&amp;#x5230; global &amp;#x7684;&amp;#x5C5E;&amp;#x6027;&amp;#xFF0C;&amp;#x800C;&amp;#x4E0D;&amp;#x9700;&amp;#x8981;&amp;#x5728;&amp;#x5E94;&amp;#x7528;&amp;#x4E2D;&amp;#x5305;&amp;#x542B;&amp;#x5B83;&amp;#x3002;&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
