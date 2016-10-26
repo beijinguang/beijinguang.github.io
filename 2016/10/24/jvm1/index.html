@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://code.idea4j.com/2016/10/24/jvm1/index.html">
 <meta property="og:site_name" content="码客Mark">
 <meta property="og:description" content="jps，jstat">
-<meta property="og:updated_time" content="2016-10-24T10:02:37.560Z">
+<meta property="og:updated_time" content="2016-10-25T07:44:30.628Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java虚拟机性能监控与故障管理工具">
 <meta name="twitter:description" content="jps，jstat">
@@ -145,13 +145,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>菜单</li>
-                        <li>标签</li>
+                        <li>Menu</li>
+                        <li>Tags</li>
                         
-                        <li>友情链接</li>
+                        <li>Friends</li>
                         
                         
-                        <li>关于我</li>
+                        <li>About Me</li>
                         
                     </ul>
                 </div>
@@ -263,7 +263,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap"><article id="post-jvm1" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -336,7 +336,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="jstat-&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;"><a href="#jstat-&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;" class="headerlink" title="jstat:&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;"></a>jstat:&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;JVM Statistics Monitoring Tool<br>&#x7528;&#x9014;&#xFF1A;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jstat [option vmid[interval[s|ms][count]]]</em><br>&#x6817;&#x5B50;&#xFF1A;jstat -gc 2092 300 10 //&#x6BCF;300&#x6BEB;&#x79D2;&#x67E5;&#x8BE2;&#x4E00;&#x6B21;&#x8FDB;&#x7A0B;2092&#x5783;&#x573E;&#x6536;&#x96C6;&#x60C5;&#x51B5;</p>
+<h3 id="jstat-&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;"><a href="#jstat-&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;" class="headerlink" title="jstat:&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;"></a>jstat:&#x865A;&#x62DF;&#x673A;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#x76D1;&#x89C6;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;JVM Statistics Monitoring Tool<br>&#x7528;&#x9014;&#xFF1A;&#x76D1;&#x89C6;&#x865A;&#x62DF;&#x673A;&#x5404;&#x79CD;&#x8FD0;&#x884C;&#x72B6;&#x6001;&#x4FE1;&#x606F;&#xFF08;&#x663E;&#x793A;&#x672C;&#x5730;&#x6216;&#x8FDC;&#x7A0B;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x4E2D;&#x7684;&#x7C7B;&#x52A0;&#x8F7D;&#x3001;&#x5185;&#x5B58;&#x3001;&#x5783;&#x573E;&#x6536;&#x96C6;&#x3001;JIT&#x7F16;&#x8BD1;&#x7B49;&#x8FD0;&#x884C;&#x6570;&#x636E;&#xFF09;&#x3002;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jstat [option vmid[interval[s|ms][count]]]</em><br>&#x6817;&#x5B50;&#xFF1A;jstat -gc 2092 300 10 //&#x6BCF;300&#x6BEB;&#x79D2;&#x67E5;&#x8BE2;&#x4E00;&#x6B21;&#x8FDB;&#x7A0B;2092&#x5783;&#x573E;&#x6536;&#x96C6;&#x60C5;&#x51B5;</p>
 <table>
 <thead>
 <tr>
@@ -395,6 +395,7 @@
 </tr>
 </tbody>
 </table>
+<p>&#x6267;&#x884C;&#x7ED3;&#x679C;&#x8868;&#x5934;&#x542B;&#x4E49;</p>
 <table>
 <thead>
 <tr>
@@ -445,6 +446,68 @@
 </tr>
 </tbody>
 </table>
+<h3 id="jinfo&#xFF1A;java&#x914D;&#x7F6E;&#x4FE1;&#x606F;&#x5DE5;&#x5177;"><a href="#jinfo&#xFF1A;java&#x914D;&#x7F6E;&#x4FE1;&#x606F;&#x5DE5;&#x5177;" class="headerlink" title="jinfo&#xFF1A;java&#x914D;&#x7F6E;&#x4FE1;&#x606F;&#x5DE5;&#x5177;"></a>jinfo&#xFF1A;java&#x914D;&#x7F6E;&#x4FE1;&#x606F;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;Configuration Info for java<br>&#x7528;&#x9014;&#xFF1A;&#x5B9E;&#x65F6;&#x5730;&#x67E5;&#x770B;&#x548C;&#x8C03;&#x6574;&#x865A;&#x62DF;&#x673A;&#x5404;&#x9879;&#x53C2;&#x6570;&#x3002;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jinfo [option] pid</em></p>
+<h3 id="jmap-java&#x5185;&#x5B58;&#x6620;&#x50CF;&#x5DE5;&#x5177;"><a href="#jmap-java&#x5185;&#x5B58;&#x6620;&#x50CF;&#x5DE5;&#x5177;" class="headerlink" title="jmap:java&#x5185;&#x5B58;&#x6620;&#x50CF;&#x5DE5;&#x5177;"></a>jmap:java&#x5185;&#x5B58;&#x6620;&#x50CF;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;Memory Map for Java<br>&#x7528;&#x9014;&#xFF1A;&#x751F;&#x6210;&#x5806;&#x8F6C;&#x50A8;&#x5FEB;&#x7167;&#xFF08;heapdump&#x6216;dump&#x6587;&#x4EF6;&#xFF09;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jmap [option] vmid</em></p>
+<p>jmap&#x5DE5;&#x5177;&#x4E3B;&#x8981;&#x9009;&#x9879;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x9009;&#x9879;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-dump</td>
+<td style="text-align:left">&#x751F;&#x6210;Java&#x5806;&#x8F6C;&#x50A8;&#x5FEB;&#x7167;&#x3002;&#x683C;&#x5F0F;&#x4E3A;&#xFF1A;-dump:[live,] fomat=b,file=<filename>,&#x5176;&#x4E2D;live&#x5B50;&#x53C2;&#x6570;&#x8BF4;&#x660E;&#x662F;&#x5426;&#x53EA;dump&#x51FA;&#x5B58;&#x6D3B;&#x7684;&#x5BF9;&#x8C61;</filename></td>
+</tr>
+<tr>
+<td style="text-align:center">-finalizerinfo</td>
+<td style="text-align:left">&#x663E;&#x793A;&#x5B50;F-Queue&#x4E2D;&#x7B49;&#x5F85;Finalizer&#x7EBF;&#x7A0B;&#x6267;&#x884C;finalize&#x65B9;&#x6CD5;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x53EA;&#x5728;Linux/Solaris&#x5E73;&#x53F0;&#x4E0B;&#x6709;&#x6548;</td>
+</tr>
+<tr>
+<td style="text-align:center">-heap</td>
+<td style="text-align:left">&#x663E;&#x793A;javja&#x5806;&#x8BE6;&#x7EC6;&#x4FE1;&#x606F;&#xFF0C;&#x5982;&#x4F7F;&#x7528;&#x54EA;&#x79CD;&#x56DE;&#x6536;&#x5668;&#xFF0C;&#x53C2;&#x8003;&#x914D;&#x7F6E;&#xFF0C;&#x5206;&#x4EE3;&#x72B6;&#x51B5;&#x7B49;&#xFF0C;&#x53EA;&#x5728;Linux/Solaris&#x5E73;&#x53F0;&#x4E0B;&#x6709;&#x6548;</td>
+</tr>
+<tr>
+<td style="text-align:center">-histo</td>
+<td style="text-align:left">&#x663E;&#x793A;&#x5806;&#x4E2D;&#x5BF9;&#x8C61;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#xFF0C;&#x5305;&#x62EC;&#x7C7B;&#x3001;&#x5B9E;&#x4F8B;&#x6570;&#x91CF;&#x3001;&#x5408;&#x8BA1;&#x5BB9;&#x91CF;</td>
+</tr>
+<tr>
+<td style="text-align:center">-permstat</td>
+<td style="text-align:left">&#x4EE5;ClassLoader&#x4E3A;&#x7EDF;&#x8BA1;&#x53E3;&#x5F84;&#x663E;&#x793A;&#x6C38;&#x4E45;&#x4EE3;&#x5185;&#x5B58;&#x72B6;&#x6001;&#xFF0C;&#x53EA;&#x5728;Linux/Solaris&#x5E73;&#x53F0;&#x4E0B;&#x6709;&#x6548;</td>
+</tr>
+<tr>
+<td style="text-align:center">-F</td>
+<td style="text-align:left">&#x5F53;&#x865A;&#x62DF;&#x673A;&#x8FDB;&#x7A0B;&#x5BF9;-dump&#x9009;&#x9879;&#x6CA1;&#x6709;&#x54CD;&#x5E94;&#x65F6;&#xFF0C;&#x53EF;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;&#x9009;&#x9879;&#x5F3A;&#x5236;&#x751F;&#x6210;dump&#x5FEB;&#x7167;&#xFF0C;&#x53EA;&#x5728;Linux/Solaris&#x5E73;&#x53F0;&#x4E0B;&#x6709;&#x6548;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jhat&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x5806;&#x8F6C;&#x50A8;&#x5FEB;&#x7167;&#x5206;&#x6790;&#x5DE5;&#x5177;"><a href="#jhat&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x5806;&#x8F6C;&#x50A8;&#x5FEB;&#x7167;&#x5206;&#x6790;&#x5DE5;&#x5177;" class="headerlink" title="jhat&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x5806;&#x8F6C;&#x50A8;&#x5FEB;&#x7167;&#x5206;&#x6790;&#x5DE5;&#x5177;"></a>jhat&#xFF1A;&#x865A;&#x62DF;&#x673A;&#x5806;&#x8F6C;&#x50A8;&#x5FEB;&#x7167;&#x5206;&#x6790;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;JVM Heap Analysis Tool<br>&#x7528;&#x9014;&#xFF1A;&#x5206;&#x6790;jmap&#x751F;&#x6210;&#x7684;&#x5FEB;&#x7167;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jhat filename</em></p>
+<h3 id="jstack&#xFF1A;java&#x5806;&#x6808;&#x8DDF;&#x8E2A;&#x5DE5;&#x5177;"><a href="#jstack&#xFF1A;java&#x5806;&#x6808;&#x8DDF;&#x8E2A;&#x5DE5;&#x5177;" class="headerlink" title="jstack&#xFF1A;java&#x5806;&#x6808;&#x8DDF;&#x8E2A;&#x5DE5;&#x5177;"></a>jstack&#xFF1A;java&#x5806;&#x6808;&#x8DDF;&#x8E2A;&#x5DE5;&#x5177;</h3><p>&#x5168;&#x79F0;&#xFF1A;Stack Trace for Java<br>&#x7528;&#x9014;&#xFF1A;&#x7528;&#x4E8E;&#x751F;&#x6210;&#x865A;&#x62DF;&#x673A;&#x5F53;&#x524D;&#x65F6;&#x523B;&#x7684;&#x7EBF;&#x7A0B;&#x5FEB;&#x7167;&#x3002;<br>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<em>jstack [option] vmid</em></p>
+<p>jstack&#x5DE5;&#x5177;&#x4E3B;&#x8981;&#x9009;&#x9879;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x9009;&#x9879;</th>
+<th style="text-align:left">&#x4F5C;&#x7528;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">-F</td>
+<td style="text-align:left">&#x5F53;&#x6B63;&#x5E38;&#x8F93;&#x51FA;&#x7684;&#x8BF7;&#x6C42;&#x4E0D;&#x88AB;&#x54CD;&#x5E94;&#x662F;&#xFF0C;&#x5F3A;&#x5236;&#x8F93;&#x51FA;&#x7EBF;&#x7A0B;&#x5806;&#x6808;</td>
+</tr>
+<tr>
+<td style="text-align:center">-l</td>
+<td style="text-align:left">&#x9664;&#x5806;&#x6808;&#x5916;&#xFF0C;&#x663E;&#x793A;&#x5173;&#x4E8E;&#x9501;&#x7684;&#x9644;&#x52A0;&#x4FE1;&#x606F;</td>
+</tr>
+<tr>
+<td style="text-align:center">-m</td>
+<td style="text-align:left">&#x5982;&#x679C;&#x8C03;&#x7528;&#x5230;&#x672C;&#x5730;&#x65B9;&#x6CD5;&#x7684;&#x8BDD;&#xFF0C;&#x53EF;&#x4EE5;&#x663E;&#x793A;c/c++&#x7684;&#x5806;&#x6808;</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -453,17 +516,17 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/10/24/jvm1/">java虚拟机性能监控与故障管理工具</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
-        <p><span>发布时间:</span>2016-10-24, 16:52:59</p>
-        <p><span>最后更新:</span>2016-10-24, 18:02:37</p>
+        <p><span>Title:</span><a href="/2016/10/24/jvm1/">java虚拟机性能监控与故障管理工具</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">markee</a></p>
+        <p><span>Created:</span>2016-10-24, 16:52:59</p>
+        <p><span>Updated:</span>2016-10-25, 15:44:30</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/10/24/jvm1/" title="java虚拟机性能监控与故障管理工具">http://code.idea4j.com/2016/10/24/jvm1/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://code.idea4j.com/2016/10/24/jvm1/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2016/10/24/jvm1/" title="java虚拟机性能监控与故障管理工具">http://code.idea4j.com/2016/10/24/jvm1/</a>
+            <span class="copy-path" data-clipboard-text="From http://code.idea4j.com/2016/10/24/jvm1/　　By markee" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
         </p>
     </div>
 
@@ -484,9 +547,9 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
+        <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#jps：虚拟机进程状况工具"><span class="toc-number">1.</span> <span class="toc-text">jps：虚拟机进程状况工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstat-虚拟机统计信息监视工具"><span class="toc-number">2.</span> <span class="toc-text">jstat:虚拟机统计信息监视工具</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#jps：虚拟机进程状况工具"><span class="toc-number">1.</span> <span class="toc-text">jps：虚拟机进程状况工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstat-虚拟机统计信息监视工具"><span class="toc-number">2.</span> <span class="toc-text">jstat:虚拟机统计信息监视工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jinfo：java配置信息工具"><span class="toc-number">3.</span> <span class="toc-text">jinfo：java配置信息工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmap-java内存映像工具"><span class="toc-number">4.</span> <span class="toc-text">jmap:java内存映像工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jhat：虚拟机堆转储快照分析工具"><span class="toc-number">5.</span> <span class="toc-text">jhat：虚拟机堆转储快照分析工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstack：java堆栈跟踪工具"><span class="toc-number">6.</span> <span class="toc-text">jstack：java堆栈跟踪工具</span></a></li></ol>
         
     </div>
     <style>
@@ -500,10 +563,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
 
     <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
     </script>
 
 
@@ -561,13 +624,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/10/21/mvnenvironmentseparate/" title="下一篇: Maven 打包实现环境配置分离">
+            <a href="/2016/10/21/mvnenvironmentseparate/" title="Next: Maven 打包实现环境配置分离">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -590,14 +653,14 @@
                 2016 markee
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -606,7 +669,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -639,9 +702,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
