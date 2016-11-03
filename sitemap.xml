@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://code.idea4j.com/2016/10/13/mysqlTransaction/</loc>
+    
+    <lastmod>2016-11-03T03:36:44.455Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://code.idea4j.com/2016/11/02/servlet3/</loc>
     
-    <lastmod>2016-11-02T09:56:26.786Z</lastmod>
+    <lastmod>2016-11-02T10:00:14.304Z</lastmod>
     
   </url>
   
@@ -61,13 +68,6 @@
     <loc>http://code.idea4j.com/2016/10/17/shenzhou/</loc>
     
     <lastmod>2016-10-17T02:23:43.577Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://code.idea4j.com/2016/10/13/mysqlTransaction/</loc>
-    
-    <lastmod>2016-10-13T10:01:27.640Z</lastmod>
     
   </url>
   

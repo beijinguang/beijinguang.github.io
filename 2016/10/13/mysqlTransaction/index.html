@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://code.idea4j.com/2016/10/13/mysqlTransaction/index.html">
 <meta property="og:site_name" content="码客Mark">
 <meta property="og:description" content="事务隔离级别">
-<meta property="og:updated_time" content="2016-10-13T10:01:27.640Z">
+<meta property="og:updated_time" content="2016-11-03T03:36:44.455Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="更改MySQL的默认事务隔离级别">
 <meta name="twitter:description" content="事务隔离级别">
@@ -145,13 +145,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>Menu</li>
-                        <li>Tags</li>
+                        <li>菜单</li>
+                        <li>标签</li>
                         
-                        <li>Friends</li>
+                        <li>友情链接</li>
                         
                         
-                        <li>About Me</li>
+                        <li>关于我</li>
                         
                     </ul>
                 </div>
@@ -263,7 +263,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
       <div class="body-wrap"><article id="post-mysqlTransaction" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -338,7 +338,7 @@
 <td style="text-align:left">O</td>
 </tr>
 <tr>
-<td style="text-align:left">&#x53EF;&#x4E32;&#x884C;&#x5316;</td>
+<td style="text-align:left">&#x53EF;&#x4E32;&#x884C;&#x5316; Serializable</td>
 <td style="text-align:left">X</td>
 <td style="text-align:left">X</td>
 <td style="text-align:left">X</td>
@@ -346,6 +346,10 @@
 </tbody>
 </table>
 <p>&#x5927;&#x591A;&#x6570;&#x7684;&#x6570;&#x636E;&#x5E93;&#x7CFB;&#x7EDF;&#x7684;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x90FD;&#x662F;&#xFF1A;Read committed<br>&#x800C;MySQL&#x7684;&#x9ED8;&#x8BA4;&#x4E8B;&#x52A1;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x662F;&#xFF1A;Repeatable Read</p>
+<h3 id="READ-UNCOMMITTED-&#x672A;&#x63D0;&#x4EA4;&#x8BFB;"><a href="#READ-UNCOMMITTED-&#x672A;&#x63D0;&#x4EA4;&#x8BFB;" class="headerlink" title="READ UNCOMMITTED(&#x672A;&#x63D0;&#x4EA4;&#x8BFB;)"></a>READ UNCOMMITTED(&#x672A;&#x63D0;&#x4EA4;&#x8BFB;)</h3><p>&#x8FD9;&#x4E2A;&#x7EA7;&#x522B;&#x4E8B;&#x52A1;&#x4E2D;&#x7684;&#x4FEE;&#x6539;&#xFF0C;&#x5373;&#x4F7F;&#x6CA1;&#x6709;&#x63D0;&#x4EA4;&#xFF0C;&#x5BF9;&#x5176;&#x4ED6;&#x4E8B;&#x52A1;&#x4E5F;&#x90FD;&#x662F;&#x53EF;&#x89C1;&#x7684;&#xFF0C;&#x4E8B;&#x52A1;&#x53EF;&#x4EE5;&#x8BFB;&#x53D6;&#x672A;&#x63D0;&#x4EA4;&#x7684;&#x6570;&#x636E;&#xFF0C;<br>&#x8FD9;&#x4E5F;&#x88AB;&#x79F0;&#x4E3A;<strong>&#x810F;&#x8BFB;</strong>,&#x8FD9;&#x4E2A;&#x7EA7;&#x522B;&#x4F1A;&#x5BFC;&#x81F4;&#x8BB8;&#x591A;&#x95EE;&#x9898;&#xFF0C;&#x4ECE;&#x6027;&#x80FD;&#x4E0A;&#x6765;&#x8BF4;&#xFF0C;READ UNCOMMITTED &#x7EA7;&#x522B;&#x4E0D;&#x4F1A;&#x6BD4;&#x5176;&#x4ED6;&#x7EA7;&#x522B;&#x597D;&#x592A;&#x591A;&#xFF0C;&#x4F46;&#x5374;&#x7F3A;&#x4E4F;&#x5176;&#x4ED6;&#x7EA7;&#x522B;<br>&#x7684;&#x5F88;&#x591A;&#x4F18;&#x70B9;&#xFF0C;&#x9664;&#x975E;&#x771F;&#x7684;&#x975E;&#x5E38;&#x6709;&#x5FC5;&#x8981;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x4E2D;&#x4E00;&#x822C;&#x5F88;&#x5C11;&#x4F7F;&#x7528;&#x3002;</p>
+<h3 id="READ-COMMITTED-&#x63D0;&#x4EA4;&#x8BFB;"><a href="#READ-COMMITTED-&#x63D0;&#x4EA4;&#x8BFB;" class="headerlink" title="READ COMMITTED(&#x63D0;&#x4EA4;&#x8BFB;)"></a>READ COMMITTED(&#x63D0;&#x4EA4;&#x8BFB;)</h3><p>&#x5927;&#x591A;&#x6570;&#x6570;&#x636E;&#x5E93;&#x9ED8;&#x8BA4;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x90FD;&#x662F;READ COMMITTED&#xFF08;MySQL&#x4E0D;&#x662F;&#xFF09;&#x3002;&#x4E00;&#x4E2A;&#x4E8B;&#x52A1;&#x5F00;&#x59CB;&#x65F6;&#xFF0C;&#x53EA;&#x80FD;&#x201C;&#x770B;&#x89C1;&#x201D;&#x5DF2;&#x7ECF;&#x63D0;&#x4EA4;&#x7684;&#x4E8B;&#x52A1;&#x6240;&#x505A;&#x7684;&#x4FEE;&#x6539;&#x3002;&#x5C31;&#x662F;<br>&#x8BF4;&#xFF0C;&#x4E00;&#x4E2A;&#x4E8B;&#x52A1;&#x4ECE;&#x5F00;&#x59CB;&#x5230;&#x63D0;&#x4EA4;&#x4E4B;&#x524D;&#xFF0C;&#x6240;&#x505A;&#x7684;&#x4EFB;&#x4F55;&#x4E8B;&#xFF0C;&#x5BF9;&#x5176;&#x4ED6;&#x4E8B;&#x52A1;&#x90FD;&#x662F;&#x4E0D;&#x53EF;&#x89C1;&#x7684;&#x3002;&#x8FD9;&#x4E2A;&#x7EA7;&#x522B;&#x6709;&#x65F6;&#x4E5F;&#x53EB;<em>&#x4E0D;&#x53EF;&#x91CD;&#x590D;&#x8BFB;</em>&#xFF0C;&#x56E0;&#x4E3A;&#x4E24;&#x6B21;&#x67E5;&#x8BE2;&#x6267;&#x884C;&#x7684;&#x7ED3;<br>&#x679C;&#x53EF;&#x80FD;&#x662F;&#x4E0D;&#x4E00;&#x81F4;&#x7684;&#x3002;</p>
+<h3 id="REPEATABLE-READ-&#x53EF;&#x91CD;&#x590D;&#x8BFB;"><a href="#REPEATABLE-READ-&#x53EF;&#x91CD;&#x590D;&#x8BFB;" class="headerlink" title="REPEATABLE READ(&#x53EF;&#x91CD;&#x590D;&#x8BFB;)"></a>REPEATABLE READ(&#x53EF;&#x91CD;&#x590D;&#x8BFB;)</h3><p>&#x53EF;&#x91CD;&#x590D;&#x8BFB;&#x89E3;&#x51B3;&#x4E86;&#x810F;&#x8BFB;&#x7684;&#x95EE;&#x9898;&#x3002;&#x5B83;&#x4FDD;&#x8BC1;&#x4E86;&#x540C;&#x4E00;&#x4E2A;&#x4E8B;&#x52A1;&#x4E2D;&#x591A;&#x6B21;&#x8BFB;&#x53D6;&#x540C;&#x6837;&#x7684;&#x8BB0;&#x5F55;&#x7684;&#x7ED3;&#x679C;&#x662F;&#x4E00;&#x81F4;&#x7684;&#x3002;&#x4F46;&#x662F;&#x7406;&#x8BBA;&#x4E0A;&#x5374;&#x65E0;&#x6CD5;&#x89E3;&#x51B3;&#x5E7B;&#x8BFB;&#x7684;&#x95EE;&#x9898;&#x3002;&#x6240;&#x8C13;<br><strong>&#x5E7B;&#x8BFB;</strong>&#xFF0C;&#x6307;&#x7684;&#x662F;&#x5F53;&#x67D0;&#x4E2A;&#x4E8B;&#x7269;&#x5728;&#x8BFB;&#x53D6;&#x67D0;&#x4E2A;&#x8303;&#x56F4;&#x7684;&#x8BB0;&#x5F55;&#x65F6;&#xFF0C;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x4E8B;&#x52A1;&#x53C8;&#x5728;&#x8BE5;&#x8303;&#x56F4;&#x5185;&#x63D2;&#x5165;&#x4E86;&#x65B0;&#x7684;&#x8BB0;&#x5F55;&#xFF0C;&#x5F53;&#x4E4B;&#x524D;&#x7684;&#x4E8B;&#x52A1;&#x518D;&#x6B21;&#x8BFB;&#x53D6;&#x8BE5;&#x8303;&#x56F4;&#x7684;<br>&#x8BB0;&#x5F55;&#x65F6;&#xFF0C;&#x4F1A;&#x4EA7;&#x751F;&#x5E7B;&#x884C;&#x3002;</p>
+<h3 id="SERIALIZABLE-&#x53EF;&#x4E32;&#x884C;&#x5316;"><a href="#SERIALIZABLE-&#x53EF;&#x4E32;&#x884C;&#x5316;" class="headerlink" title="SERIALIZABLE(&#x53EF;&#x4E32;&#x884C;&#x5316;)"></a>SERIALIZABLE(&#x53EF;&#x4E32;&#x884C;&#x5316;)</h3><p>&#x901A;&#x8FC7;&#x4E8B;&#x52A1;&#x5F3A;&#x5236;&#x4E32;&#x884C;&#x6267;&#x884C;&#xFF0C;&#x907F;&#x514D;&#x5E7B;&#x8BFB;&#x95EE;&#x9898;&#x3002;&#x4F1A;&#x5728;&#x8BFB;&#x53D6;&#x7684;&#x6BCF;&#x4E00;&#x884C;&#x6570;&#x636E;&#x4E0A;&#x52A0;&#x9501;&#xFF0C;&#x53EF;&#x80FD;&#x5BFC;&#x81F4;&#x5927;&#x91CF;&#x7684;&#x8D85;&#x65F6;&#x548C;&#x9501;&#x4E89;&#x7528;&#x7684;&#x95EE;&#x9898;&#x3002;&#x53EA;&#x6709;&#x5728;&#x975E;&#x5E38;&#x9700;&#x8981;&#x4FDD;&#x8BC1;<br>&#x6570;&#x636E;&#x4E00;&#x81F4;&#x6027;&#x800C;&#x4E14;&#x53EF;&#x4EE5;&#x63A5;&#x53D7;&#x6CA1;&#x6709;&#x5E76;&#x53D1;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x624D;&#x8003;&#x8651;&#x4F7F;&#x7528;&#x3002;</p>
 <h2 id="&#x67E5;&#x8BE2;"><a href="#&#x67E5;&#x8BE2;" class="headerlink" title="&#x67E5;&#x8BE2;"></a>&#x67E5;&#x8BE2;</h2><p>SELECT @@global.tx_isolation;<br>SELECT @@session.tx_isolation;<br>SELECT @@tx_isolation;// &#x7F3A;&#x7701;&#x662F;session</p>
 <h2 id="&#x4FEE;&#x6539;"><a href="#&#x4FEE;&#x6539;" class="headerlink" title="&#x4FEE;&#x6539;"></a>&#x4FEE;&#x6539;</h2><p>&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x7528;SET TRANSACTION&#x8BED;&#x53E5;&#x6539;&#x53D8;&#x5355;&#x4E2A;&#x4F1A;&#x8BDD;&#x6216;&#x8005;&#x6240;&#x6709;&#x65B0;&#x8FDB;&#x8FDE;&#x63A5;&#x7684;&#x9694;&#x79BB;&#x7EA7;&#x522B;&#x3002;&#x5B83;&#x7684;&#x8BED;&#x6CD5;&#x5982;&#x4E0B;&#xFF1A;<br><em>SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL {READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE}</em><br>&#x4F8B;&#x5982;&#xFF1A;<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> <span class="keyword">TRANSACTION</span> <span class="keyword">ISOLATION</span> <span class="keyword">LEVEL</span> <span class="keyword">READ</span> COMMITTED;</div></pre></td></tr></table></figure></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">set</span> tx_isolation=<span class="string">&apos;read-committed&apos;</span>;</div></pre></td></tr></table></figure>
@@ -358,17 +362,17 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a></p>
-        <p><span>Author:</span><a href="/" title="Back to Homepage">markee</a></p>
-        <p><span>Created:</span>2016-10-13, 13:19:03</p>
-        <p><span>Updated:</span>2016-10-13, 18:01:27</p>
+        <p><span>本文标题:</span><a href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
+        <p><span>发布时间:</span>2016-10-13, 13:19:03</p>
+        <p><span>最后更新:</span>2016-11-03, 11:36:44</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2016/10/13/mysqlTransaction/" title="更改MySQL的默认事务隔离级别">http://code.idea4j.com/2016/10/13/mysqlTransaction/</a>
-            <span class="copy-path" data-clipboard-text="From http://code.idea4j.com/2016/10/13/mysqlTransaction/　　By markee" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2016/10/13/mysqlTransaction/" title="更改MySQL的默认事务隔离级别">http://code.idea4j.com/2016/10/13/mysqlTransaction/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://code.idea4j.com/2016/10/13/mysqlTransaction/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -395,9 +399,9 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
+        <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL的事务隔离级别"><span class="toc-number">1.</span> <span class="toc-text">MySQL的事务隔离级别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查询"><span class="toc-number">2.</span> <span class="toc-text">查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改"><span class="toc-number">3.</span> <span class="toc-text">修改</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL的事务隔离级别"><span class="toc-number">1.</span> <span class="toc-text">MySQL的事务隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#READ-UNCOMMITTED-未提交读"><span class="toc-number">1.1.</span> <span class="toc-text">READ UNCOMMITTED(未提交读)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#READ-COMMITTED-提交读"><span class="toc-number">1.2.</span> <span class="toc-text">READ COMMITTED(提交读)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REPEATABLE-READ-可重复读"><span class="toc-number">1.3.</span> <span class="toc-text">REPEATABLE READ(可重复读)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SERIALIZABLE-可串行化"><span class="toc-number">1.4.</span> <span class="toc-text">SERIALIZABLE(可串行化)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查询"><span class="toc-number">2.</span> <span class="toc-text">查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改"><span class="toc-number">3.</span> <span class="toc-text">修改</span></a></li></ol>
         
     </div>
     <style>
@@ -411,10 +415,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
     <script>
-        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
     </script>
 
 
@@ -472,15 +476,15 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/10/17/shenzhou/" title="Pre: 神舟飞船系列">
+            <a href="/2016/10/17/shenzhou/" title="上一篇: 神舟飞船系列">
                 <i class="fa fa-angle-left"></i>
             </a>
         
 
-        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/10/11/angularjs2d1/" title="Next: angularjs2d1">
+            <a href="/2016/10/11/angularjs2d1/" title="下一篇: angularjs2d1">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -503,14 +507,14 @@
                 2016 markee
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -519,7 +523,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -552,9 +556,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
