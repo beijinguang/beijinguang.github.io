@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://code.idea4j.com/"/>
-  <updated>2016-11-02T10:00:14.304Z</updated>
+  <updated>2016-11-09T03:22:05.961Z</updated>
   <id>http://code.idea4j.com/</id>
   
   <author>
@@ -14,6 +14,359 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>美国历任总统，在任年限及所属党派</title>
+    <link href="http://code.idea4j.com/2016/11/09/usapresident/"/>
+    <id>http://code.idea4j.com/2016/11/09/usapresident/</id>
+    <published>2016-11-09T03:20:52.000Z</published>
+    <updated>2016-11-09T03:22:05.961Z</updated>
+    
+    <content type="html"><![CDATA[<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x4EFB;&#x6570;</th>
+<th style="text-align:left">&#x59D3;&#x540D;</th>
+<th style="text-align:left">&#x5728;&#x4EFB;&#x5E74;&#x9650;</th>
+<th style="text-align:left">&#x515A;&#x6D3E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x534E;&#x76DB;&#x987F;&#xFF08;George Washington&#xFF09;</td>
+<td style="text-align:left">1789-1797</td>
+<td style="text-align:left">&#x65E0;&#x515A;&#x6D3E;</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x4E9A;&#x5F53;&#x65AF;&#xFF08;John Adams&#xFF09;</td>
+<td style="text-align:left">1797-1801</td>
+<td style="text-align:left">&#x8054;&#x90A6;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:left">&#x6258;&#x9A6C;&#x65AF;&#xB7;&#x6770;&#x6590;&#x900A;&#xFF08;Thomas Jefferson&#xFF09;</td>
+<td style="text-align:left">1801-1809</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x9EA6;&#x8FEA;&#x900A;&#xFF08;James Madison&#xFF09;</td>
+<td style="text-align:left">1809-1817</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x95E8;&#x7F57;&#xFF08;James Monroe&#xFF09;</td>
+<td style="text-align:left">1817-1825</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x6606;&#x897F;&#xB7;&#x4E9A;&#x5F53;&#x65AF;&#xFF08;John Quincy Adams&#xFF09;</td>
+<td style="text-align:left">1825-1829</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:left">&#x5B89;&#x5FB7;&#x9C81;&#xB7;&#x6770;&#x514B;&#x900A;&#xFF08;Andrew Jackson&#xFF09;</td>
+<td style="text-align:left">1829-1837</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:left">&#x9A6C;&#x4E01;&#xB7;&#x8303;&#x5E03;&#x4F26;&#xFF08;Martin van Buren&#xFF09;</td>
+<td style="text-align:left">1837-1841</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x4EA8;&#x5229;&#xB7;&#x54C8;&#x91CC;&#x68EE;&#xFF08;William Henry Harrison&#xFF09;</td>
+<td style="text-align:left">1841</td>
+<td style="text-align:left">&#x8F89;&#x683C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x6CF0;&#x52D2;&#xFF08;John Tyler&#xFF09;</td>
+<td style="text-align:left">1841-1845</td>
+<td style="text-align:left">&#x672C;&#x4E3A;&#x8F89;&#x683C;&#x515A;&#xFF0C;&#x540E;&#x65E0;&#x515A;&#x6D3E;</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x8BFA;&#x514B;&#x65AF;&#xB7;&#x6CE2;&#x5C14;&#x514B;&#xFF08;James Knox Polk&#xFF09;</td>
+<td style="text-align:left">1845-1849</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:left">&#x624E;&#x5361;&#x91CC;&#xB7;&#x6CF0;&#x52D2;&#xFF08;Zachary Taylor&#xFF09;</td>
+<td style="text-align:left">1849-1850</td>
+<td style="text-align:left">&#x8F89;&#x683C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td style="text-align:left">&#x7C73;&#x52D2;&#x5FB7;&#xB7;&#x83F2;&#x5C14;&#x83AB;&#x5C14;&#xFF08;Millard Fillmore&#xFF09;</td>
+<td style="text-align:left">1850-1853</td>
+<td style="text-align:left">&#x8F89;&#x683C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td style="text-align:left">&#x798F;&#x5170;&#x514B;&#x6797;&#xB7;&#x76AE;&#x5C14;&#x65AF;&#xFF08;Franklin Pierce&#xFF09;</td>
+<td style="text-align:left">1853-1857</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x5E03;&#x574E;&#x5357; &#xFF08;James Buchanan&#xFF09;</td>
+<td style="text-align:left">1857-1861</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td style="text-align:left">&#x4E9A;&#x4F2F;&#x62C9;&#x7F55;&#xB7;&#x6797;&#x80AF;&#xFF08;Abraham Lincoln&#xFF09;</td>
+<td style="text-align:left">1861-1865</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;&#xFF0C;&#x56FD;&#x5BB6;&#x7EDF;&#x4E00;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td style="text-align:left">&#x5B89;&#x5FB7;&#x9C81;&#xB7;&#x7EA6;&#x7FF0;&#x900A;&#xFF08;Andrew Johnson&#xFF09;</td>
+<td style="text-align:left">1865-1869</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;&#xFF0C;&#x56FD;&#x5BB6;&#x7EDF;&#x4E00;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td style="text-align:left">&#x5C24;&#x91CC;&#x897F;&#x65AF;&#xB7;&#x683C;&#x5170;&#x7279;&#xFF08;Ulysses S.Grant&#xFF09;</td>
+<td style="text-align:left">1869-1877</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td style="text-align:left">&#x62C9;&#x745F;&#x798F;&#x5FB7;&#xB7;&#x4F2F;&#x67E5;&#x5FB7;&#xB7;&#x6D77;&#x65AF;&#xFF08;Rutherford Birchard Hayes&#xFF09;</td>
+<td style="text-align:left">1877-1881</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x963F;&#x5E03;&#x62C9;&#x59C6;&#xB7;&#x52A0;&#x83F2;&#x5C14;&#x5FB7;&#xFF08;James Abram Garfield&#xFF09;</td>
+<td style="text-align:left">1881</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">21</td>
+<td style="text-align:left">&#x5207;&#x65AF;&#x7279;&#xB7;&#x827E;&#x4F26;&#xB7;&#x963F;&#x745F;&#xFF08;Chester Alan Arthur&#xFF09;</td>
+<td style="text-align:left">1881-1885</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">22</td>
+<td style="text-align:left">&#x53F2;&#x8482;&#x82AC;&#xB7;&#x683C;&#x7F57;&#x4F5B;&#xB7;&#x514B;&#x5229;&#x592B;&#x5170;&#xFF08;Stephen Grover Cleveland&#xFF09;</td>
+<td style="text-align:left">1885-1889</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">23</td>
+<td style="text-align:left">&#x672C;&#x6770;&#x660E;&#xB7;&#x54C8;&#x91CC;&#x68EE; &#xFF08;Benjamin Harrison&#xFF09;</td>
+<td style="text-align:left">1889-1893</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">24</td>
+<td style="text-align:left">&#x53F2;&#x8482;&#x82AC;&#xB7;&#x683C;&#x7F57;&#x4F5B;&#xB7;&#x514B;&#x5229;&#x592B;&#x5170;&#xFF08;Stephen Grover Cleveland &#xFF09;</td>
+<td style="text-align:left">1893-1897</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">25</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x9EA6;&#x91D1;&#x5229;&#xFF08;William McKinley&#xFF09; 1897-1901</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">26</td>
+<td style="text-align:left">&#x897F;&#x5965;&#x591A;&#xB7;&#x7F57;&#x65AF;&#x798F; &#xFF08;Theodore Roosevelt&#xFF09;</td>
+<td style="text-align:left">1901-1909</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">27</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x970D;&#x534E;&#x5FB7;&#xB7;&#x5854;&#x592B;&#x8131;&#xFF08;William Howard Taft&#xFF09;</td>
+<td style="text-align:left">1909-1913</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">28</td>
+<td style="text-align:left">&#x6258;&#x9A6C;&#x65AF;&#xB7;&#x4F0D;&#x5FB7;&#x7F57;&#xB7;&#x5A01;&#x5C14;&#x900A;&#xFF08;Thomas Woodrow Wilson&#xFF09;</td>
+<td style="text-align:left">1913-1921</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">29</td>
+<td style="text-align:left">&#x6C83;&#x4F26;&#xB7;&#x7518;&#x6885;&#x5229;&#x5C14;&#xB7;&#x54C8;&#x5B9A;&#xFF08;Warren Gamaliel Harding&#xFF09;</td>
+<td style="text-align:left">1921-1923</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">30</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x5361;&#x5C14;&#x6587;&#xB7;&#x67EF;&#x7ACB;&#x829D;&#xFF08;John Calvin Coolidge&#xFF09;</td>
+<td style="text-align:left">1923-1929</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">31</td>
+<td style="text-align:left">&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x514B;&#x62C9;&#x514B;&#xB7;&#x80E1;&#x4F5B;&#xFF08;Herbert Clark Hoover&#xFF09; 1929-1933</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">32</td>
+<td style="text-align:left">&#x5BCC;&#x5170;&#x514B;&#x6797;&#xB7;&#x5FB7;&#x62C9;&#x8BFA;&#xB7;&#x7F57;&#x65AF;&#x798F;&#xFF08;Franklin Delano Roosevelt&#xFF09;</td>
+<td style="text-align:left">1933-1945</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">33</td>
+<td style="text-align:left">&#x54C8;&#x91CC;&#xB7;S&#xB7;&#x675C;&#x9C81;&#x95E8;&#xFF08;Harry S. Truman&#xFF09;</td>
+<td style="text-align:left">1945-1953</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">34</td>
+<td style="text-align:left">&#x5FB7;&#x6000;&#x7279;&#xB7;&#x6234;&#x7EF4;&#xB7;&#x827E;&#x68EE;&#x8C6A;&#x5A01;&#x5C14;&#xFF08;Dwight David Eisenhower&#xFF09;</td>
+<td style="text-align:left">1953-1961</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">35</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x83F2;&#x8328;&#x6770;&#x62C9;&#x5FB7;&#xB7;&#x80AF;&#x5C3C;&#x8FEA;&#xFF08;John Fitzgerald Kennedy&#xFF09;</td>
+<td style="text-align:left">1961-1963</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">36</td>
+<td style="text-align:left">&#x6797;&#x767B;&#xB7;&#x62DC;&#x6069;&#x65AF;&#xB7;&#x7EA6;&#x7FF0;&#x900A;&#xFF08;Lyndon Baines Johnson&#xFF09;</td>
+<td style="text-align:left">1963-1969</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">37</td>
+<td style="text-align:left">&#x7406;&#x67E5;&#x5FB7;&#xB7;&#x7C73;&#x5C14;&#x8C6A;&#x65AF;&#xB7;&#x5C3C;&#x514B;&#x677E;&#xFF08;Richard Milhous Nixon&#xFF09;</td>
+<td style="text-align:left">1969-1974</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">38</td>
+<td style="text-align:left">&#x6770;&#x62C9;&#x5C14;&#x5FB7;&#xB7;&#x9C81;&#x9053;&#x592B;&#xB7;&#x798F;&#x7279;&#xFF08;Gerald Rudolph Ford&#xFF09;</td>
+<td style="text-align:left">1974-1977</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">39</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x5384;&#x5C14;&#xB7;&#xB7;&#x5361;&#x7279;&#xFF08;James Earl Carter &#xFF09;</td>
+<td style="text-align:left">1977-1981</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">40</td>
+<td style="text-align:left">&#x7F57;&#x7EB3;&#x5FB7;&#xB7;&#x5A01;&#x5C14;&#x900A;&#xB7;&#x91CC;&#x6839;&#xFF08;Ronald Wilson Reagan&#xFF09;</td>
+<td style="text-align:left">1981-1989</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">41</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Herbert Walker Bush&#xFF09; 1989-1993</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">42</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x6770;&#x6590;&#x900A;&#xB7;&#x514B;&#x6797;&#x987F;&#xFF08;William Jefferson Clinton&#xFF09;</td>
+<td style="text-align:left">1993-2001</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">43</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Walker Bush&#xFF09; 2001-2009</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">44</td>
+<td style="text-align:left">&#x8D1D;&#x62C9;&#x514B;&#xB7;&#x4FAF;&#x8D5B;&#x56E0;&#xB7;&#x5965;&#x5DF4;&#x9A6C;&#xFF08;Barack Hussein Obama&#xFF09;</td>
+<td style="text-align:left">2009-2017</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      美国历任总统，在任年限及所属党派
+    
+    </summary>
+    
+      <category term="其他" scheme="http://code.idea4j.com/categories/%E5%85%B6%E4%BB%96/"/>
+    
+    
+      <category term="其他" scheme="http://code.idea4j.com/tags/%E5%85%B6%E4%BB%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>改善性能的几个技巧</title>
+    <link href="http://code.idea4j.com/2016/11/04/xingnen2/"/>
+    <id>http://code.idea4j.com/2016/11/04/xingnen2/</id>
+    <published>2016-11-04T07:46:16.000Z</published>
+    <updated>2016-11-09T03:30:19.733Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="&#x614E;&#x7528;&#x5F02;&#x5E38;"><a href="#&#x614E;&#x7528;&#x5F02;&#x5E38;" class="headerlink" title="&#x614E;&#x7528;&#x5F02;&#x5E38;"></a>&#x614E;&#x7528;&#x5F02;&#x5E38;</h3><h3 id="&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;"><a href="#&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;" class="headerlink" title="&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;"></a>&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;</h3><h3 id="&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;"><a href="#&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;" class="headerlink" title="&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;"></a>&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;</h3><h3 id="&#x66FF;&#x6362;switch"><a href="#&#x66FF;&#x6362;switch" class="headerlink" title="&#x66FF;&#x6362;switch"></a>&#x66FF;&#x6362;switch</h3><h3 id="&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;"><a href="#&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;" class="headerlink" title="&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;"></a>&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;</h3><h3 id="&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;"><a href="#&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;" class="headerlink" title="&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;"></a>&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;</h3><h3 id="&#x5C55;&#x5F00;&#x5FAA;&#x73AF;"><a href="#&#x5C55;&#x5F00;&#x5FAA;&#x73AF;" class="headerlink" title="&#x5C55;&#x5F00;&#x5FAA;&#x73AF;"></a>&#x5C55;&#x5F00;&#x5FAA;&#x73AF;</h3><h3 id="&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;"><a href="#&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;" class="headerlink" title="&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;"></a>&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;</h3><h3 id="&#x4F7F;&#x7528;arrayCopy"><a href="#&#x4F7F;&#x7528;arrayCopy" class="headerlink" title="&#x4F7F;&#x7528;arrayCopy"></a>&#x4F7F;&#x7528;arrayCopy</h3><h3 id="&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I-O&#x64CD;&#x4F5C;"><a href="#&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I-O&#x64CD;&#x4F5C;" class="headerlink" title="&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I/O&#x64CD;&#x4F5C;"></a>&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I/O&#x64CD;&#x4F5C;</h3><h3 id="&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new"><a href="#&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new" class="headerlink" title="&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new"></a>&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new</h3><h3 id="&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"><a href="#&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;" class="headerlink" title="&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"></a>&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;</h3>]]></content>
+    
+    <summary type="html">
+    
+      略
+    
+    </summary>
+    
+      <category term="java" scheme="http://code.idea4j.com/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://code.idea4j.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>性能概述</title>
+    <link href="http://code.idea4j.com/2016/11/03/xingnen/"/>
+    <id>http://code.idea4j.com/2016/11/03/xingnen/</id>
+    <published>2016-11-03T04:11:59.000Z</published>
+    <updated>2016-11-03T08:21:02.304Z</updated>
+    
+    <content type="html"><![CDATA[<p>&#x7A0B;&#x5E8F;&#x7684;&#x6027;&#x80FD;&#x901A;&#x8FC7;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x65B9;&#x9762;&#x6765;&#x8868;&#x73B0;&#xFF1A;</p>
+<ul>
+<li>&#x6267;&#x884C;&#x901F;&#x5EA6;&#xFF1A;</li>
+<li>&#x5185;&#x5B58;&#x5206;&#x914D;&#xFF1A;</li>
+<li>&#x542F;&#x52A8;&#x65F6;&#x95F4;&#xFF1A;</li>
+<li>&#x8D1F;&#x8F7D;&#x627F;&#x53D7;&#x80FD;&#x529B;&#xFF1A;</li>
+</ul>
+<p>&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x7684;&#x5C42;&#x6B21;</p>
+<ul>
+<li>&#x8BBE;&#x8BA1;&#x8C03;&#x4F18;</li>
+<li>&#x4EE3;&#x7801;&#x8C03;&#x4F18;</li>
+<li>JVM&#x8C03;&#x4F18;</li>
+<li>&#x6570;&#x636E;&#x5E93;&#x8C03;&#x4F18;</li>
+<li>&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x8C03;&#x4F18;</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&amp;#x7A0B;&amp;#x5E8F;&amp;#x7684;&amp;#x6027;&amp;#x80FD;&amp;#x901A;&amp;#x8FC7;&amp;#x4EE5;&amp;#x4E0B;&amp;#x51E0;&amp;#x4E2A;&amp;#x65B9;&amp;#x9762;&amp;#x6765;&amp;#x8868;&amp;#x73B0;&amp;#xFF1A;&lt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://code.idea4j.com/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://code.idea4j.com/tags/java/"/>
+    
+  </entry>
   
   <entry>
     <title>一行配置文件引发的“血案”</title>
@@ -1120,84 +1473,6 @@
       <category term="node" scheme="http://code.idea4j.com/tags/node/"/>
     
       <category term="Express" scheme="http://code.idea4j.com/tags/Express/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 Node 创建 Web 服务器和客户端</title>
-    <link href="http://code.idea4j.com/2016/08/23/node14/"/>
-    <id>http://code.idea4j.com/2016/08/23/node14/</id>
-    <published>2016-08-23T02:43:09.000Z</published>
-    <updated>2016-10-08T06:51:58.805Z</updated>
-    
-    <content type="html"><![CDATA[<p>node web demo<br><a id="more"></a><br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&apos;http&apos;</span>);</div><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&apos;fs&apos;</span>);</div><div class="line"><span class="keyword">var</span> url = <span class="built_in">require</span>(<span class="string">&apos;url&apos;</span>);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// &#x521B;&#x5EFA;&#x670D;&#x52A1;&#x5668;</span></div><div class="line">http.createServer( <span class="function"><span class="keyword">function</span> (<span class="params">request, response</span>) </span>{  </div><div class="line">   <span class="comment">// &#x89E3;&#x6790;&#x8BF7;&#x6C42;&#xFF0C;&#x5305;&#x62EC;&#x6587;&#x4EF6;&#x540D;</span></div><div class="line">   <span class="keyword">var</span> pathname = url.parse(request.url).pathname;</div><div class="line">   </div><div class="line">   <span class="comment">// &#x8F93;&#x51FA;&#x8BF7;&#x6C42;&#x7684;&#x6587;&#x4EF6;&#x540D;</span></div><div class="line">   <span class="built_in">console</span>.log(<span class="string">&quot;Request for &quot;</span> + pathname + <span class="string">&quot; received.&quot;</span>);</div><div class="line">   </div><div class="line">   <span class="comment">// &#x4ECE;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x4E2D;&#x8BFB;&#x53D6;&#x8BF7;&#x6C42;&#x7684;&#x6587;&#x4EF6;&#x5185;&#x5BB9;</span></div><div class="line">   fs.readFile(pathname.substr(<span class="number">1</span>), <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>{</div><div class="line">      <span class="keyword">if</span> (err) {</div><div class="line">         <span class="built_in">console</span>.log(err);</div><div class="line">         <span class="comment">// HTTP &#x72B6;&#x6001;&#x7801;: 404 : NOT FOUND</span></div><div class="line">         <span class="comment">// Content Type: text/plain</span></div><div class="line">         response.writeHead(<span class="number">404</span>, {<span class="string">&apos;Content-Type&apos;</span>: <span class="string">&apos;text/html&apos;</span>});</div><div class="line">      }<span class="keyword">else</span>{	         </div><div class="line">         <span class="comment">// HTTP &#x72B6;&#x6001;&#x7801;: 200 : OK</span></div><div class="line">         <span class="comment">// Content Type: text/plain</span></div><div class="line">         response.writeHead(<span class="number">200</span>, {<span class="string">&apos;Content-Type&apos;</span>: <span class="string">&apos;text/html&apos;</span>});	</div><div class="line">         </div><div class="line">         <span class="comment">// &#x54CD;&#x5E94;&#x6587;&#x4EF6;&#x5185;&#x5BB9;</span></div><div class="line">         response.write(data.toString());		</div><div class="line">      }</div><div class="line">      <span class="comment">//  &#x53D1;&#x9001;&#x54CD;&#x5E94;&#x6570;&#x636E;</span></div><div class="line">      response.end();</div><div class="line">   });   </div><div class="line">}).listen(<span class="number">8081</span>);</div><div class="line"></div><div class="line"><span class="comment">// &#x63A7;&#x5236;&#x53F0;&#x4F1A;&#x8F93;&#x51FA;&#x4EE5;&#x4E0B;&#x4FE1;&#x606F;</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">&apos;Server running at http://127.0.0.1:8081/&apos;</span>);</div></pre></td></tr></table></figure></p>
-<p>&#x4F7F;&#x7528; Node &#x521B;&#x5EFA; Web &#x5BA2;&#x6237;&#x7AEF;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&apos;http&apos;</span>);</div><div class="line"><span class="comment">// &#x7528;&#x4E8E;&#x8BF7;&#x6C42;&#x7684;&#x9009;&#x9879;</span></div><div class="line"><span class="keyword">var</span> options = {</div><div class="line">   host: <span class="string">&apos;localhost&apos;</span>,</div><div class="line">   port: <span class="string">&apos;8081&apos;</span>,</div><div class="line">   path: <span class="string">&apos;/index.htm&apos;</span>  </div><div class="line">};</div><div class="line"></div><div class="line"><span class="comment">// &#x5904;&#x7406;&#x54CD;&#x5E94;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;</span></div><div class="line"><span class="keyword">var</span> callback = <span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>{</div><div class="line">   <span class="comment">// &#x4E0D;&#x65AD;&#x66F4;&#x65B0;&#x6570;&#x636E;</span></div><div class="line">   <span class="keyword">var</span> body = <span class="string">&apos;&apos;</span>;</div><div class="line">   response.on(<span class="string">&apos;data&apos;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>{</div><div class="line">      body += data;</div><div class="line">   });</div><div class="line">   </div><div class="line">   response.on(<span class="string">&apos;end&apos;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{</div><div class="line">      <span class="comment">// &#x6570;&#x636E;&#x63A5;&#x6536;&#x5B8C;&#x6210;</span></div><div class="line">      <span class="built_in">console</span>.log(body);</div><div class="line">   });</div><div class="line">}</div><div class="line"><span class="comment">// &#x5411;&#x670D;&#x52A1;&#x7AEF;&#x53D1;&#x9001;&#x8BF7;&#x6C42;</span></div><div class="line"><span class="keyword">var</span> req = http.request(options, callback);</div><div class="line">req.end();</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;node web demo&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="node" scheme="http://code.idea4j.com/categories/node/"/>
-    
-    
-      <category term="node" scheme="http://code.idea4j.com/tags/node/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Node.js GET/POST请求</title>
-    <link href="http://code.idea4j.com/2016/08/22/node13/"/>
-    <id>http://code.idea4j.com/2016/08/22/node13/</id>
-    <published>2016-08-22T00:36:08.000Z</published>
-    <updated>2016-10-08T06:47:14.228Z</updated>
-    
-    <content type="html"><![CDATA[<p>node get/post demo<br><a id="more"></a></p>
-<h3 id="&#x83B7;&#x53D6;GET&#x8BF7;&#x6C42;&#x5185;&#x5BB9;"><a href="#&#x83B7;&#x53D6;GET&#x8BF7;&#x6C42;&#x5185;&#x5BB9;" class="headerlink" title="&#x83B7;&#x53D6;GET&#x8BF7;&#x6C42;&#x5185;&#x5BB9;"></a>&#x83B7;&#x53D6;GET&#x8BF7;&#x6C42;&#x5185;&#x5BB9;</h3><p>&#x7531;&#x4E8E;GET&#x8BF7;&#x6C42;&#x76F4;&#x63A5;&#x88AB;&#x5D4C;&#x5165;&#x5728;&#x8DEF;&#x5F84;&#x4E2D;&#xFF0C;URL&#x662F;&#x5B8C;&#x6574;&#x7684;&#x8BF7;&#x6C42;&#x8DEF;&#x5F84;&#xFF0C;&#x5305;&#x62EC;&#x4E86;?&#x540E;&#x9762;&#x7684;&#x90E8;&#x5206;&#xFF0C;&#x56E0;&#x6B64;&#x4F60;&#x53EF;&#x4EE5;&#x624B;&#x52A8;&#x89E3;&#x6790;&#x540E;&#x9762;&#x7684;&#x5185;&#x5BB9;&#x4F5C;&#x4E3A;GET&#x8BF7;&#x6C42;&#x7684;&#x53C2;&#x6570;&#x3002;<br>node.js&#x4E2D;url&#x6A21;&#x5757;&#x4E2D;&#x7684;parse&#x51FD;&#x6570;&#x63D0;&#x4F9B;&#x4E86;&#x8FD9;&#x4E2A;&#x529F;&#x80FD;&#x3002;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&apos;http&apos;</span>);</div><div class="line"><span class="keyword">var</span> url = <span class="built_in">require</span>(<span class="string">&apos;url&apos;</span>);</div><div class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">&apos;util&apos;</span>);</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>{</div><div class="line">    res.writeHead(<span class="number">200</span>, {<span class="string">&apos;Content-Type&apos;</span>: <span class="string">&apos;text/plain&apos;</span>});</div><div class="line">    res.end(util.inspect(url.parse(req.url, <span class="literal">true</span>)));</div><div class="line">}).listen(<span class="number">3000</span>);</div></pre></td></tr></table></figure></p>
-<h3 id="&#x83B7;&#x53D6;POST&#x8BF7;&#x6C42;&#x5185;&#x5BB9;"><a href="#&#x83B7;&#x53D6;POST&#x8BF7;&#x6C42;&#x5185;&#x5BB9;" class="headerlink" title="&#x83B7;&#x53D6;POST&#x8BF7;&#x6C42;&#x5185;&#x5BB9;"></a>&#x83B7;&#x53D6;POST&#x8BF7;&#x6C42;&#x5185;&#x5BB9;</h3><p>POST&#x8BF7;&#x6C42;&#x7684;&#x5185;&#x5BB9;&#x5168;&#x90E8;&#x7684;&#x90FD;&#x5728;&#x8BF7;&#x6C42;&#x4F53;&#x4E2D;&#xFF0C;http.ServerRequest&#x5E76;&#x6CA1;&#x6709;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;&#x5185;&#x5BB9;&#x4E3A;&#x8BF7;&#x6C42;&#x4F53;&#xFF0C;&#x539F;&#x56E0;&#x662F;&#x7B49;&#x5F85;&#x8BF7;&#x6C42;&#x4F53;&#x4F20;&#x8F93;&#x53EF;&#x80FD;&#x662F;&#x4E00;&#x4EF6;&#x8017;&#x65F6;<br>&#x7684;&#x5DE5;&#x4F5C;&#x3002;&#x6BD4;&#x5982;&#x4E0A;&#x4F20;&#x6587;&#x4EF6;&#xFF0C;&#x800C;&#x5F88;&#x591A;&#x65F6;&#x5019;&#x6211;&#x4EEC;&#x53EF;&#x80FD;&#x5E76;&#x4E0D;&#x9700;&#x8981;&#x7406;&#x4F1A;&#x8BF7;&#x6C42;&#x4F53;&#x7684;&#x5185;&#x5BB9;&#xFF0C;&#x6076;&#x610F;&#x7684;POST&#x8BF7;&#x6C42;&#x4F1A;&#x5927;&#x5927;&#x6D88;&#x8017;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8D44;&#x6E90;&#xFF0C;&#x6240;&#x6709;node.js<br>&#x9ED8;&#x8BA4;&#x662F;&#x4E0D;&#x4F1A;&#x89E3;&#x6790;&#x8BF7;&#x6C42;&#x4F53;&#x7684;&#xFF0C; &#x5F53;&#x4F60;&#x9700;&#x8981;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x9700;&#x8981;&#x624B;&#x52A8;&#x6765;&#x505A;&#x3002;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">&apos;http&apos;</span>);</div><div class="line"><span class="keyword">var</span> querystring = <span class="built_in">require</span>(<span class="string">&apos;querystring&apos;</span>);</div><div class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">&apos;util&apos;</span>);</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>{</div><div class="line">    <span class="keyword">var</span> post = <span class="string">&apos;&apos;</span>;     <span class="comment">//&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x4E2A;post&#x53D8;&#x91CF;&#xFF0C;&#x7528;&#x4E8E;&#x6682;&#x5B58;&#x8BF7;&#x6C42;&#x4F53;&#x7684;&#x4FE1;&#x606F;</span></div><div class="line"></div><div class="line">    req.on(<span class="string">&apos;data&apos;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">chunk</span>)</span>{    <span class="comment">//&#x901A;&#x8FC7;req&#x7684;data&#x4E8B;&#x4EF6;&#x76D1;&#x542C;&#x51FD;&#x6570;&#xFF0C;&#x6BCF;&#x5F53;&#x63A5;&#x53D7;&#x5230;&#x8BF7;&#x6C42;&#x4F53;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x5C31;&#x7D2F;&#x52A0;&#x5230;post&#x53D8;&#x91CF;&#x4E2D;</span></div><div class="line">        post += chunk;</div><div class="line">    });</div><div class="line"></div><div class="line">    req.on(<span class="string">&apos;end&apos;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{    <span class="comment">//&#x5728;end&#x4E8B;&#x4EF6;&#x89E6;&#x53D1;&#x540E;&#xFF0C;&#x901A;&#x8FC7;querystring.parse&#x5C06;post&#x89E3;&#x6790;&#x4E3A;&#x771F;&#x6B63;&#x7684;POST&#x8BF7;&#x6C42;&#x683C;&#x5F0F;&#xFF0C;&#x7136;&#x540E;&#x5411;&#x5BA2;&#x6237;&#x7AEF;&#x8FD4;&#x56DE;&#x3002;</span></div><div class="line">        post = querystring.parse(post);</div><div class="line">        res.end(util.inspect(post));</div><div class="line">    });</div><div class="line">}).listen(<span class="number">3000</span>);</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;node get/post demo&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="node" scheme="http://code.idea4j.com/categories/node/"/>
-    
-    
-      <category term="node" scheme="http://code.idea4j.com/tags/node/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Node.js 文件系统</title>
-    <link href="http://code.idea4j.com/2016/08/20/node12/"/>
-    <id>http://code.idea4j.com/2016/08/20/node12/</id>
-    <published>2016-08-20T05:15:53.000Z</published>
-    <updated>2016-10-08T05:27:24.679Z</updated>
-    
-    <content type="html"><![CDATA[<a id="more"></a>
-<p>Node.js &#x63D0;&#x4F9B;&#x4E00;&#x7EC4;&#x7C7B;&#x4F3C; UNIX&#xFF08;POSIX&#xFF09;&#x6807;&#x51C6;&#x7684;&#x6587;&#x4EF6;&#x64CD;&#x4F5C;API&#x3002; Node &#x5BFC;&#x5165;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x6A21;&#x5757;(fs)&#x8BED;&#x6CD5;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>)</div></pre></td></tr></table></figure></p>
-<hr>
-<h3 id="&#x5F02;&#x6B65;&#x548C;&#x540C;&#x6B65;"><a href="#&#x5F02;&#x6B65;&#x548C;&#x540C;&#x6B65;" class="headerlink" title="&#x5F02;&#x6B65;&#x548C;&#x540C;&#x6B65;"></a>&#x5F02;&#x6B65;&#x548C;&#x540C;&#x6B65;</h3><p>Node.js &#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#xFF08;fs &#x6A21;&#x5757;&#xFF09;&#x6A21;&#x5757;&#x4E2D;&#x7684;&#x65B9;&#x6CD5;&#x5747;&#x6709;&#x5F02;&#x6B65;&#x548C;&#x540C;&#x6B65;&#x7248;&#x672C;&#xFF0C;&#x4F8B;&#x5982;&#x8BFB;&#x53D6;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x7684;&#x51FD;&#x6570;&#x6709;&#x5F02;&#x6B65;&#x7684; fs.readFile() &#x548C;&#x540C;&#x6B65;&#x7684;<br> fs.readFileSync()&#x3002;<br>&#x5F02;&#x6B65;&#x7684;&#x65B9;&#x6CD5;&#x51FD;&#x6570;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x4E3A;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x5305;&#x542B;&#x4E86;&#x9519;&#x8BEF;&#x4FE1;&#x606F;(error)&#x3002;<br>&#x5EFA;&#x8BAE;&#x5927;&#x5BB6;&#x662F;&#x7528;&#x5F02;&#x6B65;&#x65B9;&#x6CD5;&#xFF0C;&#x6BD4;&#x8D77;&#x540C;&#x6B65;&#xFF0C;&#x5F02;&#x6B65;&#x65B9;&#x6CD5;&#x6027;&#x80FD;&#x66F4;&#x9AD8;&#xFF0C;&#x901F;&#x5EA6;&#x66F4;&#x5FEB;&#xFF0C;&#x800C;&#x4E14;&#x6CA1;&#x6709;&#x963B;&#x585E;&#x3002;</p>
-<h4 id="&#x5B9E;&#x4F8B;"><a href="#&#x5B9E;&#x4F8B;" class="headerlink" title="&#x5B9E;&#x4F8B;"></a>&#x5B9E;&#x4F8B;</h4><p>&#x521B;&#x5EFA; input.txt &#x6587;&#x4EF6;&#xFF0C;&#x5185;&#x5BB9;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Node.js &#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#xFF08;fs &#x6A21;&#x5757;&#xFF09;&#x6A21;&#x5757;&#x4E2D;&#x7684;&#x65B9;&#x6CD5;&#x5747;&#x6709;&#x5F02;&#x6B65;&#x548C;&#x540C;&#x6B65;&#x7248;&#x672C;&#xFF0C;&#x4F8B;&#x5982;&#x8BFB;&#x53D6;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x7684;&#x51FD;&#x6570;&#x6709;&#x5F02;&#x6B65;&#x7684; fs.readFile() &#x548C;&#x540C;&#x6B65;&#x7684;</div><div class="line"> fs.readFileSync()&#x3002;</div></pre></td></tr></table></figure></p>
-<p>&#x521B;&#x5EFA; file.js &#x6587;&#x4EF6;, &#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</div><div class="line"></div><div class="line"><span class="comment">// &#x5F02;&#x6B65;&#x8BFB;&#x53D6;</span></div><div class="line">fs.readFile(<span class="string">&apos;input.txt&apos;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>{</div><div class="line">   <span class="keyword">if</span> (err) {</div><div class="line">       <span class="keyword">return</span> <span class="built_in">console</span>.error(err);</div><div class="line">   }</div><div class="line">   <span class="built_in">console</span>.log(<span class="string">&quot;&#x5F02;&#x6B65;&#x8BFB;&#x53D6;: &quot;</span> + data.toString());</div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// &#x540C;&#x6B65;&#x8BFB;&#x53D6;</span></div><div class="line"><span class="keyword">var</span> data = fs.readFileSync(<span class="string">&apos;input.txt&apos;</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">&quot;&#x540C;&#x6B65;&#x8BFB;&#x53D6;: &quot;</span> + data.toString());</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">&quot;&#x7A0B;&#x5E8F;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x3002;&quot;</span>);</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;Node.js &amp;#x63D0;&amp;#x4F9B;&amp;#x4E00;&amp;#x7EC4;&amp;#x7C7B;&amp;#x4F3C; UNIX&amp;#xFF08;POSIX&amp;#xFF09;&amp;#x6807;&amp;#x51C6;&amp;#x7684;&amp;#x6587;&amp;#x4E
-    
-    </summary>
-    
-      <category term="node" scheme="http://code.idea4j.com/categories/node/"/>
-    
-    
-      <category term="node" scheme="http://code.idea4j.com/tags/node/"/>
     
   </entry>
   

@@ -4,6 +4,311 @@
   
     
     <entry>
+      <title><![CDATA[美国历任总统，在任年限及所属党派]]></title>
+      <url>http://code.idea4j.com/2016/11/09/usapresident/</url>
+      <content type="html"><![CDATA[<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x4EFB;&#x6570;</th>
+<th style="text-align:left">&#x59D3;&#x540D;</th>
+<th style="text-align:left">&#x5728;&#x4EFB;&#x5E74;&#x9650;</th>
+<th style="text-align:left">&#x515A;&#x6D3E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x534E;&#x76DB;&#x987F;&#xFF08;George Washington&#xFF09;</td>
+<td style="text-align:left">1789-1797</td>
+<td style="text-align:left">&#x65E0;&#x515A;&#x6D3E;</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x4E9A;&#x5F53;&#x65AF;&#xFF08;John Adams&#xFF09;</td>
+<td style="text-align:left">1797-1801</td>
+<td style="text-align:left">&#x8054;&#x90A6;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:left">&#x6258;&#x9A6C;&#x65AF;&#xB7;&#x6770;&#x6590;&#x900A;&#xFF08;Thomas Jefferson&#xFF09;</td>
+<td style="text-align:left">1801-1809</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x9EA6;&#x8FEA;&#x900A;&#xFF08;James Madison&#xFF09;</td>
+<td style="text-align:left">1809-1817</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x95E8;&#x7F57;&#xFF08;James Monroe&#xFF09;</td>
+<td style="text-align:left">1817-1825</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x6606;&#x897F;&#xB7;&#x4E9A;&#x5F53;&#x65AF;&#xFF08;John Quincy Adams&#xFF09;</td>
+<td style="text-align:left">1825-1829</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:left">&#x5B89;&#x5FB7;&#x9C81;&#xB7;&#x6770;&#x514B;&#x900A;&#xFF08;Andrew Jackson&#xFF09;</td>
+<td style="text-align:left">1829-1837</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:left">&#x9A6C;&#x4E01;&#xB7;&#x8303;&#x5E03;&#x4F26;&#xFF08;Martin van Buren&#xFF09;</td>
+<td style="text-align:left">1837-1841</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x4EA8;&#x5229;&#xB7;&#x54C8;&#x91CC;&#x68EE;&#xFF08;William Henry Harrison&#xFF09;</td>
+<td style="text-align:left">1841</td>
+<td style="text-align:left">&#x8F89;&#x683C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x6CF0;&#x52D2;&#xFF08;John Tyler&#xFF09;</td>
+<td style="text-align:left">1841-1845</td>
+<td style="text-align:left">&#x672C;&#x4E3A;&#x8F89;&#x683C;&#x515A;&#xFF0C;&#x540E;&#x65E0;&#x515A;&#x6D3E;</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x8BFA;&#x514B;&#x65AF;&#xB7;&#x6CE2;&#x5C14;&#x514B;&#xFF08;James Knox Polk&#xFF09;</td>
+<td style="text-align:left">1845-1849</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:left">&#x624E;&#x5361;&#x91CC;&#xB7;&#x6CF0;&#x52D2;&#xFF08;Zachary Taylor&#xFF09;</td>
+<td style="text-align:left">1849-1850</td>
+<td style="text-align:left">&#x8F89;&#x683C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td style="text-align:left">&#x7C73;&#x52D2;&#x5FB7;&#xB7;&#x83F2;&#x5C14;&#x83AB;&#x5C14;&#xFF08;Millard Fillmore&#xFF09;</td>
+<td style="text-align:left">1850-1853</td>
+<td style="text-align:left">&#x8F89;&#x683C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td style="text-align:left">&#x798F;&#x5170;&#x514B;&#x6797;&#xB7;&#x76AE;&#x5C14;&#x65AF;&#xFF08;Franklin Pierce&#xFF09;</td>
+<td style="text-align:left">1853-1857</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x5E03;&#x574E;&#x5357; &#xFF08;James Buchanan&#xFF09;</td>
+<td style="text-align:left">1857-1861</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td style="text-align:left">&#x4E9A;&#x4F2F;&#x62C9;&#x7F55;&#xB7;&#x6797;&#x80AF;&#xFF08;Abraham Lincoln&#xFF09;</td>
+<td style="text-align:left">1861-1865</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;&#xFF0C;&#x56FD;&#x5BB6;&#x7EDF;&#x4E00;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td style="text-align:left">&#x5B89;&#x5FB7;&#x9C81;&#xB7;&#x7EA6;&#x7FF0;&#x900A;&#xFF08;Andrew Johnson&#xFF09;</td>
+<td style="text-align:left">1865-1869</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;&#xFF0C;&#x56FD;&#x5BB6;&#x7EDF;&#x4E00;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td style="text-align:left">&#x5C24;&#x91CC;&#x897F;&#x65AF;&#xB7;&#x683C;&#x5170;&#x7279;&#xFF08;Ulysses S.Grant&#xFF09;</td>
+<td style="text-align:left">1869-1877</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td style="text-align:left">&#x62C9;&#x745F;&#x798F;&#x5FB7;&#xB7;&#x4F2F;&#x67E5;&#x5FB7;&#xB7;&#x6D77;&#x65AF;&#xFF08;Rutherford Birchard Hayes&#xFF09;</td>
+<td style="text-align:left">1877-1881</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x963F;&#x5E03;&#x62C9;&#x59C6;&#xB7;&#x52A0;&#x83F2;&#x5C14;&#x5FB7;&#xFF08;James Abram Garfield&#xFF09;</td>
+<td style="text-align:left">1881</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">21</td>
+<td style="text-align:left">&#x5207;&#x65AF;&#x7279;&#xB7;&#x827E;&#x4F26;&#xB7;&#x963F;&#x745F;&#xFF08;Chester Alan Arthur&#xFF09;</td>
+<td style="text-align:left">1881-1885</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">22</td>
+<td style="text-align:left">&#x53F2;&#x8482;&#x82AC;&#xB7;&#x683C;&#x7F57;&#x4F5B;&#xB7;&#x514B;&#x5229;&#x592B;&#x5170;&#xFF08;Stephen Grover Cleveland&#xFF09;</td>
+<td style="text-align:left">1885-1889</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">23</td>
+<td style="text-align:left">&#x672C;&#x6770;&#x660E;&#xB7;&#x54C8;&#x91CC;&#x68EE; &#xFF08;Benjamin Harrison&#xFF09;</td>
+<td style="text-align:left">1889-1893</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">24</td>
+<td style="text-align:left">&#x53F2;&#x8482;&#x82AC;&#xB7;&#x683C;&#x7F57;&#x4F5B;&#xB7;&#x514B;&#x5229;&#x592B;&#x5170;&#xFF08;Stephen Grover Cleveland &#xFF09;</td>
+<td style="text-align:left">1893-1897</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">25</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x9EA6;&#x91D1;&#x5229;&#xFF08;William McKinley&#xFF09; 1897-1901</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">26</td>
+<td style="text-align:left">&#x897F;&#x5965;&#x591A;&#xB7;&#x7F57;&#x65AF;&#x798F; &#xFF08;Theodore Roosevelt&#xFF09;</td>
+<td style="text-align:left">1901-1909</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">27</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x970D;&#x534E;&#x5FB7;&#xB7;&#x5854;&#x592B;&#x8131;&#xFF08;William Howard Taft&#xFF09;</td>
+<td style="text-align:left">1909-1913</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">28</td>
+<td style="text-align:left">&#x6258;&#x9A6C;&#x65AF;&#xB7;&#x4F0D;&#x5FB7;&#x7F57;&#xB7;&#x5A01;&#x5C14;&#x900A;&#xFF08;Thomas Woodrow Wilson&#xFF09;</td>
+<td style="text-align:left">1913-1921</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">29</td>
+<td style="text-align:left">&#x6C83;&#x4F26;&#xB7;&#x7518;&#x6885;&#x5229;&#x5C14;&#xB7;&#x54C8;&#x5B9A;&#xFF08;Warren Gamaliel Harding&#xFF09;</td>
+<td style="text-align:left">1921-1923</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">30</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x5361;&#x5C14;&#x6587;&#xB7;&#x67EF;&#x7ACB;&#x829D;&#xFF08;John Calvin Coolidge&#xFF09;</td>
+<td style="text-align:left">1923-1929</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">31</td>
+<td style="text-align:left">&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x514B;&#x62C9;&#x514B;&#xB7;&#x80E1;&#x4F5B;&#xFF08;Herbert Clark Hoover&#xFF09; 1929-1933</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">32</td>
+<td style="text-align:left">&#x5BCC;&#x5170;&#x514B;&#x6797;&#xB7;&#x5FB7;&#x62C9;&#x8BFA;&#xB7;&#x7F57;&#x65AF;&#x798F;&#xFF08;Franklin Delano Roosevelt&#xFF09;</td>
+<td style="text-align:left">1933-1945</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">33</td>
+<td style="text-align:left">&#x54C8;&#x91CC;&#xB7;S&#xB7;&#x675C;&#x9C81;&#x95E8;&#xFF08;Harry S. Truman&#xFF09;</td>
+<td style="text-align:left">1945-1953</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">34</td>
+<td style="text-align:left">&#x5FB7;&#x6000;&#x7279;&#xB7;&#x6234;&#x7EF4;&#xB7;&#x827E;&#x68EE;&#x8C6A;&#x5A01;&#x5C14;&#xFF08;Dwight David Eisenhower&#xFF09;</td>
+<td style="text-align:left">1953-1961</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">35</td>
+<td style="text-align:left">&#x7EA6;&#x7FF0;&#xB7;&#x83F2;&#x8328;&#x6770;&#x62C9;&#x5FB7;&#xB7;&#x80AF;&#x5C3C;&#x8FEA;&#xFF08;John Fitzgerald Kennedy&#xFF09;</td>
+<td style="text-align:left">1961-1963</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">36</td>
+<td style="text-align:left">&#x6797;&#x767B;&#xB7;&#x62DC;&#x6069;&#x65AF;&#xB7;&#x7EA6;&#x7FF0;&#x900A;&#xFF08;Lyndon Baines Johnson&#xFF09;</td>
+<td style="text-align:left">1963-1969</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">37</td>
+<td style="text-align:left">&#x7406;&#x67E5;&#x5FB7;&#xB7;&#x7C73;&#x5C14;&#x8C6A;&#x65AF;&#xB7;&#x5C3C;&#x514B;&#x677E;&#xFF08;Richard Milhous Nixon&#xFF09;</td>
+<td style="text-align:left">1969-1974</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">38</td>
+<td style="text-align:left">&#x6770;&#x62C9;&#x5C14;&#x5FB7;&#xB7;&#x9C81;&#x9053;&#x592B;&#xB7;&#x798F;&#x7279;&#xFF08;Gerald Rudolph Ford&#xFF09;</td>
+<td style="text-align:left">1974-1977</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">39</td>
+<td style="text-align:left">&#x8A79;&#x59C6;&#x65AF;&#xB7;&#x5384;&#x5C14;&#xB7;&#xB7;&#x5361;&#x7279;&#xFF08;James Earl Carter &#xFF09;</td>
+<td style="text-align:left">1977-1981</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">40</td>
+<td style="text-align:left">&#x7F57;&#x7EB3;&#x5FB7;&#xB7;&#x5A01;&#x5C14;&#x900A;&#xB7;&#x91CC;&#x6839;&#xFF08;Ronald Wilson Reagan&#xFF09;</td>
+<td style="text-align:left">1981-1989</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">41</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Herbert Walker Bush&#xFF09; 1989-1993</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">42</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x6770;&#x6590;&#x900A;&#xB7;&#x514B;&#x6797;&#x987F;&#xFF08;William Jefferson Clinton&#xFF09;</td>
+<td style="text-align:left">1993-2001</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">43</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Walker Bush&#xFF09; 2001-2009</td>
+<td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
+</tr>
+<tr>
+<td style="text-align:center">44</td>
+<td style="text-align:left">&#x8D1D;&#x62C9;&#x514B;&#xB7;&#x4FAF;&#x8D5B;&#x56E0;&#xB7;&#x5965;&#x5DF4;&#x9A6C;&#xFF08;Barack Hussein Obama&#xFF09;</td>
+<td style="text-align:left">2009-2017</td>
+<td style="text-align:left">&#x6C11;&#x4E3B;&#x515A;</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[改善性能的几个技巧]]></title>
+      <url>http://code.idea4j.com/2016/11/04/xingnen2/</url>
+      <content type="html"><![CDATA[<h3 id="&#x614E;&#x7528;&#x5F02;&#x5E38;"><a href="#&#x614E;&#x7528;&#x5F02;&#x5E38;" class="headerlink" title="&#x614E;&#x7528;&#x5F02;&#x5E38;"></a>&#x614E;&#x7528;&#x5F02;&#x5E38;</h3><h3 id="&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;"><a href="#&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;" class="headerlink" title="&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;"></a>&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x53D8;&#x91CF;</h3><h3 id="&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;"><a href="#&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;" class="headerlink" title="&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;"></a>&#x4F4D;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4E58;&#x9664;&#x6CD5;</h3><h3 id="&#x66FF;&#x6362;switch"><a href="#&#x66FF;&#x6362;switch" class="headerlink" title="&#x66FF;&#x6362;switch"></a>&#x66FF;&#x6362;switch</h3><h3 id="&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;"><a href="#&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;" class="headerlink" title="&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;"></a>&#x4E00;&#x7EF4;&#x6570;&#x7EC4;&#x4EE3;&#x66FF;&#x4E8C;&#x7EF4;&#x6570;&#x7EC4;</h3><h3 id="&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;"><a href="#&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;" class="headerlink" title="&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;"></a>&#x63D0;&#x53D6;&#x8868;&#x8FBE;&#x5F0F;</h3><h3 id="&#x5C55;&#x5F00;&#x5FAA;&#x73AF;"><a href="#&#x5C55;&#x5F00;&#x5FAA;&#x73AF;" class="headerlink" title="&#x5C55;&#x5F00;&#x5FAA;&#x73AF;"></a>&#x5C55;&#x5F00;&#x5FAA;&#x73AF;</h3><h3 id="&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;"><a href="#&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;" class="headerlink" title="&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;"></a>&#x5E03;&#x5C14;&#x8FD0;&#x7B97;&#x4EE3;&#x66FF;&#x4F4D;&#x8FD0;&#x7B97;</h3><h3 id="&#x4F7F;&#x7528;arrayCopy"><a href="#&#x4F7F;&#x7528;arrayCopy" class="headerlink" title="&#x4F7F;&#x7528;arrayCopy"></a>&#x4F7F;&#x7528;arrayCopy</h3><h3 id="&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I-O&#x64CD;&#x4F5C;"><a href="#&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I-O&#x64CD;&#x4F5C;" class="headerlink" title="&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I/O&#x64CD;&#x4F5C;"></a>&#x4F7F;&#x7528;Buffer&#x8FDB;&#x884C;I/O&#x64CD;&#x4F5C;</h3><h3 id="&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new"><a href="#&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new" class="headerlink" title="&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new"></a>&#x4F7F;&#x7528;clone&#x4EE3;&#x66FF;new</h3><h3 id="&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"><a href="#&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;" class="headerlink" title="&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;"></a>&#x9759;&#x6001;&#x65B9;&#x6CD5;&#x4EE3;&#x66FF;&#x5B9E;&#x4F8B;&#x65B9;&#x6CD5;</h3>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[性能概述]]></title>
+      <url>http://code.idea4j.com/2016/11/03/xingnen/</url>
+      <content type="html"><![CDATA[<p>&#x7A0B;&#x5E8F;&#x7684;&#x6027;&#x80FD;&#x901A;&#x8FC7;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x65B9;&#x9762;&#x6765;&#x8868;&#x73B0;&#xFF1A;</p>
+<ul>
+<li>&#x6267;&#x884C;&#x901F;&#x5EA6;&#xFF1A;</li>
+<li>&#x5185;&#x5B58;&#x5206;&#x914D;&#xFF1A;</li>
+<li>&#x542F;&#x52A8;&#x65F6;&#x95F4;&#xFF1A;</li>
+<li>&#x8D1F;&#x8F7D;&#x627F;&#x53D7;&#x80FD;&#x529B;&#xFF1A;</li>
+</ul>
+<p>&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x7684;&#x5C42;&#x6B21;</p>
+<ul>
+<li>&#x8BBE;&#x8BA1;&#x8C03;&#x4F18;</li>
+<li>&#x4EE3;&#x7801;&#x8C03;&#x4F18;</li>
+<li>JVM&#x8C03;&#x4F18;</li>
+<li>&#x6570;&#x636E;&#x5E93;&#x8C03;&#x4F18;</li>
+<li>&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x8C03;&#x4F18;</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[一行配置文件引发的“血案”]]></title>
       <url>http://code.idea4j.com/2016/11/02/servlet3/</url>
       <content type="html"><![CDATA[<p>&#x6709;&#x70B9;&#x7A7A;&#x95F2;&#x770B;&#x4E86;&#x770B;servlet3.0&#x89C4;&#x8303;&#xFF0C;&#x5C31;&#x60F3;&#x7740;&#x8981;&#x4E0D;&#x6765;&#x4E2A;&#x201C;hello world&#x201D;&#x73A9;&#x73A9;&#x3002;<br>&#x9A6C;&#x4E0A;&#x5F00;&#x5E72;&#xFF0C;&#x9996;&#x5148;maven&#x751F;&#x6210;&#x5DE5;&#x7A0B;&#x7684;&#x6587;&#x4EF6;&#x7ED3;&#x6784;&#x3002;&#x7136;&#x540E;&#x627E;&#x4E2A;3.0&#x7684;web.xml&#xFF0C;&#x8BB0;&#x5F97;tomcat7&#x4E0B;&#x6709;&#x8FD9;&#x6837;&#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x4E8E;&#x662F;&#x627E;&#x5230;tomcat7&#x4E0B;&#x7684;manager&#x590D;&#x5236;<br>&#x4E86;&#x4E00;&#x4E0B;&#xFF0C;&#x53BB;&#x6389;&#x4E2D;&#x95F4;&#x90E8;&#x5206;&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://java.sun.com/xml/ns/javaee&quot;</span></span></div><div class="line">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></div><div class="line">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://java.sun.com/xml/ns/javaee</span></div><div class="line">                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;</div><div class="line">         <span class="attr">version</span>=<span class="string">&quot;3.0&quot;</span></div><div class="line">         <span class="attr">metadata-complete</span>=<span class="string">&quot;true&quot;</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">display-name</span>&gt;</span>idea4j<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span><span class="tag">&lt;/<span class="name">description</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></div></pre></td></tr></table></figure></p>
