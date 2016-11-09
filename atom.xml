@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://code.idea4j.com/"/>
-  <updated>2016-11-09T03:22:05.961Z</updated>
+  <updated>2016-11-09T03:42:08.403Z</updated>
   <id>http://code.idea4j.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://code.idea4j.com/2016/11/09/usapresident/"/>
     <id>http://code.idea4j.com/2016/11/09/usapresident/</id>
     <published>2016-11-09T03:20:52.000Z</published>
-    <updated>2016-11-09T03:22:05.961Z</updated>
+    <updated>2016-11-09T03:42:08.403Z</updated>
     
     <content type="html"><![CDATA[<table>
 <thead>
@@ -178,7 +178,8 @@
 </tr>
 <tr>
 <td style="text-align:center">25</td>
-<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x9EA6;&#x91D1;&#x5229;&#xFF08;William McKinley&#xFF09; 1897-1901</td>
+<td style="text-align:left">&#x5A01;&#x5EC9;&#xB7;&#x9EA6;&#x91D1;&#x5229;&#xFF08;William McKinley&#xFF09;</td>
+<td style="text-align:left">1897-1901</td>
 <td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
 </tr>
 <tr>
@@ -213,7 +214,8 @@
 </tr>
 <tr>
 <td style="text-align:center">31</td>
-<td style="text-align:left">&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x514B;&#x62C9;&#x514B;&#xB7;&#x80E1;&#x4F5B;&#xFF08;Herbert Clark Hoover&#xFF09; 1929-1933</td>
+<td style="text-align:left">&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x514B;&#x62C9;&#x514B;&#xB7;&#x80E1;&#x4F5B;&#xFF08;Herbert Clark Hoover&#xFF09;</td>
+<td style="text-align:left">1929-1933</td>
 <td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
 </tr>
 <tr>
@@ -272,7 +274,8 @@
 </tr>
 <tr>
 <td style="text-align:center">41</td>
-<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Herbert Walker Bush&#xFF09; 1989-1993</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x8D6B;&#x4F2F;&#x7279;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Herbert Walker Bush&#xFF09;</td>
+<td style="text-align:left">1989-1993</td>
 <td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
 </tr>
 <tr>
@@ -283,7 +286,8 @@
 </tr>
 <tr>
 <td style="text-align:center">43</td>
-<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Walker Bush&#xFF09; 2001-2009</td>
+<td style="text-align:left">&#x4E54;&#x6CBB;&#xB7;&#x6C83;&#x514B;&#xB7;&#x5E03;&#x4EC0;&#xFF08;George Walker Bush&#xFF09;</td>
+<td style="text-align:left">2001-2009</td>
 <td style="text-align:left">&#x5171;&#x548C;&#x515A;</td>
 </tr>
 <tr>
