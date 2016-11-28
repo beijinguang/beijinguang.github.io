@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://code.idea4j.com/"/>
-  <updated>2016-11-14T09:14:40.244Z</updated>
+  <updated>2016-11-28T08:57:19.213Z</updated>
   <id>http://code.idea4j.com/</id>
   
   <author>
@@ -14,6 +14,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>js与jQuery 获取父窗、子窗的iframe</title>
+    <link href="http://code.idea4j.com/2016/11/28/jqiframe/"/>
+    <id>http://code.idea4j.com/2016/11/28/jqiframe/</id>
+    <published>2016-11-28T08:48:31.000Z</published>
+    <updated>2016-11-28T08:57:19.213Z</updated>
+    
+    <content type="html"><![CDATA[<p>&#x4ECA;&#x5929;&#x722C;&#x53D6;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x7684;&#x65F6;&#x5019;&#xFF0C;chrome&#x5F00;&#x53D1;&#x7740;&#x5DE5;&#x5177;&#x660E;&#x660E;&#x770B;&#x5230;&#x4E86;&#x4E00;&#x4E2A;input&#x4E0A;&#x7684;id&#xFF0C;&#x4F46;&#x662F;&#x7528;jQuery &#x5374;&#x5F97;&#x4E0D;&#x5230;&#xFF0C;&#x4ED4;&#x7EC6;&#x89C2;&#x5BDF;Dom&#x624D;&#x53D1;&#x73B0;<br>&#x6B64;id&#x662F;&#x5728;&#x4E00;&#x4E2A;iframe&#x91CC;&#x9762;&#xFF0C;&#x4E8E;&#x662F;&#x67E5;&#x8BE2;&#x4EE5;&#x4E9B;&#x8D44;&#x6599;&#x603B;&#x7ED3;&#x5982;&#x4E0B;&#xFF1A;</p>
+<h2 id="js"><a href="#js" class="headerlink" title="js"></a>js</h2><h3 id="&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;"><a href="#&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;" class="headerlink" title="&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;"></a>&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;</h3><p>1&#x3001;<br>&#x683C;&#x5F0F;&#xFF1A;window.frames[&#x201C;iframe&#x7684;name&#x503C;&#x201D;].document.getElementByIdx_x(&#x201C;iframe&#x4E2D;&#x63A7;&#x4EF6;&#x7684;ID&#x201D;).click();<br>&#x5B9E;&#x4F8B;&#xFF1A;window.frames[&#x201C;ifm&#x201D;].document.getElementByIdx_x(&#x201C;btnOk&#x201D;).click();<br>2&#x3001;<br>&#x683C;&#x5F0F;&#xFF1A;<br>var obj=document.getElementByIdx_x(&#x201C;iframe&#x7684;name&#x201D;).contentWindow;<br>var ifmObj=obj.document.getElementByIdx_x(&#x201C;iframe&#x4E2D;&#x63A7;&#x4EF6;&#x7684;ID&#x201D;);<br>ifmObj.click();<br>&#x5B9E;&#x4F8B;&#xFF1A;<br>var obj=document.getElementByIdx_x(&#x201C;ifm&#x201D;).contentWindow;<br>var ifmObj=obj.document.getElementByIdx_x(&#x201C;btnOk&#x201D;);<br>ifmObj.click();</p>
+<h3 id="&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;"><a href="#&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;" class="headerlink" title="&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;"></a>&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;</h3><p>&#x683C;&#x5F0F;&#xFF1A;window.parent.document.getElementByIdx_x(&#x201C;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;ID&#x201D;).click();<br>&#x5B9E;&#x4F8B;&#xFF1A;window.parent.document.getElementByIdx_x(&#x201C;btnOk&#x201D;).click();</p>
+<h2 id="jquery"><a href="#jquery" class="headerlink" title="jquery"></a>jquery</h2><h3 id="&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;-1"><a href="#&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;-1" class="headerlink" title="&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;"></a>&#x5728;&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x83B7;&#x53D6;iframe&#x4E2D;&#x7684;&#x5143;&#x7D20;</h3><p>1&#x3001;<br>&#x683C;&#x5F0F;&#xFF1A;$(&#x201C;#iframe&#x7684;ID&#x201D;).contents().find(&#x201C;#iframe&#x4E2D;&#x7684;&#x63A7;&#x4EF6;ID&#x201D;).click();//jquery &#x65B9;&#x6CD5;1<br>&#x5B9E;&#x4F8B;&#xFF1A;$(&#x201C;#ifm&#x201D;).contents().find(&#x201C;#btnOk&#x201D;).click();//jquery &#x65B9;&#x6CD5;1<br>2&#x3001;<br>&#x683C;&#x5F0F;&#xFF1A;$(&#x201C;#iframe&#x4E2D;&#x7684;&#x63A7;&#x4EF6;ID&#x201D;,document.frames(&#x201C;frame&#x7684;name&#x201D;).document).click();//jquery &#x65B9;&#x6CD5;2<br>&#x5B9E;&#x4F8B;&#xFF1A;$(&#x201C;#btnOk&#x201D;,document.frames(&#x201C;ifm&#x201D;).document).click();//jquery &#x65B9;&#x6CD5;2</p>
+<h3 id="&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;-1"><a href="#&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;-1" class="headerlink" title="&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;"></a>&#x5728;iframe&#x4E2D;&#x83B7;&#x53D6;&#x7236;&#x7A97;&#x53E3;&#x7684;&#x5143;&#x7D20;</h3><p>&#x683C;&#x5F0F;&#xFF1A;$(&#x2018;#&#x7236;&#x7A97;&#x53E3;&#x4E2D;&#x7684;&#x5143;&#x7D20;ID&#x2019;, parent.document).click();<br>&#x5B9E;&#x4F8B;&#xFF1A;$(&#x2018;#btnOk&#x2019;, parent.document).click();</p>
+]]></content>
+    
+    <summary type="html">
+    
+      js与jQuery 获取父窗、子窗的iframe
+    
+    </summary>
+    
+      <category term="jQuery" scheme="http://code.idea4j.com/categories/jQuery/"/>
+    
+    
+      <category term="jQuery" scheme="http://code.idea4j.com/tags/jQuery/"/>
+    
+      <category term="iframe" scheme="http://code.idea4j.com/tags/iframe/"/>
+    
+  </entry>
   
   <entry>
     <title>sql优化</title>
@@ -1466,29 +1495,6 @@
     <summary type="html">
     
       &lt;p&gt;   &amp;#x8033;&amp;#x673A;&amp;#x4E2D;&amp;#x64AD;&amp;#x653E;&amp;#x7740;&amp;#x6709;&amp;#x7F51;&amp;#x6613;&amp;#x4E91;&amp;#x97F3;&amp;#x4E50;&amp;#x641C;&amp;#x5230;Alizee&amp;#x7684;&amp;#x6B4C;&amp;#xFF0C;&amp;#x6B4C;&amp;#x8BCD;&amp;#x662F;&amp;#x6CD5;&amp;#x6587;&amp;#x7684;&amp;#xFF0C;&amp;#x5C3D;&amp;#x7BA1;&amp;#x542C;&amp;#x4E0D;&amp;#x61C2;&amp;#xFF0C;&amp;#x4F46;&amp;#x662F;Alizee&amp;#x7684;&amp;#x58F0;&amp;#x97F3;&amp;#x548C;&amp;#x97F3;&amp;#x4E50;&amp;#x7684;&amp;#x8282;&amp;#x594F;&lt;br&gt;&amp;#x603B;&amp;#x662F;&amp;#x80FD;&amp;#x8BA9;&amp;#x6211;&amp;#x5FC3;&amp;#x60C5;&amp;#x8212;&amp;#x7F13;&amp;#x3002;&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随笔" scheme="http://code.idea4j.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="随笔" scheme="http://code.idea4j.com/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>随笔</title>
-    <link href="http://code.idea4j.com/2016/09/21/essay/"/>
-    <id>http://code.idea4j.com/2016/09/21/essay/</id>
-    <published>2016-09-21T15:22:32.000Z</published>
-    <updated>2016-10-13T07:52:22.489Z</updated>
-    
-    <content type="html"><![CDATA[<p>&#x604D;&#x60DA;&#x4E4B;&#x95F4;<br>&#x4E09;&#x5341;&#x4E86;<br>&#x6211;&#x8FD8;&#x6CA1;&#x6709;&#x4E8C;&#x591F;&#x554A;<br>&#x56DE;&#x84E6;&#x8FC7;&#x53BB;&#x5C31;&#x5728;&#x773C;&#x524D;<br>&#x7AA5;&#x671B;&#x5C06;&#x6765;&#x603B;&#x4E5F;&#x770B;&#x4E0D;&#x5230;&#x8FB9;<br>&#x4F3C;&#x4E4E;&#x53C8;&#x80FD;&#x6E05;&#x6E05;&#x695A;&#x695A;&#x5730;&#x770B;&#x5230;<br>&#x4E5F;&#x8BB8;&#x5C31;&#x662F;&#x4ECA;&#x5929;&#x7684;&#x5FAA;&#x73AF;&#x590D;&#x5236;</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&amp;#x604D;&amp;#x60DA;&amp;#x4E4B;&amp;#x95F4;&lt;br&gt;&amp;#x4E09;&amp;#x5341;&amp;#x4E86;&lt;br&gt;&amp;#x6211;&amp;#x8FD8;&amp;#x6CA1;&amp;#x6709;&amp;#x4E8C;&amp;#x591F;&amp;#x554A;&lt;br&gt;&amp;#x56DE;&amp;#x84
     
     </summary>
     
