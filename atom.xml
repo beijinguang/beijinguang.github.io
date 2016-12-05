@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://code.idea4j.com/"/>
-  <updated>2016-11-28T08:57:19.213Z</updated>
+  <updated>2016-12-05T11:18:23.212Z</updated>
   <id>http://code.idea4j.com/</id>
   
   <author>
@@ -14,6 +14,56 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Lua语言积累</title>
+    <link href="http://code.idea4j.com/2016/12/05/lua1/"/>
+    <id>http://code.idea4j.com/2016/12/05/lua1/</id>
+    <published>2016-12-05T11:11:25.000Z</published>
+    <updated>2016-12-05T11:18:23.212Z</updated>
+    
+    <content type="html"><![CDATA[<p>&#x5B66;&#x4E60;&#x53C2;&#x8003;&#x7F51;&#x7AD9;&#xFF1A;</p>
+<p><a href="http://book.luaer.cn/" target="_blank" rel="external">http://book.luaer.cn/</a><br><a href="http://lua-users.org/wiki/TutorialDirectory" target="_blank" rel="external">http://lua-users.org/wiki/TutorialDirectory</a></p>
+<p>he</p>
+]]></content>
+    
+    <summary type="html">
+    
+      lua
+    
+    </summary>
+    
+      <category term="Lua" scheme="http://code.idea4j.com/categories/Lua/"/>
+    
+    
+      <category term="Lua" scheme="http://code.idea4j.com/tags/Lua/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sql语句：根据身份证得到省份、生日、性别</title>
+    <link href="http://code.idea4j.com/2016/11/30/sqljl/"/>
+    <id>http://code.idea4j.com/2016/11/30/sqljl/</id>
+    <published>2016-11-30T08:08:54.000Z</published>
+    <updated>2016-11-30T08:18:05.724Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="&#x6839;&#x636E;&#x8EAB;&#x4EFD;&#x8BC1;&#x5F97;&#x5230;&#x7701;&#x4EFD;"><a href="#&#x6839;&#x636E;&#x8EAB;&#x4EFD;&#x8BC1;&#x5F97;&#x5230;&#x7701;&#x4EFD;" class="headerlink" title="&#x6839;&#x636E;&#x8EAB;&#x4EFD;&#x8BC1;&#x5F97;&#x5230;&#x7701;&#x4EFD;"></a>&#x6839;&#x636E;&#x8EAB;&#x4EFD;&#x8BC1;&#x5F97;&#x5230;&#x7701;&#x4EFD;</h3><p>CASE<br>WHEN SUBSTRING(id_card_no,1,2)=11  THEN  &#x2018;&#x5317;&#x4EAC;&#x5E02;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=12  THEN  &#x2018;&#x5929;&#x6D25;&#x5E02;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=13  THEN  &#x2018;&#x6CB3;&#x5317;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=14  THEN  &#x2018;&#x5C71;&#x897F;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=15  THEN  &#x2018;&#x5185;&#x8499;&#x53E4;&#x81EA;&#x6CBB;&#x533A;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=21  THEN  &#x2018;&#x8FBD;&#x5B81;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=22  THEN  &#x2018;&#x5409;&#x6797;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=23  THEN  &#x2018;&#x9ED1;&#x9F99;&#x6C5F;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=31  THEN  &#x2018;&#x4E0A;&#x6D77;&#x5E02;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=32  THEN  &#x2018;&#x6C5F;&#x82CF;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=33  THEN  &#x2018;&#x6D59;&#x6C5F;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=34  THEN  &#x2018;&#x5B89;&#x5FBD;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=35  THEN  &#x2018;&#x798F;&#x5EFA;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=36  THEN  &#x2018;&#x6C5F;&#x897F;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=37  THEN  &#x2018;&#x5C71;&#x4E1C;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=41  THEN  &#x2018;&#x6CB3;&#x5357;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=42  THEN  &#x2018;&#x6E56;&#x5317;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=43  THEN  &#x2018;&#x6E56;&#x5357;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=44  THEN  &#x2018;&#x5E7F;&#x4E1C;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=45  THEN  &#x2018;&#x5E7F;&#x897F;&#x58EE;&#x65CF;&#x81EA;&#x6CBB;&#x533A;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=46  THEN  &#x2018;&#x6D77;&#x5357;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=50  THEN  &#x2018;&#x91CD;&#x5E86;&#x5E02;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=51  THEN  &#x2018;&#x56DB;&#x5DDD;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=52  THEN  &#x2018;&#x8D35;&#x5DDE;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=53  THEN  &#x2018;&#x4E91;&#x5357;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=54  THEN  &#x2018;&#x897F;&#x85CF;&#x81EA;&#x6CBB;&#x533A;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=61  THEN  &#x2018;&#x9655;&#x897F;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=62  THEN  &#x2018;&#x7518;&#x8083;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=63  THEN  &#x2018;&#x9752;&#x6D77;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=64  THEN  &#x2018;&#x5B81;&#x590F;&#x56DE;&#x65CF;&#x81EA;&#x6CBB;&#x533A;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=65  THEN  &#x2018;&#x65B0;&#x7586;&#x7EF4;&#x543E;&#x5C14;&#x81EA;&#x6CBB;&#x533A;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=71  THEN  &#x2018;&#x53F0;&#x6E7E;&#x7701;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=81  THEN  &#x2018;&#x9999;&#x6E2F;&#x7279;&#x522B;&#x884C;&#x653F;&#x533A;&#x2019;<br>WHEN SUBSTRING(id_card_no,1,2)=91  THEN  &#x2018;&#x6FB3;&#x95E8;&#x7279;&#x522B;&#x884C;&#x653F;&#x533A;&#x2019;<br>END AS &#x2018;&#x7701;&#x4EFD;&#x2019;,</p>
+<h3 id="&#x751F;&#x65E5;"><a href="#&#x751F;&#x65E5;" class="headerlink" title="&#x751F;&#x65E5;"></a>&#x751F;&#x65E5;</h3><p>SUBSTRING(id_card_no,7,8) AS &#x2018;&#x751F;&#x65E5;&#x2019;</p>
+<h3 id="&#x6027;&#x522B;"><a href="#&#x6027;&#x522B;" class="headerlink" title="&#x6027;&#x522B;"></a>&#x6027;&#x522B;</h3><p>CASE WHEN (SUBSTRING(u.id_card_no,LENGTH(u.id_card_no)-1,1)%2=0) THEN &#x2018;&#x5973;&#x2019; ELSE &#x2018;&#x7537;&#x2019; END</p>
+]]></content>
+    
+    <summary type="html">
+    
+      根据身份证得到省份、生日、性别
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://code.idea4j.com/categories/mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://code.idea4j.com/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>js与jQuery 获取父窗、子窗的iframe</title>
@@ -1450,58 +1500,6 @@
     
     
       <category term="社会" scheme="http://code.idea4j.com/tags/%E7%A4%BE%E4%BC%9A/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>微信小程序</title>
-    <link href="http://code.idea4j.com/2016/09/22/essay0923/"/>
-    <id>http://code.idea4j.com/2016/09/22/essay0923/</id>
-    <published>2016-09-22T15:10:26.000Z</published>
-    <updated>2016-09-23T06:42:53.324Z</updated>
-    
-    <content type="html"><![CDATA[<p>&#x5FAE;&#x4FE1;&#x5C0F;&#x7A0B;&#x5E8F;&#x5F00;&#x53D1;&#x53C2;&#x8003;&#x8D44;&#x6E90;</p>
-<p><a href="https://github.com/Aufree/awesome-wechat-weapp" target="_blank" rel="external">https://github.com/Aufree/awesome-wechat-weapp</a><br><a href="https://github.com/justjavac/awesome-wechat-weapp" target="_blank" rel="external">https://github.com/justjavac/awesome-wechat-weapp</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&amp;#x5FAE;&amp;#x4FE1;&amp;#x5C0F;&amp;#x7A0B;&amp;#x5E8F;&amp;#x5F00;&amp;#x53D1;&amp;#x53C2;&amp;#x8003;&amp;#x8D44;&amp;#x6E90;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/Aufree/awesom
-    
-    </summary>
-    
-      <category term="微信" scheme="http://code.idea4j.com/categories/%E5%BE%AE%E4%BF%A1/"/>
-    
-    
-      <category term="微信小程序" scheme="http://code.idea4j.com/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>个人小记</title>
-    <link href="http://code.idea4j.com/2016/09/22/essay0922/"/>
-    <id>http://code.idea4j.com/2016/09/22/essay0922/</id>
-    <published>2016-09-22T02:23:15.000Z</published>
-    <updated>2016-10-11T04:52:52.238Z</updated>
-    
-    <content type="html"><![CDATA[<p>   &#x8033;&#x673A;&#x4E2D;&#x64AD;&#x653E;&#x7740;&#x6709;&#x7F51;&#x6613;&#x4E91;&#x97F3;&#x4E50;&#x641C;&#x5230;Alizee&#x7684;&#x6B4C;&#xFF0C;&#x6B4C;&#x8BCD;&#x662F;&#x6CD5;&#x6587;&#x7684;&#xFF0C;&#x5C3D;&#x7BA1;&#x542C;&#x4E0D;&#x61C2;&#xFF0C;&#x4F46;&#x662F;Alizee&#x7684;&#x58F0;&#x97F3;&#x548C;&#x97F3;&#x4E50;&#x7684;&#x8282;&#x594F;<br>&#x603B;&#x662F;&#x80FD;&#x8BA9;&#x6211;&#x5FC3;&#x60C5;&#x8212;&#x7F13;&#x3002;<br><a id="more"></a><br>   &#x5F88;&#x957F;&#x7684;&#x65F6;&#x95F4;&#x6CA1;&#x6709;&#x8FD9;&#x6837;&#x628A;&#x81EA;&#x5DF1;&#x7684;&#x6240;&#x601D;&#x6240;&#x60F3;&#x5316;&#x4E3A;&#x6587;&#x5B57;&#x4E86;&#xFF0C;&#x8BB0;&#x4E0D;&#x6E05;&#x4E0A;&#x6B21;&#x8FD9;&#x6837;&#x662F;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x4E86;&#xFF0C;&#x4E5F;&#x8BB8;&#x662F;&#x67D0;&#x5929;&#x7A81;&#x5982;&#x5176;&#x6765;&#x7684;<br>&#x5174;&#x81F4;&#x5199;&#x8FC7;&#x5427;&#x3002;&#x73B0;&#x5728;&#x5DF2;&#x7ECF;&#x8BB0;&#x4E0D;&#x6E05;&#x5185;&#x5BB9;&#xFF0C;&#x4E0D;&#x8FC7;&#x53EF;&#x4EE5;&#x786E;&#x5B9A;&#x7684;&#x662F;&#x90A3;&#x4E9B;&#x6587;&#x5B57;&#x662F;&#x7528;&#x7B14;&#x503E;&#x5410;&#x7684;&#x3002;&#x4ECA;&#x5929;&#x5E76;&#x4E0D;&#x662F;&#x6211;&#x7B2C;&#x4E00;&#x6B21;&#x7528;&#x952E;&#x76D8;&#x8868;&#x8FBE;<br>&#x7136;&#x800C;&#x786E;&#x662F;&#x7B2C;&#x4E00;&#x6B21;&#x5F3A;&#x70C8;&#x5730;&#x60F3;&#x901A;&#x8FC7;&#x952E;&#x76D8;&#x56DE;&#x60F3;&#x8BB0;&#x5F55;&#x548C;&#x8868;&#x8FBE;&#x5FC3;&#x60C5;&#x3002;</p>
-<h3 id="&#x6BD5;&#x4E1A;&#x540E;"><a href="#&#x6BD5;&#x4E1A;&#x540E;" class="headerlink" title="&#x6BD5;&#x4E1A;&#x540E;"></a>&#x6BD5;&#x4E1A;&#x540E;</h3><p>   &#x67D0;&#x4E00;&#x5929;&#xFF0C;&#x7ECF;&#x8FC7;&#x4E86;&#x56DB;&#x5E74;&#x201C;&#x4E2D;&#x56FD;&#x5F0F;&#x201D;&#x5927;&#x5B66;&#x751F;&#x6D3B;&#x7684;&#x6211;&#x6BD5;&#x4E1A;&#x4E86;&#xFF08;&#x60F3;&#x627E;&#x56DB;&#x4E2A;&#x5B57;&#x6765;&#x5F62;&#x5BB9;&#x4E0B;&#x6211;&#x7684;&#x5927;&#x5B66;&#x751F;&#x6D3B;&#xFF0C;&#x4E00;&#x65F6;&#x7ADF;&#x60F3;&#x4E0D;&#x51FA;&#xFF09;&#xFF0C;<br>&#x6BD5;&#x4E1A;&#x7684;&#x6211;&#x662F;&#x5174;&#x594B;&#x7684;&#xFF0C;&#x88AB;&#x6821;&#x56ED;&#x7981;&#x9522;&#x4E86;&#x8FD1;20&#x5E74;&#xFF0C;&#x7EC8;&#x4E8E;&#x4E0D;&#x7528;&#x518D;&#x5929;&#x5929;&#x5543;&#x4E66;&#x672C;&#x4E86;&#xFF0C;&#x867D;&#x7136;&#x5927;&#x5B66;&#x5E76;&#x6CA1;&#x6709;&#x771F;&#x6B63;&#x7684;&#x5543;&#x8FC7;&#x4E00;&#x672C;&#x4E66;&#x3002;&#x5728;&#x5B66;<br>&#x6821;&#x7B7E;&#x4E86;&#x4E09;&#x65B9;&#x534F;&#x8BAE;&#x53BB;&#x4E00;&#x5BB6;&#x6C7D;&#x8F66;&#x516C;&#x53F8;&#x5DE5;&#x4F5C;&#xFF0C;&#x4E5F;&#x7B97;&#x662F;&#x4E13;&#x4E1A;&#x5BF9;&#x53E3;&#xFF0C;&#x7136;&#x800C;&#x6211;&#x8FD8;&#x662F;&#x592A;&#x5E74;&#x8F7B;&#xFF0C;&#x8F66;&#x95F4;&#x7684;&#x5DE5;&#x4F5C;&#x771F;&#x7684;&#x662F;&#x9002;&#x5E94;&#x4E0D;&#x4E86;&#x3002;<br>   &#x7EC8;&#x4E8E;&#x8FCE;&#x6765;&#x4E86;&#x4EBA;&#x751F;&#x6BD4;&#x8F83;&#x5145;&#x5B9E;&#x7684;&#x751F;&#x6D3B;&#xFF0C;&#x4E0D;&#x987E;&#x5BB6;&#x4EBA;&#x7684;&#x53CD;&#x5BF9;&#xFF0C;&#x4E00;&#x4E2A;&#x4EBA;&#x80CC;&#x7740;&#x884C;&#x674E;&#x6765;&#x5317;&#x4EAC;&#x57F9;&#x8BAD;&#x4E86;java&#x7F16;&#x7A0B;&#xFF0C;&#x672C;&#x6765;&#x662F;&#x60F3;&#x5B66;&#x4E60;<br> Android&#x7684;&#xFF0C;&#x5374;&#x9634;&#x5DEE;&#x9633;&#x9519;&#x7684;&#x5B66;&#x4E60;&#x4E86;javaEE&#xFF0C;&#x65E0;&#x8BBA;&#x5982;&#x4F55;&#xFF0C;&#x751F;&#x6D3B;&#x5145;&#x5B9E;&#x4E86;&#x3002;&#x5468;&#x4E00;&#x5230;&#x5468;&#x516D;&#x65E9;&#x8D77;&#x665A;&#x7761;&#x7684;&#x5B66;&#x4E60;&#x8BED;&#x6CD5;&#xFF0C;&#x7EC3;&#x4E60;&#x4EE3;&#x7801;&#xFF0C;<br> &#x5468;&#x65E5;&#x661F;&#x671F;&#x5929;&#x4E5F;&#x4E0D;&#x66FE;&#x653E;&#x677E;&#xFF0C;&#x7531;&#x4E8E;&#x5927;&#x5B66;&#x6709;C&#x8BED;&#x8A00;&#x7684;&#x57FA;&#x7840;&#xFF0C;&#x5B66;&#x8D77;&#x6765;&#x4E5F;&#x4E0D;&#x662F;&#x5F88;&#x5403;&#x529B;&#xFF0C;&#x4E5F;&#x7B2C;&#x4E00;&#x6B21;&#x611F;&#x5230;&#x5927;&#x5B66;&#x5B66;&#x5230;&#x7684;&#x77E5;&#x8BC6;&#x7684;&#x5B9E;&#x7528;<br> &#x4FDD;&#x6301;&#x7740;&#x5728;&#x57F9;&#x8BAD;&#x673A;&#x6784;&#x6BCF;&#x5929;&#x7B2C;&#x4E00;&#x6279;&#x4EBA;&#x53BB;&#x4E0A;&#x5B66;&#xFF0C;&#x6700;&#x540E;&#x4E00;&#x6279;&#x8D70;&#x7684;&#x4E60;&#x60EF;&#xFF0C;&#x603B;&#x7B97;&#x4FEE;&#x70BC;&#x5C0F;&#x6210;&#x3002;</p>
-<h3 id="&#x7535;&#x5B50;&#x5546;&#x52A1;&#x5F88;&#x706B;"><a href="#&#x7535;&#x5B50;&#x5546;&#x52A1;&#x5F88;&#x706B;" class="headerlink" title="&#x7535;&#x5B50;&#x5546;&#x52A1;&#x5F88;&#x706B;"></a>&#x7535;&#x5B50;&#x5546;&#x52A1;&#x5F88;&#x706B;</h3><p>   &#x8BB0;&#x5F97;&#x90A3;&#x5E74;&#x7535;&#x5B50;&#x5546;&#x52A1;&#x5F88;&#x706B;&#xFF0C;&#x6211;&#x7684;&#x7B2C;&#x4E00;&#x4EFD;&#x5DE5;&#x4F5C;&#x5C31;&#x662F;&#x5F00;&#x53D1;&#x7535;&#x5B50;&#x5546;&#x52A1;&#x7CFB;&#x7EDF;&#xFF0C;&#x56E0;&#x4E3A;&#x516C;&#x53F8;&#x662F;&#x91CD;&#x5934;&#x5F00;&#x59CB;&#x505A;&#x7535;&#x5B50;&#x5546;&#x52A1;&#x7CFB;&#x7EDF;&#xFF0C;&#x800C;&#x6211;<br> &#x662F;&#x88AB;&#x62DB;&#x8FDB;&#x516C;&#x53F8;&#x6280;&#x672F;&#x90E8;&#x95E8;&#x7684;&#x7B2C;3&#x4E2A;&#x5458;&#x5DE5;&#xFF0C;&#x6240;&#x4EE5;&#x7ED3;&#x679C;&#x5C31;&#x662F;&#x52A0;&#x73ED;&#xFF0C;&#x4E0D;&#x505C;&#x5730;&#x52A0;&#x73ED;&#xFF0C;996++&#x8FD9;&#x4E2A;&#x72B6;&#x6001;&#x4E00;&#x76F4;&#x6301;&#x7EED;&#x5230;&#x6211;&#x4ECE;&#x8FD9;&#x5BB6;&#x516C;&#x53F8;<br> &#x79BB;&#x804C;&#x3002;&#x73B0;&#x5728;&#x60F3;&#x8D77;&#x6765;&#xFF0C;&#x4E2D;&#x95F4;&#x5076;&#x5C14;&#x6709;&#x4E2A;&#x53CC;&#x4F11;&#xFF0C;&#x7B80;&#x76F4;&#x4E0D;&#x8981;&#x592A;&#x723D;&#xFF0C;&#x5468;&#x516D;&#x4F11;&#x606F;&#x5B8C;&#xFF0C;&#x4E00;&#x60F3;&#x5468;&#x65E5;&#x8FD8;&#x80FD;&#x4F11;&#x606F;&#xFF0C;&#x90A3;&#x611F;&#x89C9;&#xFF01;&#x7136;&#x800C;&#xFF0C;&#x4E5F;&#x6B63;<br> &#x662F;&#x8FD9;&#x6BB5;&#x65F6;&#x95F4;&#xFF0C;&#x6211;&#x7684;&#x6280;&#x672F;&#x5F97;&#x5230;&#x4E86;&#x5F88;&#x5927;&#x7684;&#x63D0;&#x5347;&#x3002;</p>
-<h3 id="&#x6211;&#x8981;&#x641E;IOS"><a href="#&#x6211;&#x8981;&#x641E;IOS" class="headerlink" title="&#x6211;&#x8981;&#x641E;IOS"></a>&#x6211;&#x8981;&#x641E;IOS</h3><p>   &#x51E0;&#x4E2A;&#x6708;&#x7684;IOS&#x5F00;&#x53D1;&#x751F;&#x6D3B;&#x540E;&#xFF0C;&#x53C8;&#x56DE;&#x5230;&#x4E86;JavaEE&#x5F00;&#x53D1;&#x4E0A;&#xFF0C;&#x8F6C;&#x4E86;&#x4E2A;&#x5708;&#x3002;&#x4E8B;&#x5B9E;&#x8BF4;&#x660E;&#xFF0C;&#x5B66;&#x4E60;&#x7684;&#x73AF;&#x5883;&#x5F88;&#x91CD;&#x8981;&#x2026; ,&#x7136;&#x540E;&#x8FD9;&#x4E2A;&#x65F6;<br> &#x671F;&#xFF0C;&#x6211;&#x8BD5;&#x7740;&#x7528;&#x4E86;&#x963F;&#x91CC;&#x4E91;&#xFF0C;&#x642D;&#x5EFA;&#x4E86;svn&#x3001;jira&#xFF0C;&#x641E;&#x4E86;&#x4EE3;&#x7801;&#x81EA;&#x52A8;&#x751F;&#x6210;&#x5DE5;&#x5177;&#x2026;</p>
-<h3 id="&#x7334;&#x5B50;&#x51FA;&#x4E16;"><a href="#&#x7334;&#x5B50;&#x51FA;&#x4E16;" class="headerlink" title="&#x7334;&#x5B50;&#x51FA;&#x4E16;"></a>&#x7334;&#x5B50;&#x51FA;&#x4E16;</h3><p>   &#x7528;&#x6237;1000W&#x4E86;&#xFF0C;&#x7F51;&#x7AD9;&#x76F8;&#x5BF9;&#x7A33;&#x5B9A;</p>
-<h3 id="&#x5230;&#x6B64;&#x8FD8;&#x6CA1;&#x5B8C;"><a href="#&#x5230;&#x6B64;&#x8FD8;&#x6CA1;&#x5B8C;" class="headerlink" title="&#x5230;&#x6B64;&#x8FD8;&#x6CA1;&#x5B8C;"></a>&#x5230;&#x6B64;&#x8FD8;&#x6CA1;&#x5B8C;</h3>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;   &amp;#x8033;&amp;#x673A;&amp;#x4E2D;&amp;#x64AD;&amp;#x653E;&amp;#x7740;&amp;#x6709;&amp;#x7F51;&amp;#x6613;&amp;#x4E91;&amp;#x97F3;&amp;#x4E50;&amp;#x641C;&amp;#x5230;Alizee&amp;#x7684;&amp;#x6B4C;&amp;#xFF0C;&amp;#x6B4C;&amp;#x8BCD;&amp;#x662F;&amp;#x6CD5;&amp;#x6587;&amp;#x7684;&amp;#xFF0C;&amp;#x5C3D;&amp;#x7BA1;&amp;#x542C;&amp;#x4E0D;&amp;#x61C2;&amp;#xFF0C;&amp;#x4F46;&amp;#x662F;Alizee&amp;#x7684;&amp;#x58F0;&amp;#x97F3;&amp;#x548C;&amp;#x97F3;&amp;#x4E50;&amp;#x7684;&amp;#x8282;&amp;#x594F;&lt;br&gt;&amp;#x603B;&amp;#x662F;&amp;#x80FD;&amp;#x8BA9;&amp;#x6211;&amp;#x5FC3;&amp;#x60C5;&amp;#x8212;&amp;#x7F13;&amp;#x3002;&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="随笔" scheme="http://code.idea4j.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="随笔" scheme="http://code.idea4j.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   

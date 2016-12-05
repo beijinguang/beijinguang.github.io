@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://code.idea4j.com/2016/12/05/lua1/</loc>
+    <lastmod>2016-12-05T11:18:23.212Z</lastmod>
+    <data>
+        <display>
+        <title>Lua语言积累</title>
+        <pubTime>2016-12-05T11:11:25.000Z</pubTime>
+        
+        <tag>Lua</tag>
+         
+         
+           
+             
+              <breadCrumb title="Lua" url="http://code.idea4j.com/categories/Lua/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://code.idea4j.com/2016/11/30/sqljl/</loc>
+    <lastmod>2016-11-30T08:18:05.724Z</lastmod>
+    <data>
+        <display>
+        <title>sql语句：根据身份证得到省份、生日、性别</title>
+        <pubTime>2016-11-30T08:08:54.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://code.idea4j.com/categories/mysql/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://code.idea4j.com/2016/11/28/jqiframe/</loc>
     <lastmod>2016-11-28T08:57:19.213Z</lastmod>
     <data>
@@ -824,9 +864,9 @@
         <title>设计模式(一)</title>
         <pubTime>2016-08-09T13:11:41.000Z</pubTime>
         
-        <tag>java</tag>
-         
         <tag>设计模式</tag>
+         
+        <tag>java</tag>
          
          
            
