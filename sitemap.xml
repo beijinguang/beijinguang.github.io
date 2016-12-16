@@ -2,9 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://code.idea4j.com/2016/12/12/mybatis1/</loc>
+    
+    <lastmod>2016-12-16T03:31:42.126Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/12/16/questions/</loc>
+    
+    <lastmod>2016-12-16T03:30:35.766Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/10/17/byyl/</loc>
+    
+    <lastmod>2016-12-09T06:12:37.103Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/12/08/jinyan/</loc>
+    
+    <lastmod>2016-12-08T05:29:38.310Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://code.idea4j.com/2016/12/08/javaapi1/</loc>
+    
+    <lastmod>2016-12-08T02:37:07.979Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://code.idea4j.com/2016/12/05/lua1/</loc>
     
-    <lastmod>2016-12-05T11:18:23.212Z</lastmod>
+    <lastmod>2016-12-05T11:19:32.389Z</lastmod>
     
   </url>
   
@@ -124,13 +159,6 @@
     <loc>http://code.idea4j.com/2016/10/18/huibian/</loc>
     
     <lastmod>2016-10-18T06:24:23.853Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://code.idea4j.com/2016/10/17/byyl/</loc>
-    
-    <lastmod>2016-10-17T03:22:27.729Z</lastmod>
     
   </url>
   
