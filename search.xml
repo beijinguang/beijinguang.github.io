@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[jenkins]]></title>
+      <title><![CDATA[jenkins 安装]]></title>
       <url>http://code.idea4j.com/2016/12/21/jenkins/</url>
       <content type="html"><![CDATA[<p>&#x5B89;&#x88C5;jenkins&#x7A33;&#x5B9A;&#x7248;&#x672C;</p>
 <p>sudo wget -O /etc/yum.repos.d/jenkins.repo <a href="http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo" target="_blank" rel="external">http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo</a><br>sudo rpm &#x2013;import <a href="http://pkg.jenkins-ci.org/redhat-stable/jenkins-ci.org.key" target="_blank" rel="external">http://pkg.jenkins-ci.org/redhat-stable/jenkins-ci.org.key</a><br>sudo yum install jenkins</p>
@@ -15,7 +15,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[linux2Linux]]></title>
+      <title><![CDATA[linux 端口查看]]></title>
       <url>http://code.idea4j.com/2016/12/21/linux2/</url>
       <content type="html"><![CDATA[<p>linux&#x5F00;&#x542F;&#x5141;&#x8BB8;&#x5916;&#x7F51;&#x8BBF;&#x95EE;&#x7684;&#x7AEF;&#x53E3;</p>
 <p>LINUX&#x5F00;&#x542F;&#x5141;&#x8BB8;&#x5BF9;&#x5916;&#x8BBF;&#x95EE;&#x7684;&#x7F51;&#x7EDC;&#x7AEF;&#x53E3; </p>
@@ -114,7 +114,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[svn1]]></title>
+      <title><![CDATA[linux下svn安装]]></title>
       <url>http://code.idea4j.com/2016/12/21/svn1/</url>
       <content type="html"><![CDATA[<p>&#x5B89;&#x88C5;&#x6B65;&#x9AA4;&#x5982;&#x4E0B;&#xFF1A;</p>
 <ol>

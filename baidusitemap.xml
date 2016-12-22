@@ -5,29 +5,19 @@
     
   <url>
     <loc>http://code.idea4j.com/2016/12/21/linux2/</loc>
-    <lastmod>2016-12-21T13:08:19.734Z</lastmod>
+    <lastmod>2016-12-22T01:46:00.090Z</lastmod>
     <data>
         <display>
-        <title>linux2Linux</title>
+        <title>linux 端口查看</title>
         <pubTime>2016-12-21T05:39:06.000Z</pubTime>
         
+        <tag>Linux</tag>
+         
          
            
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://code.idea4j.com/2016/12/21/jenkins/</loc>
-    <lastmod>2016-12-21T12:59:59.894Z</lastmod>
-    <data>
-        <display>
-        <title>jenkins</title>
-        <pubTime>2016-12-21T12:42:02.000Z</pubTime>
-        
-         
-           
+             
+              <breadCrumb title="Linux" url="http://code.idea4j.com/categories/Linux/"/>
+          
         </display>
     </data>
     </url>
@@ -35,10 +25,10 @@
     
   <url>
     <loc>http://code.idea4j.com/2016/12/21/svn1/</loc>
-    <lastmod>2016-12-21T12:28:44.840Z</lastmod>
+    <lastmod>2016-12-22T01:42:23.950Z</lastmod>
     <data>
         <display>
-        <title>svn1</title>
+        <title>linux下svn安装</title>
         <pubTime>2016-12-21T03:15:45.000Z</pubTime>
         
         <tag>svn</tag>
@@ -47,6 +37,46 @@
            
              
               <breadCrumb title="svn" url="http://code.idea4j.com/categories/svn/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://code.idea4j.com/2016/12/21/linux1/</loc>
+    <lastmod>2016-12-22T01:40:14.960Z</lastmod>
+    <data>
+        <display>
+        <title>linux下的文件结构，每个文件夹用途</title>
+        <pubTime>2016-12-21T03:17:36.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://code.idea4j.com/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://code.idea4j.com/2016/12/21/jenkins/</loc>
+    <lastmod>2016-12-22T01:39:54.317Z</lastmod>
+    <data>
+        <display>
+        <title>jenkins 安装</title>
+        <pubTime>2016-12-21T12:42:02.000Z</pubTime>
+        
+        <tag>CI</tag>
+         
+         
+           
+             
+              <breadCrumb title="CI" url="http://code.idea4j.com/categories/CI/"/>
           
         </display>
     </data>
@@ -67,26 +97,6 @@
            
              
               <breadCrumb title="异常" url="http://code.idea4j.com/categories/%E5%BC%82%E5%B8%B8/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://code.idea4j.com/2016/12/21/linux1/</loc>
-    <lastmod>2016-12-21T03:30:42.784Z</lastmod>
-    <data>
-        <display>
-        <title>linux下的文件结构，每个文件夹用途</title>
-        <pubTime>2016-12-21T03:17:36.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="Linux" url="http://code.idea4j.com/categories/Linux/"/>
           
         </display>
     </data>
