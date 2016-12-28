@@ -66,10 +66,48 @@
     <link href="http://code.idea4j.com/2016/12/27/springbatch/"/>
     <id>http://code.idea4j.com/2016/12/27/springbatch/</id>
     <published>2016-12-27T06:29:23.000Z</published>
-    <updated>2016-12-28T10:34:24.467Z</updated>
+    <updated>2016-12-28T10:43:18.484Z</updated>
     
     <content type="html"><![CDATA[<p>spring batch&#x662F;&#x7528;&#x6765;&#x5904;&#x7406;&#x5927;&#x91CF;&#x6570;&#x636E;&#x64CD;&#x4F5C;&#x7684;&#x4E00;&#x4E2A;&#x6846;&#x67B6;&#xFF0C;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x8BFB;&#x53D6;&#x5927;&#x91CF;&#x6570;&#x636E;&#xFF0C;&#x7136;&#x540E;&#x8FDB;&#x884C;&#x4E00;&#x5B9A;&#x5904;&#x7406;&#x540E;&#x7684;&#x6307;&#x5B9A;&#x5F62;&#x5F0F;&#x3002;</p>
-<p>&#x4E3B;&#x8981;&#x6709;&#x4EE5;&#x4E0B;7&#x4E2A;&#x90E8;&#x5206;&#x7EC4;&#x6210;<br>|&#x540D;&#x79F0;|&#x7528;&#x9014;|<br>|:-|:-|<br>|JobReository|&#x7528;&#x6765;&#x6CE8;&#x518C;Job&#x7684;&#x5BB9;&#x5668;|<br>|JobLauncher|&#x7528;&#x6765;&#x542F;&#x52A8;Job&#x7684;&#x63A5;&#x53E3;|<br>|Job|&#x6211;&#x4EEC;&#x8981;&#x5B9E;&#x9645;&#x6267;&#x884C;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x5305;&#x542B;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A;Step|<br>|Step|Step-&#x6B65;&#x9AA4;&#x5305;&#x542B;ItemReader,ItemProcessor&#x548C;ItemWriter|<br>|ItemReader|&#x7528;&#x6765;&#x8BFB;&#x53D6;&#x6570;&#x636E;&#x7684;&#x63A5;&#x53E3;|<br>|ItemProcessor|&#x7528;&#x6765;&#x5904;&#x7406;&#x6570;&#x636E;&#x7684;&#x63A5;&#x53E3;|<br>|ItemWriter|&#x7528;&#x6765;&#x8F93;&#x51FA;&#x6570;&#x636E;&#x7684;&#x63A5;&#x53E3;|</p>
+<p>&#x4E3B;&#x8981;&#x6709;&#x4EE5;&#x4E0B;7&#x4E2A;&#x90E8;&#x5206;&#x7EC4;&#x6210;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x540D;&#x79F0;</th>
+<th style="text-align:left">&#x7528;&#x9014;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">JobReository</td>
+<td style="text-align:left">&#x7528;&#x6765;&#x6CE8;&#x518C;Job&#x7684;&#x5BB9;&#x5668;</td>
+</tr>
+<tr>
+<td style="text-align:left">JobLauncher</td>
+<td style="text-align:left">&#x7528;&#x6765;&#x542F;&#x52A8;Job&#x7684;&#x63A5;&#x53E3;</td>
+</tr>
+<tr>
+<td style="text-align:left">Job</td>
+<td style="text-align:left">&#x6211;&#x4EEC;&#x8981;&#x5B9E;&#x9645;&#x6267;&#x884C;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x5305;&#x542B;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A;Step</td>
+</tr>
+<tr>
+<td style="text-align:left">Step</td>
+<td style="text-align:left">Step-&#x6B65;&#x9AA4;&#x5305;&#x542B;ItemReader,ItemProcessor&#x548C;ItemWriter</td>
+</tr>
+<tr>
+<td style="text-align:left">ItemReader</td>
+<td style="text-align:left">&#x7528;&#x6765;&#x8BFB;&#x53D6;&#x6570;&#x636E;&#x7684;&#x63A5;&#x53E3;</td>
+</tr>
+<tr>
+<td style="text-align:left">ItemProcessor</td>
+<td style="text-align:left">&#x7528;&#x6765;&#x5904;&#x7406;&#x6570;&#x636E;&#x7684;&#x63A5;&#x53E3;</td>
+</tr>
+<tr>
+<td style="text-align:left">ItemWriter</td>
+<td style="text-align:left">&#x7528;&#x6765;&#x8F93;&#x51FA;&#x6570;&#x636E;&#x7684;&#x63A5;&#x53E3;</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
     
     <summary type="html">

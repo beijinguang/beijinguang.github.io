@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://code.idea4j.com/2016/12/27/springbatch/</loc>
+    <lastmod>2016-12-28T10:43:18.484Z</lastmod>
+    <data>
+        <display>
+        <title>springbatch</title>
+        <pubTime>2016-12-27T06:29:23.000Z</pubTime>
+        
+        <tag>spring batch</tag>
+         
+         
+           
+             
+              <breadCrumb title="spring" url="http://code.idea4j.com/categories/spring/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://code.idea4j.com/2016/12/28/mybatis2/</loc>
     <lastmod>2016-12-28T10:37:10.509Z</lastmod>
     <data>
@@ -17,26 +37,6 @@
            
              
               <breadCrumb title="mybatis" url="http://code.idea4j.com/categories/mybatis/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://code.idea4j.com/2016/12/27/springbatch/</loc>
-    <lastmod>2016-12-28T10:34:24.467Z</lastmod>
-    <data>
-        <display>
-        <title>springbatch</title>
-        <pubTime>2016-12-27T06:29:23.000Z</pubTime>
-        
-        <tag>spring batch</tag>
-         
-         
-           
-             
-              <breadCrumb title="spring" url="http://code.idea4j.com/categories/spring/"/>
           
         </display>
     </data>
