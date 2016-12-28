@@ -4,6 +4,86 @@
 
     
   <url>
+    <loc>http://code.idea4j.com/2016/12/28/mybatis2/</loc>
+    <lastmod>2016-12-28T10:37:10.509Z</lastmod>
+    <data>
+        <display>
+        <title>MyBatis Generator配置文件详解</title>
+        <pubTime>2016-12-28T07:30:03.000Z</pubTime>
+        
+        <tag>mybatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="mybatis" url="http://code.idea4j.com/categories/mybatis/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://code.idea4j.com/2016/12/27/springbatch/</loc>
+    <lastmod>2016-12-28T10:34:24.467Z</lastmod>
+    <data>
+        <display>
+        <title>springbatch</title>
+        <pubTime>2016-12-27T06:29:23.000Z</pubTime>
+        
+        <tag>spring batch</tag>
+         
+         
+           
+             
+              <breadCrumb title="spring" url="http://code.idea4j.com/categories/spring/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://code.idea4j.com/2016/12/26/docker/</loc>
+    <lastmod>2016-12-26T02:30:42.914Z</lastmod>
+    <data>
+        <display>
+        <title>Boot2Docker 启动闪退</title>
+        <pubTime>2016-12-26T02:10:28.000Z</pubTime>
+        
+        <tag>docker</tag>
+         
+         
+           
+             
+              <breadCrumb title="docker" url="http://code.idea4j.com/categories/docker/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://code.idea4j.com/2016/12/08/javaapi1/</loc>
+    <lastmod>2016-12-22T01:47:43.686Z</lastmod>
+    <data>
+        <display>
+        <title>Java API 学习之ClassLoader</title>
+        <pubTime>2016-12-08T02:13:42.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://code.idea4j.com/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://code.idea4j.com/2016/12/21/linux2/</loc>
     <lastmod>2016-12-22T01:46:00.090Z</lastmod>
     <data>
@@ -177,26 +257,6 @@
            
              
               <breadCrumb title="其他" url="http://code.idea4j.com/categories/%E5%85%B6%E4%BB%96/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://code.idea4j.com/2016/12/08/javaapi1/</loc>
-    <lastmod>2016-12-08T02:37:07.979Z</lastmod>
-    <data>
-        <display>
-        <title>Java API 学习之ClassLoader</title>
-        <pubTime>2016-12-08T02:13:42.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="java" url="http://code.idea4j.com/categories/java/"/>
           
         </display>
     </data>
