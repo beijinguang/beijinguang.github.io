@@ -4,6 +4,18 @@
   
     
     <entry>
+      <title><![CDATA[pacakge-info.java]]></title>
+      <url>http://code.idea4j.com/2017/01/06/java1/</url>
+      <content type="html"><![CDATA[<h3 id="pacakge-info-java&#x4ECB;&#x7ECD;"><a href="#pacakge-info-java&#x4ECB;&#x7ECD;" class="headerlink" title="pacakge-info.java&#x4ECB;&#x7ECD;"></a>pacakge-info.java&#x4ECB;&#x7ECD;</h3><p>pacakge-info.java&#x662F;&#x4E00;&#x4E2A;Java&#x6587;&#x4EF6;&#xFF0C;&#x53EF;&#x4EE5;&#x6DFB;&#x52A0;&#x5230;&#x4EFB;&#x4F55;&#x7684;Java&#x6E90;&#x7801;&#x5305;&#x4E2D;&#x3002;pacakge-info.java&#x7684;&#x76EE;&#x6807;&#x662F;&#x63D0;&#x4F9B;&#x4E00;&#x4E2A;&#x5305;&#x7EA7;&#x7684;&#x6587;&#x6863;&#x8BF4;&#x660E;&#x6216;&#x8005;&#x662F;&#x5305;&#x7EA7;&#x7684;&#x6CE8;&#x91CA;&#x3002;</p>
+<p>pacakge-info.java&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x552F;&#x4E00;&#x8981;&#x6C42;&#x5305;&#x542B;&#x7684;&#x5185;&#x5BB9;&#x662F;&#x5305;&#x7684;&#x58F0;&#x660E;&#x8BED;&#x53E5;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
+<p>package edu.jiangxin.tools;<br>&#x5305;&#x6587;&#x6863;<br>&#x5728;Java 5&#x4E4B;&#x524D;&#xFF0C;&#x5305;&#x7EA7;&#x7684;&#x6587;&#x6863;&#x662F;package.html&#xFF0C;&#x662F;&#x901A;&#x8FC7;JavaDoc&#x751F;&#x6210;&#x7684;&#x3002;&#x800C;&#x5728;Java 5&#x4EE5;&#x4E0A;&#x7248;&#x672C;&#xFF0C;&#x5305;&#x7684;&#x63CF;&#x8FF0;&#x4EE5;&#x53CA;&#x76F8;&#x5173;&#x7684;&#x6587;&#x6863;&#x90FD;&#x53EF;&#x4EE5;&#x5199;&#x5165;pacakge-info.java&#x6587;&#x4EF6;&#xFF0C;&#x5B83;&#x4E5F;&#x7528;&#x4E8E;JavaDoc&#x7684;&#x751F;&#x6210;&#x3002;&#x6BD4;&#x5982;&#xFF1A;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * &#x8D85;&#x5361;-app&#x63A5;&#x53E3;&#x63A7;&#x5236;&#x5668;&#x5305;</div><div class="line"> */</div><div class="line"><span class="keyword">package</span> com.sc.controller;</div></pre></td></tr></table></figure></p>
+<h3 id="&#x751F;&#x6210;javadoc"><a href="#&#x751F;&#x6210;javadoc" class="headerlink" title="&#x751F;&#x6210;javadoc"></a>&#x751F;&#x6210;javadoc</h3><p>IntelliJ IDEA &#x751F;&#x6210;javadoc&#x65F6;&#xFF0C;&#x5728;&#xFF02;Tools-&gt;Gerenate JavaDoc&#x201D;&#x9762;&#x7248;&#x7684; </p>
+<p>&#xFF02;Other command line arguments:&#x201D;&#x680F;&#x91CC;&#x8F93;&#x5165;&#xFF02;-encoding utf-8 -charset utf-8&#xFF02;, </p>
+<p>&#x5C31;&#x662F;&#x4EE5;utf-8&#x7F16;&#x7801;&#x8BFB;&#x53D6;&#x6587;&#x4EF6;&#x548C;&#x751F;&#x6210;javadoc</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[MyBatis Generator配置文件详解]]></title>
       <url>http://code.idea4j.com/2016/12/28/mybatis2/</url>
       <content type="html"><![CDATA[<h2 id="lt-classPathEntry-gt"><a href="#lt-classPathEntry-gt" class="headerlink" title="&lt;classPathEntry&gt;"></a>&lt;classPathEntry&gt;</h2><p>&#x9A71;&#x52A8;&#x6587;&#x4EF6;&#x6307;&#x5B9A;&#x914D;&#x7F6E;&#x9879;</p>
@@ -255,6 +267,7 @@
       <url>http://code.idea4j.com/2016/12/16/questions/</url>
       <content type="html"><![CDATA[<p>1.&#x5F02;&#x5E38;&#x4E2D;&#x51FA;&#x73B0;Mapped Statements collection does not contain value for<br>mybatis mapper.xml &#x548C; &#x5B9E;&#x4F53;Mapper (&#x5373;Dao) &#x4E0D;&#x5BF9;&#x5E94; &#xFF0C;&#x68C0;&#x67E5;namespace&#x662F;&#x5426;&#x5BF9;&#x5E94;</p>
 <p>2.svnserve.conf:12: Option expected&#x7684;&#x95EE;&#x9898;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;<br>subversion&#x8BFB;&#x53D6;&#x914D;&#x7F6E;&#x6587;&#x4EF6;svnserve.conf&#x65F6;&#xFF0C;&#x65E0;&#x6CD5;&#x8BC6;&#x522B;&#x6709;&#x524D;&#x7F6E;&#x7A7A;&#x683C;&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</p>
+<p>3.Error assembling WAR:webxml attribute is required<br>&#x539F;&#x56E0;&#xFF1A;maven&#x7684;web&#x9879;&#x76EE;&#x9ED8;&#x8BA4;&#x7684;webroot&#x662F;&#x5728;src\main\webapp&#x3002;&#x5982;&#x679C;&#x5728;&#x6B64;&#x76EE;&#x5F55;&#x4E0B;&#x627E;&#x4E0D;&#x5230;web.xml&#x5C31;&#x629B;&#x51FA;&#x4EE5;&#x4E0A;&#x7684;&#x5F02;&#x5E38;&#x3002;</p>
 ]]></content>
     </entry>
     
@@ -1522,6 +1535,7 @@
       <title><![CDATA[maven]]></title>
       <url>http://code.idea4j.com/2016/08/20/maven/</url>
       <content type="html"><![CDATA[<p>mvn install:install-file -Dfile=jar&#x5305;&#x7684;&#x4F4D;&#x7F6E; -DgroupId=&#x4E0A;&#x9762;&#x7684;groupId -DartifactId=&#x4E0A;&#x9762;&#x7684;artifactId -Dversion=&#x4E0A;&#x9762;&#x7684;version -Dpackaging=jar</p>
+<h3 id="aliyun&#x963F;&#x91CC;&#x4E91;Maven&#x4ED3;&#x5E93;&#x5730;&#x5740;&#x2014;&#x2014;&#x52A0;&#x901F;&#x4F60;&#x7684;maven&#x6784;&#x5EFA;"><a href="#aliyun&#x963F;&#x91CC;&#x4E91;Maven&#x4ED3;&#x5E93;&#x5730;&#x5740;&#x2014;&#x2014;&#x52A0;&#x901F;&#x4F60;&#x7684;maven&#x6784;&#x5EFA;" class="headerlink" title="aliyun&#x963F;&#x91CC;&#x4E91;Maven&#x4ED3;&#x5E93;&#x5730;&#x5740;&#x2014;&#x2014;&#x52A0;&#x901F;&#x4F60;&#x7684;maven&#x6784;&#x5EFA;"></a>aliyun&#x963F;&#x91CC;&#x4E91;Maven&#x4ED3;&#x5E93;&#x5730;&#x5740;&#x2014;&#x2014;&#x52A0;&#x901F;&#x4F60;&#x7684;maven&#x6784;&#x5EFA;</h3><p>&#x4FEE;&#x6539;setting.xml<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-aliyun<span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus aliyun<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></div></pre></td></tr></table></figure></p>
 ]]></content>
     </entry>
     
