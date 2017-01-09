@@ -94,7 +94,7 @@
     <link href="http://code.idea4j.com/2016/12/27/springbatch/"/>
     <id>http://code.idea4j.com/2016/12/27/springbatch/</id>
     <published>2016-12-27T06:29:23.000Z</published>
-    <updated>2016-12-28T10:43:18.484Z</updated>
+    <updated>2017-01-09T03:59:48.600Z</updated>
     
     <content type="html"><![CDATA[<p>spring batch&#x662F;&#x7528;&#x6765;&#x5904;&#x7406;&#x5927;&#x91CF;&#x6570;&#x636E;&#x64CD;&#x4F5C;&#x7684;&#x4E00;&#x4E2A;&#x6846;&#x67B6;&#xFF0C;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x8BFB;&#x53D6;&#x5927;&#x91CF;&#x6570;&#x636E;&#xFF0C;&#x7136;&#x540E;&#x8FDB;&#x884C;&#x4E00;&#x5B9A;&#x5904;&#x7406;&#x540E;&#x7684;&#x6307;&#x5B9A;&#x5F62;&#x5F0F;&#x3002;</p>
 <p>&#x4E3B;&#x8981;&#x6709;&#x4EE5;&#x4E0B;7&#x4E2A;&#x90E8;&#x5206;&#x7EC4;&#x6210;</p>
@@ -140,7 +140,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;spring batch&amp;#x662F;&amp;#x7528;&amp;#x6765;&amp;#x5904;&amp;#x7406;&amp;#x5927;&amp;#x91CF;&amp;#x6570;&amp;#x636E;&amp;#x64CD;&amp;#x4F5C;&amp;#x7684;&amp;#x4E00;&amp;#x4E2A;&amp;#x6846;&amp;#x67
+      springbatch
     
     </summary>
     

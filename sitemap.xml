@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://code.idea4j.com/2016/12/27/springbatch/</loc>
+    
+    <lastmod>2017-01-09T03:59:48.600Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://code.idea4j.com/2017/01/06/java1/</loc>
     
     <lastmod>2017-01-06T08:45:31.068Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://code.idea4j.com/2016/12/16/questions/</loc>
     
     <lastmod>2017-01-03T03:38:22.508Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://code.idea4j.com/2016/12/27/springbatch/</loc>
-    
-    <lastmod>2016-12-28T10:43:18.484Z</lastmod>
     
   </url>
   
