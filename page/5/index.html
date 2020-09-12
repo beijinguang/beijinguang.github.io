@@ -278,19 +278,19 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-javaapi1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-docker 命令" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/12/08/javaapi1/" class="article-date">
-      <time datetime="2016-12-08T02:13:42.000Z" itemprop="datePublished">2016-12-08</time>
+      <a href="/2020/05/29/docker 命令/" class="article-date">
+      <time datetime="2020-05-29T11:10:32.000Z" itemprop="datePublished">2020-05-29</time>
 </a>
 
  
-    <a href="/2016/12/08/javaapi1/#comments" title="查看评论">
+    <a href="/2020/05/29/docker 命令/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2016/12/08/javaapi1/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/05/29/docker 命令/" ></span>
         
         
     </a>
@@ -306,7 +306,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/08/javaapi1/">Java API 学习之ClassLoader</a>
+      <a class="article-title" href="/2020/05/29/docker 命令/">docker 命令</a>
     </h1>
   
 
@@ -316,8 +316,210 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              ClassLoader
+        <h2 id="docker-命令"><a href="#docker-命令" class="headerlink" title="docker 命令"></a>docker 命令</h2><p>docker search</p>
+<h3 id="docker-pull-tomcat"><a href="#docker-pull-tomcat" class="headerlink" title="docker pull tomcat"></a>docker pull tomcat</h3><p>命令格式：<code>docker run [OPTIONS] IMAGE [COMMAND] [ARG...]</code></p>
+<h3 id="docker-run-–name-mytomcat-d-tomcat-latest"><a href="#docker-run-–name-mytomcat-d-tomcat-latest" class="headerlink" title="docker run  –name  mytomcat -d tomcat:latest"></a>docker run  –name  mytomcat -d tomcat:latest</h3><h3 id="docker-ps"><a href="#docker-ps" class="headerlink" title="docker ps"></a>docker ps</h3><p>docker stop</p>
+<p>docker ps a</p>
+<p>docker start</p>
+<p>docker rm</p>
+<p>docker run -d -p 8888:8080 tomcat</p>
+<p>docker images [name]</p>
+<p>docker build -f /usr/local/dockerfile -t [name] path</p>
+<p>docker build -t saleorder:1.0 . </p>
+<p>docker exec </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Dockerfile指令" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Dockerfile指令/" class="article-date">
+      <time datetime="2020-05-28T15:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+ 
+    <a href="/2020/05/28/Dockerfile指令/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2020/05/28/Dockerfile指令/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Dockerfile指令/">docker 容器数据卷</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
           
+        <h2 id="Dockerfile指令"><a href="#Dockerfile指令" class="headerlink" title="Dockerfile指令"></a>Dockerfile指令</h2><h4 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h4><p>  基础镜像，当前镜像是基于哪个镜像的</p>
+<h4 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h4><p>  镜像维护者的姓名和邮箱地址等</p>
+<h4 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a>WORKDIR</h4><p>  指定创建容器后，终端默认位置（pwd的位置）</p>
+<h4 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a>ENV</h4><p>  构建镜像过程中的环境变量</p>
+<h5 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h5><p>  构建容器过程中的执行的命令</p>
+<h4 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a>EXPOSE</h4><p>  当前容器对外暴露出的端口</p>
+<h4 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a>VOLUME</h4><p>  容器数据卷，用于数据保存和持久化</p>
+<h4 id="ADD"><a href="#ADD" class="headerlink" title="ADD"></a>ADD</h4><p>  将宿主机目录下的文件拷贝到镜像中，且会解压 tar包和自动处理URL</p>
+<h4 id="COPY"><a href="#COPY" class="headerlink" title="COPY"></a>COPY</h4><h4 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h4><p>指定容器启动时要执行的命令</p>
+<h4 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h4><h4 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a>ONBUILD</h4>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-java语言特性知识点汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/java语言特性知识点汇总/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+ 
+    <a href="/2020/05/28/java语言特性知识点汇总/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2020/05/28/java语言特性知识点汇总/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/java语言特性知识点汇总/">java语言特性知识点汇总</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <pre class="mermaid">graph LR
+java --> B(JUC)
+B --> ConcurrentXXX
+B --> AtomicXXX
+B --> Executor
+B --> Caller&&Future
+B --> Queue
+B --> Locks
+
+java --> C(数据类型)
+C --> 空间占用
+C --> 基本数据结构
+C --> 自动转型与强制转型
+C --> 封箱与拆箱
+
+java --> 版本差异新特性
+java --> 动态代理与反射
+
+java --> E(常用集合)
+E --> HashMap
+E --> ConcurrentHashMap
+E --> ArrayList&LinkedList
+E --> HashSet
+E --> TreeMap
+
+java --> F(对象引用)
+F --> 强引用
+F --> 弱引用
+F --> 软引用
+F --> 虚引用
+
+java --> G(扩展知识点)
+G --> SPI机制
+G --> 注解处理机制</pre>
+
+
+
+
+
+
       
     </div>
     
@@ -335,9 +537,88 @@
     </div>
 
       
-        <p class="article-more-link">
-          <a href="/2016/12/08/javaapi1/#more">more >></a>
-        </p>
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Docker搭建zookeeper集群" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Docker搭建zookeeper集群/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+ 
+    <a href="/2020/05/28/Docker搭建zookeeper集群/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2020/05/28/Docker搭建zookeeper集群/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Docker搭建zookeeper集群/">Docker搭建zookeeper集群</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Docker搭建zookeeper集群"><a href="#Docker搭建zookeeper集群" class="headerlink" title="Docker搭建zookeeper集群"></a>Docker搭建zookeeper集群</h2><p>准备在3台虚拟机上搭建zookeeper集群</p>
+<h4 id="创建挂载目录"><a href="#创建挂载目录" class="headerlink" title="创建挂载目录"></a>创建挂载目录</h4><p>用于存储配置文件和数据，使用docker数据和配置文件等需要放在自己的宿主机，而不是容器内，特别是数据</p>
+<p><code>mkdir -p zookeeper/conf</code></p>
+<p><code>mkdir -p zookeeper/data</code></p>
+<h4 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h4><p>在zookeeper/data下创建zoo.cfg</p>
+<p>touch <code>zoo.cfg</code></p>
+<p>clientPort=2181<br>dataDir=/data<br>dataLogDir=/data/log<br>tickTime=2000<br>initLimit=5<br>syncLimit=2<br>autopurge.snapRetainCount=3<br>autopurge.purgeInterval=0<br>maxClientCnxns=60<br>server.111=10.255.200.168:2888:3888<br>server.222=10.255.200.174:2888:3888<br>server.233=10.255.200.172:2888:3888</p>
+<h4 id="配置myid"><a href="#配置myid" class="headerlink" title="配置myid"></a>配置myid</h4><p>在zookeeper/data目录下创建<strong>myid</strong>，并配置id，里面的<strong>id一定要和上面配置的server.id一致</strong></p>
+<p><code>touch myid</code></p>
+<p><code>echo 111 &gt; myid</code></p>
+<h4 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h4><p>docker run  –network host -v /usr/local/zookeeper/data:/data -v  /usr/local/zookeeper/conf:/conf –name zookeeper-2181 -d zookeeper:3.4.13</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -355,19 +636,19 @@
 
 
   
-    <article id="post-lua1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-mst" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/12/05/lua1/" class="article-date">
-      <time datetime="2016-12-05T11:11:25.000Z" itemprop="datePublished">2016-12-05</time>
+      <a href="/2020/05/28/mst/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
 </a>
 
  
-    <a href="/2016/12/05/lua1/#comments" title="查看评论">
+    <a href="/2020/05/28/mst/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2016/12/05/lua1/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/05/28/mst/" ></span>
         
         
     </a>
@@ -383,7 +664,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/05/lua1/">Lua语言积累</a>
+      <a class="article-title" href="/2020/05/28/mst/">面试题</a>
     </h1>
   
 
@@ -393,7 +674,94 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              lua
+        <a id="more"></a>
+<h3 id="如何判断链表有环"><a href="#如何判断链表有环" class="headerlink" title="如何判断链表有环"></a>如何判断链表有环</h3><p>第一种方法是比较笨的方法，那就是依次遍历链表，直到遇到和之前遍历的节点一样的节点，则认为有环。</p>
+<h3 id="为啥要覆盖hashcode"><a href="#为啥要覆盖hashcode" class="headerlink" title="为啥要覆盖hashcode"></a>为啥要覆盖hashcode</h3><h3 id="如何解决hash冲突"><a href="#如何解决hash冲突" class="headerlink" title="如何解决hash冲突"></a>如何解决hash冲突</h3><h3 id="https与http区别"><a href="#https与http区别" class="headerlink" title="https与http区别"></a>https与http区别</h3><ol>
+<li>https协议需要到CA  （Certificate Authority，证书颁发机构）申请证书，一般免费证书较少，因而需要一定费用。(原来网易官网是http，而网易邮箱是https。)</li>
+<li>http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</li>
+<li><p>http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
+</li>
+<li><p>http的连接很简单，是无状态的。Https协议是由SSL+Http协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。(无状态的意思是其数据包的发送、传输和接收都是相互独立的。无连接的意思是指通信双方都不长久的维持对方的任何信息。)</p>
+</li>
+</ol>
+<h3 id="mysql数据库默认的数据隔离级别"><a href="#mysql数据库默认的数据隔离级别" class="headerlink" title="mysql数据库默认的数据隔离级别"></a>mysql数据库默认的数据隔离级别</h3>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/java/">java</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-系统性能核心关注点" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/21/系统性能核心关注点/" class="article-date">
+      <time datetime="2020-05-21T05:47:07.000Z" itemprop="datePublished">2020-05-21</time>
+</a>
+
+ 
+    <a href="/2020/05/21/系统性能核心关注点/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2020/05/21/系统性能核心关注点/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/21/系统性能核心关注点/">系统性能核心关注点</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <pre class="mermaid">graph LR
+A[系统性能核心关注点] -->B(基础设施优化)
+A --> C(系统层网络优化)
+A --> D(应用层编码优化)
+A --> E(分布式系统优化)
+C --></pre>
           
       
     </div>
@@ -402,18 +770,18 @@
       
       
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Lua/">Lua</a>
+    <a class="article-category-link" href="/categories/系统性能/">系统性能</a>
     </div>
 
 
       
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lua/">Lua</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统性能/">系统性能</a></li></ul>
     </div>
 
       
         <p class="article-more-link">
-          <a href="/2016/12/05/lua1/#more">more >></a>
+          <a href="/2020/05/21/系统性能核心关注点/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -432,19 +800,19 @@
 
 
   
-    <article id="post-sqljl" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Netty权威指南" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/11/30/sqljl/" class="article-date">
-      <time datetime="2016-11-30T08:08:54.000Z" itemprop="datePublished">2016-11-30</time>
+      <a href="/2019/07/24/Netty权威指南/" class="article-date">
+      <time datetime="2019-07-24T09:22:10.000Z" itemprop="datePublished">2019-07-24</time>
 </a>
 
  
-    <a href="/2016/11/30/sqljl/#comments" title="查看评论">
+    <a href="/2019/07/24/Netty权威指南/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2016/11/30/sqljl/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2019/07/24/Netty权威指南/" ></span>
         
         
     </a>
@@ -460,7 +828,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/30/sqljl/">sql语句：根据身份证得到省份、生日、性别</a>
+      <a class="article-title" href="/2019/07/24/Netty权威指南/">Netty权威指南目录抄写</a>
     </h1>
   
 
@@ -470,8 +838,174 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              根据身份证得到省份、生日、性别
+        <h1 id="Netty权威指南"><a href="#Netty权威指南" class="headerlink" title="Netty权威指南"></a>Netty权威指南</h1><h2 id="走进java-NIO"><a href="#走进java-NIO" class="headerlink" title="走进java NIO"></a>走进java NIO</h2><h2 id="java的I-O演进之路"><a href="#java的I-O演进之路" class="headerlink" title="java的I/O演进之路"></a>java的I/O演进之路</h2><h2 id="NIO入门"><a href="#NIO入门" class="headerlink" title="NIO入门"></a>NIO入门</h2><h2 id="Netty入门应用"><a href="#Netty入门应用" class="headerlink" title="Netty入门应用"></a>Netty入门应用</h2><h2 id="TCP粘包-拆包问题的解决之道"><a href="#TCP粘包-拆包问题的解决之道" class="headerlink" title="TCP粘包/拆包问题的解决之道"></a>TCP粘包/拆包问题的解决之道</h2><h2 id="分隔符和定长解码器的应用"><a href="#分隔符和定长解码器的应用" class="headerlink" title="分隔符和定长解码器的应用"></a>分隔符和定长解码器的应用</h2><h2 id="编解码技术"><a href="#编解码技术" class="headerlink" title="编解码技术"></a>编解码技术</h2><h2 id="Java序列化"><a href="#Java序列化" class="headerlink" title="Java序列化"></a>Java序列化</h2><h2 id="Google-Protobuf编解码"><a href="#Google-Protobuf编解码" class="headerlink" title="Google Protobuf编解码"></a>Google Protobuf编解码</h2><h2 id="JBoss-Marshalling编解码"><a href="#JBoss-Marshalling编解码" class="headerlink" title="JBoss Marshalling编解码"></a>JBoss Marshalling编解码</h2><h2 id="HTTP协议开发应用"><a href="#HTTP协议开发应用" class="headerlink" title="HTTP协议开发应用"></a>HTTP协议开发应用</h2><h2 id="WebSocket协议开发"><a href="#WebSocket协议开发" class="headerlink" title="WebSocket协议开发"></a>WebSocket协议开发</h2><h2 id="UDP协议开发"><a href="#UDP协议开发" class="headerlink" title="UDP协议开发"></a>UDP协议开发</h2><h2 id="文件传输"><a href="#文件传输" class="headerlink" title="文件传输"></a>文件传输</h2><h2 id="私有协议栈开发"><a href="#私有协议栈开发" class="headerlink" title="私有协议栈开发"></a>私有协议栈开发</h2><h2 id="ByteBuf和相关辅助类"><a href="#ByteBuf和相关辅助类" class="headerlink" title="ByteBuf和相关辅助类"></a>ByteBuf和相关辅助类</h2><h2 id="Channel和Unsafe"><a href="#Channel和Unsafe" class="headerlink" title="Channel和Unsafe"></a>Channel和Unsafe</h2><h2 id="ChannelPipline和ChannelHandler"><a href="#ChannelPipline和ChannelHandler" class="headerlink" title="ChannelPipline和ChannelHandler"></a>ChannelPipline和ChannelHandler</h2><h2 id="EventLoop和EventLoopGroup"><a href="#EventLoop和EventLoopGroup" class="headerlink" title="EventLoop和EventLoopGroup"></a>EventLoop和EventLoopGroup</h2><h2 id="Future和Promise"><a href="#Future和Promise" class="headerlink" title="Future和Promise"></a>Future和Promise</h2><h2 id="java多线程在Netty中的应用"><a href="#java多线程在Netty中的应用" class="headerlink" title="java多线程在Netty中的应用"></a>java多线程在Netty中的应用</h2><h2 id="Netty框架剖析"><a href="#Netty框架剖析" class="headerlink" title="Netty框架剖析"></a>Netty框架剖析</h2><h2 id="Netty行业应用"><a href="#Netty行业应用" class="headerlink" title="Netty行业应用"></a>Netty行业应用</h2><h2 id="Netty未来展望"><a href="#Netty未来展望" class="headerlink" title="Netty未来展望"></a>Netty未来展望</h2>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Netty/">Netty</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Netty/">Netty</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-bat" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/08/17/bat/" class="article-date">
+      <time datetime="2018-08-17T03:11:07.000Z" itemprop="datePublished">2018-08-17</time>
+</a>
+
+ 
+    <a href="/2018/08/17/bat/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2018/08/17/bat/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/17/bat/">BAT后端开发面试108题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
           
+        <h3 id="TCP报头格式"><a href="#TCP报头格式" class="headerlink" title="TCP报头格式"></a>TCP报头格式</h3>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/面试题/">面试题</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试题/">面试题</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-MySQL权限分配" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/27/MySQL权限分配/" class="article-date">
+      <time datetime="2018-05-27T10:12:11.000Z" itemprop="datePublished">2018-05-27</time>
+</a>
+
+ 
+    <a href="/2018/05/27/MySQL权限分配/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2018/05/27/MySQL权限分配/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/27/MySQL权限分配/">MySQL权限分配</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <a id="more"></a>
+<h2 id="MySQL权限分配"><a href="#MySQL权限分配" class="headerlink" title="MySQL权限分配"></a>MySQL权限分配</h2><h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">use mysql;</div><div class="line"></div><div class="line">语法：create user &apos;username&apos;[@&apos;host&apos;] identified by &apos;password&apos;;</div><div class="line"></div><div class="line">如：someuser 用户可以在所有主机登录，密码为 123456</div><div class="line"></div><div class="line">CREATE USER &apos;someuser&apos; IDENTIFIED BY &apos;654321&apos;</div><div class="line"></div><div class="line">如：someuser 用户只能在本地登录</div><div class="line"></div><div class="line">CREATE USER &apos;someuser&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;654321&apos;</div></pre></td></tr></table></figure>
+<h3 id="查看用户权限"><a href="#查看用户权限" class="headerlink" title="查看用户权限"></a>查看用户权限</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">语法：SELECT  privileges|* FROM user WHERE `user` = &apos;username&apos;;</div><div class="line"></div><div class="line">如：查看someuser的权限</div><div class="line"></div><div class="line">SELECT * FROM user WHERE `user` = &apos;someuser&apos;; </div><div class="line"></div><div class="line">也可以用 SHOW GRANTS 查看 SHOW GRANTS FOR &apos;username&apos; [@host];</div><div class="line"></div><div class="line"> SHOW GRANTS FOR someuser;</div></pre></td></tr></table></figure>
+<h3 id="赋予用户权限"><a href="#赋予用户权限" class="headerlink" title="赋予用户权限"></a>赋予用户权限</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">语法：GRANT privileges ON database.table TO &apos;username&apos;@&apos;host&apos; [IDENTIFIED BY &apos;password&apos;];</div><div class="line"></div><div class="line">如：赋予 someuser在所有主机的所有权限，但不包含给其他账号赋予权限的权限（如果出现 Access denied for user &apos;root&apos;@&apos;localhost&apos; to database &apos;newdatabase&apos;，需要退出当前用户，重新登录）</div><div class="line"></div><div class="line">GRANT all ON *.* TO &apos;local_user&apos;@&apos;%&apos;;</div><div class="line"></div><div class="line">FLUSH PRIVILEGES;</div></pre></td></tr></table></figure>
+<ul>
+<li>GRANT命令说明：<ul>
+<li><em>priveleges</em> (权限列表),可以是<code>all</code>, 表示所有权限，也可以是<code>select,update</code>等权限，多个权限的名词,相互之间用逗号分开。</li>
+<li>ON 用来指定权限针对哪些库和表。格式为<code>数据库 .表名</code> ，点号前面用来指定数据库名，点号后面用来指定表名，<code>*.*</code> 表示所有数据库所有表。</li>
+<li>TO 表示将权限赋予某个用户, 格式为<code>username@host</code>，@前面为用户名，@后面接限制的主机，可以是IP、IP段、域名以及%，%表示任何地方。<em>注意：这里%有的版本不包括本地，以前碰到过给某个用户设置了%允许任何地方登录，但是在本地登录不了，这个和版本有关系，遇到这个问题再加一个localhost的用户就可以了</em>。</li>
+<li>IDENTIFIED BY 指定用户的登录密码,该项可以省略(某些版本下回报错，必须省略)。</li>
+<li>WITH GRANT OPTION 这个选项表示该用户可以将自己拥有的权限授权给别人。注意：经常有人在创建操作用户的时候不指定WITH GRANT OPTION选项导致后来该用户不能使用GRANT命令创建用户或者给其它用户授权。<br><em>备注：可以使用GRANT重复给用户添加权限，权限叠加，比如你先给用户添加一个select权限，然后又给用户添加一个insert权限，那么该用户就同时拥有了select和insert权限。</em></li>
+</ul>
+</li>
+<li>授权原则说明：<ul>
+<li>只授予能满足需要的最小权限，防止用户干坏事。比如用户只是需要查询，那就只给select权限就可以了，不要给用户赋予update、insert或者delete权限。</li>
+<li>创建用户的时候限制用户的登录主机，一般是限制成指定IP或者内网IP段。</li>
+<li>初始化数据库的时候删除没有密码的用户。安装完数据库的时候会自动创建一些用户，这些用户默认没有密码。</li>
+<li>为每个用户设置满足密码复杂度的密码。</li>
+<li>定期清理不需要的用户。回收权限或者删除用户。</li>
+</ul>
+</li>
+</ul>
+<h3 id="收回用户权限"><a href="#收回用户权限" class="headerlink" title="收回用户权限"></a>收回用户权限</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">语法：REVOKE privileges ON database.table FROM &apos;username&apos;@&apos;host&apos;;</div><div class="line">如：收回 someuser 的写入和更新权限</div><div class="line">REVOKE insert,update ON *.* FROM &apos;someuser&apos;@&apos;%&apos;;</div></pre></td></tr></table></figure>
+<h3 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">语法:DROP USER &apos;username&apos;@&apos;host&apos;;</div><div class="line">如：删除本地用户 local_user</div><div class="line">DROP USER &apos;local_user&apos;@&apos;localhost&apos;;</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -489,10 +1023,6 @@
     </div>
 
       
-        <p class="article-more-link">
-          <a href="/2016/11/30/sqljl/#more">more >></a>
-        </p>
-      
       <div class="clearfix"></div>
     </div>
     
@@ -509,19 +1039,19 @@
 
 
   
-    <article id="post-jqiframe" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-mysql哪些情况不适合建索引" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/11/28/jqiframe/" class="article-date">
-      <time datetime="2016-11-28T08:48:31.000Z" itemprop="datePublished">2016-11-28</time>
+      <a href="/2018/05/19/mysql哪些情况不适合建索引/" class="article-date">
+      <time datetime="2018-05-19T13:21:11.000Z" itemprop="datePublished">2018-05-19</time>
 </a>
 
  
-    <a href="/2016/11/28/jqiframe/#comments" title="查看评论">
+    <a href="/2018/05/19/mysql哪些情况不适合建索引/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2016/11/28/jqiframe/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2018/05/19/mysql哪些情况不适合建索引/" ></span>
         
         
     </a>
@@ -537,7 +1067,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/28/jqiframe/">js与jQuery 获取父窗、子窗的iframe</a>
+      <a class="article-title" href="/2018/05/19/mysql哪些情况不适合建索引/">mysql哪些情况不适合建索引</a>
     </h1>
   
 
@@ -547,85 +1077,13 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              js与jQuery 获取父窗、子窗的iframe
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/jQuery/">jQuery</a>
-    </div>
+        <a id="more"></a>
+<h3 id="mysql哪些情况不适合建索引"><a href="#mysql哪些情况不适合建索引" class="headerlink" title="mysql哪些情况不适合建索引"></a>mysql哪些情况不适合建索引</h3><ol>
+<li>记录太少</li>
+<li>经常增删改的表</li>
+<li>数据重复且分布平均的表字段：如性别等状态值</li>
+</ol>
 
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iframe/">iframe</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/28/jqiframe/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-sqlty" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/14/sqlty/" class="article-date">
-      <time datetime="2016-11-14T06:24:28.000Z" itemprop="datePublished">2016-11-14</time>
-</a>
-
- 
-    <a href="/2016/11/14/sqlty/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/11/14/sqlty/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/14/sqlty/">sql优化</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              mysql查询语句优化方法
-          
       
     </div>
     
@@ -639,408 +1097,9 @@
 
       
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/索引/">索引</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2016/11/14/sqlty/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-usapresident" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/09/usapresident/" class="article-date">
-      <time datetime="2016-11-09T03:20:52.000Z" itemprop="datePublished">2016-11-09</time>
-</a>
-
- 
-    <a href="/2016/11/09/usapresident/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/11/09/usapresident/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/09/usapresident/">美国历任总统，在任年限及所属党派</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              美国历任总统，在任年限及所属党派
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/其他/">其他</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/09/usapresident/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-xingnen2" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/04/xingnen2/" class="article-date">
-      <time datetime="2016-11-04T07:46:16.000Z" itemprop="datePublished">2016-11-04</time>
-</a>
-
- 
-    <a href="/2016/11/04/xingnen2/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/11/04/xingnen2/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/04/xingnen2/">改善性能的几个技巧</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              略
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/java/">java</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/04/xingnen2/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-xingnen" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/03/xingnen/" class="article-date">
-      <time datetime="2016-11-03T04:11:59.000Z" itemprop="datePublished">2016-11-03</time>
-</a>
-
- 
-    <a href="/2016/11/03/xingnen/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/11/03/xingnen/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/xingnen/">性能概述</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p>&#x7A0B;&#x5E8F;&#x7684;&#x6027;&#x80FD;&#x901A;&#x8FC7;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x65B9;&#x9762;&#x6765;&#x8868;&#x73B0;&#xFF1A;</p>
-<ul>
-<li>&#x6267;&#x884C;&#x901F;&#x5EA6;&#xFF1A;</li>
-<li>&#x5185;&#x5B58;&#x5206;&#x914D;&#xFF1A;</li>
-<li>&#x542F;&#x52A8;&#x65F6;&#x95F4;&#xFF1A;</li>
-<li>&#x8D1F;&#x8F7D;&#x627F;&#x53D7;&#x80FD;&#x529B;&#xFF1A;</li>
-</ul>
-<p>&#x6027;&#x80FD;&#x8C03;&#x4F18;&#x7684;&#x5C42;&#x6B21;</p>
-<ul>
-<li>&#x8BBE;&#x8BA1;&#x8C03;&#x4F18;</li>
-<li>&#x4EE3;&#x7801;&#x8C03;&#x4F18;</li>
-<li>JVM&#x8C03;&#x4F18;</li>
-<li>&#x6570;&#x636E;&#x5E93;&#x8C03;&#x4F18;</li>
-<li>&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x8C03;&#x4F18;</li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/java/">java</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-servlet3" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/02/servlet3/" class="article-date">
-      <time datetime="2016-11-02T09:14:32.000Z" itemprop="datePublished">2016-11-02</time>
-</a>
-
- 
-    <a href="/2016/11/02/servlet3/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/11/02/servlet3/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/02/servlet3/">一行配置文件引发的“血案”</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              servlet3.0 的metadata-complete 属性
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/java/">java</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/servlet/">servlet</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/02/servlet3/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-btyeclass" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/27/btyeclass/" class="article-date">
-      <time datetime="2016-10-27T02:07:36.000Z" itemprop="datePublished">2016-10-27</time>
-</a>
-
- 
-    <a href="/2016/10/27/btyeclass/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/10/27/btyeclass/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/btyeclass/">Class类文件的结构</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              Class类文件解析
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/jvm/">jvm</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/10/27/btyeclass/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -1060,7 +1119,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
     </nav>
   
 </div>

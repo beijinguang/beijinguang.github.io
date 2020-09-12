@@ -278,19 +278,19 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Pinpoint" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-缓存" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/06/09/Pinpoint/" class="article-date">
-      <time datetime="2020-06-09T03:02:09.000Z" itemprop="datePublished">2020-06-09</time>
+      <a href="/2020/09/11/缓存/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.773Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/06/09/Pinpoint/#comments" title="查看评论">
+    <a href="/2020/09/11/缓存/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/06/09/Pinpoint/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/缓存/" ></span>
         
         
     </a>
@@ -302,66 +302,100 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/09/Pinpoint/">Pinpoint安装使用</a>
-    </h1>
-  
-
-      </header>
+    <div class="article-entry" itemprop="articleBody">
       
+          
+        <p>– 缓存</p>
+<p>源码</p>
+<p>– dubbo</p>
+<p>spring</p>
+<p>redis</p>
+<p>HashMap</p>
+<p>jdk</p>
+<p>分布式</p>
+<p>– 多线程 原理</p>
+<p>jvm</p>
+<p>rpc</p>
+<p>流式</p>
+<p>分析数据库</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-类加载" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/09/11/类加载/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.772Z" itemprop="datePublished">2020-09-11</time>
+</a>
+
+ 
+    <a href="/2020/09/11/类加载/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/类加载/" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
     
     <div class="article-entry" itemprop="articleBody">
       
           
-        <a id="more"></a>
-<h1 id="Pinpoint&#x5B89;&#x88C5;&#x4F7F;&#x7528;"><a href="#Pinpoint&#x5B89;&#x88C5;&#x4F7F;&#x7528;" class="headerlink" title="Pinpoint&#x5B89;&#x88C5;&#x4F7F;&#x7528;"></a>Pinpoint&#x5B89;&#x88C5;&#x4F7F;&#x7528;</h1><p><strong>Pinpoint</strong>&#x662F;&#x7528;&#x4E8E;&#x7528;Java / PHP&#x7F16;&#x5199;&#x7684;&#x5927;&#x89C4;&#x6A21;&#x5206;&#x5E03;&#x5F0F;&#x7CFB;&#x7EDF;&#x7684;APM&#xFF08;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x6027;&#x80FD;&#x7BA1;&#x7406;&#xFF09;&#x5DE5;&#x5177;&#x3002;&#x53D7;<a href="http://research.google.com/pubs/pub36356.html" target="_blank" rel="external">Dapper&#x7684;</a>&#x542F;&#x53D1;&#xFF0C;Pinpoint&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x79CD;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#xFF0C;&#x53EF;&#x901A;&#x8FC7;&#x8DDF;&#x8E2A;&#x8DE8;&#x5206;&#x5E03;&#x5F0F;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7684;&#x4E8B;&#x52A1;&#x6765;&#x5E2E;&#x52A9;&#x5206;&#x6790;&#x7CFB;&#x7EDF;&#x7684;&#x6574;&#x4F53;&#x7ED3;&#x6784;&#x4EE5;&#x53CA;&#x5176;&#x4E2D;&#x7684;&#x7EC4;&#x4EF6;&#x5982;&#x4F55;&#x4E92;&#x8FDE;&#x3002;</p>
-<p>&#x4F60;&#x4E00;&#x5B9A;&#x8981;&#x68C0;&#x67E5;<strong>&#x7CBE;&#x786E;&#x5B9A;&#x4F4D;</strong>&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x60F3;</p>
-<ul>
-<li>&#x4E00;&#x76EE;&#x4E86;&#x7136;&#x5730;&#x4E86;&#x89E3;&#x60A8;&#x7684;<a href="http://naver.github.io/pinpoint/overview.html" target="_blank" rel="external">&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x62D3;&#x6251;</a></li>
-<li>&#x76D1;&#x63A7;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;<em>&#x7684;&#x5B9E;&#x65F6;</em></li>
-<li>&#x83B7;&#x5F97;&#x6BCF;&#x7B14;&#x4EA4;&#x6613;&#x7684;&#x4EE3;&#x7801;&#x7EA7;&#x53EF;&#x89C1;&#x6027;</li>
-<li>&#x5B89;&#x88C5;APM&#x4EE3;&#x7406;&#x800C;&#x65E0;&#x9700;&#x66F4;&#x6539;&#x4EFB;&#x4F55;&#x4EE3;&#x7801;</li>
-<li>&#x5BF9;&#x6027;&#x80FD;&#x7684;&#x5F71;&#x54CD;&#x6700;&#x5C0F;&#xFF08;&#x8D44;&#x6E90;&#x4F7F;&#x7528;&#x91CF;&#x589E;&#x52A0;&#x7EA6;3&#xFF05;&#xFF09;</li>
-</ul>
-<h2 id="&#x4E00;&#x3001;&#x4E0B;&#x8F7D;pinpoint&#x5305;"><a href="#&#x4E00;&#x3001;&#x4E0B;&#x8F7D;pinpoint&#x5305;" class="headerlink" title="&#x4E00;&#x3001;&#x4E0B;&#x8F7D;pinpoint&#x5305;"></a>&#x4E00;&#x3001;&#x4E0B;&#x8F7D;pinpoint&#x5305;</h2><p>&#x4ECE;<a href="https://github.com/naver/pinpoint/releases" target="_blank" rel="external">https://github.com/naver/pinpoint/releases</a> &#x4E0B;&#x8F7D;</p>
+        <p>类加载</p>
+<p>类的生命周期</p>
+<pre class="mermaid">graph LR
+
+A(加载<br>loading) --> B(验证<br>Verification)--> C(准备<br>Preparation)-->D(解析<br>Resolution)-->E(初始化<br>Initialization)-->F(使用<br>Using)-->G(卸载<br>Unloading)</pre>
+
+
+
 <ol>
-<li>pinpoint-agent.tar.gz</li>
-<li>pinpoint-collector.war</li>
-<li>pinpoint-web.war</li>
+<li>虚拟机规范严格规定了有且只有5中情况必须立即对类进行初始化（而加载、验证、准备自然要在此之前）：</li>
+<li>遇到new、getstatic、putstatic、或invokestatic这4条指令是，如果类没有进行过初始化，则先触发初始化。</li>
+<li>使用java.lang.reflect包的方法对类进行反射调用的时候，如果类没有进行过初始化，则要先触发初始化。</li>
+<li>当初始化一个类的时候，如果发现其父类还没有初始化，则要先触发其父类初始化。</li>
+<li>当虚拟机启动时，用户需要指定一个要执行的主类（包含main()方法的那个类），虚拟机会初始化这个主类。</li>
+<li>当使用JDK1.7的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解析结果REF_getStatic、REF_putStatic、REF_invokeStatic的方法句柄，并且这个方法句柄所对应的类没有进行初始化，则要先触发初始化。</li>
 </ol>
-<h2 id="&#x4E8C;&#x3001;&#x5B89;&#x88C5;-HBase"><a href="#&#x4E8C;&#x3001;&#x5B89;&#x88C5;-HBase" class="headerlink" title="&#x4E8C;&#x3001;&#x5B89;&#x88C5; HBase"></a>&#x4E8C;&#x3001;&#x5B89;&#x88C5; HBase</h2><p>&#x4FEE;&#x6539; hbase-site.xml &#x4E3A;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">  &lt;property&gt;</div><div class="line">    &lt;name&gt;hbase.rootdir&lt;/name&gt;</div><div class="line">    &lt;value&gt;file:///home/testuser/hbase&lt;/value&gt;</div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt;</div><div class="line">    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;</div><div class="line">    &lt;value&gt;/home/testuser/zookeeper&lt;/value&gt;</div><div class="line">  &lt;/property&gt;</div><div class="line">  &lt;property&gt;</div><div class="line">    &lt;name&gt;hbase.unsafe.stream.capability.enforce&lt;/name&gt;</div><div class="line">    &lt;value&gt;false&lt;/value&gt;</div><div class="line">  &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure>
-<p>&#x6267;&#x884C; <code>bin/start-hbase.sh</code>&#x542F;&#x52A8; hbase</p>
-<p>&#x6267;&#x884C; ./hbase shell hbase-create.hbase &#x6587;&#x4EF6;&#x521B;&#x5EFA;&#x8868;&#x7B49;</p>
-<h2 id="&#x4E09;&#x3001;&#x542F;&#x52A8;-pinpoint-web"><a href="#&#x4E09;&#x3001;&#x542F;&#x52A8;-pinpoint-web" class="headerlink" title="&#x4E09;&#x3001;&#x542F;&#x52A8; pinpoint-web"></a>&#x4E09;&#x3001;&#x542F;&#x52A8; pinpoint-web</h2><p>&#x4FEE;&#x6539; pinpoint-web.war &#x5305;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF08;&#x9ED8;&#x8BA4;&#xFF09;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#x4FEE;&#x6539; WEB-INF\classes\hbase.properties &#x6587;&#x4EF6;</div><div class="line">hbase.client.host &#x8BBE;&#x7F6E;&#x4E3A; hbase &#x6240;&#x7528;&#x7684; zk &#x5730;&#x5740;</div><div class="line"></div><div class="line">&#x4FEE;&#x6539; WEB-INF\classes\pinpoint-web.properties &#x6587;&#x4EF6;</div><div class="line">cluster.zookeeper.address &#x4FEE;&#x6539;&#x4E3A;&#x7ED9; Pinpoint &#x51C6;&#x5907;&#x7684; zk &#x5730;&#x5740;</div></pre></td></tr></table></figure>
-<p>&#x5C06; war &#x5305;&#x653E;&#x5230; tomcat &#x4E2D;&#x542F;&#x52A8;</p>
-<h2 id="&#x56DB;&#x3001;&#x542F;&#x52A8;-pinpoint-collector"><a href="#&#x56DB;&#x3001;&#x542F;&#x52A8;-pinpoint-collector" class="headerlink" title="&#x56DB;&#x3001;&#x542F;&#x52A8; pinpoint-collector"></a>&#x56DB;&#x3001;&#x542F;&#x52A8; pinpoint-collector</h2><p>&#x4FEE;&#x6539; pinpoint-collector.war &#x5305;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF08;&#x9ED8;&#x8BA4;&#xFF09;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#x4FEE;&#x6539; WEB-INF\classes\hbase.properties &#x6587;&#x4EF6;</div><div class="line">hbase.client.host &#x8BBE;&#x7F6E;&#x4E3A; hbase &#x6240;&#x7528;&#x7684; zk &#x5730;&#x5740;</div><div class="line"></div><div class="line">&#x4FEE;&#x6539; WEB-INF\classes\pinpoint-collector.properties &#x6587;&#x4EF6;</div><div class="line">cluster.zookeeper.address &#x4FEE;&#x6539;&#x4E3A;&#x7ED9; Pinpoint &#x51C6;&#x5907;&#x7684; zk &#x5730;&#x5740;</div></pre></td></tr></table></figure>
-<p>&#x53EF;&#x4EE5;&#x5C06; pinpoint-web &#x548C; pinpoint-collector &#x653E;&#x5230;&#x4E00;&#x4E2A; tomcat &#x4E2D;&#x542F;&#x52A8;</p>
-<h2 id="&#x4E94;&#x3001;&#x914D;&#x7F6E;-Agent"><a href="#&#x4E94;&#x3001;&#x914D;&#x7F6E;-Agent" class="headerlink" title="&#x4E94;&#x3001;&#x914D;&#x7F6E; Agent"></a>&#x4E94;&#x3001;&#x914D;&#x7F6E; Agent</h2><p>&#x89E3;&#x538B; pinpoint-agent.tar.gz&#xFF0C;&#x4FEE;&#x6539; pinpoint.config &#x4E2D;&#x7684; profiler.collector.ip &#x6539;&#x4E3A;&#x90E8;&#x7F72; collector &#x7684;&#x673A;&#x5668;ip</p>
-<h2 id="&#x516D;&#x3001;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x670D;&#x52A1;"><a href="#&#x516D;&#x3001;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x670D;&#x52A1;" class="headerlink" title="&#x516D;&#x3001;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x670D;&#x52A1;"></a>&#x516D;&#x3001;&#x542F;&#x52A8;&#x5E94;&#x7528;&#x670D;&#x52A1;</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java -javaagent:/opt/agent/pinpoint-bootstrap-1.8.0-SNAPSHOT.jar  -Dpinpoint.agentId=dubbo-provider-id -Dpinpoint.applicationName=dubbo-provider -jar dubbo-provider-0.0.1-SNAPSHOT.jar</div><div class="line"></div><div class="line">java -javaagent:/opt/agent/pinpoint-bootstrap-1.8.0-SNAPSHOT.jar  -Dpinpoint.agentId=dubbo-consumer-id -Dpinpoint.applicationName=dubbo-consumer -jar dubbo-consumer-0.0.1-SNAPSHOT.jar</div></pre></td></tr></table></figure>
-<p>&#x5982;&#x679C;&#x662F;&#x901A;&#x8FC7; tomcat &#x542F;&#x52A8;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x4FEE;&#x6539; bin/catalina.sh &#x6587;&#x4EF6;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">CATALINA_OPTS=&quot;$CATALINA_OPTS -javaagent:/opt/agent/pinpoint-bootstrap-1.8.0-SNAPSHOT.jar&quot;</div><div class="line">CATALINA_OPTS=&quot;$CATALINA_OPTS -Dpinpoint.agentId=AGENT_ID&quot;</div><div class="line">CATALINA_OPTS=&quot;$CATALINA_OPTS -Dpinpoint.applicationName=APPLICATION_TEST&quot;</div></pre></td></tr></table></figure>
+
       
     </div>
     
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Pinpoint/">Pinpoint</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pinpoint/">Pinpoint</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/链路追踪/">链路追踪</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -379,19 +413,19 @@
 
 
   
-    <article id="post-RabbitMQ命令行" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-深克隆和浅克隆有什么区别" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/06/04/RabbitMQ命令行/" class="article-date">
-      <time datetime="2020-06-04T06:13:09.000Z" itemprop="datePublished">2020-06-04</time>
+      <a href="/2020/09/11/深克隆和浅克隆有什么区别/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.770Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/06/04/RabbitMQ命令行/#comments" title="查看评论">
+    <a href="/2020/09/11/深克隆和浅克隆有什么区别/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/06/04/RabbitMQ命令行/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/深克隆和浅克隆有什么区别/" ></span>
         
         
     </a>
@@ -403,60 +437,18 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/04/RabbitMQ命令行/">RabbitMQ命令行</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <a id="more"></a>
-<h2 id="RabbitMQ&#x547D;&#x4EE4;&#x884C;"><a href="#RabbitMQ&#x547D;&#x4EE4;&#x884C;" class="headerlink" title="RabbitMQ&#x547D;&#x4EE4;&#x884C;"></a>RabbitMQ&#x547D;&#x4EE4;&#x884C;</h2><p>RabbitMQ&#x9644;&#x5E26;&#x591A;&#x4E2A;&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;&#xFF1A;</p>
-<ul>
-<li>&#x7528;&#x4E8E;&#x670D;&#x52A1;&#x7BA1;&#x7406;&#x548C;&#x4E00;&#x822C;&#x64CD;&#x4F5C;&#x5458;&#x4EFB;&#x52A1;&#x7684;<a href="https://www.rabbitmq.com/rabbitmqctl.8.html" target="_blank" rel="external"> rabbitmqctl</a></li>
-<li>&#x7528;&#x4E8E;&#x8BCA;&#x65AD;&#x548C;<a href="https://www.rabbitmq.com/monitoring.html" target="_blank" rel="external">&#x5065;&#x5EB7;&#x68C0;&#x67E5;&#x7684;</a><a href="https://www.rabbitmq.com/rabbitmq-diagnostics.8.html" target="_blank" rel="external">rabbitmq-diagnostics</a></li>
-<li>&#x7528;&#x4E8E;<a href="https://www.rabbitmq.com/plugins.html" target="_blank" rel="external">&#x63D2;&#x4EF6;&#x7BA1;&#x7406;&#x7684;</a><a href="https://www.rabbitmq.com/rabbitmq-plugins.8.html" target="_blank" rel="external">rabbitmq-plugins</a></li>
-<li>&#x7528;&#x4E8E;<a href="https://www.rabbitmq.com/queues.html" target="_blank" rel="external">&#x961F;&#x5217;</a>&#xFF08;&#x5C24;&#x5176;&#x662F;<a href="https://www.rabbitmq.com/quorum-queues.html" target="_blank" rel="external">&#x4EF2;&#x88C1;&#x961F;&#x5217;&#xFF09;</a>&#x7EF4;&#x62A4;&#x4EFB;&#x52A1;&#x7684;<a href="https://www.rabbitmq.com/rabbitmq-queues.8.html" target="_blank" rel="external"> rabbitmq</a><a href="https://www.rabbitmq.com/quorum-queues.html" target="_blank" rel="external">&#x961F;&#x5217;</a></li>
-<li><a href="https://www.rabbitmq.com/rabbitmq-upgrade.8.html" target="_blank" rel="external">rabbitmq-upgrade</a>&#x7528;&#x4E8E;&#x4E0E;<a href="https://www.rabbitmq.com/upgrade.html" target="_blank" rel="external">&#x5347;&#x7EA7;</a>&#x76F8;&#x5173;&#x7684;&#x7EF4;&#x62A4;&#x4EFB;&#x52A1;</li>
-</ul>
-<p>&#x5B83;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x5B89;&#x88C5;&#x6839;&#x76EE;&#x5F55;&#x7684;sbin&#x76EE;&#x5F55;&#x4E0B;&#x627E;&#x5230;&#x3002;</p>
-<ul>
-<li>&#x521B;&#x5EFA;&#x4EA4;&#x6362;&#x673A;</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmqctl <span class="built_in">eval</span> <span class="string">&apos;rabbit_exchange:declare({resource, &lt;&lt;&quot;test&quot;&gt;&gt;, exchange, &lt;&lt;&quot;ac.exchange.alarm&quot;&gt;&gt;}, direct, true, false, false, []).&apos;</span></div></pre></td></tr></table></figure>
-<ul>
-<li>&#x521B;&#x5EFA;&#x961F;&#x5217;</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmqctl <span class="built_in">eval</span> <span class="string">&apos;rabbit_amqqueue:declare({resource, &lt;&lt;&quot;test&quot;&gt;&gt;, queue, &lt;&lt;&quot;ac.queue.alarm&quot;&gt;&gt;}, true, false, [], none).&apos;</span></div></pre></td></tr></table></figure>
-<ul>
-<li>&#x7ED1;&#x5B9A;&#x961F;&#x5217;&#x548C;&#x4EA4;&#x6362;&#x673A;</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmqctl <span class="built_in">eval</span> <span class="string">&apos;rabbit_binding:add({binding, {resource, &lt;&lt;&quot;test&quot;&gt;&gt;, exchange, &lt;&lt;&quot;ac.exchange.alarm&quot;&gt;&gt;}, &lt;&lt;&quot;ac.routing.key.alarm&quot;&gt;&gt;, {resource, &lt;&lt;&quot;test&quot;&gt;&gt;, queue, &lt;&lt;&quot;ac.queue.alarm&quot;&gt;&gt;}, []}).&apos;</span></div></pre></td></tr></table></figure>
-<p>&#x8FD9;&#x4E09;&#x6761;&#x547D;&#x4EE4;&#x6267;&#x884C;&#x540E;&#x7684;&#x6700;&#x7EC8;&#x7ED3;&#x679C;&#x662F;&#xFF1A;&#x5728; test &#x865A;&#x62DF;&#x4E3B;&#x673A;&#x4E0B;&#x521B;&#x5EFA;&#x4E86; direct &#x7C7B;&#x578B;&#x7684;&#xFF0C;&#x6301;&#x4E45;&#x5316;&#x7684;&#xFF0C;&#x540D;&#x4E3A; ac.exchange.alarm &#x7684;exchange&#xFF0C;&#x521B;&#x5EFA;&#x4E86;&#x6301;&#x4E45;&#x5316;&#x7684;&#xFF0C;&#x540D;&#x4E3A; ac.queue.alarm &#x7684;queue&#xFF0C;&#x8BE5;&#x961F;&#x5217;&#x4EE5; ac.routing.key.alarm &#x7684;routing key&#x7ED1;&#x5B9A;&#x5230;&#x4E86; ac.exchange.alarm &#x8FD9;&#x4E2A;exchange&#x4E0A;&#x3002;&#x5176;&#x4ED6;&#x53C2;&#x6570;&#x4E3A;&#x9ED8;&#x8BA4;&#x503C;.</p>
-
+        <h1 id="深克隆和浅克隆有什么区别"><a href="#深克隆和浅克隆有什么区别" class="headerlink" title="深克隆和浅克隆有什么区别"></a>深克隆和浅克隆有什么区别</h1>
       
     </div>
     
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/RabbitMQ/">RabbitMQ</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/消息队列/">消息队列</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -474,19 +466,19 @@
 
 
   
-    <article id="post-docker 命令" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-排序" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/05/29/docker 命令/" class="article-date">
-      <time datetime="2020-05-29T11:10:32.000Z" itemprop="datePublished">2020-05-29</time>
+      <a href="/2020/09/11/排序/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.768Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/05/29/docker 命令/#comments" title="查看评论">
+    <a href="/2020/09/11/排序/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/05/29/docker 命令/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/排序/" ></span>
         
         
     </a>
@@ -498,48 +490,43 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/29/docker 命令/">docker 命令</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="docker-&#x547D;&#x4EE4;"><a href="#docker-&#x547D;&#x4EE4;" class="headerlink" title="docker &#x547D;&#x4EE4;"></a>docker &#x547D;&#x4EE4;</h2><p>docker search</p>
-<h3 id="docker-pull-tomcat"><a href="#docker-pull-tomcat" class="headerlink" title="docker pull tomcat"></a>docker pull tomcat</h3><p>&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#xFF1A;<code>docker run [OPTIONS] IMAGE [COMMAND] [ARG...]</code></p>
-<h3 id="docker-run-&#x2013;name-mytomcat-d-tomcat-latest"><a href="#docker-run-&#x2013;name-mytomcat-d-tomcat-latest" class="headerlink" title="docker run  &#x2013;name  mytomcat -d tomcat:latest"></a>docker run  &#x2013;name  mytomcat -d tomcat:latest</h3><h3 id="docker-ps"><a href="#docker-ps" class="headerlink" title="docker ps"></a>docker ps</h3><p>docker stop</p>
-<p>docker ps a</p>
-<p>docker start</p>
-<p>docker rm</p>
-<p>docker run -d -p 8888:8080 tomcat</p>
-<p>docker images [name]</p>
-<p>docker build -f /usr/local/dockerfile -t [name] path</p>
-<p>docker build -t saleorder:1.0 . </p>
-<p>docker exec </p>
-
+        <h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><h2 id="基于比较的排序算法"><a href="#基于比较的排序算法" class="headerlink" title="基于比较的排序算法:"></a>基于比较的排序算法:</h2><h3 id="BUB-冒泡排序"><a href="#BUB-冒泡排序" class="headerlink" title="BUB - 冒泡排序"></a>BUB - 冒泡排序</h3><h4 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h4><p>1.比较相邻的元素，如果第一个比第二个大，就交换他们两个；</p>
+<p>2.对每一对相邻的元素做同样的工作，从开始第一对到结尾的最后一对，比较完一轮，最大的元素就放到了最后一位；</p>
+<p>3.针对所有元素重复以上步骤，除了最后一个；</p>
+<p>4.持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较；</p>
+<h4 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h4><h5 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><p>若文件的初始状态是正序的，一趟扫描即可完成排序。所需的关键字比较次数C和记录移动次数M均达到最小值：$C<em>{min}=n-1$,$M</em>{min}=0$</p>
+<p>所以，冒泡排序最好的时间复杂度为O(n)。</p>
+<p>若初始文件是反序的，需要进行$n-1$趟排序。每趟排序要进行$n-i$次关键字的比较(1≤i≤n-1)，且每次比较都必须移动记录三次来达到交换记录位置。在这种情况下，比较和移动次数均达到最大值：</p>
+<p>$$<br>C_{max}=\frac{n(n-1)}{2}=O(n^2)<br>$$</p>
+<p>$$<br>M_{max}=\frac{3n(n-1)}{2}=O(n^2)<br>$$</p>
+<p>冒泡排序的最坏时间复杂度为:$O(n^2)$.</p>
+<p>因此冒泡排序的总的平均时间复杂度为$O(n^2)$.</p>
+<h5 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h5><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span> arr[])</span></span>&#123;</div><div class="line">  </div><div class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;aar.length;i++)&#123;</div><div class="line">    <span class="keyword">boolean</span> isSwap = <span class="keyword">false</span>;</div><div class="line">    <span class="comment">//从第一位和第二位开始比较，每一轮最大的数都排到了最后</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;aar.length-i-<span class="number">1</span>;j++)&#123;</div><div class="line">      <span class="comment">//如果前面的元素大于后面的元素，交换位置</span></div><div class="line">      <span class="keyword">if</span>(arr[j]&gt;arr&#123;j+<span class="number">1</span>&#125;)&#123;</div><div class="line">        <span class="keyword">int</span> temp = arr[j];</div><div class="line">        arr[j] = arr[j+<span class="number">1</span>];</div><div class="line">        arr[j+<span class="number">1</span>]=temp;</div><div class="line">        isSwap = <span class="keyword">true</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//如果没有换位，说明排序完成了</span></div><div class="line">    <span class="keyword">if</span>(!isSwap)&#123;</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="SEL-选择排序"><a href="#SEL-选择排序" class="headerlink" title="SEL - 选择排序"></a>SEL - 选择排序</h3><h4 id="算法原理-1"><a href="#算法原理-1" class="headerlink" title="算法原理"></a>算法原理</h4><h4 id="算法分析-1"><a href="#算法分析-1" class="headerlink" title="算法分析"></a>算法分析</h4><h5 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><h5 id="算法描述-1"><a href="#算法描述-1" class="headerlink" title="算法描述"></a>算法描述</h5><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">selectionSort</span><span class="params">(<span class="keyword">int</span>[] a)</span> </span>&#123;</div><div class="line"></div><div class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length; i++) &#123;</div><div class="line">           <span class="keyword">int</span> min = i;</div><div class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; a.length; j++) &#123;</div><div class="line">               <span class="keyword">if</span> (a[min] &gt; a[j]) &#123;</div><div class="line">                   min=j;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">           <span class="keyword">if</span> (min != i) &#123;</div><div class="line">               <span class="keyword">int</span> temp = a[min];</div><div class="line">               a[min] = a[i];</div><div class="line">               a[i] = temp;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h3 id="INS-插入排序"><a href="#INS-插入排序" class="headerlink" title="INS - 插入排序"></a>INS - 插入排序</h3><h4 id="算法原理-2"><a href="#算法原理-2" class="headerlink" title="算法原理"></a>算法原理</h4><p>将第一个元素标记为已排序</p>
+<p>遍历每个没有排序过的元素</p>
+<p> “提取” 元素 X</p>
+<p> i = 最后排序过元素的指数 到 0 的遍历</p>
+<p>  如果现在排序过的元素 &gt; 提取的元素</p>
+<p>   将排序过的元素向右移一格</p>
+<p>  否则：插入提取的元素</p>
+<h4 id="算法分析-2"><a href="#算法分析-2" class="headerlink" title="算法分析"></a>算法分析</h4><h5 id="时间复杂度-2"><a href="#时间复杂度-2" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><h5 id="算法描述-2"><a href="#算法描述-2" class="headerlink" title="算法描述"></a>算法描述</h5><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(<span class="keyword">int</span>[] a)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; a.length ; i++) &#123;</div><div class="line">            <span class="comment">//第一个元素为一个有序部分，故而，从数组第二个元素提取</span></div><div class="line">            <span class="keyword">int</span> value = a[i];</div><div class="line">            <span class="comment">//依次和有序部分从后往前比较，</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i - <span class="number">1</span>; j &gt;<span class="number">0</span>; j--) &#123;</div><div class="line">                <span class="comment">//如果取出的元素小于有序部分的元素，</span></div><div class="line">                <span class="keyword">if</span> (a[j] &gt; value) &#123;</div><div class="line">                    <span class="comment">//那么有序部分的元素往后移动一位 即有序部分下标+1</span></div><div class="line">                    a[j+<span class="number">1</span>] = a[j];</div><div class="line">                    <span class="comment">//否则结束比较，提取元素插入最后移动的哪个元素的位置</span></div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    a[j+<span class="number">1</span>] = value;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="MER-归并排序-递归实现"><a href="#MER-归并排序-递归实现" class="headerlink" title="MER - 归并排序 (递归实现)"></a>MER - 归并排序 (递归实现)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> 排序数组</div><div class="line">    * <span class="doctag">@param</span> 数组开头下标</div><div class="line">    * <span class="doctag">@param</span> 数组长度</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] mergeSort(<span class="keyword">int</span>[] a, <span class="keyword">int</span> l, <span class="keyword">int</span> h) &#123;</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (l == h) &#123;</div><div class="line">           <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;a[l]&#125;;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">int</span> middle = l+(h-l)/<span class="number">2</span>;</div><div class="line">       <span class="keyword">int</span>[] leftArray = mergeSort(a, l, middle);</div><div class="line">       <span class="keyword">int</span>[] rightArray = mergeSort(a, middle+<span class="number">1</span>, h);</div><div class="line">       <span class="comment">//新有序数组</span></div><div class="line">       <span class="keyword">int</span>[] newNum = <span class="keyword">new</span> <span class="keyword">int</span>[leftArray.length + rightArray.length];</div><div class="line"></div><div class="line">       <span class="keyword">int</span> leftIndex=<span class="number">0</span>,rightIndex=<span class="number">0</span>,newIndex=<span class="number">0</span>;</div><div class="line"></div><div class="line">       <span class="keyword">while</span> (leftIndex &lt; leftArray.length &amp;&amp; rightIndex &lt; rightArray.length) &#123;</div><div class="line">           newNum[newIndex++]= leftArray[leftIndex]&lt;rightArray[rightIndex]?leftArray[leftIndex++]:rightArray[rightIndex++];</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">while</span> (leftIndex &lt; leftArray.length) &#123;</div><div class="line">           newNum[newIndex++] = leftArray[leftIndex++];</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">while</span> (rightIndex &lt; rightArray.length) &#123;</div><div class="line">           newNum[newIndex++] = rightArray[rightIndex++];</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> newNum;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h3 id="QUI-快速排序-递归实现"><a href="#QUI-快速排序-递归实现" class="headerlink" title="QUI - 快速排序 (递归实现)"></a>QUI - 快速排序 (递归实现)</h3><h3 id="R-Q-随机快速排序-递归实现"><a href="#R-Q-随机快速排序-递归实现" class="headerlink" title="R-Q - 随机快速排序 (递归实现)"></a>R-Q - 随机快速排序 (递归实现)</h3><h2 id="不基于比较的排序算法"><a href="#不基于比较的排序算法" class="headerlink" title="不基于比较的排序算法:"></a>不基于比较的排序算法:</h2><h3 id="COU-计数排序"><a href="#COU-计数排序" class="headerlink" title="COU - 计数排序"></a>COU - 计数排序</h3><h3 id="RAD-基数排序"><a href="#RAD-基数排序" class="headerlink" title="RAD - 基数排序"></a>RAD - 基数排序</h3>
       
     </div>
     
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -557,19 +544,19 @@
 
 
   
-    <article id="post-docker 容器数据卷" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-mac 按键符号" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/05/29/docker 容器数据卷/" class="article-date">
-      <time datetime="2020-05-29T11:10:32.000Z" itemprop="datePublished">2020-05-29</time>
+      <a href="/2020/09/11/mac 按键符号/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.767Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/05/29/docker 容器数据卷/#comments" title="查看评论">
+    <a href="/2020/09/11/mac 按键符号/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/05/29/docker 容器数据卷/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/mac 按键符号/" ></span>
         
         
     </a>
@@ -581,21 +568,11 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/29/docker 容器数据卷/">docker 容器数据卷</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="docker-&#x5BB9;&#x5668;&#x6570;&#x636E;&#x5377;"><a href="#docker-&#x5BB9;&#x5668;&#x6570;&#x636E;&#x5377;" class="headerlink" title="docker &#x5BB9;&#x5668;&#x6570;&#x636E;&#x5377;"></a>docker &#x5BB9;&#x5668;&#x6570;&#x636E;&#x5377;</h2><p>docker run -it  -v &#x5BBF;&#x4E3B;&#x673A;&#x76EE;&#x5F55;:/&#x5BB9;&#x5668;&#x76EE;&#x5F55; &#x955C;&#x50CF;&#x540D;</p>
+        <h1 id="mac按键符号"><a href="#mac按键符号" class="headerlink" title="mac按键符号"></a>mac按键符号</h1><p>符号    说明<br>⌘    Command<br>⇧    Shift<br>⌥    Option<br>⌃    Control<br>↩︎    Return/Enter<br>⌫    Delete<br>⌦    向前删除键（Fn+Delete）<br>↑    上箭头<br>↓    下箭头<br>→    右箭头<br>←    左箭头<br>⇞    Page Up（Fn+↑）<br>⇟    Page Down（Fn+↓）<br>Home    Fn + ←<br>End    Fn + →<br>⇥    右制表符（Tab键）<br>⇤    左制表符（Shift+Tab）<br>⎋    Escape (Esc)</p>
+<h2 id="mac输入特殊符号的方法"><a href="#mac输入特殊符号的方法" class="headerlink" title="mac输入特殊符号的方法"></a>mac输入特殊符号的方法</h2><p>⚠️ ⌘+⌃+space 可以直接调出输入表情和特殊符号的选框, 开始显示的是emoji表情, 一直往下面拉滑或者点右上角的图标就是各种特殊符号咯.</p>
 
       
     </div>
@@ -603,16 +580,8 @@
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -630,19 +599,19 @@
 
 
   
-    <article id="post-Dockerfile指令" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-java泛型" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/05/28/Dockerfile指令/" class="article-date">
-      <time datetime="2020-05-28T15:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+      <a href="/2020/09/11/java泛型/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.766Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/05/28/Dockerfile指令/#comments" title="查看评论">
+    <a href="/2020/09/11/java泛型/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/05/28/Dockerfile指令/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/java泛型/" ></span>
         
         
     </a>
@@ -654,46 +623,22 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/28/Dockerfile指令/">docker 容器数据卷</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="Dockerfile&#x6307;&#x4EE4;"><a href="#Dockerfile&#x6307;&#x4EE4;" class="headerlink" title="Dockerfile&#x6307;&#x4EE4;"></a>Dockerfile&#x6307;&#x4EE4;</h2><h4 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h4><p>  &#x57FA;&#x7840;&#x955C;&#x50CF;&#xFF0C;&#x5F53;&#x524D;&#x955C;&#x50CF;&#x662F;&#x57FA;&#x4E8E;&#x54EA;&#x4E2A;&#x955C;&#x50CF;&#x7684;</p>
-<h4 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h4><p>  &#x955C;&#x50CF;&#x7EF4;&#x62A4;&#x8005;&#x7684;&#x59D3;&#x540D;&#x548C;&#x90AE;&#x7BB1;&#x5730;&#x5740;&#x7B49;</p>
-<h4 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a>WORKDIR</h4><p>  &#x6307;&#x5B9A;&#x521B;&#x5EFA;&#x5BB9;&#x5668;&#x540E;&#xFF0C;&#x7EC8;&#x7AEF;&#x9ED8;&#x8BA4;&#x4F4D;&#x7F6E;&#xFF08;pwd&#x7684;&#x4F4D;&#x7F6E;&#xFF09;</p>
-<h4 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a>ENV</h4><p>  &#x6784;&#x5EFA;&#x955C;&#x50CF;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x73AF;&#x5883;&#x53D8;&#x91CF;</p>
-<h5 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h5><p>  &#x6784;&#x5EFA;&#x5BB9;&#x5668;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x6267;&#x884C;&#x7684;&#x547D;&#x4EE4;</p>
-<h4 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a>EXPOSE</h4><p>  &#x5F53;&#x524D;&#x5BB9;&#x5668;&#x5BF9;&#x5916;&#x66B4;&#x9732;&#x51FA;&#x7684;&#x7AEF;&#x53E3;</p>
-<h4 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a>VOLUME</h4><p>  &#x5BB9;&#x5668;&#x6570;&#x636E;&#x5377;&#xFF0C;&#x7528;&#x4E8E;&#x6570;&#x636E;&#x4FDD;&#x5B58;&#x548C;&#x6301;&#x4E45;&#x5316;</p>
-<h4 id="ADD"><a href="#ADD" class="headerlink" title="ADD"></a>ADD</h4><p>  &#x5C06;&#x5BBF;&#x4E3B;&#x673A;&#x76EE;&#x5F55;&#x4E0B;&#x7684;&#x6587;&#x4EF6;&#x62F7;&#x8D1D;&#x5230;&#x955C;&#x50CF;&#x4E2D;&#xFF0C;&#x4E14;&#x4F1A;&#x89E3;&#x538B; tar&#x5305;&#x548C;&#x81EA;&#x52A8;&#x5904;&#x7406;URL</p>
-<h4 id="COPY"><a href="#COPY" class="headerlink" title="COPY"></a>COPY</h4><h4 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h4><p>&#x6307;&#x5B9A;&#x5BB9;&#x5668;&#x542F;&#x52A8;&#x65F6;&#x8981;&#x6267;&#x884C;&#x7684;&#x547D;&#x4EE4;</p>
-<h4 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h4><h4 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a>ONBUILD</h4>
+        <h1 id="java泛型"><a href="#java泛型" class="headerlink" title="java泛型"></a>java泛型</h1><p>Java从1.5之后支持泛型，泛型的本质是参数化类型，也就是说所操作的数据类型被指定为一个参数。这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。</p>
+<p>1.类型安全。泛型的主要目标是提高Java程序的类型安全。通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中消除强制。一类型安全范畴的主要目标是提高Java程序的类型安全通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中。</p>
+<p>2.消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，</p>
+<p>3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。</p>
+
       
     </div>
     
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -711,19 +656,19 @@
 
 
   
-    <article id="post-Docker搭建zookeeper集群" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-java性能优化" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/05/28/Docker搭建zookeeper集群/" class="article-date">
-      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+      <a href="/2020/09/11/java性能优化/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.765Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/05/28/Docker搭建zookeeper集群/#comments" title="查看评论">
+    <a href="/2020/09/11/java性能优化/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/05/28/Docker搭建zookeeper集群/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/java性能优化/" ></span>
         
         
     </a>
@@ -735,31 +680,16 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/28/Docker搭建zookeeper集群/">Docker搭建zookeeper集群</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="Docker&#x642D;&#x5EFA;zookeeper&#x96C6;&#x7FA4;"><a href="#Docker&#x642D;&#x5EFA;zookeeper&#x96C6;&#x7FA4;" class="headerlink" title="Docker&#x642D;&#x5EFA;zookeeper&#x96C6;&#x7FA4;"></a>Docker&#x642D;&#x5EFA;zookeeper&#x96C6;&#x7FA4;</h2><p>&#x51C6;&#x5907;&#x5728;3&#x53F0;&#x865A;&#x62DF;&#x673A;&#x4E0A;&#x642D;&#x5EFA;zookeeper&#x96C6;&#x7FA4;</p>
-<h4 id="&#x521B;&#x5EFA;&#x6302;&#x8F7D;&#x76EE;&#x5F55;"><a href="#&#x521B;&#x5EFA;&#x6302;&#x8F7D;&#x76EE;&#x5F55;" class="headerlink" title="&#x521B;&#x5EFA;&#x6302;&#x8F7D;&#x76EE;&#x5F55;"></a>&#x521B;&#x5EFA;&#x6302;&#x8F7D;&#x76EE;&#x5F55;</h4><p>&#x7528;&#x4E8E;&#x5B58;&#x50A8;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x548C;&#x6570;&#x636E;&#xFF0C;&#x4F7F;&#x7528;docker&#x6570;&#x636E;&#x548C;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x7B49;&#x9700;&#x8981;&#x653E;&#x5728;&#x81EA;&#x5DF1;&#x7684;&#x5BBF;&#x4E3B;&#x673A;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x5BB9;&#x5668;&#x5185;&#xFF0C;&#x7279;&#x522B;&#x662F;&#x6570;&#x636E;</p>
-<p><code>mkdir -p zookeeper/conf</code></p>
-<p><code>mkdir -p zookeeper/data</code></p>
-<h4 id="&#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"><a href="#&#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6587;&#x4EF6;" class="headerlink" title="&#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6587;&#x4EF6;"></a>&#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h4><p>&#x5728;zookeeper/data&#x4E0B;&#x521B;&#x5EFA;zoo.cfg</p>
-<p>touch <code>zoo.cfg</code></p>
-<p>clientPort=2181<br>dataDir=/data<br>dataLogDir=/data/log<br>tickTime=2000<br>initLimit=5<br>syncLimit=2<br>autopurge.snapRetainCount=3<br>autopurge.purgeInterval=0<br>maxClientCnxns=60<br>server.111=10.255.200.168:2888:3888<br>server.222=10.255.200.174:2888:3888<br>server.233=10.255.200.172:2888:3888</p>
-<h4 id="&#x914D;&#x7F6E;myid"><a href="#&#x914D;&#x7F6E;myid" class="headerlink" title="&#x914D;&#x7F6E;myid"></a>&#x914D;&#x7F6E;myid</h4><p>&#x5728;zookeeper/data&#x76EE;&#x5F55;&#x4E0B;&#x521B;&#x5EFA;<strong>myid</strong>&#xFF0C;&#x5E76;&#x914D;&#x7F6E;id&#xFF0C;&#x91CC;&#x9762;&#x7684;<strong>id&#x4E00;&#x5B9A;&#x8981;&#x548C;&#x4E0A;&#x9762;&#x914D;&#x7F6E;&#x7684;server.id&#x4E00;&#x81F4;</strong></p>
-<p><code>touch myid</code></p>
-<p><code>echo 111 &gt; myid</code></p>
-<h4 id="&#x542F;&#x52A8;&#x5BB9;&#x5668;"><a href="#&#x542F;&#x52A8;&#x5BB9;&#x5668;" class="headerlink" title="&#x542F;&#x52A8;&#x5BB9;&#x5668;"></a>&#x542F;&#x52A8;&#x5BB9;&#x5668;</h4><p>docker run  &#x2013;network host -v /usr/local/zookeeper/data:/data -v  /usr/local/zookeeper/conf:/conf &#x2013;name zookeeper-2181 -d zookeeper:3.4.13</p>
+        <h3 id="java性能优化"><a href="#java性能优化" class="headerlink" title="java性能优化"></a>java性能优化</h3><p>项目的并发量级是多少？</p>
+<p>有没有性能问题诊断和优化的生产经验</p>
+<p>说说你过往项目的真实调优过程，常用指标有哪些？</p>
+<p>jvm参数设置大小的依据是什么？</p>
+<p>解决过索引失效问题吗？</p>
+<p>基于并发量要求你会从哪些维度考虑</p>
+<p>网络宽带，QPS，TPS，连接数，数据量级</p>
 
       
     </div>
@@ -767,16 +697,8 @@
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -794,19 +716,19 @@
 
 
   
-    <article id="post-java语言特性知识点汇总" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-dubbo的原理" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/05/28/java语言特性知识点汇总/" class="article-date">
-      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+      <a href="/2020/09/11/dubbo的原理/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.763Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/05/28/java语言特性知识点汇总/#comments" title="查看评论">
+    <a href="/2020/09/11/dubbo的原理/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/05/28/java语言特性知识点汇总/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/dubbo的原理/" ></span>
         
         
     </a>
@@ -818,59 +740,16 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/28/java语言特性知识点汇总/">java语言特性知识点汇总</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <pre class="mermaid">graph LR
-java --&gt; B(JUC)
-B --&gt; ConcurrentXXX
-B --&gt; AtomicXXX
-B --&gt; Executor
-B --&gt; Caller&amp;&amp;Future
-B --&gt; Queue
-B --&gt; Locks
-
-java --&gt; C(&#x6570;&#x636E;&#x7C7B;&#x578B;)
-C --&gt; &#x7A7A;&#x95F4;&#x5360;&#x7528;
-C --&gt; &#x57FA;&#x672C;&#x6570;&#x636E;&#x7ED3;&#x6784;
-C --&gt; &#x81EA;&#x52A8;&#x8F6C;&#x578B;&#x4E0E;&#x5F3A;&#x5236;&#x8F6C;&#x578B;
-C --&gt; &#x5C01;&#x7BB1;&#x4E0E;&#x62C6;&#x7BB1;
-
-java --&gt; &#x7248;&#x672C;&#x5DEE;&#x5F02;&#x65B0;&#x7279;&#x6027;
-java --&gt; &#x52A8;&#x6001;&#x4EE3;&#x7406;&#x4E0E;&#x53CD;&#x5C04;
-
-java --&gt; E(&#x5E38;&#x7528;&#x96C6;&#x5408;)
-E --&gt; HashMap
-E --&gt; ConcurrentHashMap
-E --&gt; ArrayList&amp;LinkedList
-E --&gt; HashSet
-E --&gt; TreeMap
-
-java --&gt; F(&#x5BF9;&#x8C61;&#x5F15;&#x7528;)
-F --&gt; &#x5F3A;&#x5F15;&#x7528;
-F --&gt; &#x5F31;&#x5F15;&#x7528;
-F --&gt; &#x8F6F;&#x5F15;&#x7528;
-F --&gt; &#x865A;&#x5F15;&#x7528;
-
-java --&gt; G(&#x6269;&#x5C55;&#x77E5;&#x8BC6;&#x70B9;)
-G --&gt; SPI&#x673A;&#x5236;
-G --&gt; &#x6CE8;&#x89E3;&#x5904;&#x7406;&#x673A;&#x5236;</pre>
-
-
-
-
-
+        <p>dubbo的原理</p>
+<p>scp r cm pets</p>
+<p>框架设计</p>
+<p>启动解析</p>
+<p>服务暴露</p>
+<p>服务引用</p>
+<p>服务调用</p>
 
       
     </div>
@@ -878,16 +757,8 @@ G --&gt; &#x6CE8;&#x89E3;&#x5904;&#x7406;&#x673A;&#x5236;</pre>
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/java/">java</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -905,19 +776,19 @@ G --&gt; &#x6CE8;&#x89E3;&#x5904;&#x7406;&#x673A;&#x5236;</pre>
 
 
   
-    <article id="post-mst" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Zuul与GateWay有什么区别" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/05/28/mst/" class="article-date">
-      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+      <a href="/2020/09/11/Zuul与GateWay有什么区别/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.762Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/05/28/mst/#comments" title="查看评论">
+    <a href="/2020/09/11/Zuul与GateWay有什么区别/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/05/28/mst/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/Zuul与GateWay有什么区别/" ></span>
         
         
     </a>
@@ -929,47 +800,27 @@ G --&gt; &#x6CE8;&#x89E3;&#x5904;&#x7406;&#x673A;&#x5236;</pre>
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/28/mst/">面试题</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <a id="more"></a>
-<h3 id="&#x5982;&#x4F55;&#x5224;&#x65AD;&#x94FE;&#x8868;&#x6709;&#x73AF;"><a href="#&#x5982;&#x4F55;&#x5224;&#x65AD;&#x94FE;&#x8868;&#x6709;&#x73AF;" class="headerlink" title="&#x5982;&#x4F55;&#x5224;&#x65AD;&#x94FE;&#x8868;&#x6709;&#x73AF;"></a>&#x5982;&#x4F55;&#x5224;&#x65AD;&#x94FE;&#x8868;&#x6709;&#x73AF;</h3><p>&#x7B2C;&#x4E00;&#x79CD;&#x65B9;&#x6CD5;&#x662F;&#x6BD4;&#x8F83;&#x7B28;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x90A3;&#x5C31;&#x662F;&#x4F9D;&#x6B21;&#x904D;&#x5386;&#x94FE;&#x8868;&#xFF0C;&#x76F4;&#x5230;&#x9047;&#x5230;&#x548C;&#x4E4B;&#x524D;&#x904D;&#x5386;&#x7684;&#x8282;&#x70B9;&#x4E00;&#x6837;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x5219;&#x8BA4;&#x4E3A;&#x6709;&#x73AF;&#x3002;</p>
-<h3 id="&#x4E3A;&#x5565;&#x8981;&#x8986;&#x76D6;hashcode"><a href="#&#x4E3A;&#x5565;&#x8981;&#x8986;&#x76D6;hashcode" class="headerlink" title="&#x4E3A;&#x5565;&#x8981;&#x8986;&#x76D6;hashcode"></a>&#x4E3A;&#x5565;&#x8981;&#x8986;&#x76D6;hashcode</h3><h3 id="&#x5982;&#x4F55;&#x89E3;&#x51B3;hash&#x51B2;&#x7A81;"><a href="#&#x5982;&#x4F55;&#x89E3;&#x51B3;hash&#x51B2;&#x7A81;" class="headerlink" title="&#x5982;&#x4F55;&#x89E3;&#x51B3;hash&#x51B2;&#x7A81;"></a>&#x5982;&#x4F55;&#x89E3;&#x51B3;hash&#x51B2;&#x7A81;</h3><h3 id="https&#x4E0E;http&#x533A;&#x522B;"><a href="#https&#x4E0E;http&#x533A;&#x522B;" class="headerlink" title="https&#x4E0E;http&#x533A;&#x522B;"></a>https&#x4E0E;http&#x533A;&#x522B;</h3><ol>
-<li>https&#x534F;&#x8BAE;&#x9700;&#x8981;&#x5230;CA  &#xFF08;Certificate Authority&#xFF0C;&#x8BC1;&#x4E66;&#x9881;&#x53D1;&#x673A;&#x6784;&#xFF09;&#x7533;&#x8BF7;&#x8BC1;&#x4E66;&#xFF0C;&#x4E00;&#x822C;&#x514D;&#x8D39;&#x8BC1;&#x4E66;&#x8F83;&#x5C11;&#xFF0C;&#x56E0;&#x800C;&#x9700;&#x8981;&#x4E00;&#x5B9A;&#x8D39;&#x7528;&#x3002;(&#x539F;&#x6765;&#x7F51;&#x6613;&#x5B98;&#x7F51;&#x662F;http&#xFF0C;&#x800C;&#x7F51;&#x6613;&#x90AE;&#x7BB1;&#x662F;https&#x3002;)</li>
-<li>http&#x662F;&#x8D85;&#x6587;&#x672C;&#x4F20;&#x8F93;&#x534F;&#x8BAE;&#xFF0C;&#x4FE1;&#x606F;&#x662F;&#x660E;&#x6587;&#x4F20;&#x8F93;&#xFF0C;https&#x5219;&#x662F;&#x5177;&#x6709;&#x5B89;&#x5168;&#x6027;&#x7684;ssl&#x52A0;&#x5BC6;&#x4F20;&#x8F93;&#x534F;&#x8BAE;&#x3002;</li>
-<li><p>http&#x548C;https&#x4F7F;&#x7528;&#x7684;&#x662F;&#x5B8C;&#x5168;&#x4E0D;&#x540C;&#x7684;&#x8FDE;&#x63A5;&#x65B9;&#x5F0F;&#xFF0C;&#x7528;&#x7684;&#x7AEF;&#x53E3;&#x4E5F;&#x4E0D;&#x4E00;&#x6837;&#xFF0C;&#x524D;&#x8005;&#x662F;80&#xFF0C;&#x540E;&#x8005;&#x662F;443&#x3002;</p>
-</li>
-<li><p>http&#x7684;&#x8FDE;&#x63A5;&#x5F88;&#x7B80;&#x5355;&#xFF0C;&#x662F;&#x65E0;&#x72B6;&#x6001;&#x7684;&#x3002;Https&#x534F;&#x8BAE;&#x662F;&#x7531;SSL+Http&#x534F;&#x8BAE;&#x6784;&#x5EFA;&#x7684;&#x53EF;&#x8FDB;&#x884C;&#x52A0;&#x5BC6;&#x4F20;&#x8F93;&#x3001;&#x8EAB;&#x4EFD;&#x8BA4;&#x8BC1;&#x7684;&#x7F51;&#x7EDC;&#x534F;&#x8BAE;&#xFF0C;&#x6BD4;http&#x534F;&#x8BAE;&#x5B89;&#x5168;&#x3002;(&#x65E0;&#x72B6;&#x6001;&#x7684;&#x610F;&#x601D;&#x662F;&#x5176;&#x6570;&#x636E;&#x5305;&#x7684;&#x53D1;&#x9001;&#x3001;&#x4F20;&#x8F93;&#x548C;&#x63A5;&#x6536;&#x90FD;&#x662F;&#x76F8;&#x4E92;&#x72EC;&#x7ACB;&#x7684;&#x3002;&#x65E0;&#x8FDE;&#x63A5;&#x7684;&#x610F;&#x601D;&#x662F;&#x6307;&#x901A;&#x4FE1;&#x53CC;&#x65B9;&#x90FD;&#x4E0D;&#x957F;&#x4E45;&#x7684;&#x7EF4;&#x6301;&#x5BF9;&#x65B9;&#x7684;&#x4EFB;&#x4F55;&#x4FE1;&#x606F;&#x3002;)</p>
-</li>
-</ol>
-<h3 id="mysql&#x6570;&#x636E;&#x5E93;&#x9ED8;&#x8BA4;&#x7684;&#x6570;&#x636E;&#x9694;&#x79BB;&#x7EA7;&#x522B;"><a href="#mysql&#x6570;&#x636E;&#x5E93;&#x9ED8;&#x8BA4;&#x7684;&#x6570;&#x636E;&#x9694;&#x79BB;&#x7EA7;&#x522B;" class="headerlink" title="mysql&#x6570;&#x636E;&#x5E93;&#x9ED8;&#x8BA4;&#x7684;&#x6570;&#x636E;&#x9694;&#x79BB;&#x7EA7;&#x522B;"></a>mysql&#x6570;&#x636E;&#x5E93;&#x9ED8;&#x8BA4;&#x7684;&#x6570;&#x636E;&#x9694;&#x79BB;&#x7EA7;&#x522B;</h3>
+        <p>网关</p>
+<p>作用：可以实现</p>
+<h3 id="Zuul与GateWay有什么区别"><a href="#Zuul与GateWay有什么区别" class="headerlink" title="Zuul与GateWay有什么区别"></a>Zuul与GateWay有什么区别</h3><p>Zuul网关属于Nettfix公司开源框架，需要第一代微服务网关</p>
+<p>GateWay属于SpringCloud自己研发的网关框架，属于第二代网关</p>
+<p>相比来说GateWay比Zuul网关性能好</p>
+<p>Zuul网关底层基于Servlet实现的，阻塞式api，不支持长连接</p>
+<p>SpringCloudGateWay基于Spring5构建，能够实现响应式非阻塞式api，支持长连接，更好的支持Spring系列产品，依赖Springboot-webflux。</p>
+<h3 id="网关与Nginx的区别"><a href="#网关与Nginx的区别" class="headerlink" title="网关与Nginx的区别"></a>网关与Nginx的区别</h3><p>相同点：都可以实现api拦截，负载均衡，反向代理，请求过滤等</p>
+<p>不同点：Nginx采用c语言</p>
+
       
     </div>
     
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/java/">java</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -987,19 +838,19 @@ G --&gt; &#x6CE8;&#x89E3;&#x5904;&#x7406;&#x673A;&#x5236;</pre>
 
 
   
-    <article id="post-系统性能核心关注点" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Spring事务隔离级别" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2020/05/21/系统性能核心关注点/" class="article-date">
-      <time datetime="2020-05-21T05:47:07.000Z" itemprop="datePublished">2020-05-21</time>
+      <a href="/2020/09/11/Spring事务隔离级别/" class="article-date">
+      <time datetime="2020-09-11T05:53:44.761Z" itemprop="datePublished">2020-09-11</time>
 </a>
 
  
-    <a href="/2020/05/21/系统性能核心关注点/#comments" title="查看评论">
+    <a href="/2020/09/11/Spring事务隔离级别/#comments" title="查看评论">
         <i class="fa fa-comments-o" aria-hidden="true"></i>
         <span class="count-comment"></span>
         
-            <span class="ds-thread-count"  data-thread-key="2020/05/21/系统性能核心关注点/" ></span>
+            <span class="ds-thread-count"  data-thread-key="2020/09/11/Spring事务隔离级别/" ></span>
         
         
     </a>
@@ -1011,119 +862,37 @@ G --&gt; &#x6CE8;&#x89E3;&#x5904;&#x7406;&#x673A;&#x5236;</pre>
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/21/系统性能核心关注点/">系统性能核心关注点</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
           
-              <pre class="mermaid">graph LR
-A[&#x7CFB;&#x7EDF;&#x6027;&#x80FD;&#x6838;&#x5FC3;&#x5173;&#x6CE8;&#x70B9;] --&gt;B(&#x57FA;&#x7840;&#x8BBE;&#x65BD;&#x4F18;&#x5316;)
-A --&gt; C(&#x7CFB;&#x7EDF;&#x5C42;&#x7F51;&#x7EDC;&#x4F18;&#x5316;)
-A --&gt; D(&#x5E94;&#x7528;&#x5C42;&#x7F16;&#x7801;&#x4F18;&#x5316;)
-A --&gt; E(&#x5206;&#x5E03;&#x5F0F;&#x7CFB;&#x7EDF;&#x4F18;&#x5316;)
-C --&gt;</pre>
-          
+        <h2 id="Spring事务隔离级别"><a href="#Spring事务隔离级别" class="headerlink" title="Spring事务隔离级别"></a>Spring事务隔离级别</h2><p>一、Propagation （事务的传播属性）</p>
+<p>Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：PROPAGATION_REQUIRED–支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。<br>PROPAGATION_SUPPORTS–支持当前事务，如果当前没有事务，就以非事务方式执行。<br>PROPAGATION_MANDATORY–支持当前事务，如果当前没有事务，就抛出异常。<br>PROPAGATION_REQUIRES_NEW–新建事务，如果当前存在事务，把当前事务挂起。<br>PROPAGATION_NOT_SUPPORTED–以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。<br>PROPAGATION_NEVER–以非事务方式执行，如果当前存在事务，则抛出异常。</p>
+<p>1： PROPAGATION_REQUIRED<br>加入当前正要执行的事务不在另外一个事务里，那么就起一个新的事务<br>比如说，ServiceB.methodB的事务级别定义为PROPAGATION_REQUIRED, 那么由于执行ServiceA.methodA的时候，<br>ServiceA.methodA已经起了事务，这时调用ServiceB.methodB，ServiceB.methodB看到自己已经运行在ServiceA.methodA<br>的事务内部，就不再起新的事务。而假如ServiceA.methodA运行的时候发现自己没有在事务中，他就会为自己分配一个事务。<br>这样，在ServiceA.methodA或者在ServiceB.methodB内的任何地方出现异常，事务都会被回滚。即使ServiceB.methodB的事务已经被<br>提交，但是ServiceA.methodA在接下来fail要回滚，ServiceB.methodB也要回滚</p>
+<p>2： PROPAGATION_SUPPORTS<br>如果当前在事务中，即以事务的形式运行，如果当前不再一个事务中，那么就以非事务的形式运行</p>
+<p>3： PROPAGATION_MANDATORY<br>必须在一个事务中运行。也就是说，他只能被一个父事务调用。否则，他就要抛出异常</p>
+<p>4： PROPAGATION_REQUIRES_NEW<br>这个就比较绕口了。 比如我们设计ServiceA.methodA的事务级别为PROPAGATION_REQUIRED，ServiceB.methodB的事务级别为PROPAGATION_REQUIRES_NEW，<br>那么当执行到ServiceB.methodB的时候，ServiceA.methodA所在的事务就会挂起，ServiceB.methodB会起一个新的事务，等待ServiceB.methodB的事务完成以后，<br>他才继续执行。他与PROPAGATION_REQUIRED 的事务区别在于事务的回滚程度了。因为ServiceB.methodB是新起一个事务，那么就是存在<br>两个不同的事务。如果ServiceB.methodB已经提交，那么ServiceA.methodA失败回滚，ServiceB.methodB是不会回滚的。如果ServiceB.methodB失败回滚，<br>如果他抛出的异常被ServiceA.methodA捕获，ServiceA.methodA事务仍然可能提交。</p>
+<p>5： PROPAGATION_NOT_SUPPORTED<br>当前不支持事务。比如ServiceA.methodA的事务级别是PROPAGATION_REQUIRED ，而ServiceB.methodB的事务级别是PROPAGATION_NOT_SUPPORTED ，<br>那么当执行到ServiceB.methodB时，ServiceA.methodA的事务挂起，而他以非事务的状态运行完，再继续ServiceA.methodA的事务。</p>
+<p>6： PROPAGATION_NEVER<br>不能在事务中运行。假设ServiceA.methodA的事务级别是PROPAGATION_REQUIRED， 而ServiceB.methodB的事务级别是PROPAGATION_NEVER ，<br>那么ServiceB.methodB就要抛出异常了。</p>
+<p>7： PROPAGATION_NESTED<br>理解Nested的关键是savepoint。他与PROPAGATION_REQUIRES_NEW的区别是，PROPAGATION_REQUIRES_NEW另起一个事务，将会与他的父事务相互独立，<br>而Nested的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。<br>而Nested事务的好处是他有一个savepoint。</p>
+<hr>
+<p>ServiceA {</p>
+<p>/<em>*<br>\</em> 事务属性配置为 PROPAGATION_REQUIRED<br>*/<br>void methodA() {<br>try {<br>//savepoint<br>ServiceB.methodB(); //PROPAGATION_NESTED 级别<br>} catch (SomeException) {<br>// 执行其他业务, 如 ServiceC.methodC();<br>}<br>}</p>
+<p>}</p>
+<hr>
+<p>也就是说ServiceB.methodB失败回滚，那么ServiceA.methodA也会回滚到savepoint点上，ServiceA.methodA可以选择另外一个分支，比如<br>ServiceC.methodC，继续执行，来尝试完成自己的事务。<br>但是这个事务并没有在EJB标准中定义。</p>
+<p>Spring事务的隔离级别<br> \1. ISOLATION_DEFAULT： 这是一个PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别.<br>   另外四个与JDBC的隔离级别相对应<br> \2. ISOLATION_READ_UNCOMMITTED： 这是事务最低的隔离级别，它充许令外一个事务可以看到这个事务未提交的数据。<br>   这种隔离级别会产生脏读，不可重复读和幻像读。<br> \3. ISOLATION_READ_COMMITTED： 保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据<br> \4. ISOLATION_REPEATABLE_READ： 这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。<br>   它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了避免下面的情况产生(不可重复读)。<br> \5. ISOLATION_SERIALIZABLE 这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。<br>   除了防止脏读，不可重复读外，还避免了幻像读。</p>
+<p>什么是脏数据，脏读，不可重复读，幻觉读？<br> 脏读: 指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，<br>   另外一个事务也访问这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据， 那么另外一<br>   个事务读到的这个数据是脏数据，依据脏数据所做的操作可能是不正确的。</p>
+<p> 不可重复读: 指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。<br>       那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的数据<br>       可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</p>
+<p> 幻觉读: 指当事务不是独立执行时发生的一种现象，例如第一个事务对一个表中的数据进行了修改，这种修改涉及<br>     到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，<br>     以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。</p>
+
       
     </div>
     
     <div class="article-info article-info-index">
       
       
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/系统性能/">系统性能</a>
-    </div>
-
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统性能/">系统性能</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2020/05/21/系统性能核心关注点/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Netty权威指南" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/07/24/Netty权威指南/" class="article-date">
-      <time datetime="2019-07-24T09:22:10.000Z" itemprop="datePublished">2019-07-24</time>
-</a>
-
- 
-    <a href="/2019/07/24/Netty权威指南/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2019/07/24/Netty权威指南/" ></span>
-        
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/24/Netty权威指南/">Netty权威指南目录抄写</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <h1 id="Netty&#x6743;&#x5A01;&#x6307;&#x5357;"><a href="#Netty&#x6743;&#x5A01;&#x6307;&#x5357;" class="headerlink" title="Netty&#x6743;&#x5A01;&#x6307;&#x5357;"></a>Netty&#x6743;&#x5A01;&#x6307;&#x5357;</h1><h2 id="&#x8D70;&#x8FDB;java-NIO"><a href="#&#x8D70;&#x8FDB;java-NIO" class="headerlink" title="&#x8D70;&#x8FDB;java NIO"></a>&#x8D70;&#x8FDB;java NIO</h2><h2 id="java&#x7684;I-O&#x6F14;&#x8FDB;&#x4E4B;&#x8DEF;"><a href="#java&#x7684;I-O&#x6F14;&#x8FDB;&#x4E4B;&#x8DEF;" class="headerlink" title="java&#x7684;I/O&#x6F14;&#x8FDB;&#x4E4B;&#x8DEF;"></a>java&#x7684;I/O&#x6F14;&#x8FDB;&#x4E4B;&#x8DEF;</h2><h2 id="NIO&#x5165;&#x95E8;"><a href="#NIO&#x5165;&#x95E8;" class="headerlink" title="NIO&#x5165;&#x95E8;"></a>NIO&#x5165;&#x95E8;</h2><h2 id="Netty&#x5165;&#x95E8;&#x5E94;&#x7528;"><a href="#Netty&#x5165;&#x95E8;&#x5E94;&#x7528;" class="headerlink" title="Netty&#x5165;&#x95E8;&#x5E94;&#x7528;"></a>Netty&#x5165;&#x95E8;&#x5E94;&#x7528;</h2><h2 id="TCP&#x7C98;&#x5305;-&#x62C6;&#x5305;&#x95EE;&#x9898;&#x7684;&#x89E3;&#x51B3;&#x4E4B;&#x9053;"><a href="#TCP&#x7C98;&#x5305;-&#x62C6;&#x5305;&#x95EE;&#x9898;&#x7684;&#x89E3;&#x51B3;&#x4E4B;&#x9053;" class="headerlink" title="TCP&#x7C98;&#x5305;/&#x62C6;&#x5305;&#x95EE;&#x9898;&#x7684;&#x89E3;&#x51B3;&#x4E4B;&#x9053;"></a>TCP&#x7C98;&#x5305;/&#x62C6;&#x5305;&#x95EE;&#x9898;&#x7684;&#x89E3;&#x51B3;&#x4E4B;&#x9053;</h2><h2 id="&#x5206;&#x9694;&#x7B26;&#x548C;&#x5B9A;&#x957F;&#x89E3;&#x7801;&#x5668;&#x7684;&#x5E94;&#x7528;"><a href="#&#x5206;&#x9694;&#x7B26;&#x548C;&#x5B9A;&#x957F;&#x89E3;&#x7801;&#x5668;&#x7684;&#x5E94;&#x7528;" class="headerlink" title="&#x5206;&#x9694;&#x7B26;&#x548C;&#x5B9A;&#x957F;&#x89E3;&#x7801;&#x5668;&#x7684;&#x5E94;&#x7528;"></a>&#x5206;&#x9694;&#x7B26;&#x548C;&#x5B9A;&#x957F;&#x89E3;&#x7801;&#x5668;&#x7684;&#x5E94;&#x7528;</h2><h2 id="&#x7F16;&#x89E3;&#x7801;&#x6280;&#x672F;"><a href="#&#x7F16;&#x89E3;&#x7801;&#x6280;&#x672F;" class="headerlink" title="&#x7F16;&#x89E3;&#x7801;&#x6280;&#x672F;"></a>&#x7F16;&#x89E3;&#x7801;&#x6280;&#x672F;</h2><h2 id="Java&#x5E8F;&#x5217;&#x5316;"><a href="#Java&#x5E8F;&#x5217;&#x5316;" class="headerlink" title="Java&#x5E8F;&#x5217;&#x5316;"></a>Java&#x5E8F;&#x5217;&#x5316;</h2><h2 id="Google-Protobuf&#x7F16;&#x89E3;&#x7801;"><a href="#Google-Protobuf&#x7F16;&#x89E3;&#x7801;" class="headerlink" title="Google Protobuf&#x7F16;&#x89E3;&#x7801;"></a>Google Protobuf&#x7F16;&#x89E3;&#x7801;</h2><h2 id="JBoss-Marshalling&#x7F16;&#x89E3;&#x7801;"><a href="#JBoss-Marshalling&#x7F16;&#x89E3;&#x7801;" class="headerlink" title="JBoss Marshalling&#x7F16;&#x89E3;&#x7801;"></a>JBoss Marshalling&#x7F16;&#x89E3;&#x7801;</h2><h2 id="HTTP&#x534F;&#x8BAE;&#x5F00;&#x53D1;&#x5E94;&#x7528;"><a href="#HTTP&#x534F;&#x8BAE;&#x5F00;&#x53D1;&#x5E94;&#x7528;" class="headerlink" title="HTTP&#x534F;&#x8BAE;&#x5F00;&#x53D1;&#x5E94;&#x7528;"></a>HTTP&#x534F;&#x8BAE;&#x5F00;&#x53D1;&#x5E94;&#x7528;</h2><h2 id="WebSocket&#x534F;&#x8BAE;&#x5F00;&#x53D1;"><a href="#WebSocket&#x534F;&#x8BAE;&#x5F00;&#x53D1;" class="headerlink" title="WebSocket&#x534F;&#x8BAE;&#x5F00;&#x53D1;"></a>WebSocket&#x534F;&#x8BAE;&#x5F00;&#x53D1;</h2><h2 id="UDP&#x534F;&#x8BAE;&#x5F00;&#x53D1;"><a href="#UDP&#x534F;&#x8BAE;&#x5F00;&#x53D1;" class="headerlink" title="UDP&#x534F;&#x8BAE;&#x5F00;&#x53D1;"></a>UDP&#x534F;&#x8BAE;&#x5F00;&#x53D1;</h2><h2 id="&#x6587;&#x4EF6;&#x4F20;&#x8F93;"><a href="#&#x6587;&#x4EF6;&#x4F20;&#x8F93;" class="headerlink" title="&#x6587;&#x4EF6;&#x4F20;&#x8F93;"></a>&#x6587;&#x4EF6;&#x4F20;&#x8F93;</h2><h2 id="&#x79C1;&#x6709;&#x534F;&#x8BAE;&#x6808;&#x5F00;&#x53D1;"><a href="#&#x79C1;&#x6709;&#x534F;&#x8BAE;&#x6808;&#x5F00;&#x53D1;" class="headerlink" title="&#x79C1;&#x6709;&#x534F;&#x8BAE;&#x6808;&#x5F00;&#x53D1;"></a>&#x79C1;&#x6709;&#x534F;&#x8BAE;&#x6808;&#x5F00;&#x53D1;</h2><h2 id="ByteBuf&#x548C;&#x76F8;&#x5173;&#x8F85;&#x52A9;&#x7C7B;"><a href="#ByteBuf&#x548C;&#x76F8;&#x5173;&#x8F85;&#x52A9;&#x7C7B;" class="headerlink" title="ByteBuf&#x548C;&#x76F8;&#x5173;&#x8F85;&#x52A9;&#x7C7B;"></a>ByteBuf&#x548C;&#x76F8;&#x5173;&#x8F85;&#x52A9;&#x7C7B;</h2><h2 id="Channel&#x548C;Unsafe"><a href="#Channel&#x548C;Unsafe" class="headerlink" title="Channel&#x548C;Unsafe"></a>Channel&#x548C;Unsafe</h2><h2 id="ChannelPipline&#x548C;ChannelHandler"><a href="#ChannelPipline&#x548C;ChannelHandler" class="headerlink" title="ChannelPipline&#x548C;ChannelHandler"></a>ChannelPipline&#x548C;ChannelHandler</h2><h2 id="EventLoop&#x548C;EventLoopGroup"><a href="#EventLoop&#x548C;EventLoopGroup" class="headerlink" title="EventLoop&#x548C;EventLoopGroup"></a>EventLoop&#x548C;EventLoopGroup</h2><h2 id="Future&#x548C;Promise"><a href="#Future&#x548C;Promise" class="headerlink" title="Future&#x548C;Promise"></a>Future&#x548C;Promise</h2><h2 id="java&#x591A;&#x7EBF;&#x7A0B;&#x5728;Netty&#x4E2D;&#x7684;&#x5E94;&#x7528;"><a href="#java&#x591A;&#x7EBF;&#x7A0B;&#x5728;Netty&#x4E2D;&#x7684;&#x5E94;&#x7528;" class="headerlink" title="java&#x591A;&#x7EBF;&#x7A0B;&#x5728;Netty&#x4E2D;&#x7684;&#x5E94;&#x7528;"></a>java&#x591A;&#x7EBF;&#x7A0B;&#x5728;Netty&#x4E2D;&#x7684;&#x5E94;&#x7528;</h2><h2 id="Netty&#x6846;&#x67B6;&#x5256;&#x6790;"><a href="#Netty&#x6846;&#x67B6;&#x5256;&#x6790;" class="headerlink" title="Netty&#x6846;&#x67B6;&#x5256;&#x6790;"></a>Netty&#x6846;&#x67B6;&#x5256;&#x6790;</h2><h2 id="Netty&#x884C;&#x4E1A;&#x5E94;&#x7528;"><a href="#Netty&#x884C;&#x4E1A;&#x5E94;&#x7528;" class="headerlink" title="Netty&#x884C;&#x4E1A;&#x5E94;&#x7528;"></a>Netty&#x884C;&#x4E1A;&#x5E94;&#x7528;</h2><h2 id="Netty&#x672A;&#x6765;&#x5C55;&#x671B;"><a href="#Netty&#x672A;&#x6765;&#x5C55;&#x671B;" class="headerlink" title="Netty&#x672A;&#x6765;&#x5C55;&#x671B;"></a>Netty&#x672A;&#x6765;&#x5C55;&#x671B;</h2>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Netty/">Netty</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Netty/">Netty</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>
@@ -1143,7 +912,7 @@ C --&gt;</pre>
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </div>
