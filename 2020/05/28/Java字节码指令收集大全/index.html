@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+
+<meta name="description" content="Java字节码指令收集大全常量入栈指令
+
+
+指令码
+操作码（助记符）
+操作数
+描述（栈指操作数栈）
+
+
+
+
+0x01
+aconst_null
+
+null值入栈
+
+
+0x02
+iconst_m1
+
+-1（int）值入栈
+
+
+0x03
+iconst_0
+
+0（int）值入栈
+
+
+0x04
+iconst_1
+
+1（int）值入栈
+
+
+0x05
+iconst_2
+
+2（int）值入栈
+
+
+0x06
+ico">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java字节码指令收集大全">
+<meta property="og:url" content="http://code.idea4j.com/2020/05/28/Java字节码指令收集大全/index.html">
+<meta property="og:site_name" content="码客Mark">
+<meta property="og:description" content="Java字节码指令收集大全常量入栈指令
+
+
+指令码
+操作码（助记符）
+操作数
+描述（栈指操作数栈）
+
+
+
+
+0x01
+aconst_null
+
+null值入栈
+
+
+0x02
+iconst_m1
+
+-1（int）值入栈
+
+
+0x03
+iconst_0
+
+0（int）值入栈
+
+
+0x04
+iconst_1
+
+1（int）值入栈
+
+
+0x05
+iconst_2
+
+2（int）值入栈
+
+
+0x06
+ico">
+<meta property="og:updated_time" content="2020-09-28T10:46:49.219Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java字节码指令收集大全">
+<meta name="twitter:description" content="Java字节码指令收集大全常量入栈指令
+
+
+指令码
+操作码（助记符）
+操作数
+描述（栈指操作数栈）
+
+
+
+
+0x01
+aconst_null
+
+null值入栈
+
+
+0x02
+iconst_m1
+
+-1（int）值入栈
+
+
+0x03
+iconst_0
+
+0（int）值入栈
+
+
+0x04
+iconst_1
+
+1（int）值入栈
+
+
+0x05
+iconst_2
+
+2（int）值入栈
+
+
+0x06
+ico">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="码客Mark" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Java字节码指令收集大全 | 码客Mark</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c160bf5d12f84389ce96c02b54e4575f";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">预测未来最好的方法是在现在创造未来</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Appollo/">Appollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GC/">GC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoF/">GoF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java字节码/">Java字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MYSQL/">MYSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mybatis/">Mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinpoint/">Pinpoint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/">RPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/angularjs2/">angularjs2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iframe/">iframe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jQuery/">jQuery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java泛型/">java泛型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jps/">jps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maxwell/">maxwell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/servlet/">servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-batch/">spring batch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/starUML/">starUML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/">sublime text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xpath/">xpath</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/如何替换-JDK-的类/">如何替换 JDK 的类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字节码/">字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习/">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小程序/">小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作/">工作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能调优/">性能调优</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/汇编语言/">汇编语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/消息队列/">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深克隆/">深克隆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游戏/">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/知识/">知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/社会/">社会</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神舟飞船/">神舟飞船</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类装载/">类装载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统性能/">系统性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/缓存/">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编译原理/">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网关/">网关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网站/">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/里约/">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路追踪/">链路追踪</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/问题/">问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试题/">面试题</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">预测未来最好的方法是在现在创造未来</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Java字节码指令收集大全" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Java字节码指令收集大全/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java字节码指令收集大全
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Java字节码/">Java字节码</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java字节码/">Java字节码</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Java字节码指令收集大全"><a href="#Java字节码指令收集大全" class="headerlink" title="Java字节码指令收集大全"></a>Java字节码指令收集大全</h2><h3 id="常量入栈指令"><a href="#常量入栈指令" class="headerlink" title="常量入栈指令"></a>常量入栈指令</h3><table>
+<thead>
+<tr>
+<th style="text-align:left"><strong>指令码</strong></th>
+<th style="text-align:left"><strong>操作码（助记符）</strong></th>
+<th style="text-align:left"><strong>操作数</strong></th>
+<th style="text-align:left"><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0x01</td>
+<td style="text-align:left">aconst_null</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">null值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x02</td>
+<td style="text-align:left">iconst_m1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">-1（int）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x03</td>
+<td style="text-align:left">iconst_0</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">0（int）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x04</td>
+<td style="text-align:left">iconst_1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">1（int）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x05</td>
+<td style="text-align:left">iconst_2</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">2（int）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x06</td>
+<td style="text-align:left">iconst_3</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">3（int）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x07</td>
+<td style="text-align:left">iconst_4</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">4（int）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x08</td>
+<td style="text-align:left">iconst_5</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">5（int）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x09</td>
+<td style="text-align:left">lconst_0</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">0（long）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x0a</td>
+<td style="text-align:left">lconst_1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">1（long）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x0b</td>
+<td style="text-align:left">fconst_0</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">0（float）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x0c</td>
+<td style="text-align:left">fconst_1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">1（float）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x0d</td>
+<td style="text-align:left">fconst_2</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">2（float）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x0e</td>
+<td style="text-align:left">dconst_0</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">0（double）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x0f</td>
+<td style="text-align:left">dconst_1</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">1（double）值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x10</td>
+<td style="text-align:left">bipush</td>
+<td style="text-align:left">valuebyte</td>
+<td style="text-align:left">valuebyte值带符号扩展成int值入栈</td>
+</tr>
+<tr>
+<td style="text-align:left">0x11</td>
+<td style="text-align:left">sipush</td>
+<td style="text-align:left">valuebyte1  valuebyte2</td>
+<td style="text-align:left">(valuebyte1 &lt;&lt; 8)\</td>
+<td>valuebyte2 值带符号扩展成int值入栈。</td>
+</tr>
+<tr>
+<td style="text-align:left">0x12</td>
+<td style="text-align:left">ldc</td>
+<td style="text-align:left">indexbyte1</td>
+<td style="text-align:left">常量池中的常量值<br>（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td style="text-align:left">0x13</td>
+<td style="text-align:left">ldc_w</td>
+<td style="text-align:left">indexbyte1 indexbyte2</td>
+<td style="text-align:left">常量池中常量<br>（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td style="text-align:left">0x14</td>
+<td style="text-align:left">ldc2_2</td>
+<td style="text-align:left">indexbyte1 indexbyte2</td>
+<td style="text-align:left">常量池中常量（long, double）入栈。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="局部变量值转载到栈中指令"><a href="#局部变量值转载到栈中指令" class="headerlink" title="局部变量值转载到栈中指令"></a>局部变量值转载到栈中指令</h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x19</td>
+<td>(wide)aload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x2a</td>
+<td>aload_0</td>
+<td></td>
+<td>从局部变量0中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x2b</td>
+<td>aload_1</td>
+<td></td>
+<td>从局部变量1中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x2c</td>
+<td>aload_2</td>
+<td></td>
+<td>从局部变量2中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0a2d</td>
+<td>aload_3</td>
+<td></td>
+<td>从局部变量3中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x15</td>
+<td>(wide)iload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1a</td>
+<td>iload_0</td>
+<td></td>
+<td>从局部变量0中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1b</td>
+<td>iload_1</td>
+<td></td>
+<td>从局部变量1中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1c</td>
+<td>iload_2</td>
+<td></td>
+<td>从局部变量2中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1d</td>
+<td>iload_3</td>
+<td></td>
+<td>从局部变量3中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x16</td>
+<td>(wide)lload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x1e</td>
+<td>lload_0</td>
+<td></td>
+<td>从局部变量0中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x1f</td>
+<td>lload_1</td>
+<td></td>
+<td>从局部变量1中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>lload_2</td>
+<td></td>
+<td>从局部变量2中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x21</td>
+<td>lload_3</td>
+<td></td>
+<td>从局部变量3中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x17</td>
+<td>f(wide)load</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x22</td>
+<td>fload_0</td>
+<td></td>
+<td>从局部变量0中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x23</td>
+<td>fload_1</td>
+<td></td>
+<td>从局部变量1中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x24</td>
+<td>fload_2</td>
+<td></td>
+<td>从局部变量2中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x25</td>
+<td>fload_3</td>
+<td></td>
+<td>从局部变量3中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>（wide）dload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x26</td>
+<td>dload_0</td>
+<td></td>
+<td>从局部变量0中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x27</td>
+<td>dload_1</td>
+<td></td>
+<td>从局部变量1中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x28</td>
+<td>dload_2</td>
+<td></td>
+<td>从局部变量3中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x29</td>
+<td>dload_3</td>
+<td></td>
+<td>从局部变量3中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x32</td>
+<td>aaload</td>
+<td></td>
+<td>从引用类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x2e</td>
+<td>iaload</td>
+<td></td>
+<td>从int类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x2f</td>
+<td>laload</td>
+<td></td>
+<td>从long类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x30</td>
+<td>faload</td>
+<td></td>
+<td>从float类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x31</td>
+<td>daload</td>
+<td></td>
+<td>从double类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x33</td>
+<td>baload</td>
+<td></td>
+<td>从boolean或者byte类型数组中装载指定项的值入栈（<br>先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>0x34</td>
+<td>caload</td>
+<td></td>
+<td>从char类型数组中装载指定项的值入栈 <br>（先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>0x35</td>
+<td>saload</td>
+<td></td>
+<td>从short类型数组中装载指定项的值入栈 <br>（先转换为int类型值，后压栈）。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="将栈顶值保存到局部变量中指令"><a href="#将栈顶值保存到局部变量中指令" class="headerlink" title="将栈顶值保存到局部变量中指令"></a><strong>将栈顶值保存到局部变量中指令</strong></h3><table>
+<thead>
+<tr>
+<th>0x3a</th>
+<th>(wide)astore</th>
+<th>indexbyte</th>
+<th>将栈顶引用类型值保存到局部变量indexbyte中。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x4b</td>
+<td>astroe_0</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x4c</td>
+<td>astore_1</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x4d</td>
+<td>astore_2</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x4e</td>
+<td>astore_3</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x36</td>
+<td>(wide)istore</td>
+<td>indexbyte</td>
+<td>将栈顶int类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x3b</td>
+<td>istore_0</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x3c</td>
+<td>istore_1</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x3d</td>
+<td>istore_2</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x3e</td>
+<td>istore_3</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x37</td>
+<td>(wide)lstore</td>
+<td>indexbyte</td>
+<td>将栈顶long类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x3f</td>
+<td>lstore_0</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x40</td>
+<td>lstore_1</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x41</td>
+<td>lstore_2</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>lstroe_3</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x38</td>
+<td>(wide)fstore</td>
+<td>indexbyte</td>
+<td>将栈顶float类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x43</td>
+<td>fstore_0</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x44</td>
+<td>fstore_1</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x45</td>
+<td>fstore_2</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x46</td>
+<td>fstore_3</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x39</td>
+<td>(wide)dstore</td>
+<td>indexbyte</td>
+<td>将栈顶double类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x47</td>
+<td>dstore_0</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x48</td>
+<td>dstore_1</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x49</td>
+<td>dstore_2</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x4a</td>
+<td>dstore_3</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x53</td>
+<td>aastore</td>
+<td></td>
+<td>将栈顶引用类型值保存到指定引用类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x4f</td>
+<td>iastore</td>
+<td></td>
+<td>将栈顶int类型值保存到指定int类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x50</td>
+<td>lastore</td>
+<td></td>
+<td>将栈顶long类型值保存到指定long类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x51</td>
+<td>fastore</td>
+<td></td>
+<td>将栈顶float类型值保存到指定float类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x52</td>
+<td>dastore</td>
+<td></td>
+<td>将栈顶double类型值保存到指定double类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x54</td>
+<td>bastroe</td>
+<td></td>
+<td>将栈顶boolean类型值或byte类型值保存到指定boolean<br>类型数组或byte类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x55</td>
+<td>castore</td>
+<td></td>
+<td>将栈顶char类型值保存到指定char类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x56</td>
+<td>sastore</td>
+<td></td>
+<td>将栈顶short类型值保存到指定short类型数组的指定项。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wide-指令"><a href="#wide-指令" class="headerlink" title="wide**指令**"></a><strong>wide**</strong>指令**</h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xc4</td>
+<td>wide</td>
+<td></td>
+<td>使用附加字节扩展局部变量索引（iinc指令特殊）。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="通用（无类型）栈操作指令"><a href="#通用（无类型）栈操作指令" class="headerlink" title="通用（无类型）栈操作指令"></a><strong>通用（无类型）栈操作指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00</td>
+<td>nop</td>
+<td></td>
+<td>空操作。</td>
+</tr>
+<tr>
+<td>0x57</td>
+<td>pop</td>
+<td></td>
+<td>从栈顶弹出一个字长的数据。</td>
+</tr>
+<tr>
+<td>0x58</td>
+<td>pop2</td>
+<td></td>
+<td>从栈顶弹出两个字长的数据。</td>
+</tr>
+<tr>
+<td>0x59</td>
+<td>dup</td>
+<td></td>
+<td>复制栈顶一个字长的数据，将复制后的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5a</td>
+<td>dup_x1</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶两个字长数据，<br>先将复制后的数据压栈，再将弹出的两个字长数据压栈。</td>
+</tr>
+<tr>
+<td>0x5b</td>
+<td>dup_x2</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶三个字长的数据，<br>将复制后的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5c</td>
+<td>dup2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，将复制后的两个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5d</td>
+<td>dup2_x1</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶三个字长的数据，<br>将复制后的两个字长的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5e</td>
+<td>dup2_x2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶四个字长的数据，<br>将复制后的两个字长的数据压栈，再将弹出的四个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5f</td>
+<td>swap</td>
+<td></td>
+<td>交换栈顶两个字长的数据的位置。<a href="http://lib.csdn.net/base/javaee" target="_blank" rel="external">Java</a>指令中没有提供以<br>两个字长为单位的交换指令。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="类型转换指令"><a href="#类型转换指令" class="headerlink" title="类型转换指令"></a><strong>类型转换指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x86</td>
+<td>i2f</td>
+<td></td>
+<td>将栈顶int类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x85</td>
+<td>i2l</td>
+<td></td>
+<td>将栈顶int类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x87</td>
+<td>i2d</td>
+<td></td>
+<td>将栈顶int类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>0x8b</td>
+<td>f2i</td>
+<td></td>
+<td>将栈顶float类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x8c</td>
+<td>f2l</td>
+<td></td>
+<td>将栈顶float类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x8d</td>
+<td>f2d</td>
+<td></td>
+<td>将栈顶float类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>0x88</td>
+<td>l2i</td>
+<td></td>
+<td>将栈顶long类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x89</td>
+<td>l2f</td>
+<td></td>
+<td>将栈顶long类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x8a</td>
+<td>l2d</td>
+<td></td>
+<td>将栈顶long类型值转换double类型值。</td>
+</tr>
+<tr>
+<td>0x8e</td>
+<td>d2i</td>
+<td></td>
+<td>将栈顶double类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x90</td>
+<td>d2f</td>
+<td></td>
+<td>将栈顶double类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x8f</td>
+<td>d2l</td>
+<td></td>
+<td>将栈顶double类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x91</td>
+<td>i2b</td>
+<td></td>
+<td>将栈顶int类型值截断成byte类型，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x92</td>
+<td>i2c</td>
+<td></td>
+<td>将栈顶int类型值截断成char类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x93</td>
+<td>i2s</td>
+<td></td>
+<td>将栈顶int类型值截断成short类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="整数运算"><a href="#整数运算" class="headerlink" title="整数运算"></a><strong>整数运算</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x60</td>
+<td>iadd</td>
+<td></td>
+<td>将栈顶两int类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x64</td>
+<td>isub</td>
+<td></td>
+<td>将栈顶两int类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x68</td>
+<td>imul</td>
+<td></td>
+<td>将栈顶两int类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6c</td>
+<td>idiv</td>
+<td></td>
+<td>将栈顶两int类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x70</td>
+<td>irem</td>
+<td></td>
+<td>将栈顶两int类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x74</td>
+<td>ineg</td>
+<td></td>
+<td>将栈顶int类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>0x61</td>
+<td>ladd</td>
+<td></td>
+<td>将栈顶两long类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x65</td>
+<td>lsub</td>
+<td></td>
+<td>将栈顶两long类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x69</td>
+<td>lmul</td>
+<td></td>
+<td>将栈顶两long类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6d</td>
+<td>ldiv</td>
+<td></td>
+<td>将栈顶两long类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x71</td>
+<td>lrem</td>
+<td></td>
+<td>将栈顶两long类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x75</td>
+<td>lneg</td>
+<td></td>
+<td>将栈顶long类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>0x84</td>
+<td>(wide)iinc</td>
+<td>indexbyteconstbyte</td>
+<td>将整数值constbyte加到indexbyte指定的int类型的局部变量中。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>浮点运算</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x62</td>
+<td>fadd</td>
+<td></td>
+<td>将栈顶两float类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x66</td>
+<td>fsub</td>
+<td></td>
+<td>将栈顶两float类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6a</td>
+<td>fmul</td>
+<td></td>
+<td>将栈顶两float类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6e</td>
+<td>fdiv</td>
+<td></td>
+<td>将栈顶两float类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x72</td>
+<td>frem</td>
+<td></td>
+<td>将栈顶两float类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x76</td>
+<td>fneg</td>
+<td></td>
+<td>将栈顶float类型值取反，结果入栈。</td>
+</tr>
+<tr>
+<td>0x63</td>
+<td>dadd</td>
+<td></td>
+<td>将栈顶两double类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x67</td>
+<td>dsub</td>
+<td></td>
+<td>将栈顶两double类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6b</td>
+<td>dmul</td>
+<td></td>
+<td>将栈顶两double类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6f</td>
+<td>ddiv</td>
+<td></td>
+<td>将栈顶两double类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x73</td>
+<td>drem</td>
+<td></td>
+<td>将栈顶两double类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x77</td>
+<td>dneg</td>
+<td></td>
+<td>将栈顶double类型值取负，结果入栈。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="逻辑运算——移位运算"><a href="#逻辑运算——移位运算" class="headerlink" title="逻辑运算——移位运算"></a><strong>逻辑运算——移位运算</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x78</td>
+<td>ishl</td>
+<td></td>
+<td>左移int类型值。</td>
+</tr>
+<tr>
+<td>0x79</td>
+<td>lshl</td>
+<td></td>
+<td>左移long类型值。</td>
+</tr>
+<tr>
+<td>0x7a</td>
+<td>ishr</td>
+<td></td>
+<td>算术右移int类型值。</td>
+</tr>
+<tr>
+<td>0x7b</td>
+<td>lshr</td>
+<td></td>
+<td>算术右移long类型值。</td>
+</tr>
+<tr>
+<td>0x7c</td>
+<td>iushr</td>
+<td></td>
+<td>逻辑右移int类型值。</td>
+</tr>
+<tr>
+<td>0x7d</td>
+<td>lushr</td>
+<td></td>
+<td>逻辑右移long类型值。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="逻辑运算——按位布尔运算"><a href="#逻辑运算——按位布尔运算" class="headerlink" title="逻辑运算——按位布尔运算"></a><strong>逻辑运算——按位布尔运算</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x73</td>
+<td>iand</td>
+<td></td>
+<td>对int类型按位与运算。</td>
+</tr>
+<tr>
+<td>0x7f</td>
+<td>land</td>
+<td></td>
+<td>对long类型的按位与运算。</td>
+</tr>
+<tr>
+<td>0x80</td>
+<td>ior</td>
+<td></td>
+<td>对int类型的按位或运算。</td>
+</tr>
+<tr>
+<td>0x81</td>
+<td>lor</td>
+<td></td>
+<td>对long类型的按位或运算。</td>
+</tr>
+<tr>
+<td>0x82</td>
+<td>ixor</td>
+<td></td>
+<td>对int类型的按位异或运算。</td>
+</tr>
+<tr>
+<td>0x83</td>
+<td>lxor</td>
+<td></td>
+<td>对long类型的按位异或运算。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="控制流指令——条件跳转指令"><a href="#控制流指令——条件跳转指令" class="headerlink" title="控制流指令——条件跳转指令"></a><strong>控制流指令——条件跳转指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x99</td>
+<td>ifeq</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值为0则跳转。</td>
+</tr>
+<tr>
+<td>0x9a</td>
+<td>ifne</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值不为0则跳转。</td>
+</tr>
+<tr>
+<td>0x9b</td>
+<td>iflt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值小于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9e</td>
+<td>ifle</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值小于等于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9d</td>
+<td>ifgt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值大于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9c</td>
+<td>ifge</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值大于等于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9f</td>
+<td>if_icmpeq</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa0</td>
+<td>if_icmpne</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值不相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa1</td>
+<td>if_icmplt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前小于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa4</td>
+<td>if_icmple</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前小于等于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa3</td>
+<td>if_icmpgt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前大于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa2</td>
+<td>if_icmpge</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前大于等于后则跳转。</td>
+</tr>
+<tr>
+<td>0xc6</td>
+<td>ifnull</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶引用值为null则跳转。</td>
+</tr>
+<tr>
+<td>0xc7</td>
+<td>ifnonnull</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶引用值不为null则跳转。</td>
+</tr>
+<tr>
+<td>0xa5</td>
+<td>if_acmpeq</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两引用类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa6</td>
+<td>if_acmpne</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两引用类型值不相等则跳转。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="控制流指令——比较指令"><a href="#控制流指令——比较指令" class="headerlink" title="控制流指令——比较指令"></a><strong>控制流指令——比较指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x94</td>
+<td>lcmp</td>
+<td></td>
+<td>比较栈顶两long类型值，前者大，1入栈；相等，0入栈；<br>后者大，-1入栈。</td>
+</tr>
+<tr>
+<td>0x95</td>
+<td>fcmpl</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；<br>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x96</td>
+<td>fcmpg</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；<br>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x97</td>
+<td>dcmpl</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；<br>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x98</td>
+<td>dcmpg</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；<br>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="控制流指令——无条件跳转指令"><a href="#控制流指令——无条件跳转指令" class="headerlink" title="控制流指令——无条件跳转指令"></a><strong>控制流指令——无条件跳转指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xa7</td>
+<td>goto</td>
+<td>branchbyte1branchbyte2</td>
+<td>无条件跳转到指定位置。</td>
+</tr>
+<tr>
+<td>0xc8</td>
+<td>goto_w</td>
+<td>branchbyte1branchbyte2branchbyte3branchbyte4</td>
+<td>无条件跳转到指定位置（宽索引）。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="控制流指令——表跳转指令"><a href="#控制流指令——表跳转指令" class="headerlink" title="控制流指令——表跳转指令"></a><strong>控制流指令——表跳转指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xaa</td>
+<td>tableswitch</td>
+<td><0-3bytepad><br>defaultbyte1<br>defaultbyte2<br>defaultbyte3<br>defaultbyte4<br>lowbyte1<br>lowbyte2<br>lowbyte3<br>lowbyte4<br>highbyte1<br>highbyte2<br>highbyte3<br>highbyte4<br>jump offsets…</0-3bytepad></td>
+<td>通过索引访问跳转表，并跳转。</td>
+</tr>
+<tr>
+<td>0xab</td>
+<td>lookupswitch</td>
+<td><0-3bytepad><br>defaultbyte1<br>defaultbyte2<br>defaultbyte3<br>defaultbyte4<br>npairs1<br>npairs2<br>npairs3<br>npairs4<br>match offsets</0-3bytepad></td>
+<td>通过键值访问跳转表，并跳转。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="控制流指令——异常和-finally"><a href="#控制流指令——异常和-finally" class="headerlink" title="控制流指令——异常和**finally**"></a><strong>控制流指令——异常和**</strong>finally**</h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xbf</td>
+<td>athrow</td>
+<td></td>
+<td>抛出异常。</td>
+</tr>
+<tr>
+<td>0xa8</td>
+<td>jsr</td>
+<td>branchbyte1branchbyte2</td>
+<td>跳转到子例程序。</td>
+</tr>
+<tr>
+<td>0xc9</td>
+<td>jsr_w</td>
+<td>branchbyte1branchbyte2branchbyte3branchbyte4</td>
+<td>跳转到子例程序（宽索引）。</td>
+</tr>
+<tr>
+<td>0xa9</td>
+<td>(wide)ret</td>
+<td>indexbyte</td>
+<td>返回子例程序</td>
+</tr>
+</tbody>
+</table>
+<h3 id="对象操作指令"><a href="#对象操作指令" class="headerlink" title="对象操作指令"></a><strong>对象操作指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xbb</td>
+<td>new</td>
+<td>indexbyte1indexbyte2</td>
+<td>创建新的对象实例。</td>
+</tr>
+<tr>
+<td>0xc0</td>
+<td>checkcast</td>
+<td>indexbyte1indexbyte</td>
+<td>类型强转。</td>
+</tr>
+<tr>
+<td>0xc1</td>
+<td>instanceof</td>
+<td>indexbyte1indexbyte2</td>
+<td>判断类型。</td>
+</tr>
+<tr>
+<td>0xb4</td>
+<td>getfield</td>
+<td>indexbyte1indexbyte2</td>
+<td>获取对象字段的值。</td>
+</tr>
+<tr>
+<td>0xb5</td>
+<td>putfield</td>
+<td>indexbyte1indexbyte2</td>
+<td>给对象字段赋值。</td>
+</tr>
+<tr>
+<td>0xb2</td>
+<td>getstatic</td>
+<td>indexbyte1indexbyte2</td>
+<td>获取静态字段的值。</td>
+</tr>
+<tr>
+<td>0xb3</td>
+<td>putstatic</td>
+<td>indexbyte1indexbyte2</td>
+<td>给静态字段赋值。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="数组操作指令"><a href="#数组操作指令" class="headerlink" title="数组操作指令"></a><strong>数组操作指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xbc</td>
+<td>newarray</td>
+<td>atype</td>
+<td>创建type类型的数组。</td>
+</tr>
+<tr>
+<td>0xbd</td>
+<td>anewarray</td>
+<td>indexbyte1indexbyte2</td>
+<td>创建引用类型的数组。</td>
+</tr>
+<tr>
+<td>0xbe</td>
+<td>arraylength</td>
+<td></td>
+<td>获取一维数组的长度。</td>
+</tr>
+<tr>
+<td>0xc5</td>
+<td>multianewarray</td>
+<td>indexbyte1indexbyte2dimension</td>
+<td>创建dimension维度的数组。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="方法调用指令"><a href="#方法调用指令" class="headerlink" title="方法调用指令"></a><strong>方法调用指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xb7</td>
+<td>invokespecial</td>
+<td>indexbyte1indexbyte2</td>
+<td>编译时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>0xb6</td>
+<td>invokevirtual</td>
+<td>indexbyte1indexbyte2</td>
+<td>运行时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>0xb8</td>
+<td>invokestatic</td>
+<td>indexbyte1indexbyte2</td>
+<td>调用静态方法。</td>
+</tr>
+<tr>
+<td>0xb9</td>
+<td>invokeinterface</td>
+<td>indexbyte1indexbyte2count0</td>
+<td>调用接口方法。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="方法返回指令"><a href="#方法返回指令" class="headerlink" title="方法返回指令"></a><strong>方法返回指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xac</td>
+<td>ireturn</td>
+<td></td>
+<td>返回int类型值。</td>
+</tr>
+<tr>
+<td>0xad</td>
+<td>lreturn</td>
+<td></td>
+<td>返回long类型值。</td>
+</tr>
+<tr>
+<td>0xae</td>
+<td>freturn</td>
+<td></td>
+<td>返回float类型值。</td>
+</tr>
+<tr>
+<td>0xaf</td>
+<td>dreturn</td>
+<td></td>
+<td>返回double类型值。</td>
+</tr>
+<tr>
+<td>0xb0</td>
+<td>areturn</td>
+<td></td>
+<td>返回引用类型值。</td>
+</tr>
+<tr>
+<td>0xb1</td>
+<td>return</td>
+<td></td>
+<td>void函数返回。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="线程同步指令"><a href="#线程同步指令" class="headerlink" title="线程同步指令"></a><strong>线程同步指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xc2</td>
+<td>monitorenter</td>
+<td></td>
+<td>进入并获得对象监视器。</td>
+</tr>
+<tr>
+<td>0xc3</td>
+<td>monitorexit</td>
+<td></td>
+<td>释放并退出对象监视器。</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/05/28/Java字节码指令收集大全/">Java字节码指令收集大全</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
+        <p><span>发布时间:</span>2020-05-28, 20:10:32</p>
+        <p><span>最后更新:</span>2020-09-28, 18:46:49</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/05/28/Java字节码指令收集大全/" title="Java字节码指令收集大全">http://code.idea4j.com/2020/05/28/Java字节码指令收集大全/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://code.idea4j.com/2020/05/28/Java字节码指令收集大全/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2020/05/28/Java性能调优工具/">
+                    Java性能调优工具
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2020/05/28/Class文件格式/">
+                    Class文件格式
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java字节码指令收集大全"><span class="toc-number">1.</span> <span class="toc-text">Java字节码指令收集大全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#常量入栈指令"><span class="toc-number">1.1.</span> <span class="toc-text">常量入栈指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#局部变量值转载到栈中指令"><span class="toc-number">1.2.</span> <span class="toc-text">局部变量值转载到栈中指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将栈顶值保存到局部变量中指令"><span class="toc-number">1.3.</span> <span class="toc-text">将栈顶值保存到局部变量中指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wide-指令"><span class="toc-number">1.4.</span> <span class="toc-text">wide**指令**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通用（无类型）栈操作指令"><span class="toc-number">1.5.</span> <span class="toc-text">通用（无类型）栈操作指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类型转换指令"><span class="toc-number">1.6.</span> <span class="toc-text">类型转换指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#整数运算"><span class="toc-number">1.7.</span> <span class="toc-text">整数运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑运算——移位运算"><span class="toc-number">1.8.</span> <span class="toc-text">逻辑运算——移位运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逻辑运算——按位布尔运算"><span class="toc-number">1.9.</span> <span class="toc-text">逻辑运算——按位布尔运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制流指令——条件跳转指令"><span class="toc-number">1.10.</span> <span class="toc-text">控制流指令——条件跳转指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制流指令——比较指令"><span class="toc-number">1.11.</span> <span class="toc-text">控制流指令——比较指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制流指令——无条件跳转指令"><span class="toc-number">1.12.</span> <span class="toc-text">控制流指令——无条件跳转指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制流指令——表跳转指令"><span class="toc-number">1.13.</span> <span class="toc-text">控制流指令——表跳转指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制流指令——异常和-finally"><span class="toc-number">1.14.</span> <span class="toc-text">控制流指令——异常和**finally**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象操作指令"><span class="toc-number">1.15.</span> <span class="toc-text">对象操作指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组操作指令"><span class="toc-number">1.16.</span> <span class="toc-text">数组操作指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法调用指令"><span class="toc-number">1.17.</span> <span class="toc-text">方法调用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法返回指令"><span class="toc-number">1.18.</span> <span class="toc-text">方法返回指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程同步指令"><span class="toc-number">1.19.</span> <span class="toc-text">线程同步指令</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Java字节码指令收集大全　| 码客Mark　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2020/05/28/Java字节码指令收集大全/" data-title="Java字节码指令收集大全" data-url="http://code.idea4j.com/2020/05/28/Java字节码指令收集大全/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"idea4j"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2020/05/28/Java性能调优工具/" title="上一篇: Java性能调优工具">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2020/05/28/Class文件格式/" title="下一篇: Class文件格式">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/quickstart/">使用maxwell</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/使用maxwell实时同步mysql数据到消息队列(rabbitMQ)/">使用maxwell实时同步mysql数据到消息队列(rabbitMQ)</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/前后端联调过程/">前后端联调过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/20/如何有效的学习/">如何有效的学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/如何替换 JDK 的类/">如何替换 JDK 的类</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/消息队列/">消息队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Redis 教程/">Redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring Boot/">Springboot</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Zuul与GateWay有什么区别/">网关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring事务隔离级别/">Spring事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper选举规则/">zookeeper选举规则</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper相关/">zookeeper相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/使用jvm工具排查故障/">jps</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/小程序/">小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/03/日拱一卒/">日拱一卒</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/30/手写RPC框架/">手写RPC框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/编写springboot启动器/">springboot启动器</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/问题大全/">问题大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/09/Pinpoint/">Pinpoint安装使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/04/RabbitMQ命令行/">RabbitMQ命令行</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker 命令/">docker 命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker 容器数据卷/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dockerfile指令/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java性能调优工具/">Java性能调优工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java字节码指令收集大全/">Java字节码指令收集大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Class文件格式/">Class文件格式</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java泛型/">java泛型</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo架构设计/">dubbo架构设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo文档摘抄/">dubbo负载均衡</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Docker搭建zookeeper集群/">Docker搭建zookeeper集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo的原理/">dubbo的原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dubbo请求数据的发送过程/">Dubbo请求数据的发送过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java实现链表/">Java实现链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/GC日志配置/">GC日志配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Context初始化流程/">Context初始化流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/mst/">面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java语言特性知识点汇总/">java语言特性知识点汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java性能优化/">java性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/21/系统性能核心关注点/">系统性能核心关注点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/Bean的生命周期/">Bean的生命周期</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/MYSQL数据库设计规范/">MYSQL数据库设计规范</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/17/Appollo配置中心原理/">Appollo配置中心原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/14/缓存/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/24/Netty权威指南/">Netty权威指南目录抄写</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/17/bat/">BAT后端开发面试108题</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/27/MySQL权限分配/">MySQL权限分配</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/19/mysql哪些情况不适合建索引/">mysql哪些情况不适合建索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/类加载/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/xpath/">常用xpath例子</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/Netty/">Netty</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/MyBatis使用了哪些设计模式，在源码上是如何体现的？/">MyBatis使用了哪些设计模式，在源码上是如何体现的？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/yinyangshi/">我的阴阳师之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mylife170320/">mylife170320</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Markdown操作/">Markdown操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mac 按键符号/">mac按键符号</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/MAT工具应用之深堆和浅堆/">MAT工具应用之深堆和浅堆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/java1/">pacakge-info.java</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/28/mybatis2/">MyBatis Generator配置文件详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/27/springbatch/">springbatch</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/docker/">Boot2Docker 启动闪退</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/jenkins/">jenkins 安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux2/">linux 端口查看</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux1/">linux下的文件结构，每个文件夹用途</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/svn1/">linux下svn安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/jvm2/">堆分配参数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/questions/">开发中遇到的异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/12/mybatis1/">mybatis generator 配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/jinyan/">jinyan</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/javaapi1/">Java API 学习之ClassLoader</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/lua1/">Lua语言积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/sqljl/">sql语句：根据身份证得到省份、生日、性别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/jqiframe/">js与jQuery 获取父窗、子窗的iframe</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/sqlty/">sql优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/usapresident/">美国历任总统，在任年限及所属党派</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/xingnen2/">改善性能的几个技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/xingnen/">性能概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/servlet3/">一行配置文件引发的“血案”</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/btyeclass/">Class类文件的结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/24/jvm1/">java虚拟机性能监控与故障管理工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/mvnenvironmentseparate/">Maven 打包实现环境配置分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/huibian/">汇编语言(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/byyl/">byyl</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/shenzhou/">神舟飞船系列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/angularjs2d1/">angularjs2d1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/mvnarchetype/">创建自己maven archetype</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/hexo/">hexo + github建站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongodb/">mongodb</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/society/">房地产资本主义时代</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0923/">微信小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/node15/">Express 框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/node14/">使用 Node 创建 Web 服务器和客户端</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/node13/">Node.js GET/POST请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node12/">Node.js 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/maven/">maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node11/">Node.js 常用工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/19/node10/">Node.js 全局对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/node9/">Node.js 路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node8/">Node.js模块系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node7/">Node.js Stream(流)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/vim/">vim命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node6/">Node.js Buffer(缓冲区)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node5/">Node.js EventEmitter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node4/">Node.js 事件循环</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node3/">Node.js 回调函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/markdown/">markdown语法积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node2/">NPM 使用介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/sublime/">sublime text 3 使用积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/排序/">排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/类装载/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/node1/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/深克隆和浅克隆有什么区别/">深克隆</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/staruml1/">使用快速生成GoF设计模式的类图与代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/builderpattern/">builderpattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/DesignPatterns/">设计模式(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程的优缺点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2020 markee
+
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+                <a href="http://www.miitbeian.gov.cn/">京ICP备16056982号-1</a>
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
