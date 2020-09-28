@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://code.idea4j.com/"/>
-  <updated>2020-08-04T05:00:30.629Z</updated>
+  <updated>2020-09-28T11:18:25.132Z</updated>
   <id>http://code.idea4j.com/</id>
   
   <author>
@@ -14,6 +14,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://code.idea4j.com/2020/09/28/Redis%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E5%8F%8A%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"/>
+    <id>http://code.idea4j.com/2020/09/28/Redis缓存设计及常见问题/</id>
+    <published>2020-09-28T11:18:25.131Z</published>
+    <updated>2020-09-28T11:18:25.132Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Redis缓存设计及常见问题"><a href="#Redis缓存设计及常见问题" class="headerlink" title="Redis缓存设计及常见问题"></a>Redis缓存设计及常见问题</h2><p>缓存能够有效地加速应用的读写速度，同时也可以降低后端负载，对日常应用的开发至关重要。</p>
+<h2 id="1-缓存的收益和成本分析"><a href="#1-缓存的收益和成本分析" class="headerlink" title="1 缓存的收益和成本分析"></a>1 缓存的收益和成本分析</h2><h3 id="1-1-收益"><a href="#1-1-收益" class="headerlink" title="1.1 收益"></a>1.1 收益</h3><p>①加速读写：因为缓存通常都是全内存的，而存储层通常读写性能不够强悍（例如MySQL），通过缓存的使用可以有效地加速读写，优化用户体验。<br>②降低后端负载：帮助后端减少访问量和复杂计算（例如很复杂的SQL语句），在很大程度降低了后端的负载。</p>
+<h3 id="1-2-成本"><a href="#1-2-成本" class="headerlink" title="1.2 成本"></a>1.2 成本</h3><p>①数据不一致性：缓存层和存储层的数据存在着一定时间窗口的不一致性，时间窗口跟更新策略有关。<br>②代码维护成本：加入缓存后，需要同时处理缓存层和存储层的逻辑，增大了开发者维护代码的成本。<br>③运维成本：以Redis Cluster为例，加入后无形中增加了运维成本。缓存的使用场景基本包含如下两种：<br>①开销大的复杂计算：以MySQL为例子，一些复杂的操作或者计算（例如大量联表操作、一些分组计算），如果不加缓存，不但无法满足高并发量，同时也会给MySQL带来巨大的负担。<br>②加速请求响应：即使查询单条后端数据足够快（例如select*from tablewhere id=），那么依然可以使用缓存，以Redis为例子，每秒可以完成数万次读写，并且提供的批量操作可以优化整个IO链的响应时间。</p>
+<h2 id="2-缓存穿透"><a href="#2-缓存穿透" class="headerlink" title="2 缓存穿透"></a><strong>2 缓存穿透</strong></h2><h3 id="2-1-什么是缓存穿透"><a href="#2-1-什么是缓存穿透" class="headerlink" title="2.1 什么是缓存穿透"></a>2.1 什么是缓存穿透</h3><p>正常情况下，我们去查询数据都是存在。那么请求去查询一条压根儿数据库中根本就不存在的数据，也就是缓存和数据库都查询不到这条数据，但是请求每次都会打到数据库上面去。这种查询不存在数据的现象我们称为<strong>缓存穿透</strong>。</p>
+<h3 id="2-2-穿透带来的问题"><a href="#2-2-穿透带来的问题" class="headerlink" title="2.2 穿透带来的问题"></a>2.2 穿透带来的问题</h3><p>试想一下，如果有黑客会对你的系统进行攻击，拿一个不存在的id 去查询数据，会产生大量的请求到数据库去查询。可能会导致你的数据库由于压力过大而宕掉。</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200913215739802.png" alt="image-20200913215739802" style="zoom:50%;"></p>
+<h3 id="2-3-解决办法"><a href="#2-3-解决办法" class="headerlink" title="2.3 解决办法"></a>2.3 解决办法</h3><h4 id="2-3-1-缓存空值"><a href="#2-3-1-缓存空值" class="headerlink" title="2.3.1 缓存空值"></a>2.3.1 缓存空值</h4><p>之所以会发生穿透，就是因为缓存中没有存储这些空数据的key。从而导致每次查询都到数据库去了。</p>
+<p>那么我们就可以为这些key对应的值设置为null 丢到缓存里面去。后面再出现查询这个key 的请求的时候，直接返回null 。</p>
+<p>这样，就不用在到数据库中去走一圈了，但是别忘了设置过期时间。</p>
+<h4 id="2-3-2-BloomFilter"><a href="#2-3-2-BloomFilter" class="headerlink" title="2.3.2 BloomFilter"></a>2.3.2 BloomFilter</h4><p>BloomFilter 类似于一个hbase set 用来判断某个元素（key）是否存在于某个集合中。</p>
+<p>这种方式在大数据场景应用比较多，比如 Hbase 中使用它去判断数据是否在磁盘上。还有在爬虫场景判断url 是否已经被爬取过。</p>
+<p>这种方案可以加在第一种方案中，在缓存之前在加一层 BloomFilter ，在查询的时候先去 BloomFilter 去查询 key 是否存在，如果不存在就直接返回，存在再走查缓存 -&gt; 查 DB。</p>
+<p>流程图如下：</p>
+<p><img src="https://img2.sycdn.imooc.com/5c9cccac00019f7c05040380.jpg" alt="https://img2.sycdn.imooc.com/5c9cccac00019f7c05040380.jpg"></p>
+<h3 id="2-4-如何选择"><a href="#2-4-如何选择" class="headerlink" title="2.4 如何选择"></a>2.4 如何选择</h3><p>针对于一些恶意攻击，攻击带过来的大量key 是不存在的，那么我们采用第一种方案就会缓存大量不存在key的数据。</p>
+<p>此时我们采用第一种方案就不合适了，我们完全可以先对使用第二种方案进行过滤掉这些key。</p>
+<p>针对这种key异常多、请求重复率比较低的数据，我们就没有必要进行缓存，使用第二种方案直接过滤掉。</p>
+<p>而对于空数据的key有限的，重复率比较高的，我们则可以采用第一种方式进行缓存。</p>
+<h2 id="3-缓存击穿"><a href="#3-缓存击穿" class="headerlink" title="3 缓存击穿"></a><strong>3 缓存击穿</strong></h2><h3 id="3-1-什么是击穿"><a href="#3-1-什么是击穿" class="headerlink" title="3.1 什么是击穿"></a>3.1 什么是击穿</h3><p>缓存击穿是我们可能遇到的第二个使用缓存方案可能遇到的问题。</p>
+<p>在平常高并发的系统中，大量的请求同时查询一个 key 时，此时这个key正好失效了，就会导致大量的请求都打到数据库上面去。这种现象我们称为<strong>缓存击穿</strong>。</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200913215632514.png" alt="image-20200913215632514" style="zoom:50%;"></p>
+<h3 id="3-2-会带来什么问题"><a href="#3-2-会带来什么问题" class="headerlink" title="3.2 会带来什么问题"></a>3.2 会带来什么问题</h3><p>会造成某一时刻数据库请求量过大，压力剧增。</p>
+<h3 id="3-3-如何解决"><a href="#3-3-如何解决" class="headerlink" title="3.3 如何解决"></a>3.3 如何解决</h3><p>上面的现象是多个线程同时去查询数据库的这条数据，那么我们可以在第一个查询数据的请求上使用一个 互斥锁来锁住它。</p>
+<p>其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后做缓存。后面的线程进来发现已经有缓存了，就直接走缓存。</p>
+<h2 id="4、缓存雪崩"><a href="#4、缓存雪崩" class="headerlink" title="4、缓存雪崩"></a><strong>4、缓存雪崩</strong></h2><h3 id="4-1-什么是缓存雪崩"><a href="#4-1-什么是缓存雪崩" class="headerlink" title="4.1 什么是缓存雪崩"></a>4.1 什么是缓存雪崩</h3><p>缓存雪崩的情况是说，当某一时刻发生大规模的缓存失效的情况，比如你的缓存服务宕机了，会有大量的请求进来直接打到DB上面。结果就是DB 称不住，挂掉。</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200913215854573.png" alt="image-20200913215854573" style="zoom:50%;"></p>
+<h3 id="4-2-解决办法"><a href="#4-2-解决办法" class="headerlink" title="4.2 解决办法"></a>4.2 解决办法</h3><h4 id="4-2-1-事前："><a href="#4-2-1-事前：" class="headerlink" title="4.2.1 事前："></a>4.2.1 事前：</h4><ul>
+<li><h4 id="使用集群缓存，保证缓存服务的高可用"><a href="#使用集群缓存，保证缓存服务的高可用" class="headerlink" title="使用集群缓存，保证缓存服务的高可用"></a><strong>使用集群缓存，保证缓存服务的高可用</strong></h4></li>
+</ul>
+<p>这种方案就是在发生雪崩前对缓存集群实现高可用，如果是使用 Redis，可以使用 主从+哨兵 ，Redis Cluster 来避免 Redis 全盘崩溃的情况。</p>
+<h4 id="4-2-2-事中："><a href="#4-2-2-事中：" class="headerlink" title="4.2.2 事中："></a>4.2.2 事中：</h4><ul>
+<li><h4 id="ehcache本地缓存-Hystrix限流-amp-降级-避免MySQL被打死"><a href="#ehcache本地缓存-Hystrix限流-amp-降级-避免MySQL被打死" class="headerlink" title="ehcache本地缓存 + Hystrix限流&amp;降级,避免MySQL被打死"></a><strong>ehcache本地缓存 + Hystrix限流&amp;降级,避免MySQL被打死</strong></h4></li>
+</ul>
+<p>使用 ehcache 本地缓存的目的也是考虑在 Redis Cluster 完全不可用的时候，ehcache 本地缓存还能够支撑一阵。</p>
+<p>使用 Hystrix进行限流 &amp; 降级 ，比如一秒来了5000个请求，我们可以设置假设只能有一秒 2000个请求能通过这个组件，那么其他剩余的 3000 请求就会走限流逻辑。</p>
+<p>然后去调用我们自己开发的降级组件（降级），比如设置的一些默认值呀之类的。以此来保护最后的 MySQL 不会被大量的请求给打死。</p>
+<h4 id="4-2-3-事后："><a href="#4-2-3-事后：" class="headerlink" title="4.2.3 事后："></a>4.2.3 事后：</h4><ul>
+<li><h4 id="开启Redis持久化机制，尽快恢复缓存集群"><a href="#开启Redis持久化机制，尽快恢复缓存集群" class="headerlink" title="开启Redis持久化机制，尽快恢复缓存集群"></a><strong>开启Redis持久化机制，尽快恢复缓存集群</strong></h4></li>
+</ul>
+<p>一旦重启，就能从磁盘上自动加载数据恢复内存中的数据。</p>
+<p>防止雪崩方案如下图所示：</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/5c9cccae0001d8a110800617.jpg" alt="https://img4.sycdn.imooc.com/5c9cccae0001d8a110800617.jpg"></p>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h2 id="5-解决热点数据集中失效问题"><a href="#5-解决热点数据集中失效问题" class="headerlink" title="5 解决热点数据集中失效问题"></a><strong>5 解决热点数据集中失效问题</strong></h2><p>我们在设置缓存的时候，一般会给缓存设置一个失效时间，过了这个时间，缓存就失效了。</p>
+<p>对于一些热点的数据来说，当缓存失效以后会存在大量的请求过来，然后打到数据库去，从而可能导致数据库崩溃的情况。</p>
+<h3 id="5-1-解决办法"><a href="#5-1-解决办法" class="headerlink" title="5.1 解决办法"></a>5.1 解决办法</h3><h4 id="5-1-1-设置不同的失效时间"><a href="#5-1-1-设置不同的失效时间" class="headerlink" title="5.1.1 设置不同的失效时间"></a>5.1.1 设置不同的失效时间</h4><p>为了避免这些热点的数据集中失效，那么我们在设置缓存过期时间的时候，我们让他们失效的时间错开。</p>
+<p>比如在一个基础的时间上加上或者减去一个范围内的随机值。</p>
+<h4 id="5-1-2-互斥锁"><a href="#5-1-2-互斥锁" class="headerlink" title="5.1.2 互斥锁"></a>5.1.2 互斥锁</h4><p>结合上面的击穿的情况，在第一个请求去查询数据库的时候对他加一个互斥锁，其余的查询请求都会被阻塞住，直到锁被释放，从而保护数据库。</p>
+<p>但是也是由于它会阻塞其他的线程，此时系统吞吐量会下降。需要结合实际的业务去考虑是否要这么做。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Redis缓存设计及常见问题&quot;&gt;&lt;a href=&quot;#Redis缓存设计及常见问题&quot; class=&quot;headerlink&quot; title=&quot;Redis缓存设计及常见问题&quot;&gt;&lt;/a&gt;Redis缓存设计及常见问题&lt;/h2&gt;&lt;p&gt;缓存能够有效地加速应用的读写速度，同时也可以
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>使用maxwell</title>
@@ -227,142 +293,6 @@
   </entry>
   
   <entry>
-    <title>如何替换 JDK 的类</title>
-    <link href="http://code.idea4j.com/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/"/>
-    <id>http://code.idea4j.com/2020/07/15/如何替换 JDK 的类/</id>
-    <published>2020-07-15T03:11:07.000Z</published>
-    <updated>2020-09-28T11:14:14.760Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="如何替换-JDK-的类"><a href="#如何替换-JDK-的类" class="headerlink" title="如何替换 JDK 的类"></a>如何替换 JDK 的类</h2><h3 id="如何替换jdk中的类呢？Java提供了endorsed技术。"><a href="#如何替换jdk中的类呢？Java提供了endorsed技术。" class="headerlink" title="如何替换jdk中的类呢？Java提供了endorsed技术。"></a>如何替换jdk中的类呢？Java提供了endorsed技术。</h3><p>关于 endorsed ：可以的简单理解为 -Djava.endorsed.dirs 指定的目录面放置的jar文件，将有覆盖系统API的功能。但是能够覆盖的类是有限制的，其中不包括java.lang包中的类(出于安全的考虑)。</p>
-<h3 id="为什么必须使用-endorsed-进行替换-jdk-中的类呢？"><a href="#为什么必须使用-endorsed-进行替换-jdk-中的类呢？" class="headerlink" title="为什么必须使用 endorsed 进行替换 jdk 中的类呢？"></a>为什么必须使用 endorsed 进行替换 jdk 中的类呢？</h3><p>因为java是采用双亲委派机制进行加载class类的。而jdk提供的类只能由类加载器Bootstrap进行加载。如果你想要在应用程序中替换掉jdk中的某个类是无法做到的，所以java提供了endorsed来达到你想要替换到系统中的类。</p>
-<h3 id="使用endorsed的两种方式："><a href="#使用endorsed的两种方式：" class="headerlink" title="使用endorsed的两种方式："></a>使用endorsed的两种方式：</h3><ul>
-<li>运行的时候加上 -Djava.endorsed.dirs=D:\endorsed（jar包存放目录） 参数</li>
-<li>将修改后的jar包放在：$JAVA_HOME/jre/lib/endorsed 、$JAVA_HOME/lib/endorsed 下面</li>
-</ul>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>本实例通过修改ArrayList来试验:</p>
-<ol>
-<li><p>新建maven工程，在工程中新建java.util.ArrayList</p>
-</li>
-<li><p>复制jdk中ArrayList源码到自己创建的ArrayList，并修改构造方法如下：</p>
-</li>
-</ol>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114253815.png" alt=""></p>
-<ol>
-<li>将工程打包成jar，复制到endorsed文件夹中</li>
-<li>新建测试类</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.idea4j.endorsed.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * -Djava.endorsed.dirs=D:\idea4j-endorsed\endorsed</div><div class="line"> * -XX:+TraceClassLoading</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        List list = <span class="keyword">new</span> ArrayList();</div><div class="line">        System.out.println(<span class="number">1</span>);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ol>
-<li>修改运行参数，如图</li>
-</ol>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114058420.png" alt="image-20200911114058420"></p>
-<ol>
-<li>运行Test，结果如下：</li>
-</ol>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114454953.png" alt="image-20200911114454953"></p>
-<p>看到Test类调用了我们修改的ArrayList，说明我们成功覆盖了jdk的类</p>
-<p>但我们只调用一次new ArrayList(),为什么日志输出了这么多次呢？</p>
-<p>我们在运行参数中在加入-XX:+TraceClassLoading看类加载过程可知，虚拟机启动时，有一些类调用了ArrayList默认构造器</p>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911123505455.png" alt="image-20200911123505455"></p>
-<p>上面我们使用了修改运行参数的方法，下面我们再试验第二种方法，把jar包copy到$JAVA_HOME/jre/lib/endorsed下，结果和上面一样。</p>
-<p>但是copy到$JAVA_HOME/lib/endorsed下，结果是没有覆盖成功。这是为什么呢？如图，java-home应该为实际运行环境的目录。</p>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911130242199.png" alt="image-20200911130242199"></p>
-<p>经查看项目jdk配置</p>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911125011220.png" alt="image-20200911125011220"></p>
-<p>classpath指定的是jre，所以，把jar包copy到$JAVA_HOME/jre/lib/endorsed下才能成功也就说的通了。</p>
-<p>#### </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;如何替换-JDK-的类&quot;&gt;&lt;a href=&quot;#如何替换-JDK-的类&quot; class=&quot;headerlink&quot; title=&quot;如何替换 JDK 的类&quot;&gt;&lt;/a&gt;如何替换 JDK 的类&lt;/h2&gt;&lt;h3 id=&quot;如何替换jdk中的类呢？Java提供了endorsed技术
-    
-    </summary>
-    
-      <category term="如何替换 JDK 的类" scheme="http://code.idea4j.com/categories/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/"/>
-    
-    
-      <category term="如何替换 JDK 的类" scheme="http://code.idea4j.com/tags/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>消息队列</title>
-    <link href="http://code.idea4j.com/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
-    <id>http://code.idea4j.com/2020/07/15/消息队列/</id>
-    <published>2020-07-15T03:11:07.000Z</published>
-    <updated>2020-08-04T05:11:43.745Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><p><pre class="mermaid">graph LR<br>消息队列 –&gt; B[队列] –&gt; B1(使用场景)<br>B1 –&gt; 应用解耦<br>B1 –&gt; 服务通信<br>B1 –&gt; 削峰填谷<br>B1 –&gt; 消息广播<br>B –&gt; B2(消息协议)<br>B2 –&gt; JMS<br>B2 –&gt; AMQP<br>B –&gt; B3(常用队列)<br>B3 –&gt; RabbitMQ<br>B3 –&gt; ActiveMQ<br>B3 –&gt; RocketMQ<br>B3 –&gt; Kafka</pre><br><a id="more"></a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;消息队列&quot;&gt;&lt;a href=&quot;#消息队列&quot; class=&quot;headerlink&quot; title=&quot;消息队列&quot;&gt;&lt;/a&gt;消息队列&lt;/h3&gt;&lt;p&gt;&lt;pre class=&quot;mermaid&quot;&gt;graph LR&lt;br&gt;消息队列 –&amp;gt; B[队列] –&amp;gt; B1(使用场景)&lt;br&gt;B1 –&amp;gt; 应用解耦&lt;br&gt;B1 –&amp;gt; 服务通信&lt;br&gt;B1 –&amp;gt; 削峰填谷&lt;br&gt;B1 –&amp;gt; 消息广播&lt;br&gt;B –&amp;gt; B2(消息协议)&lt;br&gt;B2 –&amp;gt; JMS&lt;br&gt;B2 –&amp;gt; AMQP&lt;br&gt;B –&amp;gt; B3(常用队列)&lt;br&gt;B3 –&amp;gt; RabbitMQ&lt;br&gt;B3 –&amp;gt; ActiveMQ&lt;br&gt;B3 –&amp;gt; RocketMQ&lt;br&gt;B3 –&amp;gt; Kafka&lt;/pre&gt;&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="消息队列" scheme="http://code.idea4j.com/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
-    
-    
-      <category term="消息队列" scheme="http://code.idea4j.com/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis</title>
-    <link href="http://code.idea4j.com/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/"/>
-    <id>http://code.idea4j.com/2020/07/15/Redis 教程/</id>
-    <published>2020-07-15T03:11:07.000Z</published>
-    <updated>2020-09-28T11:01:49.530Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Redis-教程"><a href="#Redis-教程" class="headerlink" title="Redis 教程"></a>Redis 教程</h1><p>redis（remote dictionary server）</p>
-<h3 id="redis数据类型"><a href="#redis数据类型" class="headerlink" title="redis数据类型"></a>redis数据类型</h3><p>redis支持5种数据类型：string（字符串）、hash（哈希）、list（列表）、set（集合）、zset（有序集合）</p>
-<h2 id="Redis原理、协议及应用"><a href="#Redis原理、协议及应用" class="headerlink" title="Redis原理、协议及应用"></a>Redis原理、协议及应用</h2><h3 id="Redis是如何运行的？"><a href="#Redis是如何运行的？" class="headerlink" title="Redis是如何运行的？"></a>Redis是如何运行的？</h3><h4 id="Redis基本原理"><a href="#Redis基本原理" class="headerlink" title="Redis基本原理"></a>Redis基本原理</h4><h5 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h5><p>Redis 是一款基于 ANSI C 语言编写的，BSD 许可的，日志型 key-value 存储组件，它的所有数据结构都存在内存中，可以用作缓存、数据库和消息中间件。</p>
-<p>Redis 是 Remote dictionary server 即远程字典服务的缩写，一个 Redis 实例可以有多个存储数据的字典，客户端可以通过 select 来选择字典即 DB 进行数据存储。</p>
-<h3 id="如何理解、选择并使用Redis的核心数据类型？"><a href="#如何理解、选择并使用Redis的核心数据类型？" class="headerlink" title="如何理解、选择并使用Redis的核心数据类型？"></a>如何理解、选择并使用Redis的核心数据类型？</h3><h3 id="Redis协议的请求和响应有哪些“套路”可循？"><a href="#Redis协议的请求和响应有哪些“套路”可循？" class="headerlink" title="Redis协议的请求和响应有哪些“套路”可循？"></a>Redis协议的请求和响应有哪些“套路”可循？</h3><h2 id="Redis进阶"><a href="#Redis进阶" class="headerlink" title="Redis进阶"></a>Redis进阶</h2><h3 id="Redis系统架构中各个处理模块是干什么的？"><a href="#Redis系统架构中各个处理模块是干什么的？" class="headerlink" title="Redis系统架构中各个处理模块是干什么的？"></a>Redis系统架构中各个处理模块是干什么的？</h3><h3 id="Redis如何处理文件事件和时间事件？"><a href="#Redis如何处理文件事件和时间事件？" class="headerlink" title="Redis如何处理文件事件和时间事件？"></a>Redis如何处理文件事件和时间事件？</h3><h3 id="Redis读取请求数据后，如何进行协议解析和处理？"><a href="#Redis读取请求数据后，如何进行协议解析和处理？" class="headerlink" title="Redis读取请求数据后，如何进行协议解析和处理？"></a>Redis读取请求数据后，如何进行协议解析和处理？</h3><h3 id="怎么认识和应用Redis内部数据结构？"><a href="#怎么认识和应用Redis内部数据结构？" class="headerlink" title="怎么认识和应用Redis内部数据结构？"></a>怎么认识和应用Redis内部数据结构？</h3><h3 id="Redis是如何淘汰key的？"><a href="#Redis是如何淘汰key的？" class="headerlink" title="Redis是如何淘汰key的？"></a>Redis是如何淘汰key的？</h3><h3 id="Redis崩溃后，是如何进行数据恢复的？"><a href="#Redis崩溃后，是如何进行数据恢复的？" class="headerlink" title="Redis崩溃后，是如何进行数据恢复的？"></a>Redis崩溃后，是如何进行数据恢复的？</h3><h3 id="Redis是如何处理容易超时的系统调用的？"><a href="#Redis是如何处理容易超时的系统调用的？" class="headerlink" title="Redis是如何处理容易超时的系统调用的？"></a>Redis是如何处理容易超时的系统调用的？</h3><h3 id="如何大幅成倍提升Redis处理性能？"><a href="#如何大幅成倍提升Redis处理性能？" class="headerlink" title="如何大幅成倍提升Redis处理性能？"></a>如何大幅成倍提升Redis处理性能？</h3><h2 id="分布式Redis实战"><a href="#分布式Redis实战" class="headerlink" title="分布式Redis实战"></a>分布式Redis实战</h2><h3 id="Redis是如何进行主从复制的？"><a href="#Redis是如何进行主从复制的？" class="headerlink" title="Redis是如何进行主从复制的？"></a>Redis是如何进行主从复制的？</h3><h3 id="如何构建一个高性能、易扩展的Redis集群？"><a href="#如何构建一个高性能、易扩展的Redis集群？" class="headerlink" title="如何构建一个高性能、易扩展的Redis集群？"></a>如何构建一个高性能、易扩展的Redis集群？</h3><h3 id="从容应对亿级QPS访问，Redis还缺少什么？"><a href="#从容应对亿级QPS访问，Redis还缺少什么？" class="headerlink" title="从容应对亿级QPS访问，Redis还缺少什么？"></a>从容应对亿级QPS访问，Redis还缺少什么？</h3><h2 id="深入分布式缓存"><a href="#深入分布式缓存" class="headerlink" title="深入分布式缓存"></a>深入分布式缓存</h2><h3 id="面对海量数据，为什么无法设计出完美的分布式缓存体系？"><a href="#面对海量数据，为什么无法设计出完美的分布式缓存体系？" class="headerlink" title="面对海量数据，为什么无法设计出完美的分布式缓存体系？"></a>面对海量数据，为什么无法设计出完美的分布式缓存体系？</h3><h3 id="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"><a href="#如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？" class="headerlink" title="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"></a>如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？</h3><h3 id="一个典型的分布式缓存系统是什么样的？"><a href="#一个典型的分布式缓存系统是什么样的？" class="headerlink" title="一个典型的分布式缓存系统是什么样的？"></a>一个典型的分布式缓存系统是什么样的？</h3><h2 id="应用场景案例解析"><a href="#应用场景案例解析" class="headerlink" title="应用场景案例解析"></a>应用场景案例解析</h2><h3 id="如何为秒杀系统设计缓存体系？"><a href="#如何为秒杀系统设计缓存体系？" class="headerlink" title="如何为秒杀系统设计缓存体系？"></a>如何为秒杀系统设计缓存体系？</h3><h3 id="如何为海量计数场景设计缓存体系？"><a href="#如何为海量计数场景设计缓存体系？" class="headerlink" title="如何为海量计数场景设计缓存体系？"></a>如何为海量计数场景设计缓存体系？</h3><h3 id="如何为设计feed场景设计缓存体系？"><a href="#如何为设计feed场景设计缓存体系？" class="headerlink" title="如何为设计feed场景设计缓存体系？"></a>如何为设计feed场景设计缓存体系？</h3>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Redis-教程&quot;&gt;&lt;a href=&quot;#Redis-教程&quot; class=&quot;headerlink&quot; title=&quot;Redis 教程&quot;&gt;&lt;/a&gt;Redis 教程&lt;/h1&gt;&lt;p&gt;redis（remote dictionary server）&lt;/p&gt;
-&lt;h3 id=&quot;re
-    
-    </summary>
-    
-      <category term="Redis" scheme="http://code.idea4j.com/categories/Redis/"/>
-    
-    
-      <category term="Redis" scheme="http://code.idea4j.com/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Springboot</title>
-    <link href="http://code.idea4j.com/2020/07/15/Spring%20Boot/"/>
-    <id>http://code.idea4j.com/2020/07/15/Spring Boot/</id>
-    <published>2020-07-15T03:11:07.000Z</published>
-    <updated>2020-09-28T11:01:19.775Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Spring-Boot入门"><a href="#Spring-Boot入门" class="headerlink" title="Spring Boot入门"></a>Spring Boot入门</h1><h1 id="Spring-Boot配置"><a href="#Spring-Boot配置" class="headerlink" title="Spring Boot配置"></a>Spring Boot配置</h1><h1 id="Spring-Boot与日志"><a href="#Spring-Boot与日志" class="headerlink" title="Spring Boot与日志"></a>Spring Boot与日志</h1><h1 id="Spring-Boot与Web开发"><a href="#Spring-Boot与Web开发" class="headerlink" title="Spring Boot与Web开发"></a>Spring Boot与Web开发</h1><h1 id="Spring-Boot与Docker"><a href="#Spring-Boot与Docker" class="headerlink" title="Spring Boot与Docker"></a>Spring Boot与Docker</h1><h1 id="Spring-Boot与数据访问"><a href="#Spring-Boot与数据访问" class="headerlink" title="Spring Boot与数据访问"></a>Spring Boot与数据访问</h1><h1 id="Spring-Boot启动配置原理"><a href="#Spring-Boot启动配置原理" class="headerlink" title="Spring Boot启动配置原理"></a>Spring Boot启动配置原理</h1><p>启动流程</p>
-<p>创建SpringApplication对象</p>
-<p>运行run方法</p>
-<h1 id="Spring-Boot自定义starters"><a href="#Spring-Boot自定义starters" class="headerlink" title="Spring Boot自定义starters"></a>Spring Boot自定义starters</h1><h1 id="Spring-Boot与缓存"><a href="#Spring-Boot与缓存" class="headerlink" title="Spring Boot与缓存"></a>Spring Boot与缓存</h1><h1 id="Spring-Boot与消息"><a href="#Spring-Boot与消息" class="headerlink" title="Spring Boot与消息"></a>Spring Boot与消息</h1><h1 id="Spring-Boot与检索"><a href="#Spring-Boot与检索" class="headerlink" title="Spring Boot与检索"></a>Spring Boot与检索</h1><h1 id="Spring-Boot与任务"><a href="#Spring-Boot与任务" class="headerlink" title="Spring Boot与任务"></a>Spring Boot与任务</h1><h1 id="Spring-Boot与安全"><a href="#Spring-Boot与安全" class="headerlink" title="Spring Boot与安全"></a>Spring Boot与安全</h1><h1 id="Spring-Boot与分布式"><a href="#Spring-Boot与分布式" class="headerlink" title="Spring Boot与分布式"></a>Spring Boot与分布式</h1><h1 id="Spring-Boot与开发热部署"><a href="#Spring-Boot与开发热部署" class="headerlink" title="Spring Boot与开发热部署"></a>Spring Boot与开发热部署</h1><h1 id="Spring-Boot与监控管理"><a href="#Spring-Boot与监控管理" class="headerlink" title="Spring Boot与监控管理"></a>Spring Boot与监控管理</h1><p># </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Spring-Boot入门&quot;&gt;&lt;a href=&quot;#Spring-Boot入门&quot; class=&quot;headerlink&quot; title=&quot;Spring Boot入门&quot;&gt;&lt;/a&gt;Spring Boot入门&lt;/h1&gt;&lt;h1 id=&quot;Spring-Boot配置&quot;&gt;&lt;a hre
-    
-    </summary>
-    
-      <category term="Spring" scheme="http://code.idea4j.com/categories/Spring/"/>
-    
-    
-      <category term="Spring" scheme="http://code.idea4j.com/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
     <title>网关</title>
     <link href="http://code.idea4j.com/2020/07/15/Zuul%E4%B8%8EGateWay%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/"/>
     <id>http://code.idea4j.com/2020/07/15/Zuul与GateWay有什么区别/</id>
@@ -390,87 +320,6 @@
     
     
       <category term="网关" scheme="http://code.idea4j.com/tags/%E7%BD%91%E5%85%B3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring事务隔离级别</title>
-    <link href="http://code.idea4j.com/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"/>
-    <id>http://code.idea4j.com/2020/07/15/Spring事务隔离级别/</id>
-    <published>2020-07-15T03:11:07.000Z</published>
-    <updated>2020-09-28T11:00:43.542Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Spring事务隔离级别"><a href="#Spring事务隔离级别" class="headerlink" title="Spring事务隔离级别"></a>Spring事务隔离级别</h2><p>一、Propagation （事务的传播属性）</p>
-<p>Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：PROPAGATION_REQUIRED–支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。<br>PROPAGATION_SUPPORTS–支持当前事务，如果当前没有事务，就以非事务方式执行。<br>PROPAGATION_MANDATORY–支持当前事务，如果当前没有事务，就抛出异常。<br>PROPAGATION_REQUIRES_NEW–新建事务，如果当前存在事务，把当前事务挂起。<br>PROPAGATION_NOT_SUPPORTED–以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。<br>PROPAGATION_NEVER–以非事务方式执行，如果当前存在事务，则抛出异常。</p>
-<p>1： PROPAGATION_REQUIRED<br>加入当前正要执行的事务不在另外一个事务里，那么就起一个新的事务<br>比如说，ServiceB.methodB的事务级别定义为PROPAGATION_REQUIRED, 那么由于执行ServiceA.methodA的时候，<br>ServiceA.methodA已经起了事务，这时调用ServiceB.methodB，ServiceB.methodB看到自己已经运行在ServiceA.methodA<br>的事务内部，就不再起新的事务。而假如ServiceA.methodA运行的时候发现自己没有在事务中，他就会为自己分配一个事务。<br>这样，在ServiceA.methodA或者在ServiceB.methodB内的任何地方出现异常，事务都会被回滚。即使ServiceB.methodB的事务已经被<br>提交，但是ServiceA.methodA在接下来fail要回滚，ServiceB.methodB也要回滚</p>
-<p>2： PROPAGATION_SUPPORTS<br>如果当前在事务中，即以事务的形式运行，如果当前不再一个事务中，那么就以非事务的形式运行</p>
-<p>3： PROPAGATION_MANDATORY<br>必须在一个事务中运行。也就是说，他只能被一个父事务调用。否则，他就要抛出异常</p>
-<p>4： PROPAGATION_REQUIRES_NEW<br>这个就比较绕口了。 比如我们设计ServiceA.methodA的事务级别为PROPAGATION_REQUIRED，ServiceB.methodB的事务级别为PROPAGATION_REQUIRES_NEW，<br>那么当执行到ServiceB.methodB的时候，ServiceA.methodA所在的事务就会挂起，ServiceB.methodB会起一个新的事务，等待ServiceB.methodB的事务完成以后，<br>他才继续执行。他与PROPAGATION_REQUIRED 的事务区别在于事务的回滚程度了。因为ServiceB.methodB是新起一个事务，那么就是存在<br>两个不同的事务。如果ServiceB.methodB已经提交，那么ServiceA.methodA失败回滚，ServiceB.methodB是不会回滚的。如果ServiceB.methodB失败回滚，<br>如果他抛出的异常被ServiceA.methodA捕获，ServiceA.methodA事务仍然可能提交。</p>
-<p>5： PROPAGATION_NOT_SUPPORTED<br>当前不支持事务。比如ServiceA.methodA的事务级别是PROPAGATION_REQUIRED ，而ServiceB.methodB的事务级别是PROPAGATION_NOT_SUPPORTED ，<br>那么当执行到ServiceB.methodB时，ServiceA.methodA的事务挂起，而他以非事务的状态运行完，再继续ServiceA.methodA的事务。</p>
-<p>6： PROPAGATION_NEVER<br>不能在事务中运行。假设ServiceA.methodA的事务级别是PROPAGATION_REQUIRED， 而ServiceB.methodB的事务级别是PROPAGATION_NEVER ，<br>那么ServiceB.methodB就要抛出异常了。</p>
-<p>7： PROPAGATION_NESTED<br>理解Nested的关键是savepoint。他与PROPAGATION_REQUIRES_NEW的区别是，PROPAGATION_REQUIRES_NEW另起一个事务，将会与他的父事务相互独立，<br>而Nested的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。<br>而Nested事务的好处是他有一个savepoint。</p>
-<hr>
-<p>ServiceA {</p>
-<p>/<em>*<br>\</em> 事务属性配置为 PROPAGATION_REQUIRED<br>*/<br>void methodA() {<br>try {<br>//savepoint<br>ServiceB.methodB(); //PROPAGATION_NESTED 级别<br>} catch (SomeException) {<br>// 执行其他业务, 如 ServiceC.methodC();<br>}<br>}</p>
-<p>}</p>
-<hr>
-<p>也就是说ServiceB.methodB失败回滚，那么ServiceA.methodA也会回滚到savepoint点上，ServiceA.methodA可以选择另外一个分支，比如<br>ServiceC.methodC，继续执行，来尝试完成自己的事务。<br>但是这个事务并没有在EJB标准中定义。</p>
-<p>Spring事务的隔离级别<br> \1. ISOLATION_DEFAULT： 这是一个PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别.<br>   另外四个与JDBC的隔离级别相对应<br> \2. ISOLATION_READ_UNCOMMITTED： 这是事务最低的隔离级别，它充许令外一个事务可以看到这个事务未提交的数据。<br>   这种隔离级别会产生脏读，不可重复读和幻像读。<br> \3. ISOLATION_READ_COMMITTED： 保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据<br> \4. ISOLATION_REPEATABLE_READ： 这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。<br>   它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了避免下面的情况产生(不可重复读)。<br> \5. ISOLATION_SERIALIZABLE 这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。<br>   除了防止脏读，不可重复读外，还避免了幻像读。</p>
-<p>什么是脏数据，脏读，不可重复读，幻觉读？<br> 脏读: 指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，<br>   另外一个事务也访问这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据， 那么另外一<br>   个事务读到的这个数据是脏数据，依据脏数据所做的操作可能是不正确的。</p>
-<p> 不可重复读: 指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。<br>       那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的数据<br>       可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</p>
-<p> 幻觉读: 指当事务不是独立执行时发生的一种现象，例如第一个事务对一个表中的数据进行了修改，这种修改涉及<br>     到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，<br>     以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Spring事务隔离级别&quot;&gt;&lt;a href=&quot;#Spring事务隔离级别&quot; class=&quot;headerlink&quot; title=&quot;Spring事务隔离级别&quot;&gt;&lt;/a&gt;Spring事务隔离级别&lt;/h2&gt;&lt;p&gt;一、Propagation （事务的传播属性）&lt;/p&gt;
-&lt;p
-    
-    </summary>
-    
-      <category term="Spring" scheme="http://code.idea4j.com/categories/Spring/"/>
-    
-    
-      <category term="Spring" scheme="http://code.idea4j.com/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>zookeeper选举规则</title>
-    <link href="http://code.idea4j.com/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/"/>
-    <id>http://code.idea4j.com/2020/07/15/zookeeper选举规则/</id>
-    <published>2020-07-15T03:11:07.000Z</published>
-    <updated>2020-09-28T10:42:52.147Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="zookeeper选举规则"><a href="#zookeeper选举规则" class="headerlink" title="zookeeper选举规则"></a>zookeeper选举规则</h3><p>角色：</p>
-<p>1.LOOKING：竞选</p>
-<p>​      2.OBSERVING：观察</p>
-<p>​      3.FOLLOWING：跟随者</p>
-<p>​      4.LEADER：领导者</p>
-<p>投票信息：</p>
-<p>​      1.logicalclock（electionEpoch）：本地选举周期，每次投票都会自增</p>
-<p>​      2.epoch（peerEpoch）：选举周期，每次选举最终确定完leader结束选举流程时会自增(真正zxid的前32位)</p>
-<p>​      3.zxid：数据ID，每次数据变动都会自增（真正zxid的后32位，zxid一共64位）</p>
-<p>​      4.sid：该投票信息所属的serverId</p>
-<p>​      5.leader：提议的leader（被提议的server的serverId，即sid）</p>
-<p>没有leader时</p>
-<p>投票比较规则：</p>
-<p>​     1.epoch大的胜出，否则进行步骤2</p>
-<p>​     2.zxid大的胜出，否则进行步骤3</p>
-<p>​     3.sid大的胜出</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;zookeeper选举规则&quot;&gt;&lt;a href=&quot;#zookeeper选举规则&quot; class=&quot;headerlink&quot; title=&quot;zookeeper选举规则&quot;&gt;&lt;/a&gt;zookeeper选举规则&lt;/h3&gt;&lt;p&gt;角色：&lt;/p&gt;
-&lt;p&gt;1.LOOKING：竞选&lt;/p
-    
-    </summary>
-    
-      <category term="zookeeper" scheme="http://code.idea4j.com/categories/zookeeper/"/>
-    
-    
-      <category term="zookeeper" scheme="http://code.idea4j.com/tags/zookeeper/"/>
     
   </entry>
   
@@ -571,6 +420,101 @@
   </entry>
   
   <entry>
+    <title>Redis</title>
+    <link href="http://code.idea4j.com/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/"/>
+    <id>http://code.idea4j.com/2020/07/15/Redis 教程/</id>
+    <published>2020-07-15T03:11:07.000Z</published>
+    <updated>2020-09-28T11:01:49.530Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Redis-教程"><a href="#Redis-教程" class="headerlink" title="Redis 教程"></a>Redis 教程</h1><p>redis（remote dictionary server）</p>
+<h3 id="redis数据类型"><a href="#redis数据类型" class="headerlink" title="redis数据类型"></a>redis数据类型</h3><p>redis支持5种数据类型：string（字符串）、hash（哈希）、list（列表）、set（集合）、zset（有序集合）</p>
+<h2 id="Redis原理、协议及应用"><a href="#Redis原理、协议及应用" class="headerlink" title="Redis原理、协议及应用"></a>Redis原理、协议及应用</h2><h3 id="Redis是如何运行的？"><a href="#Redis是如何运行的？" class="headerlink" title="Redis是如何运行的？"></a>Redis是如何运行的？</h3><h4 id="Redis基本原理"><a href="#Redis基本原理" class="headerlink" title="Redis基本原理"></a>Redis基本原理</h4><h5 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h5><p>Redis 是一款基于 ANSI C 语言编写的，BSD 许可的，日志型 key-value 存储组件，它的所有数据结构都存在内存中，可以用作缓存、数据库和消息中间件。</p>
+<p>Redis 是 Remote dictionary server 即远程字典服务的缩写，一个 Redis 实例可以有多个存储数据的字典，客户端可以通过 select 来选择字典即 DB 进行数据存储。</p>
+<h3 id="如何理解、选择并使用Redis的核心数据类型？"><a href="#如何理解、选择并使用Redis的核心数据类型？" class="headerlink" title="如何理解、选择并使用Redis的核心数据类型？"></a>如何理解、选择并使用Redis的核心数据类型？</h3><h3 id="Redis协议的请求和响应有哪些“套路”可循？"><a href="#Redis协议的请求和响应有哪些“套路”可循？" class="headerlink" title="Redis协议的请求和响应有哪些“套路”可循？"></a>Redis协议的请求和响应有哪些“套路”可循？</h3><h2 id="Redis进阶"><a href="#Redis进阶" class="headerlink" title="Redis进阶"></a>Redis进阶</h2><h3 id="Redis系统架构中各个处理模块是干什么的？"><a href="#Redis系统架构中各个处理模块是干什么的？" class="headerlink" title="Redis系统架构中各个处理模块是干什么的？"></a>Redis系统架构中各个处理模块是干什么的？</h3><h3 id="Redis如何处理文件事件和时间事件？"><a href="#Redis如何处理文件事件和时间事件？" class="headerlink" title="Redis如何处理文件事件和时间事件？"></a>Redis如何处理文件事件和时间事件？</h3><h3 id="Redis读取请求数据后，如何进行协议解析和处理？"><a href="#Redis读取请求数据后，如何进行协议解析和处理？" class="headerlink" title="Redis读取请求数据后，如何进行协议解析和处理？"></a>Redis读取请求数据后，如何进行协议解析和处理？</h3><h3 id="怎么认识和应用Redis内部数据结构？"><a href="#怎么认识和应用Redis内部数据结构？" class="headerlink" title="怎么认识和应用Redis内部数据结构？"></a>怎么认识和应用Redis内部数据结构？</h3><h3 id="Redis是如何淘汰key的？"><a href="#Redis是如何淘汰key的？" class="headerlink" title="Redis是如何淘汰key的？"></a>Redis是如何淘汰key的？</h3><h3 id="Redis崩溃后，是如何进行数据恢复的？"><a href="#Redis崩溃后，是如何进行数据恢复的？" class="headerlink" title="Redis崩溃后，是如何进行数据恢复的？"></a>Redis崩溃后，是如何进行数据恢复的？</h3><h3 id="Redis是如何处理容易超时的系统调用的？"><a href="#Redis是如何处理容易超时的系统调用的？" class="headerlink" title="Redis是如何处理容易超时的系统调用的？"></a>Redis是如何处理容易超时的系统调用的？</h3><h3 id="如何大幅成倍提升Redis处理性能？"><a href="#如何大幅成倍提升Redis处理性能？" class="headerlink" title="如何大幅成倍提升Redis处理性能？"></a>如何大幅成倍提升Redis处理性能？</h3><h2 id="分布式Redis实战"><a href="#分布式Redis实战" class="headerlink" title="分布式Redis实战"></a>分布式Redis实战</h2><h3 id="Redis是如何进行主从复制的？"><a href="#Redis是如何进行主从复制的？" class="headerlink" title="Redis是如何进行主从复制的？"></a>Redis是如何进行主从复制的？</h3><h3 id="如何构建一个高性能、易扩展的Redis集群？"><a href="#如何构建一个高性能、易扩展的Redis集群？" class="headerlink" title="如何构建一个高性能、易扩展的Redis集群？"></a>如何构建一个高性能、易扩展的Redis集群？</h3><h3 id="从容应对亿级QPS访问，Redis还缺少什么？"><a href="#从容应对亿级QPS访问，Redis还缺少什么？" class="headerlink" title="从容应对亿级QPS访问，Redis还缺少什么？"></a>从容应对亿级QPS访问，Redis还缺少什么？</h3><h2 id="深入分布式缓存"><a href="#深入分布式缓存" class="headerlink" title="深入分布式缓存"></a>深入分布式缓存</h2><h3 id="面对海量数据，为什么无法设计出完美的分布式缓存体系？"><a href="#面对海量数据，为什么无法设计出完美的分布式缓存体系？" class="headerlink" title="面对海量数据，为什么无法设计出完美的分布式缓存体系？"></a>面对海量数据，为什么无法设计出完美的分布式缓存体系？</h3><h3 id="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"><a href="#如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？" class="headerlink" title="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"></a>如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？</h3><h3 id="一个典型的分布式缓存系统是什么样的？"><a href="#一个典型的分布式缓存系统是什么样的？" class="headerlink" title="一个典型的分布式缓存系统是什么样的？"></a>一个典型的分布式缓存系统是什么样的？</h3><h2 id="应用场景案例解析"><a href="#应用场景案例解析" class="headerlink" title="应用场景案例解析"></a>应用场景案例解析</h2><h3 id="如何为秒杀系统设计缓存体系？"><a href="#如何为秒杀系统设计缓存体系？" class="headerlink" title="如何为秒杀系统设计缓存体系？"></a>如何为秒杀系统设计缓存体系？</h3><h3 id="如何为海量计数场景设计缓存体系？"><a href="#如何为海量计数场景设计缓存体系？" class="headerlink" title="如何为海量计数场景设计缓存体系？"></a>如何为海量计数场景设计缓存体系？</h3><h3 id="如何为设计feed场景设计缓存体系？"><a href="#如何为设计feed场景设计缓存体系？" class="headerlink" title="如何为设计feed场景设计缓存体系？"></a>如何为设计feed场景设计缓存体系？</h3>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Redis-教程&quot;&gt;&lt;a href=&quot;#Redis-教程&quot; class=&quot;headerlink&quot; title=&quot;Redis 教程&quot;&gt;&lt;/a&gt;Redis 教程&lt;/h1&gt;&lt;p&gt;redis（remote dictionary server）&lt;/p&gt;
+&lt;h3 id=&quot;re
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://code.idea4j.com/categories/Redis/"/>
+    
+    
+      <category term="Redis" scheme="http://code.idea4j.com/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring事务隔离级别</title>
+    <link href="http://code.idea4j.com/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"/>
+    <id>http://code.idea4j.com/2020/07/15/Spring事务隔离级别/</id>
+    <published>2020-07-15T03:11:07.000Z</published>
+    <updated>2020-09-28T11:00:43.542Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Spring事务隔离级别"><a href="#Spring事务隔离级别" class="headerlink" title="Spring事务隔离级别"></a>Spring事务隔离级别</h2><p>一、Propagation （事务的传播属性）</p>
+<p>Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：PROPAGATION_REQUIRED–支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。<br>PROPAGATION_SUPPORTS–支持当前事务，如果当前没有事务，就以非事务方式执行。<br>PROPAGATION_MANDATORY–支持当前事务，如果当前没有事务，就抛出异常。<br>PROPAGATION_REQUIRES_NEW–新建事务，如果当前存在事务，把当前事务挂起。<br>PROPAGATION_NOT_SUPPORTED–以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。<br>PROPAGATION_NEVER–以非事务方式执行，如果当前存在事务，则抛出异常。</p>
+<p>1： PROPAGATION_REQUIRED<br>加入当前正要执行的事务不在另外一个事务里，那么就起一个新的事务<br>比如说，ServiceB.methodB的事务级别定义为PROPAGATION_REQUIRED, 那么由于执行ServiceA.methodA的时候，<br>ServiceA.methodA已经起了事务，这时调用ServiceB.methodB，ServiceB.methodB看到自己已经运行在ServiceA.methodA<br>的事务内部，就不再起新的事务。而假如ServiceA.methodA运行的时候发现自己没有在事务中，他就会为自己分配一个事务。<br>这样，在ServiceA.methodA或者在ServiceB.methodB内的任何地方出现异常，事务都会被回滚。即使ServiceB.methodB的事务已经被<br>提交，但是ServiceA.methodA在接下来fail要回滚，ServiceB.methodB也要回滚</p>
+<p>2： PROPAGATION_SUPPORTS<br>如果当前在事务中，即以事务的形式运行，如果当前不再一个事务中，那么就以非事务的形式运行</p>
+<p>3： PROPAGATION_MANDATORY<br>必须在一个事务中运行。也就是说，他只能被一个父事务调用。否则，他就要抛出异常</p>
+<p>4： PROPAGATION_REQUIRES_NEW<br>这个就比较绕口了。 比如我们设计ServiceA.methodA的事务级别为PROPAGATION_REQUIRED，ServiceB.methodB的事务级别为PROPAGATION_REQUIRES_NEW，<br>那么当执行到ServiceB.methodB的时候，ServiceA.methodA所在的事务就会挂起，ServiceB.methodB会起一个新的事务，等待ServiceB.methodB的事务完成以后，<br>他才继续执行。他与PROPAGATION_REQUIRED 的事务区别在于事务的回滚程度了。因为ServiceB.methodB是新起一个事务，那么就是存在<br>两个不同的事务。如果ServiceB.methodB已经提交，那么ServiceA.methodA失败回滚，ServiceB.methodB是不会回滚的。如果ServiceB.methodB失败回滚，<br>如果他抛出的异常被ServiceA.methodA捕获，ServiceA.methodA事务仍然可能提交。</p>
+<p>5： PROPAGATION_NOT_SUPPORTED<br>当前不支持事务。比如ServiceA.methodA的事务级别是PROPAGATION_REQUIRED ，而ServiceB.methodB的事务级别是PROPAGATION_NOT_SUPPORTED ，<br>那么当执行到ServiceB.methodB时，ServiceA.methodA的事务挂起，而他以非事务的状态运行完，再继续ServiceA.methodA的事务。</p>
+<p>6： PROPAGATION_NEVER<br>不能在事务中运行。假设ServiceA.methodA的事务级别是PROPAGATION_REQUIRED， 而ServiceB.methodB的事务级别是PROPAGATION_NEVER ，<br>那么ServiceB.methodB就要抛出异常了。</p>
+<p>7： PROPAGATION_NESTED<br>理解Nested的关键是savepoint。他与PROPAGATION_REQUIRES_NEW的区别是，PROPAGATION_REQUIRES_NEW另起一个事务，将会与他的父事务相互独立，<br>而Nested的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。<br>而Nested事务的好处是他有一个savepoint。</p>
+<hr>
+<p>ServiceA {</p>
+<p>/<em>*<br>\</em> 事务属性配置为 PROPAGATION_REQUIRED<br>*/<br>void methodA() {<br>try {<br>//savepoint<br>ServiceB.methodB(); //PROPAGATION_NESTED 级别<br>} catch (SomeException) {<br>// 执行其他业务, 如 ServiceC.methodC();<br>}<br>}</p>
+<p>}</p>
+<hr>
+<p>也就是说ServiceB.methodB失败回滚，那么ServiceA.methodA也会回滚到savepoint点上，ServiceA.methodA可以选择另外一个分支，比如<br>ServiceC.methodC，继续执行，来尝试完成自己的事务。<br>但是这个事务并没有在EJB标准中定义。</p>
+<p>Spring事务的隔离级别<br> \1. ISOLATION_DEFAULT： 这是一个PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别.<br>   另外四个与JDBC的隔离级别相对应<br> \2. ISOLATION_READ_UNCOMMITTED： 这是事务最低的隔离级别，它充许令外一个事务可以看到这个事务未提交的数据。<br>   这种隔离级别会产生脏读，不可重复读和幻像读。<br> \3. ISOLATION_READ_COMMITTED： 保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据<br> \4. ISOLATION_REPEATABLE_READ： 这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。<br>   它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了避免下面的情况产生(不可重复读)。<br> \5. ISOLATION_SERIALIZABLE 这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。<br>   除了防止脏读，不可重复读外，还避免了幻像读。</p>
+<p>什么是脏数据，脏读，不可重复读，幻觉读？<br> 脏读: 指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，<br>   另外一个事务也访问这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据， 那么另外一<br>   个事务读到的这个数据是脏数据，依据脏数据所做的操作可能是不正确的。</p>
+<p> 不可重复读: 指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。<br>       那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的数据<br>       可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</p>
+<p> 幻觉读: 指当事务不是独立执行时发生的一种现象，例如第一个事务对一个表中的数据进行了修改，这种修改涉及<br>     到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，<br>     以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Spring事务隔离级别&quot;&gt;&lt;a href=&quot;#Spring事务隔离级别&quot; class=&quot;headerlink&quot; title=&quot;Spring事务隔离级别&quot;&gt;&lt;/a&gt;Spring事务隔离级别&lt;/h2&gt;&lt;p&gt;一、Propagation （事务的传播属性）&lt;/p&gt;
+&lt;p
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://code.idea4j.com/categories/Spring/"/>
+    
+    
+      <category term="Spring" scheme="http://code.idea4j.com/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Springboot</title>
+    <link href="http://code.idea4j.com/2020/07/15/Spring%20Boot/"/>
+    <id>http://code.idea4j.com/2020/07/15/Spring Boot/</id>
+    <published>2020-07-15T03:11:07.000Z</published>
+    <updated>2020-09-28T11:01:19.775Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Spring-Boot入门"><a href="#Spring-Boot入门" class="headerlink" title="Spring Boot入门"></a>Spring Boot入门</h1><h1 id="Spring-Boot配置"><a href="#Spring-Boot配置" class="headerlink" title="Spring Boot配置"></a>Spring Boot配置</h1><h1 id="Spring-Boot与日志"><a href="#Spring-Boot与日志" class="headerlink" title="Spring Boot与日志"></a>Spring Boot与日志</h1><h1 id="Spring-Boot与Web开发"><a href="#Spring-Boot与Web开发" class="headerlink" title="Spring Boot与Web开发"></a>Spring Boot与Web开发</h1><h1 id="Spring-Boot与Docker"><a href="#Spring-Boot与Docker" class="headerlink" title="Spring Boot与Docker"></a>Spring Boot与Docker</h1><h1 id="Spring-Boot与数据访问"><a href="#Spring-Boot与数据访问" class="headerlink" title="Spring Boot与数据访问"></a>Spring Boot与数据访问</h1><h1 id="Spring-Boot启动配置原理"><a href="#Spring-Boot启动配置原理" class="headerlink" title="Spring Boot启动配置原理"></a>Spring Boot启动配置原理</h1><p>启动流程</p>
+<p>创建SpringApplication对象</p>
+<p>运行run方法</p>
+<h1 id="Spring-Boot自定义starters"><a href="#Spring-Boot自定义starters" class="headerlink" title="Spring Boot自定义starters"></a>Spring Boot自定义starters</h1><h1 id="Spring-Boot与缓存"><a href="#Spring-Boot与缓存" class="headerlink" title="Spring Boot与缓存"></a>Spring Boot与缓存</h1><h1 id="Spring-Boot与消息"><a href="#Spring-Boot与消息" class="headerlink" title="Spring Boot与消息"></a>Spring Boot与消息</h1><h1 id="Spring-Boot与检索"><a href="#Spring-Boot与检索" class="headerlink" title="Spring Boot与检索"></a>Spring Boot与检索</h1><h1 id="Spring-Boot与任务"><a href="#Spring-Boot与任务" class="headerlink" title="Spring Boot与任务"></a>Spring Boot与任务</h1><h1 id="Spring-Boot与安全"><a href="#Spring-Boot与安全" class="headerlink" title="Spring Boot与安全"></a>Spring Boot与安全</h1><h1 id="Spring-Boot与分布式"><a href="#Spring-Boot与分布式" class="headerlink" title="Spring Boot与分布式"></a>Spring Boot与分布式</h1><h1 id="Spring-Boot与开发热部署"><a href="#Spring-Boot与开发热部署" class="headerlink" title="Spring Boot与开发热部署"></a>Spring Boot与开发热部署</h1><h1 id="Spring-Boot与监控管理"><a href="#Spring-Boot与监控管理" class="headerlink" title="Spring Boot与监控管理"></a>Spring Boot与监控管理</h1><p># </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Spring-Boot入门&quot;&gt;&lt;a href=&quot;#Spring-Boot入门&quot; class=&quot;headerlink&quot; title=&quot;Spring Boot入门&quot;&gt;&lt;/a&gt;Spring Boot入门&lt;/h1&gt;&lt;h1 id=&quot;Spring-Boot配置&quot;&gt;&lt;a hre
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://code.idea4j.com/categories/Spring/"/>
+    
+    
+      <category term="Spring" scheme="http://code.idea4j.com/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
     <title>jps</title>
     <link href="http://code.idea4j.com/2020/07/15/%E4%BD%BF%E7%94%A8jvm%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C/"/>
     <id>http://code.idea4j.com/2020/07/15/使用jvm工具排查故障/</id>
@@ -593,6 +537,66 @@
     
     
       <category term="jps" scheme="http://code.idea4j.com/tags/jps/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何替换 JDK 的类</title>
+    <link href="http://code.idea4j.com/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/"/>
+    <id>http://code.idea4j.com/2020/07/15/如何替换 JDK 的类/</id>
+    <published>2020-07-15T03:11:07.000Z</published>
+    <updated>2020-09-28T11:18:30.872Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="如何替换-JDK-的类"><a href="#如何替换-JDK-的类" class="headerlink" title="如何替换 JDK 的类"></a>如何替换 JDK 的类</h2><h3 id="如何替换jdk中的类呢？Java提供了endorsed技术。"><a href="#如何替换jdk中的类呢？Java提供了endorsed技术。" class="headerlink" title="如何替换jdk中的类呢？Java提供了endorsed技术。"></a>如何替换jdk中的类呢？Java提供了endorsed技术。</h3><p>关于 endorsed ：可以的简单理解为 -Djava.endorsed.dirs 指定的目录面放置的jar文件，将有覆盖系统API的功能。但是能够覆盖的类是有限制的，其中不包括java.lang包中的类(出于安全的考虑)。</p>
+<h3 id="为什么必须使用-endorsed-进行替换-jdk-中的类呢？"><a href="#为什么必须使用-endorsed-进行替换-jdk-中的类呢？" class="headerlink" title="为什么必须使用 endorsed 进行替换 jdk 中的类呢？"></a>为什么必须使用 endorsed 进行替换 jdk 中的类呢？</h3><p>因为java是采用双亲委派机制进行加载class类的。而jdk提供的类只能由类加载器Bootstrap进行加载。如果你想要在应用程序中替换掉jdk中的某个类是无法做到的，所以java提供了endorsed来达到你想要替换到系统中的类。</p>
+<h3 id="使用endorsed的两种方式："><a href="#使用endorsed的两种方式：" class="headerlink" title="使用endorsed的两种方式："></a>使用endorsed的两种方式：</h3><ul>
+<li>运行的时候加上 -Djava.endorsed.dirs=D:\endorsed（jar包存放目录） 参数</li>
+<li>将修改后的jar包放在：$JAVA_HOME/jre/lib/endorsed 、$JAVA_HOME/lib/endorsed 下面</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>本实例通过修改ArrayList来试验:</p>
+<ol>
+<li><p>新建maven工程，在工程中新建java.util.ArrayList</p>
+</li>
+<li><p>复制jdk中ArrayList源码到自己创建的ArrayList，并修改构造方法如下：</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114253815.png" alt="image-20200911114253815"></p>
+<ol>
+<li>将工程打包成jar，复制到endorsed文件夹中</li>
+<li>新建测试类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.idea4j.endorsed.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * -Djava.endorsed.dirs=D:\idea4j-endorsed\endorsed</div><div class="line"> * -XX:+TraceClassLoading</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        List list = <span class="keyword">new</span> ArrayList();</div><div class="line">        System.out.println(<span class="number">1</span>);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>修改运行参数，如图</li>
+</ol>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114058420.png" alt="image-20200911114058420"></p>
+<ol>
+<li>运行Test，结果如下：</li>
+</ol>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114454953.png" alt="image-20200911114454953"></p>
+<p>看到Test类调用了我们修改的ArrayList，说明我们成功覆盖了jdk的类</p>
+<p>但我们只调用一次new ArrayList(),为什么日志输出了这么多次呢？</p>
+<p>我们在运行参数中在加入-XX:+TraceClassLoading看类加载过程可知，虚拟机启动时，有一些类调用了ArrayList默认构造器</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911123505455.png" alt="image-20200911123505455"></p>
+<p>上面我们使用了修改运行参数的方法，下面我们再试验第二种方法，把jar包copy到$JAVA_HOME/jre/lib/endorsed下，结果和上面一样。</p>
+<p>但是copy到$JAVA_HOME/lib/endorsed下，结果是没有覆盖成功。这是为什么呢？如图，java-home应该为实际运行环境的目录。</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911130242199.png" alt="image-20200911130242199"></p>
+<p>经查看项目jdk配置</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911125011220.png" alt="image-20200911125011220"></p>
+<p>classpath指定的是jre，所以，把jar包copy到$JAVA_HOME/jre/lib/endorsed下才能成功也就说的通了。</p>
+<p>#### </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;如何替换-JDK-的类&quot;&gt;&lt;a href=&quot;#如何替换-JDK-的类&quot; class=&quot;headerlink&quot; title=&quot;如何替换 JDK 的类&quot;&gt;&lt;/a&gt;如何替换 JDK 的类&lt;/h2&gt;&lt;h3 id=&quot;如何替换jdk中的类呢？Java提供了endorsed技术
+    
+    </summary>
+    
+      <category term="如何替换 JDK 的类" scheme="http://code.idea4j.com/categories/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/"/>
+    
+    
+      <category term="如何替换 JDK 的类" scheme="http://code.idea4j.com/tags/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/"/>
     
   </entry>
   
@@ -646,6 +650,68 @@
     
     
       <category term="小程序" scheme="http://code.idea4j.com/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zookeeper选举规则</title>
+    <link href="http://code.idea4j.com/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/"/>
+    <id>http://code.idea4j.com/2020/07/15/zookeeper选举规则/</id>
+    <published>2020-07-15T03:11:07.000Z</published>
+    <updated>2020-09-28T10:42:52.147Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="zookeeper选举规则"><a href="#zookeeper选举规则" class="headerlink" title="zookeeper选举规则"></a>zookeeper选举规则</h3><p>角色：</p>
+<p>1.LOOKING：竞选</p>
+<p>​      2.OBSERVING：观察</p>
+<p>​      3.FOLLOWING：跟随者</p>
+<p>​      4.LEADER：领导者</p>
+<p>投票信息：</p>
+<p>​      1.logicalclock（electionEpoch）：本地选举周期，每次投票都会自增</p>
+<p>​      2.epoch（peerEpoch）：选举周期，每次选举最终确定完leader结束选举流程时会自增(真正zxid的前32位)</p>
+<p>​      3.zxid：数据ID，每次数据变动都会自增（真正zxid的后32位，zxid一共64位）</p>
+<p>​      4.sid：该投票信息所属的serverId</p>
+<p>​      5.leader：提议的leader（被提议的server的serverId，即sid）</p>
+<p>没有leader时</p>
+<p>投票比较规则：</p>
+<p>​     1.epoch大的胜出，否则进行步骤2</p>
+<p>​     2.zxid大的胜出，否则进行步骤3</p>
+<p>​     3.sid大的胜出</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;zookeeper选举规则&quot;&gt;&lt;a href=&quot;#zookeeper选举规则&quot; class=&quot;headerlink&quot; title=&quot;zookeeper选举规则&quot;&gt;&lt;/a&gt;zookeeper选举规则&lt;/h3&gt;&lt;p&gt;角色：&lt;/p&gt;
+&lt;p&gt;1.LOOKING：竞选&lt;/p
+    
+    </summary>
+    
+      <category term="zookeeper" scheme="http://code.idea4j.com/categories/zookeeper/"/>
+    
+    
+      <category term="zookeeper" scheme="http://code.idea4j.com/tags/zookeeper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>消息队列</title>
+    <link href="http://code.idea4j.com/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
+    <id>http://code.idea4j.com/2020/07/15/消息队列/</id>
+    <published>2020-07-15T03:11:07.000Z</published>
+    <updated>2020-08-04T05:11:43.745Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><p><pre class="mermaid">graph LR<br>消息队列 –&gt; B[队列] –&gt; B1(使用场景)<br>B1 –&gt; 应用解耦<br>B1 –&gt; 服务通信<br>B1 –&gt; 削峰填谷<br>B1 –&gt; 消息广播<br>B –&gt; B2(消息协议)<br>B2 –&gt; JMS<br>B2 –&gt; AMQP<br>B –&gt; B3(常用队列)<br>B3 –&gt; RabbitMQ<br>B3 –&gt; ActiveMQ<br>B3 –&gt; RocketMQ<br>B3 –&gt; Kafka</pre><br><a id="more"></a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;消息队列&quot;&gt;&lt;a href=&quot;#消息队列&quot; class=&quot;headerlink&quot; title=&quot;消息队列&quot;&gt;&lt;/a&gt;消息队列&lt;/h3&gt;&lt;p&gt;&lt;pre class=&quot;mermaid&quot;&gt;graph LR&lt;br&gt;消息队列 –&amp;gt; B[队列] –&amp;gt; B1(使用场景)&lt;br&gt;B1 –&amp;gt; 应用解耦&lt;br&gt;B1 –&amp;gt; 服务通信&lt;br&gt;B1 –&amp;gt; 削峰填谷&lt;br&gt;B1 –&amp;gt; 消息广播&lt;br&gt;B –&amp;gt; B2(消息协议)&lt;br&gt;B2 –&amp;gt; JMS&lt;br&gt;B2 –&amp;gt; AMQP&lt;br&gt;B –&amp;gt; B3(常用队列)&lt;br&gt;B3 –&amp;gt; RabbitMQ&lt;br&gt;B3 –&amp;gt; ActiveMQ&lt;br&gt;B3 –&amp;gt; RocketMQ&lt;br&gt;B3 –&amp;gt; Kafka&lt;/pre&gt;&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="消息队列" scheme="http://code.idea4j.com/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
+    
+    
+      <category term="消息队列" scheme="http://code.idea4j.com/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
     
   </entry>
   
@@ -839,54 +905,6 @@
       <category term="Pinpoint" scheme="http://code.idea4j.com/tags/Pinpoint/"/>
     
       <category term="链路追踪" scheme="http://code.idea4j.com/tags/%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RabbitMQ命令行</title>
-    <link href="http://code.idea4j.com/2020/06/04/RabbitMQ%E5%91%BD%E4%BB%A4%E8%A1%8C/"/>
-    <id>http://code.idea4j.com/2020/06/04/RabbitMQ命令行/</id>
-    <published>2020-06-04T06:13:09.000Z</published>
-    <updated>2020-08-04T04:57:28.585Z</updated>
-    
-    <content type="html"><![CDATA[<a id="more"></a>
-<h2 id="RabbitMQ命令行"><a href="#RabbitMQ命令行" class="headerlink" title="RabbitMQ命令行"></a>RabbitMQ命令行</h2><p>RabbitMQ附带多个命令行工具：</p>
-<ul>
-<li>用于服务管理和一般操作员任务的<a href="https://www.rabbitmq.com/rabbitmqctl.8.html" target="_blank" rel="external"> rabbitmqctl</a></li>
-<li>用于诊断和<a href="https://www.rabbitmq.com/monitoring.html" target="_blank" rel="external">健康检查的</a><a href="https://www.rabbitmq.com/rabbitmq-diagnostics.8.html" target="_blank" rel="external">rabbitmq-diagnostics</a></li>
-<li>用于<a href="https://www.rabbitmq.com/plugins.html" target="_blank" rel="external">插件管理的</a><a href="https://www.rabbitmq.com/rabbitmq-plugins.8.html" target="_blank" rel="external">rabbitmq-plugins</a></li>
-<li>用于<a href="https://www.rabbitmq.com/queues.html" target="_blank" rel="external">队列</a>（尤其是<a href="https://www.rabbitmq.com/quorum-queues.html" target="_blank" rel="external">仲裁队列）</a>维护任务的<a href="https://www.rabbitmq.com/rabbitmq-queues.8.html" target="_blank" rel="external"> rabbitmq</a><a href="https://www.rabbitmq.com/quorum-queues.html" target="_blank" rel="external">队列</a></li>
-<li><a href="https://www.rabbitmq.com/rabbitmq-upgrade.8.html" target="_blank" rel="external">rabbitmq-upgrade</a>用于与<a href="https://www.rabbitmq.com/upgrade.html" target="_blank" rel="external">升级</a>相关的维护任务</li>
-</ul>
-<p>它们可以在安装根目录的sbin目录下找到。</p>
-<ul>
-<li>创建交换机</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmqctl <span class="built_in">eval</span> <span class="string">'rabbit_exchange:declare(&#123;resource, &lt;&lt;"test"&gt;&gt;, exchange, &lt;&lt;"ac.exchange.alarm"&gt;&gt;&#125;, direct, true, false, false, []).'</span></div></pre></td></tr></table></figure>
-<ul>
-<li>创建队列</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmqctl <span class="built_in">eval</span> <span class="string">'rabbit_amqqueue:declare(&#123;resource, &lt;&lt;"test"&gt;&gt;, queue, &lt;&lt;"ac.queue.alarm"&gt;&gt;&#125;, true, false, [], none).'</span></div></pre></td></tr></table></figure>
-<ul>
-<li>绑定队列和交换机</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmqctl <span class="built_in">eval</span> <span class="string">'rabbit_binding:add(&#123;binding, &#123;resource, &lt;&lt;"test"&gt;&gt;, exchange, &lt;&lt;"ac.exchange.alarm"&gt;&gt;&#125;, &lt;&lt;"ac.routing.key.alarm"&gt;&gt;, &#123;resource, &lt;&lt;"test"&gt;&gt;, queue, &lt;&lt;"ac.queue.alarm"&gt;&gt;&#125;, []&#125;).'</span></div></pre></td></tr></table></figure>
-<p>这三条命令执行后的最终结果是：在 test 虚拟主机下创建了 direct 类型的，持久化的，名为 ac.exchange.alarm 的exchange，创建了持久化的，名为 ac.queue.alarm 的queue，该队列以 ac.routing.key.alarm 的routing key绑定到了 ac.exchange.alarm 这个exchange上。其他参数为默认值.</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;RabbitMQ命令行&quot;&gt;&lt;a href=&quot;#RabbitMQ命令行&quot; class=&quot;headerlink&quot; title=&quot;RabbitMQ命令行&quot;&gt;&lt;/a&gt;RabbitMQ命令行&lt;/h2&gt;&lt;p&gt;RabbitMQ附带多个命令行工
-    
-    </summary>
-    
-      <category term="RabbitMQ" scheme="http://code.idea4j.com/categories/RabbitMQ/"/>
-    
-    
-      <category term="RabbitMQ" scheme="http://code.idea4j.com/tags/RabbitMQ/"/>
-    
-      <category term="消息队列" scheme="http://code.idea4j.com/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
     
   </entry>
   

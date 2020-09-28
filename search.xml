@@ -4,6 +4,60 @@
   
     
     <entry>
+      <title></title>
+      <url>http://code.idea4j.com/2020/09/28/Redis%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E5%8F%8A%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</url>
+      <content type="html"><![CDATA[<h2 id="Redis缓存设计及常见问题"><a href="#Redis缓存设计及常见问题" class="headerlink" title="Redis缓存设计及常见问题"></a>Redis缓存设计及常见问题</h2><p>缓存能够有效地加速应用的读写速度，同时也可以降低后端负载，对日常应用的开发至关重要。</p>
+<h2 id="1-缓存的收益和成本分析"><a href="#1-缓存的收益和成本分析" class="headerlink" title="1 缓存的收益和成本分析"></a>1 缓存的收益和成本分析</h2><h3 id="1-1-收益"><a href="#1-1-收益" class="headerlink" title="1.1 收益"></a>1.1 收益</h3><p>①加速读写：因为缓存通常都是全内存的，而存储层通常读写性能不够强悍（例如MySQL），通过缓存的使用可以有效地加速读写，优化用户体验。<br>②降低后端负载：帮助后端减少访问量和复杂计算（例如很复杂的SQL语句），在很大程度降低了后端的负载。</p>
+<h3 id="1-2-成本"><a href="#1-2-成本" class="headerlink" title="1.2 成本"></a>1.2 成本</h3><p>①数据不一致性：缓存层和存储层的数据存在着一定时间窗口的不一致性，时间窗口跟更新策略有关。<br>②代码维护成本：加入缓存后，需要同时处理缓存层和存储层的逻辑，增大了开发者维护代码的成本。<br>③运维成本：以Redis Cluster为例，加入后无形中增加了运维成本。缓存的使用场景基本包含如下两种：<br>①开销大的复杂计算：以MySQL为例子，一些复杂的操作或者计算（例如大量联表操作、一些分组计算），如果不加缓存，不但无法满足高并发量，同时也会给MySQL带来巨大的负担。<br>②加速请求响应：即使查询单条后端数据足够快（例如select*from tablewhere id=），那么依然可以使用缓存，以Redis为例子，每秒可以完成数万次读写，并且提供的批量操作可以优化整个IO链的响应时间。</p>
+<h2 id="2-缓存穿透"><a href="#2-缓存穿透" class="headerlink" title="2 缓存穿透"></a><strong>2 缓存穿透</strong></h2><h3 id="2-1-什么是缓存穿透"><a href="#2-1-什么是缓存穿透" class="headerlink" title="2.1 什么是缓存穿透"></a>2.1 什么是缓存穿透</h3><p>正常情况下，我们去查询数据都是存在。那么请求去查询一条压根儿数据库中根本就不存在的数据，也就是缓存和数据库都查询不到这条数据，但是请求每次都会打到数据库上面去。这种查询不存在数据的现象我们称为<strong>缓存穿透</strong>。</p>
+<h3 id="2-2-穿透带来的问题"><a href="#2-2-穿透带来的问题" class="headerlink" title="2.2 穿透带来的问题"></a>2.2 穿透带来的问题</h3><p>试想一下，如果有黑客会对你的系统进行攻击，拿一个不存在的id 去查询数据，会产生大量的请求到数据库去查询。可能会导致你的数据库由于压力过大而宕掉。</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200913215739802.png" alt="image-20200913215739802" style="zoom:50%;"></p>
+<h3 id="2-3-解决办法"><a href="#2-3-解决办法" class="headerlink" title="2.3 解决办法"></a>2.3 解决办法</h3><h4 id="2-3-1-缓存空值"><a href="#2-3-1-缓存空值" class="headerlink" title="2.3.1 缓存空值"></a>2.3.1 缓存空值</h4><p>之所以会发生穿透，就是因为缓存中没有存储这些空数据的key。从而导致每次查询都到数据库去了。</p>
+<p>那么我们就可以为这些key对应的值设置为null 丢到缓存里面去。后面再出现查询这个key 的请求的时候，直接返回null 。</p>
+<p>这样，就不用在到数据库中去走一圈了，但是别忘了设置过期时间。</p>
+<h4 id="2-3-2-BloomFilter"><a href="#2-3-2-BloomFilter" class="headerlink" title="2.3.2 BloomFilter"></a>2.3.2 BloomFilter</h4><p>BloomFilter 类似于一个hbase set 用来判断某个元素（key）是否存在于某个集合中。</p>
+<p>这种方式在大数据场景应用比较多，比如 Hbase 中使用它去判断数据是否在磁盘上。还有在爬虫场景判断url 是否已经被爬取过。</p>
+<p>这种方案可以加在第一种方案中，在缓存之前在加一层 BloomFilter ，在查询的时候先去 BloomFilter 去查询 key 是否存在，如果不存在就直接返回，存在再走查缓存 -&gt; 查 DB。</p>
+<p>流程图如下：</p>
+<p><img src="https://img2.sycdn.imooc.com/5c9cccac00019f7c05040380.jpg" alt="https://img2.sycdn.imooc.com/5c9cccac00019f7c05040380.jpg"></p>
+<h3 id="2-4-如何选择"><a href="#2-4-如何选择" class="headerlink" title="2.4 如何选择"></a>2.4 如何选择</h3><p>针对于一些恶意攻击，攻击带过来的大量key 是不存在的，那么我们采用第一种方案就会缓存大量不存在key的数据。</p>
+<p>此时我们采用第一种方案就不合适了，我们完全可以先对使用第二种方案进行过滤掉这些key。</p>
+<p>针对这种key异常多、请求重复率比较低的数据，我们就没有必要进行缓存，使用第二种方案直接过滤掉。</p>
+<p>而对于空数据的key有限的，重复率比较高的，我们则可以采用第一种方式进行缓存。</p>
+<h2 id="3-缓存击穿"><a href="#3-缓存击穿" class="headerlink" title="3 缓存击穿"></a><strong>3 缓存击穿</strong></h2><h3 id="3-1-什么是击穿"><a href="#3-1-什么是击穿" class="headerlink" title="3.1 什么是击穿"></a>3.1 什么是击穿</h3><p>缓存击穿是我们可能遇到的第二个使用缓存方案可能遇到的问题。</p>
+<p>在平常高并发的系统中，大量的请求同时查询一个 key 时，此时这个key正好失效了，就会导致大量的请求都打到数据库上面去。这种现象我们称为<strong>缓存击穿</strong>。</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200913215632514.png" alt="image-20200913215632514" style="zoom:50%;"></p>
+<h3 id="3-2-会带来什么问题"><a href="#3-2-会带来什么问题" class="headerlink" title="3.2 会带来什么问题"></a>3.2 会带来什么问题</h3><p>会造成某一时刻数据库请求量过大，压力剧增。</p>
+<h3 id="3-3-如何解决"><a href="#3-3-如何解决" class="headerlink" title="3.3 如何解决"></a>3.3 如何解决</h3><p>上面的现象是多个线程同时去查询数据库的这条数据，那么我们可以在第一个查询数据的请求上使用一个 互斥锁来锁住它。</p>
+<p>其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后做缓存。后面的线程进来发现已经有缓存了，就直接走缓存。</p>
+<h2 id="4、缓存雪崩"><a href="#4、缓存雪崩" class="headerlink" title="4、缓存雪崩"></a><strong>4、缓存雪崩</strong></h2><h3 id="4-1-什么是缓存雪崩"><a href="#4-1-什么是缓存雪崩" class="headerlink" title="4.1 什么是缓存雪崩"></a>4.1 什么是缓存雪崩</h3><p>缓存雪崩的情况是说，当某一时刻发生大规模的缓存失效的情况，比如你的缓存服务宕机了，会有大量的请求进来直接打到DB上面。结果就是DB 称不住，挂掉。</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200913215854573.png" alt="image-20200913215854573" style="zoom:50%;"></p>
+<h3 id="4-2-解决办法"><a href="#4-2-解决办法" class="headerlink" title="4.2 解决办法"></a>4.2 解决办法</h3><h4 id="4-2-1-事前："><a href="#4-2-1-事前：" class="headerlink" title="4.2.1 事前："></a>4.2.1 事前：</h4><ul>
+<li><h4 id="使用集群缓存，保证缓存服务的高可用"><a href="#使用集群缓存，保证缓存服务的高可用" class="headerlink" title="使用集群缓存，保证缓存服务的高可用"></a><strong>使用集群缓存，保证缓存服务的高可用</strong></h4></li>
+</ul>
+<p>这种方案就是在发生雪崩前对缓存集群实现高可用，如果是使用 Redis，可以使用 主从+哨兵 ，Redis Cluster 来避免 Redis 全盘崩溃的情况。</p>
+<h4 id="4-2-2-事中："><a href="#4-2-2-事中：" class="headerlink" title="4.2.2 事中："></a>4.2.2 事中：</h4><ul>
+<li><h4 id="ehcache本地缓存-Hystrix限流-amp-降级-避免MySQL被打死"><a href="#ehcache本地缓存-Hystrix限流-amp-降级-避免MySQL被打死" class="headerlink" title="ehcache本地缓存 + Hystrix限流&amp;降级,避免MySQL被打死"></a><strong>ehcache本地缓存 + Hystrix限流&amp;降级,避免MySQL被打死</strong></h4></li>
+</ul>
+<p>使用 ehcache 本地缓存的目的也是考虑在 Redis Cluster 完全不可用的时候，ehcache 本地缓存还能够支撑一阵。</p>
+<p>使用 Hystrix进行限流 &amp; 降级 ，比如一秒来了5000个请求，我们可以设置假设只能有一秒 2000个请求能通过这个组件，那么其他剩余的 3000 请求就会走限流逻辑。</p>
+<p>然后去调用我们自己开发的降级组件（降级），比如设置的一些默认值呀之类的。以此来保护最后的 MySQL 不会被大量的请求给打死。</p>
+<h4 id="4-2-3-事后："><a href="#4-2-3-事后：" class="headerlink" title="4.2.3 事后："></a>4.2.3 事后：</h4><ul>
+<li><h4 id="开启Redis持久化机制，尽快恢复缓存集群"><a href="#开启Redis持久化机制，尽快恢复缓存集群" class="headerlink" title="开启Redis持久化机制，尽快恢复缓存集群"></a><strong>开启Redis持久化机制，尽快恢复缓存集群</strong></h4></li>
+</ul>
+<p>一旦重启，就能从磁盘上自动加载数据恢复内存中的数据。</p>
+<p>防止雪崩方案如下图所示：</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/5c9cccae0001d8a110800617.jpg" alt="https://img4.sycdn.imooc.com/5c9cccae0001d8a110800617.jpg"></p>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h2 id="5-解决热点数据集中失效问题"><a href="#5-解决热点数据集中失效问题" class="headerlink" title="5 解决热点数据集中失效问题"></a><strong>5 解决热点数据集中失效问题</strong></h2><p>我们在设置缓存的时候，一般会给缓存设置一个失效时间，过了这个时间，缓存就失效了。</p>
+<p>对于一些热点的数据来说，当缓存失效以后会存在大量的请求过来，然后打到数据库去，从而可能导致数据库崩溃的情况。</p>
+<h3 id="5-1-解决办法"><a href="#5-1-解决办法" class="headerlink" title="5.1 解决办法"></a>5.1 解决办法</h3><h4 id="5-1-1-设置不同的失效时间"><a href="#5-1-1-设置不同的失效时间" class="headerlink" title="5.1.1 设置不同的失效时间"></a>5.1.1 设置不同的失效时间</h4><p>为了避免这些热点的数据集中失效，那么我们在设置缓存过期时间的时候，我们让他们失效的时间错开。</p>
+<p>比如在一个基础的时间上加上或者减去一个范围内的随机值。</p>
+<h4 id="5-1-2-互斥锁"><a href="#5-1-2-互斥锁" class="headerlink" title="5.1.2 互斥锁"></a>5.1.2 互斥锁</h4><p>结合上面的击穿的情况，在第一个请求去查询数据库的时候对他加一个互斥锁，其余的查询请求都会被阻塞住，直到锁被释放，从而保护数据库。</p>
+<p>但是也是由于它会阻塞其他的线程，此时系统吞吐量会下降。需要结合实际的业务去考虑是否要这么做。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[使用maxwell]]></title>
       <url>http://code.idea4j.com/2020/07/27/quickstart/</url>
       <content type="html"><![CDATA[<h3 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h3><hr>
@@ -145,77 +199,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[如何替换 JDK 的类]]></title>
-      <url>http://code.idea4j.com/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/</url>
-      <content type="html"><![CDATA[<h2 id="如何替换-JDK-的类"><a href="#如何替换-JDK-的类" class="headerlink" title="如何替换 JDK 的类"></a>如何替换 JDK 的类</h2><h3 id="如何替换jdk中的类呢？Java提供了endorsed技术。"><a href="#如何替换jdk中的类呢？Java提供了endorsed技术。" class="headerlink" title="如何替换jdk中的类呢？Java提供了endorsed技术。"></a>如何替换jdk中的类呢？Java提供了endorsed技术。</h3><p>关于 endorsed ：可以的简单理解为 -Djava.endorsed.dirs 指定的目录面放置的jar文件，将有覆盖系统API的功能。但是能够覆盖的类是有限制的，其中不包括java.lang包中的类(出于安全的考虑)。</p>
-<h3 id="为什么必须使用-endorsed-进行替换-jdk-中的类呢？"><a href="#为什么必须使用-endorsed-进行替换-jdk-中的类呢？" class="headerlink" title="为什么必须使用 endorsed 进行替换 jdk 中的类呢？"></a>为什么必须使用 endorsed 进行替换 jdk 中的类呢？</h3><p>因为java是采用双亲委派机制进行加载class类的。而jdk提供的类只能由类加载器Bootstrap进行加载。如果你想要在应用程序中替换掉jdk中的某个类是无法做到的，所以java提供了endorsed来达到你想要替换到系统中的类。</p>
-<h3 id="使用endorsed的两种方式："><a href="#使用endorsed的两种方式：" class="headerlink" title="使用endorsed的两种方式："></a>使用endorsed的两种方式：</h3><ul>
-<li>运行的时候加上 -Djava.endorsed.dirs=D:\endorsed（jar包存放目录） 参数</li>
-<li>将修改后的jar包放在：$JAVA_HOME/jre/lib/endorsed 、$JAVA_HOME/lib/endorsed 下面</li>
-</ul>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>本实例通过修改ArrayList来试验:</p>
-<ol>
-<li><p>新建maven工程，在工程中新建java.util.ArrayList</p>
-</li>
-<li><p>复制jdk中ArrayList源码到自己创建的ArrayList，并修改构造方法如下：</p>
-</li>
-</ol>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114253815.png" alt=""></p>
-<ol>
-<li>将工程打包成jar，复制到endorsed文件夹中</li>
-<li>新建测试类</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.idea4j.endorsed.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * -Djava.endorsed.dirs=D:\idea4j-endorsed\endorsed</div><div class="line"> * -XX:+TraceClassLoading</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        List list = <span class="keyword">new</span> ArrayList();</div><div class="line">        System.out.println(<span class="number">1</span>);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ol>
-<li>修改运行参数，如图</li>
-</ol>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114058420.png" alt="image-20200911114058420"></p>
-<ol>
-<li>运行Test，结果如下：</li>
-</ol>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114454953.png" alt="image-20200911114454953"></p>
-<p>看到Test类调用了我们修改的ArrayList，说明我们成功覆盖了jdk的类</p>
-<p>但我们只调用一次new ArrayList(),为什么日志输出了这么多次呢？</p>
-<p>我们在运行参数中在加入-XX:+TraceClassLoading看类加载过程可知，虚拟机启动时，有一些类调用了ArrayList默认构造器</p>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911123505455.png" alt="image-20200911123505455"></p>
-<p>上面我们使用了修改运行参数的方法，下面我们再试验第二种方法，把jar包copy到$JAVA_HOME/jre/lib/endorsed下，结果和上面一样。</p>
-<p>但是copy到$JAVA_HOME/lib/endorsed下，结果是没有覆盖成功。这是为什么呢？如图，java-home应该为实际运行环境的目录。</p>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911130242199.png" alt="image-20200911130242199"></p>
-<p>经查看项目jdk配置</p>
-<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911125011220.png" alt="image-20200911125011220"></p>
-<p>classpath指定的是jre，所以，把jar包copy到$JAVA_HOME/jre/lib/endorsed下才能成功也就说的通了。</p>
-<p>#### </p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[消息队列]]></title>
-      <url>http://code.idea4j.com/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
-      <content type="html"><![CDATA[<h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><p><pre class="mermaid">graph LR<br>消息队列 –&gt; B[队列] –&gt; B1(使用场景)<br>B1 –&gt; 应用解耦<br>B1 –&gt; 服务通信<br>B1 –&gt; 削峰填谷<br>B1 –&gt; 消息广播<br>B –&gt; B2(消息协议)<br>B2 –&gt; JMS<br>B2 –&gt; AMQP<br>B –&gt; B3(常用队列)<br>B3 –&gt; RabbitMQ<br>B3 –&gt; ActiveMQ<br>B3 –&gt; RocketMQ<br>B3 –&gt; Kafka</pre><br><a id="more"></a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Redis]]></title>
-      <url>http://code.idea4j.com/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/</url>
-      <content type="html"><![CDATA[<h1 id="Redis-教程"><a href="#Redis-教程" class="headerlink" title="Redis 教程"></a>Redis 教程</h1><p>redis（remote dictionary server）</p>
-<h3 id="redis数据类型"><a href="#redis数据类型" class="headerlink" title="redis数据类型"></a>redis数据类型</h3><p>redis支持5种数据类型：string（字符串）、hash（哈希）、list（列表）、set（集合）、zset（有序集合）</p>
-<h2 id="Redis原理、协议及应用"><a href="#Redis原理、协议及应用" class="headerlink" title="Redis原理、协议及应用"></a>Redis原理、协议及应用</h2><h3 id="Redis是如何运行的？"><a href="#Redis是如何运行的？" class="headerlink" title="Redis是如何运行的？"></a>Redis是如何运行的？</h3><h4 id="Redis基本原理"><a href="#Redis基本原理" class="headerlink" title="Redis基本原理"></a>Redis基本原理</h4><h5 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h5><p>Redis 是一款基于 ANSI C 语言编写的，BSD 许可的，日志型 key-value 存储组件，它的所有数据结构都存在内存中，可以用作缓存、数据库和消息中间件。</p>
-<p>Redis 是 Remote dictionary server 即远程字典服务的缩写，一个 Redis 实例可以有多个存储数据的字典，客户端可以通过 select 来选择字典即 DB 进行数据存储。</p>
-<h3 id="如何理解、选择并使用Redis的核心数据类型？"><a href="#如何理解、选择并使用Redis的核心数据类型？" class="headerlink" title="如何理解、选择并使用Redis的核心数据类型？"></a>如何理解、选择并使用Redis的核心数据类型？</h3><h3 id="Redis协议的请求和响应有哪些“套路”可循？"><a href="#Redis协议的请求和响应有哪些“套路”可循？" class="headerlink" title="Redis协议的请求和响应有哪些“套路”可循？"></a>Redis协议的请求和响应有哪些“套路”可循？</h3><h2 id="Redis进阶"><a href="#Redis进阶" class="headerlink" title="Redis进阶"></a>Redis进阶</h2><h3 id="Redis系统架构中各个处理模块是干什么的？"><a href="#Redis系统架构中各个处理模块是干什么的？" class="headerlink" title="Redis系统架构中各个处理模块是干什么的？"></a>Redis系统架构中各个处理模块是干什么的？</h3><h3 id="Redis如何处理文件事件和时间事件？"><a href="#Redis如何处理文件事件和时间事件？" class="headerlink" title="Redis如何处理文件事件和时间事件？"></a>Redis如何处理文件事件和时间事件？</h3><h3 id="Redis读取请求数据后，如何进行协议解析和处理？"><a href="#Redis读取请求数据后，如何进行协议解析和处理？" class="headerlink" title="Redis读取请求数据后，如何进行协议解析和处理？"></a>Redis读取请求数据后，如何进行协议解析和处理？</h3><h3 id="怎么认识和应用Redis内部数据结构？"><a href="#怎么认识和应用Redis内部数据结构？" class="headerlink" title="怎么认识和应用Redis内部数据结构？"></a>怎么认识和应用Redis内部数据结构？</h3><h3 id="Redis是如何淘汰key的？"><a href="#Redis是如何淘汰key的？" class="headerlink" title="Redis是如何淘汰key的？"></a>Redis是如何淘汰key的？</h3><h3 id="Redis崩溃后，是如何进行数据恢复的？"><a href="#Redis崩溃后，是如何进行数据恢复的？" class="headerlink" title="Redis崩溃后，是如何进行数据恢复的？"></a>Redis崩溃后，是如何进行数据恢复的？</h3><h3 id="Redis是如何处理容易超时的系统调用的？"><a href="#Redis是如何处理容易超时的系统调用的？" class="headerlink" title="Redis是如何处理容易超时的系统调用的？"></a>Redis是如何处理容易超时的系统调用的？</h3><h3 id="如何大幅成倍提升Redis处理性能？"><a href="#如何大幅成倍提升Redis处理性能？" class="headerlink" title="如何大幅成倍提升Redis处理性能？"></a>如何大幅成倍提升Redis处理性能？</h3><h2 id="分布式Redis实战"><a href="#分布式Redis实战" class="headerlink" title="分布式Redis实战"></a>分布式Redis实战</h2><h3 id="Redis是如何进行主从复制的？"><a href="#Redis是如何进行主从复制的？" class="headerlink" title="Redis是如何进行主从复制的？"></a>Redis是如何进行主从复制的？</h3><h3 id="如何构建一个高性能、易扩展的Redis集群？"><a href="#如何构建一个高性能、易扩展的Redis集群？" class="headerlink" title="如何构建一个高性能、易扩展的Redis集群？"></a>如何构建一个高性能、易扩展的Redis集群？</h3><h3 id="从容应对亿级QPS访问，Redis还缺少什么？"><a href="#从容应对亿级QPS访问，Redis还缺少什么？" class="headerlink" title="从容应对亿级QPS访问，Redis还缺少什么？"></a>从容应对亿级QPS访问，Redis还缺少什么？</h3><h2 id="深入分布式缓存"><a href="#深入分布式缓存" class="headerlink" title="深入分布式缓存"></a>深入分布式缓存</h2><h3 id="面对海量数据，为什么无法设计出完美的分布式缓存体系？"><a href="#面对海量数据，为什么无法设计出完美的分布式缓存体系？" class="headerlink" title="面对海量数据，为什么无法设计出完美的分布式缓存体系？"></a>面对海量数据，为什么无法设计出完美的分布式缓存体系？</h3><h3 id="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"><a href="#如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？" class="headerlink" title="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"></a>如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？</h3><h3 id="一个典型的分布式缓存系统是什么样的？"><a href="#一个典型的分布式缓存系统是什么样的？" class="headerlink" title="一个典型的分布式缓存系统是什么样的？"></a>一个典型的分布式缓存系统是什么样的？</h3><h2 id="应用场景案例解析"><a href="#应用场景案例解析" class="headerlink" title="应用场景案例解析"></a>应用场景案例解析</h2><h3 id="如何为秒杀系统设计缓存体系？"><a href="#如何为秒杀系统设计缓存体系？" class="headerlink" title="如何为秒杀系统设计缓存体系？"></a>如何为秒杀系统设计缓存体系？</h3><h3 id="如何为海量计数场景设计缓存体系？"><a href="#如何为海量计数场景设计缓存体系？" class="headerlink" title="如何为海量计数场景设计缓存体系？"></a>如何为海量计数场景设计缓存体系？</h3><h3 id="如何为设计feed场景设计缓存体系？"><a href="#如何为设计feed场景设计缓存体系？" class="headerlink" title="如何为设计feed场景设计缓存体系？"></a>如何为设计feed场景设计缓存体系？</h3>]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Springboot]]></title>
-      <url>http://code.idea4j.com/2020/07/15/Spring%20Boot/</url>
-      <content type="html"><![CDATA[<h1 id="Spring-Boot入门"><a href="#Spring-Boot入门" class="headerlink" title="Spring Boot入门"></a>Spring Boot入门</h1><h1 id="Spring-Boot配置"><a href="#Spring-Boot配置" class="headerlink" title="Spring Boot配置"></a>Spring Boot配置</h1><h1 id="Spring-Boot与日志"><a href="#Spring-Boot与日志" class="headerlink" title="Spring Boot与日志"></a>Spring Boot与日志</h1><h1 id="Spring-Boot与Web开发"><a href="#Spring-Boot与Web开发" class="headerlink" title="Spring Boot与Web开发"></a>Spring Boot与Web开发</h1><h1 id="Spring-Boot与Docker"><a href="#Spring-Boot与Docker" class="headerlink" title="Spring Boot与Docker"></a>Spring Boot与Docker</h1><h1 id="Spring-Boot与数据访问"><a href="#Spring-Boot与数据访问" class="headerlink" title="Spring Boot与数据访问"></a>Spring Boot与数据访问</h1><h1 id="Spring-Boot启动配置原理"><a href="#Spring-Boot启动配置原理" class="headerlink" title="Spring Boot启动配置原理"></a>Spring Boot启动配置原理</h1><p>启动流程</p>
-<p>创建SpringApplication对象</p>
-<p>运行run方法</p>
-<h1 id="Spring-Boot自定义starters"><a href="#Spring-Boot自定义starters" class="headerlink" title="Spring Boot自定义starters"></a>Spring Boot自定义starters</h1><h1 id="Spring-Boot与缓存"><a href="#Spring-Boot与缓存" class="headerlink" title="Spring Boot与缓存"></a>Spring Boot与缓存</h1><h1 id="Spring-Boot与消息"><a href="#Spring-Boot与消息" class="headerlink" title="Spring Boot与消息"></a>Spring Boot与消息</h1><h1 id="Spring-Boot与检索"><a href="#Spring-Boot与检索" class="headerlink" title="Spring Boot与检索"></a>Spring Boot与检索</h1><h1 id="Spring-Boot与任务"><a href="#Spring-Boot与任务" class="headerlink" title="Spring Boot与任务"></a>Spring Boot与任务</h1><h1 id="Spring-Boot与安全"><a href="#Spring-Boot与安全" class="headerlink" title="Spring Boot与安全"></a>Spring Boot与安全</h1><h1 id="Spring-Boot与分布式"><a href="#Spring-Boot与分布式" class="headerlink" title="Spring Boot与分布式"></a>Spring Boot与分布式</h1><h1 id="Spring-Boot与开发热部署"><a href="#Spring-Boot与开发热部署" class="headerlink" title="Spring Boot与开发热部署"></a>Spring Boot与开发热部署</h1><h1 id="Spring-Boot与监控管理"><a href="#Spring-Boot与监控管理" class="headerlink" title="Spring Boot与监控管理"></a>Spring Boot与监控管理</h1><p># </p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[网关]]></title>
       <url>http://code.idea4j.com/2020/07/15/Zuul%E4%B8%8EGateWay%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
       <content type="html"><![CDATA[<p>作用：可以实现</p>
@@ -226,53 +209,6 @@
 <p>SpringCloudGateWay基于Spring5构建，能够实现响应式非阻塞式api，支持长连接，更好的支持Spring系列产品，依赖Springboot-webflux。</p>
 <h3 id="网关与Nginx的区别"><a href="#网关与Nginx的区别" class="headerlink" title="网关与Nginx的区别"></a>网关与Nginx的区别</h3><p>相同点：都可以实现api拦截，负载均衡，反向代理，请求过滤等</p>
 <p>不同点：Nginx采用c语言</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Spring事务隔离级别]]></title>
-      <url>http://code.idea4j.com/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</url>
-      <content type="html"><![CDATA[<h2 id="Spring事务隔离级别"><a href="#Spring事务隔离级别" class="headerlink" title="Spring事务隔离级别"></a>Spring事务隔离级别</h2><p>一、Propagation （事务的传播属性）</p>
-<p>Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：PROPAGATION_REQUIRED–支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。<br>PROPAGATION_SUPPORTS–支持当前事务，如果当前没有事务，就以非事务方式执行。<br>PROPAGATION_MANDATORY–支持当前事务，如果当前没有事务，就抛出异常。<br>PROPAGATION_REQUIRES_NEW–新建事务，如果当前存在事务，把当前事务挂起。<br>PROPAGATION_NOT_SUPPORTED–以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。<br>PROPAGATION_NEVER–以非事务方式执行，如果当前存在事务，则抛出异常。</p>
-<p>1： PROPAGATION_REQUIRED<br>加入当前正要执行的事务不在另外一个事务里，那么就起一个新的事务<br>比如说，ServiceB.methodB的事务级别定义为PROPAGATION_REQUIRED, 那么由于执行ServiceA.methodA的时候，<br>ServiceA.methodA已经起了事务，这时调用ServiceB.methodB，ServiceB.methodB看到自己已经运行在ServiceA.methodA<br>的事务内部，就不再起新的事务。而假如ServiceA.methodA运行的时候发现自己没有在事务中，他就会为自己分配一个事务。<br>这样，在ServiceA.methodA或者在ServiceB.methodB内的任何地方出现异常，事务都会被回滚。即使ServiceB.methodB的事务已经被<br>提交，但是ServiceA.methodA在接下来fail要回滚，ServiceB.methodB也要回滚</p>
-<p>2： PROPAGATION_SUPPORTS<br>如果当前在事务中，即以事务的形式运行，如果当前不再一个事务中，那么就以非事务的形式运行</p>
-<p>3： PROPAGATION_MANDATORY<br>必须在一个事务中运行。也就是说，他只能被一个父事务调用。否则，他就要抛出异常</p>
-<p>4： PROPAGATION_REQUIRES_NEW<br>这个就比较绕口了。 比如我们设计ServiceA.methodA的事务级别为PROPAGATION_REQUIRED，ServiceB.methodB的事务级别为PROPAGATION_REQUIRES_NEW，<br>那么当执行到ServiceB.methodB的时候，ServiceA.methodA所在的事务就会挂起，ServiceB.methodB会起一个新的事务，等待ServiceB.methodB的事务完成以后，<br>他才继续执行。他与PROPAGATION_REQUIRED 的事务区别在于事务的回滚程度了。因为ServiceB.methodB是新起一个事务，那么就是存在<br>两个不同的事务。如果ServiceB.methodB已经提交，那么ServiceA.methodA失败回滚，ServiceB.methodB是不会回滚的。如果ServiceB.methodB失败回滚，<br>如果他抛出的异常被ServiceA.methodA捕获，ServiceA.methodA事务仍然可能提交。</p>
-<p>5： PROPAGATION_NOT_SUPPORTED<br>当前不支持事务。比如ServiceA.methodA的事务级别是PROPAGATION_REQUIRED ，而ServiceB.methodB的事务级别是PROPAGATION_NOT_SUPPORTED ，<br>那么当执行到ServiceB.methodB时，ServiceA.methodA的事务挂起，而他以非事务的状态运行完，再继续ServiceA.methodA的事务。</p>
-<p>6： PROPAGATION_NEVER<br>不能在事务中运行。假设ServiceA.methodA的事务级别是PROPAGATION_REQUIRED， 而ServiceB.methodB的事务级别是PROPAGATION_NEVER ，<br>那么ServiceB.methodB就要抛出异常了。</p>
-<p>7： PROPAGATION_NESTED<br>理解Nested的关键是savepoint。他与PROPAGATION_REQUIRES_NEW的区别是，PROPAGATION_REQUIRES_NEW另起一个事务，将会与他的父事务相互独立，<br>而Nested的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。<br>而Nested事务的好处是他有一个savepoint。</p>
-<hr>
-<p>ServiceA {</p>
-<p>/<em>*<br>\</em> 事务属性配置为 PROPAGATION_REQUIRED<br>*/<br>void methodA() {<br>try {<br>//savepoint<br>ServiceB.methodB(); //PROPAGATION_NESTED 级别<br>} catch (SomeException) {<br>// 执行其他业务, 如 ServiceC.methodC();<br>}<br>}</p>
-<p>}</p>
-<hr>
-<p>也就是说ServiceB.methodB失败回滚，那么ServiceA.methodA也会回滚到savepoint点上，ServiceA.methodA可以选择另外一个分支，比如<br>ServiceC.methodC，继续执行，来尝试完成自己的事务。<br>但是这个事务并没有在EJB标准中定义。</p>
-<p>Spring事务的隔离级别<br> \1. ISOLATION_DEFAULT： 这是一个PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别.<br>   另外四个与JDBC的隔离级别相对应<br> \2. ISOLATION_READ_UNCOMMITTED： 这是事务最低的隔离级别，它充许令外一个事务可以看到这个事务未提交的数据。<br>   这种隔离级别会产生脏读，不可重复读和幻像读。<br> \3. ISOLATION_READ_COMMITTED： 保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据<br> \4. ISOLATION_REPEATABLE_READ： 这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。<br>   它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了避免下面的情况产生(不可重复读)。<br> \5. ISOLATION_SERIALIZABLE 这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。<br>   除了防止脏读，不可重复读外，还避免了幻像读。</p>
-<p>什么是脏数据，脏读，不可重复读，幻觉读？<br> 脏读: 指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，<br>   另外一个事务也访问这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据， 那么另外一<br>   个事务读到的这个数据是脏数据，依据脏数据所做的操作可能是不正确的。</p>
-<p> 不可重复读: 指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。<br>       那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的数据<br>       可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</p>
-<p> 幻觉读: 指当事务不是独立执行时发生的一种现象，例如第一个事务对一个表中的数据进行了修改，这种修改涉及<br>     到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，<br>     以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[zookeeper选举规则]]></title>
-      <url>http://code.idea4j.com/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/</url>
-      <content type="html"><![CDATA[<h3 id="zookeeper选举规则"><a href="#zookeeper选举规则" class="headerlink" title="zookeeper选举规则"></a>zookeeper选举规则</h3><p>角色：</p>
-<p>1.LOOKING：竞选</p>
-<p>​      2.OBSERVING：观察</p>
-<p>​      3.FOLLOWING：跟随者</p>
-<p>​      4.LEADER：领导者</p>
-<p>投票信息：</p>
-<p>​      1.logicalclock（electionEpoch）：本地选举周期，每次投票都会自增</p>
-<p>​      2.epoch（peerEpoch）：选举周期，每次选举最终确定完leader结束选举流程时会自增(真正zxid的前32位)</p>
-<p>​      3.zxid：数据ID，每次数据变动都会自增（真正zxid的后32位，zxid一共64位）</p>
-<p>​      4.sid：该投票信息所属的serverId</p>
-<p>​      5.leader：提议的leader（被提议的server的serverId，即sid）</p>
-<p>没有leader时</p>
-<p>投票比较规则：</p>
-<p>​     1.epoch大的胜出，否则进行步骤2</p>
-<p>​     2.zxid大的胜出，否则进行步骤3</p>
-<p>​     3.sid大的胜出</p>
 ]]></content>
     </entry>
     
@@ -357,10 +293,99 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Redis]]></title>
+      <url>http://code.idea4j.com/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h1 id="Redis-教程"><a href="#Redis-教程" class="headerlink" title="Redis 教程"></a>Redis 教程</h1><p>redis（remote dictionary server）</p>
+<h3 id="redis数据类型"><a href="#redis数据类型" class="headerlink" title="redis数据类型"></a>redis数据类型</h3><p>redis支持5种数据类型：string（字符串）、hash（哈希）、list（列表）、set（集合）、zset（有序集合）</p>
+<h2 id="Redis原理、协议及应用"><a href="#Redis原理、协议及应用" class="headerlink" title="Redis原理、协议及应用"></a>Redis原理、协议及应用</h2><h3 id="Redis是如何运行的？"><a href="#Redis是如何运行的？" class="headerlink" title="Redis是如何运行的？"></a>Redis是如何运行的？</h3><h4 id="Redis基本原理"><a href="#Redis基本原理" class="headerlink" title="Redis基本原理"></a>Redis基本原理</h4><h5 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h5><p>Redis 是一款基于 ANSI C 语言编写的，BSD 许可的，日志型 key-value 存储组件，它的所有数据结构都存在内存中，可以用作缓存、数据库和消息中间件。</p>
+<p>Redis 是 Remote dictionary server 即远程字典服务的缩写，一个 Redis 实例可以有多个存储数据的字典，客户端可以通过 select 来选择字典即 DB 进行数据存储。</p>
+<h3 id="如何理解、选择并使用Redis的核心数据类型？"><a href="#如何理解、选择并使用Redis的核心数据类型？" class="headerlink" title="如何理解、选择并使用Redis的核心数据类型？"></a>如何理解、选择并使用Redis的核心数据类型？</h3><h3 id="Redis协议的请求和响应有哪些“套路”可循？"><a href="#Redis协议的请求和响应有哪些“套路”可循？" class="headerlink" title="Redis协议的请求和响应有哪些“套路”可循？"></a>Redis协议的请求和响应有哪些“套路”可循？</h3><h2 id="Redis进阶"><a href="#Redis进阶" class="headerlink" title="Redis进阶"></a>Redis进阶</h2><h3 id="Redis系统架构中各个处理模块是干什么的？"><a href="#Redis系统架构中各个处理模块是干什么的？" class="headerlink" title="Redis系统架构中各个处理模块是干什么的？"></a>Redis系统架构中各个处理模块是干什么的？</h3><h3 id="Redis如何处理文件事件和时间事件？"><a href="#Redis如何处理文件事件和时间事件？" class="headerlink" title="Redis如何处理文件事件和时间事件？"></a>Redis如何处理文件事件和时间事件？</h3><h3 id="Redis读取请求数据后，如何进行协议解析和处理？"><a href="#Redis读取请求数据后，如何进行协议解析和处理？" class="headerlink" title="Redis读取请求数据后，如何进行协议解析和处理？"></a>Redis读取请求数据后，如何进行协议解析和处理？</h3><h3 id="怎么认识和应用Redis内部数据结构？"><a href="#怎么认识和应用Redis内部数据结构？" class="headerlink" title="怎么认识和应用Redis内部数据结构？"></a>怎么认识和应用Redis内部数据结构？</h3><h3 id="Redis是如何淘汰key的？"><a href="#Redis是如何淘汰key的？" class="headerlink" title="Redis是如何淘汰key的？"></a>Redis是如何淘汰key的？</h3><h3 id="Redis崩溃后，是如何进行数据恢复的？"><a href="#Redis崩溃后，是如何进行数据恢复的？" class="headerlink" title="Redis崩溃后，是如何进行数据恢复的？"></a>Redis崩溃后，是如何进行数据恢复的？</h3><h3 id="Redis是如何处理容易超时的系统调用的？"><a href="#Redis是如何处理容易超时的系统调用的？" class="headerlink" title="Redis是如何处理容易超时的系统调用的？"></a>Redis是如何处理容易超时的系统调用的？</h3><h3 id="如何大幅成倍提升Redis处理性能？"><a href="#如何大幅成倍提升Redis处理性能？" class="headerlink" title="如何大幅成倍提升Redis处理性能？"></a>如何大幅成倍提升Redis处理性能？</h3><h2 id="分布式Redis实战"><a href="#分布式Redis实战" class="headerlink" title="分布式Redis实战"></a>分布式Redis实战</h2><h3 id="Redis是如何进行主从复制的？"><a href="#Redis是如何进行主从复制的？" class="headerlink" title="Redis是如何进行主从复制的？"></a>Redis是如何进行主从复制的？</h3><h3 id="如何构建一个高性能、易扩展的Redis集群？"><a href="#如何构建一个高性能、易扩展的Redis集群？" class="headerlink" title="如何构建一个高性能、易扩展的Redis集群？"></a>如何构建一个高性能、易扩展的Redis集群？</h3><h3 id="从容应对亿级QPS访问，Redis还缺少什么？"><a href="#从容应对亿级QPS访问，Redis还缺少什么？" class="headerlink" title="从容应对亿级QPS访问，Redis还缺少什么？"></a>从容应对亿级QPS访问，Redis还缺少什么？</h3><h2 id="深入分布式缓存"><a href="#深入分布式缓存" class="headerlink" title="深入分布式缓存"></a>深入分布式缓存</h2><h3 id="面对海量数据，为什么无法设计出完美的分布式缓存体系？"><a href="#面对海量数据，为什么无法设计出完美的分布式缓存体系？" class="headerlink" title="面对海量数据，为什么无法设计出完美的分布式缓存体系？"></a>面对海量数据，为什么无法设计出完美的分布式缓存体系？</h3><h3 id="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"><a href="#如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？" class="headerlink" title="如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？"></a>如何设计足够可靠的分布式缓存体系，以满足中型移动互联网系统的需要？</h3><h3 id="一个典型的分布式缓存系统是什么样的？"><a href="#一个典型的分布式缓存系统是什么样的？" class="headerlink" title="一个典型的分布式缓存系统是什么样的？"></a>一个典型的分布式缓存系统是什么样的？</h3><h2 id="应用场景案例解析"><a href="#应用场景案例解析" class="headerlink" title="应用场景案例解析"></a>应用场景案例解析</h2><h3 id="如何为秒杀系统设计缓存体系？"><a href="#如何为秒杀系统设计缓存体系？" class="headerlink" title="如何为秒杀系统设计缓存体系？"></a>如何为秒杀系统设计缓存体系？</h3><h3 id="如何为海量计数场景设计缓存体系？"><a href="#如何为海量计数场景设计缓存体系？" class="headerlink" title="如何为海量计数场景设计缓存体系？"></a>如何为海量计数场景设计缓存体系？</h3><h3 id="如何为设计feed场景设计缓存体系？"><a href="#如何为设计feed场景设计缓存体系？" class="headerlink" title="如何为设计feed场景设计缓存体系？"></a>如何为设计feed场景设计缓存体系？</h3>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Spring事务隔离级别]]></title>
+      <url>http://code.idea4j.com/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</url>
+      <content type="html"><![CDATA[<h2 id="Spring事务隔离级别"><a href="#Spring事务隔离级别" class="headerlink" title="Spring事务隔离级别"></a>Spring事务隔离级别</h2><p>一、Propagation （事务的传播属性）</p>
+<p>Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：PROPAGATION_REQUIRED–支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。<br>PROPAGATION_SUPPORTS–支持当前事务，如果当前没有事务，就以非事务方式执行。<br>PROPAGATION_MANDATORY–支持当前事务，如果当前没有事务，就抛出异常。<br>PROPAGATION_REQUIRES_NEW–新建事务，如果当前存在事务，把当前事务挂起。<br>PROPAGATION_NOT_SUPPORTED–以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。<br>PROPAGATION_NEVER–以非事务方式执行，如果当前存在事务，则抛出异常。</p>
+<p>1： PROPAGATION_REQUIRED<br>加入当前正要执行的事务不在另外一个事务里，那么就起一个新的事务<br>比如说，ServiceB.methodB的事务级别定义为PROPAGATION_REQUIRED, 那么由于执行ServiceA.methodA的时候，<br>ServiceA.methodA已经起了事务，这时调用ServiceB.methodB，ServiceB.methodB看到自己已经运行在ServiceA.methodA<br>的事务内部，就不再起新的事务。而假如ServiceA.methodA运行的时候发现自己没有在事务中，他就会为自己分配一个事务。<br>这样，在ServiceA.methodA或者在ServiceB.methodB内的任何地方出现异常，事务都会被回滚。即使ServiceB.methodB的事务已经被<br>提交，但是ServiceA.methodA在接下来fail要回滚，ServiceB.methodB也要回滚</p>
+<p>2： PROPAGATION_SUPPORTS<br>如果当前在事务中，即以事务的形式运行，如果当前不再一个事务中，那么就以非事务的形式运行</p>
+<p>3： PROPAGATION_MANDATORY<br>必须在一个事务中运行。也就是说，他只能被一个父事务调用。否则，他就要抛出异常</p>
+<p>4： PROPAGATION_REQUIRES_NEW<br>这个就比较绕口了。 比如我们设计ServiceA.methodA的事务级别为PROPAGATION_REQUIRED，ServiceB.methodB的事务级别为PROPAGATION_REQUIRES_NEW，<br>那么当执行到ServiceB.methodB的时候，ServiceA.methodA所在的事务就会挂起，ServiceB.methodB会起一个新的事务，等待ServiceB.methodB的事务完成以后，<br>他才继续执行。他与PROPAGATION_REQUIRED 的事务区别在于事务的回滚程度了。因为ServiceB.methodB是新起一个事务，那么就是存在<br>两个不同的事务。如果ServiceB.methodB已经提交，那么ServiceA.methodA失败回滚，ServiceB.methodB是不会回滚的。如果ServiceB.methodB失败回滚，<br>如果他抛出的异常被ServiceA.methodA捕获，ServiceA.methodA事务仍然可能提交。</p>
+<p>5： PROPAGATION_NOT_SUPPORTED<br>当前不支持事务。比如ServiceA.methodA的事务级别是PROPAGATION_REQUIRED ，而ServiceB.methodB的事务级别是PROPAGATION_NOT_SUPPORTED ，<br>那么当执行到ServiceB.methodB时，ServiceA.methodA的事务挂起，而他以非事务的状态运行完，再继续ServiceA.methodA的事务。</p>
+<p>6： PROPAGATION_NEVER<br>不能在事务中运行。假设ServiceA.methodA的事务级别是PROPAGATION_REQUIRED， 而ServiceB.methodB的事务级别是PROPAGATION_NEVER ，<br>那么ServiceB.methodB就要抛出异常了。</p>
+<p>7： PROPAGATION_NESTED<br>理解Nested的关键是savepoint。他与PROPAGATION_REQUIRES_NEW的区别是，PROPAGATION_REQUIRES_NEW另起一个事务，将会与他的父事务相互独立，<br>而Nested的事务和他的父事务是相依的，他的提交是要等和他的父事务一块提交的。也就是说，如果父事务最后回滚，他也要回滚的。<br>而Nested事务的好处是他有一个savepoint。</p>
+<hr>
+<p>ServiceA {</p>
+<p>/<em>*<br>\</em> 事务属性配置为 PROPAGATION_REQUIRED<br>*/<br>void methodA() {<br>try {<br>//savepoint<br>ServiceB.methodB(); //PROPAGATION_NESTED 级别<br>} catch (SomeException) {<br>// 执行其他业务, 如 ServiceC.methodC();<br>}<br>}</p>
+<p>}</p>
+<hr>
+<p>也就是说ServiceB.methodB失败回滚，那么ServiceA.methodA也会回滚到savepoint点上，ServiceA.methodA可以选择另外一个分支，比如<br>ServiceC.methodC，继续执行，来尝试完成自己的事务。<br>但是这个事务并没有在EJB标准中定义。</p>
+<p>Spring事务的隔离级别<br> \1. ISOLATION_DEFAULT： 这是一个PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别.<br>   另外四个与JDBC的隔离级别相对应<br> \2. ISOLATION_READ_UNCOMMITTED： 这是事务最低的隔离级别，它充许令外一个事务可以看到这个事务未提交的数据。<br>   这种隔离级别会产生脏读，不可重复读和幻像读。<br> \3. ISOLATION_READ_COMMITTED： 保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据<br> \4. ISOLATION_REPEATABLE_READ： 这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。<br>   它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了避免下面的情况产生(不可重复读)。<br> \5. ISOLATION_SERIALIZABLE 这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。<br>   除了防止脏读，不可重复读外，还避免了幻像读。</p>
+<p>什么是脏数据，脏读，不可重复读，幻觉读？<br> 脏读: 指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，<br>   另外一个事务也访问这个数据，然后使用了这个数据。因为这个数据是还没有提交的数据， 那么另外一<br>   个事务读到的这个数据是脏数据，依据脏数据所做的操作可能是不正确的。</p>
+<p> 不可重复读: 指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。<br>       那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的数据<br>       可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</p>
+<p> 幻觉读: 指当事务不是独立执行时发生的一种现象，例如第一个事务对一个表中的数据进行了修改，这种修改涉及<br>     到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，<br>     以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Springboot]]></title>
+      <url>http://code.idea4j.com/2020/07/15/Spring%20Boot/</url>
+      <content type="html"><![CDATA[<h1 id="Spring-Boot入门"><a href="#Spring-Boot入门" class="headerlink" title="Spring Boot入门"></a>Spring Boot入门</h1><h1 id="Spring-Boot配置"><a href="#Spring-Boot配置" class="headerlink" title="Spring Boot配置"></a>Spring Boot配置</h1><h1 id="Spring-Boot与日志"><a href="#Spring-Boot与日志" class="headerlink" title="Spring Boot与日志"></a>Spring Boot与日志</h1><h1 id="Spring-Boot与Web开发"><a href="#Spring-Boot与Web开发" class="headerlink" title="Spring Boot与Web开发"></a>Spring Boot与Web开发</h1><h1 id="Spring-Boot与Docker"><a href="#Spring-Boot与Docker" class="headerlink" title="Spring Boot与Docker"></a>Spring Boot与Docker</h1><h1 id="Spring-Boot与数据访问"><a href="#Spring-Boot与数据访问" class="headerlink" title="Spring Boot与数据访问"></a>Spring Boot与数据访问</h1><h1 id="Spring-Boot启动配置原理"><a href="#Spring-Boot启动配置原理" class="headerlink" title="Spring Boot启动配置原理"></a>Spring Boot启动配置原理</h1><p>启动流程</p>
+<p>创建SpringApplication对象</p>
+<p>运行run方法</p>
+<h1 id="Spring-Boot自定义starters"><a href="#Spring-Boot自定义starters" class="headerlink" title="Spring Boot自定义starters"></a>Spring Boot自定义starters</h1><h1 id="Spring-Boot与缓存"><a href="#Spring-Boot与缓存" class="headerlink" title="Spring Boot与缓存"></a>Spring Boot与缓存</h1><h1 id="Spring-Boot与消息"><a href="#Spring-Boot与消息" class="headerlink" title="Spring Boot与消息"></a>Spring Boot与消息</h1><h1 id="Spring-Boot与检索"><a href="#Spring-Boot与检索" class="headerlink" title="Spring Boot与检索"></a>Spring Boot与检索</h1><h1 id="Spring-Boot与任务"><a href="#Spring-Boot与任务" class="headerlink" title="Spring Boot与任务"></a>Spring Boot与任务</h1><h1 id="Spring-Boot与安全"><a href="#Spring-Boot与安全" class="headerlink" title="Spring Boot与安全"></a>Spring Boot与安全</h1><h1 id="Spring-Boot与分布式"><a href="#Spring-Boot与分布式" class="headerlink" title="Spring Boot与分布式"></a>Spring Boot与分布式</h1><h1 id="Spring-Boot与开发热部署"><a href="#Spring-Boot与开发热部署" class="headerlink" title="Spring Boot与开发热部署"></a>Spring Boot与开发热部署</h1><h1 id="Spring-Boot与监控管理"><a href="#Spring-Boot与监控管理" class="headerlink" title="Spring Boot与监控管理"></a>Spring Boot与监控管理</h1><p># </p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[jps]]></title>
       <url>http://code.idea4j.com/2020/07/15/%E4%BD%BF%E7%94%A8jvm%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C/</url>
       <content type="html"><![CDATA[<p>jps</p>
 <p>jmap -histo [pid] &gt; pp.txt //快照</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[如何替换 JDK 的类]]></title>
+      <url>http://code.idea4j.com/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/</url>
+      <content type="html"><![CDATA[<h2 id="如何替换-JDK-的类"><a href="#如何替换-JDK-的类" class="headerlink" title="如何替换 JDK 的类"></a>如何替换 JDK 的类</h2><h3 id="如何替换jdk中的类呢？Java提供了endorsed技术。"><a href="#如何替换jdk中的类呢？Java提供了endorsed技术。" class="headerlink" title="如何替换jdk中的类呢？Java提供了endorsed技术。"></a>如何替换jdk中的类呢？Java提供了endorsed技术。</h3><p>关于 endorsed ：可以的简单理解为 -Djava.endorsed.dirs 指定的目录面放置的jar文件，将有覆盖系统API的功能。但是能够覆盖的类是有限制的，其中不包括java.lang包中的类(出于安全的考虑)。</p>
+<h3 id="为什么必须使用-endorsed-进行替换-jdk-中的类呢？"><a href="#为什么必须使用-endorsed-进行替换-jdk-中的类呢？" class="headerlink" title="为什么必须使用 endorsed 进行替换 jdk 中的类呢？"></a>为什么必须使用 endorsed 进行替换 jdk 中的类呢？</h3><p>因为java是采用双亲委派机制进行加载class类的。而jdk提供的类只能由类加载器Bootstrap进行加载。如果你想要在应用程序中替换掉jdk中的某个类是无法做到的，所以java提供了endorsed来达到你想要替换到系统中的类。</p>
+<h3 id="使用endorsed的两种方式："><a href="#使用endorsed的两种方式：" class="headerlink" title="使用endorsed的两种方式："></a>使用endorsed的两种方式：</h3><ul>
+<li>运行的时候加上 -Djava.endorsed.dirs=D:\endorsed（jar包存放目录） 参数</li>
+<li>将修改后的jar包放在：$JAVA_HOME/jre/lib/endorsed 、$JAVA_HOME/lib/endorsed 下面</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>本实例通过修改ArrayList来试验:</p>
+<ol>
+<li><p>新建maven工程，在工程中新建java.util.ArrayList</p>
+</li>
+<li><p>复制jdk中ArrayList源码到自己创建的ArrayList，并修改构造方法如下：</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114253815.png" alt="image-20200911114253815"></p>
+<ol>
+<li>将工程打包成jar，复制到endorsed文件夹中</li>
+<li>新建测试类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.idea4j.endorsed.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * -Djava.endorsed.dirs=D:\idea4j-endorsed\endorsed</div><div class="line"> * -XX:+TraceClassLoading</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        List list = <span class="keyword">new</span> ArrayList();</div><div class="line">        System.out.println(<span class="number">1</span>);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>修改运行参数，如图</li>
+</ol>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114058420.png" alt="image-20200911114058420"></p>
+<ol>
+<li>运行Test，结果如下：</li>
+</ol>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911114454953.png" alt="image-20200911114454953"></p>
+<p>看到Test类调用了我们修改的ArrayList，说明我们成功覆盖了jdk的类</p>
+<p>但我们只调用一次new ArrayList(),为什么日志输出了这么多次呢？</p>
+<p>我们在运行参数中在加入-XX:+TraceClassLoading看类加载过程可知，虚拟机启动时，有一些类调用了ArrayList默认构造器</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911123505455.png" alt="image-20200911123505455"></p>
+<p>上面我们使用了修改运行参数的方法，下面我们再试验第二种方法，把jar包copy到$JAVA_HOME/jre/lib/endorsed下，结果和上面一样。</p>
+<p>但是copy到$JAVA_HOME/lib/endorsed下，结果是没有覆盖成功。这是为什么呢？如图，java-home应该为实际运行环境的目录。</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911130242199.png" alt="image-20200911130242199"></p>
+<p>经查看项目jdk配置</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200911125011220.png" alt="image-20200911125011220"></p>
+<p>classpath指定的是jre，所以，把jar包copy到$JAVA_HOME/jre/lib/endorsed下才能成功也就说的通了。</p>
+<p>#### </p>
 ]]></content>
     </entry>
     
@@ -396,6 +421,35 @@
 <p>一个小程序主体部分由三个文件组成，必须放在项目的根目录：<strong>app.js,app.json</strong>,app.wxss。</p>
 <p>一个小程序页面由四个文件组成，分别是<strong>js,wxml</strong>,json,wxss。</p>
 <p><strong>注意：为了方便开发者减少配置项，描述页面的四个文件必须具有相同的路径与文件名。</strong></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[zookeeper选举规则]]></title>
+      <url>http://code.idea4j.com/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/</url>
+      <content type="html"><![CDATA[<h3 id="zookeeper选举规则"><a href="#zookeeper选举规则" class="headerlink" title="zookeeper选举规则"></a>zookeeper选举规则</h3><p>角色：</p>
+<p>1.LOOKING：竞选</p>
+<p>​      2.OBSERVING：观察</p>
+<p>​      3.FOLLOWING：跟随者</p>
+<p>​      4.LEADER：领导者</p>
+<p>投票信息：</p>
+<p>​      1.logicalclock（electionEpoch）：本地选举周期，每次投票都会自增</p>
+<p>​      2.epoch（peerEpoch）：选举周期，每次选举最终确定完leader结束选举流程时会自增(真正zxid的前32位)</p>
+<p>​      3.zxid：数据ID，每次数据变动都会自增（真正zxid的后32位，zxid一共64位）</p>
+<p>​      4.sid：该投票信息所属的serverId</p>
+<p>​      5.leader：提议的leader（被提议的server的serverId，即sid）</p>
+<p>没有leader时</p>
+<p>投票比较规则：</p>
+<p>​     1.epoch大的胜出，否则进行步骤2</p>
+<p>​     2.zxid大的胜出，否则进行步骤3</p>
+<p>​     3.sid大的胜出</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[消息队列]]></title>
+      <url>http://code.idea4j.com/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
+      <content type="html"><![CDATA[<h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><p><pre class="mermaid">graph LR<br>消息队列 –&gt; B[队列] –&gt; B1(使用场景)<br>B1 –&gt; 应用解耦<br>B1 –&gt; 服务通信<br>B1 –&gt; 削峰填谷<br>B1 –&gt; 消息广播<br>B –&gt; B2(消息协议)<br>B2 –&gt; JMS<br>B2 –&gt; AMQP<br>B –&gt; B3(常用队列)<br>B3 –&gt; RabbitMQ<br>B3 –&gt; ActiveMQ<br>B3 –&gt; RocketMQ<br>B3 –&gt; Kafka</pre><br><a id="more"></a></p>
 ]]></content>
     </entry>
     
@@ -568,6 +622,39 @@
 <h4 id="ADD"><a href="#ADD" class="headerlink" title="ADD"></a>ADD</h4><p>  将宿主机目录下的文件拷贝到镜像中，且会解压 tar包和自动处理URL</p>
 <h4 id="COPY"><a href="#COPY" class="headerlink" title="COPY"></a>COPY</h4><h4 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h4><p>指定容器启动时要执行的命令</p>
 <h4 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h4><h4 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a>ONBUILD</h4>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Context初始化流程]]></title>
+      <url>http://code.idea4j.com/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<p>Context初始化流程</p>
+<p>1.prepareRefresh</p>
+<p>对刷新进行准备，包括设置开始时间、设置激活状态、初始化context环境中的占位符这个动作，根据之类的需求由子类来执行，然后验证是否却是必要的properties。</p>
+<p>2.ConfiguratbleListableBeanFactory beanFactory=obtainFreshBeanfactory();</p>
+<p>刷新并获得内部的Bean Factory。</p>
+<p>3.prepareBeanFactory(beanFactory);</p>
+<p>对beanFactory进行准备工作，比如设置类加载器和后置处理器，配置不进行自动装配的类型，注册默认的环境Bean。</p>
+<p>4.postProcessBeanFactory(beanFactory);</p>
+<p>为context的子类提供后置处理BeanFactory的扩展能力。如果子类想在Bean定义加载完成后，开始初始化上下文之前，做一些特殊逻辑，可以复写这个方法。</p>
+<p>5.invokeBeanFactotyPostProcessors(beanFactory);</p>
+<p>执行context中注册的beanfactory后缀处理器，这里有两种后置处理器一种是可以注册bean的后缀处理器。另一种是针对beanfactory进行处理的后置处理器。执行顺序是，先按照优先级执行可注册Bean的处理器，再按优先级执行针对Beanfactory的处理器。对springboot来书，这一步会进行BeanDefinition的解析。</p>
+<p>6.registerBeanPostProcessors(beanFactory);</p>
+<p>按照优先顺序在BeanFactory中注册Bean的后缀处理器，Bean后置处理器可以在Bean初始化前、后执行处理。</p>
+<p>7.initMessageSource();</p>
+<p>初始化消息源，消息源用来支持消息的国际化。</p>
+<p>8.initApplicationEventMulticaster();</p>
+<p>初始化应用事件广播器。事件广播器用来向ApplicationListener通知各种应用产生的事件，是一个标准的观察者模式。</p>
+<p>9.onRefresh();</p>
+<p>是留给子类的扩展步骤，用来让特定的Context子类初始化其他的bean。</p>
+<p>10.registerListeners();</p>
+<p>把实现了ApplicationListener的Bean注册到事件广播器，并对广播器中的早期未广播事件进行通知。</p>
+<p>11.finishBeanFactoryInitialization(beanFactory);</p>
+<p>冻结所有的Bean描述信息的修改，实例化非延迟加载的单例Bean</p>
+<p>12.finishRefresh();</p>
+<p>完成上下文的刷新工作，调用LifecycleProcessor的onFresh()方法以及发布ContextRefreshedEvent事件。</p>
+<p>13.resetCommonCaches();</p>
+<p>在finally中，执行第13步，重置公共的缓存，比如ReflectonUtils中的缓存、AnnotationUtils中的缓存等等。</p>
+]]></content>
     </entry>
     
     <entry>
@@ -2134,6 +2221,144 @@
     </entry>
     
     <entry>
+      <title><![CDATA[java泛型]]></title>
+      <url>http://code.idea4j.com/2020/05/28/java%E6%B3%9B%E5%9E%8B/</url>
+      <content type="html"><![CDATA[<h1 id="java泛型"><a href="#java泛型" class="headerlink" title="java泛型"></a>java泛型</h1><p>Java从1.5之后支持泛型，泛型的本质是参数化类型，也就是说所操作的数据类型被指定为一个参数。这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。</p>
+<p>1.类型安全。泛型的主要目标是提高Java程序的类型安全。通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中消除强制。一类型安全范畴的主要目标是提高Java程序的类型安全通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中。</p>
+<p>2.消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，</p>
+<p>3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[dubbo架构设计]]></title>
+      <url>http://code.idea4j.com/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</url>
+      <content type="html"><![CDATA[<h3 id="dubbo架构设计"><a href="#dubbo架构设计" class="headerlink" title="dubbo架构设计"></a>dubbo架构设计</h3><p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200821100631881.png" alt="image-20200821100631881"></p>
+<p>淡蓝色是服务提供者使用到的接口，淡绿色是服务消费者使用接口，中轴线上是双方都用到的接口。</p>
+<p>从下至上分为十层，各层均为单向依赖，右边的黑色箭头代表之间的依赖关系，每一层都可以剥离上层被复用，其中，Service和Config层为API，其他各层均为SPI。</p>
+<p>绿色小块的为扩展接口，蓝色小块为实现类</p>
+<p>蓝色虚线为初始化过程，即启动时组装链，红色实线为方法调用过程，即运行是调用链，紫色三角箭头为继承</p>
+<p>config配置层：对外配置接口，以ServiceConfig,ReferenceConfig为中心，可以直接初始化配置类，也可以通过spring解析配置生成配置类</p>
+<p>proxy服务代理层</p>
+<p>registry注册中心层</p>
+<p>cluster路由层</p>
+<p>monitor监控层</p>
+<p>ptotocol远程调用层</p>
+<p>exchange信息交换层</p>
+<p>transport网络传输层</p>
+<p>serialize 数据序列化层</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[dubbo的原理]]></title>
+      <url>http://code.idea4j.com/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/</url>
+      <content type="html"><![CDATA[<p>dubbo的原理</p>
+<p>scp r cm pets</p>
+<p>框架设计</p>
+<p>启动解析</p>
+<p>服务暴露</p>
+<p>服务引用</p>
+<p>服务调用</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Docker搭建zookeeper集群]]></title>
+      <url>http://code.idea4j.com/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/</url>
+      <content type="html"><![CDATA[<h2 id="Docker搭建zookeeper集群"><a href="#Docker搭建zookeeper集群" class="headerlink" title="Docker搭建zookeeper集群"></a>Docker搭建zookeeper集群</h2><p>准备在3台虚拟机上搭建zookeeper集群</p>
+<h4 id="创建挂载目录"><a href="#创建挂载目录" class="headerlink" title="创建挂载目录"></a>创建挂载目录</h4><p>用于存储配置文件和数据，使用docker数据和配置文件等需要放在自己的宿主机，而不是容器内，特别是数据</p>
+<p><code>mkdir -p zookeeper/conf</code></p>
+<p><code>mkdir -p zookeeper/data</code></p>
+<h4 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h4><p>在zookeeper/data下创建zoo.cfg</p>
+<p>touch <code>zoo.cfg</code></p>
+<p>clientPort=2181<br>dataDir=/data<br>dataLogDir=/data/log<br>tickTime=2000<br>initLimit=5<br>syncLimit=2<br>autopurge.snapRetainCount=3<br>autopurge.purgeInterval=0<br>maxClientCnxns=60<br>server.111=10.255.200.168:2888:3888<br>server.222=10.255.200.174:2888:3888<br>server.233=10.255.200.172:2888:3888</p>
+<h4 id="配置myid"><a href="#配置myid" class="headerlink" title="配置myid"></a>配置myid</h4><p>在zookeeper/data目录下创建<strong>myid</strong>，并配置id，里面的<strong>id一定要和上面配置的server.id一致</strong></p>
+<p><code>touch myid</code></p>
+<p><code>echo 111 &gt; myid</code></p>
+<h4 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h4><p>docker run  –network host -v /usr/local/zookeeper/data:/data -v  /usr/local/zookeeper/conf:/conf –name zookeeper-2181 -d zookeeper:3.4.13</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Dubbo请求数据的发送过程]]></title>
+      <url>http://code.idea4j.com/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h3 id="Dubbo请求数据的发送过程"><a href="#Dubbo请求数据的发送过程" class="headerlink" title="Dubbo请求数据的发送过程"></a>Dubbo请求数据的发送过程</h3><p>调用过程（IMAF FLADR HHAANN） （3invoke + doInvoke）*2+3request+3send+write</p>
+<p>Proxy0#sayHello(String)</p>
+<p>​    -&gt;InvokerInvocationHandle#invoke</p>
+<p>​        -&gt;MockClusterInvoker#invoke</p>
+<p>​            -&gt;AbstractClusterInvoker#invoke</p>
+<p>​                -&gt;FailoverClusterInvoker#doInvoke</p>
+<p>​                    -&gt;Filter#invoke</p>
+<p>​                        -&gt;ListenerInvokerWrapper#invoke</p>
+<p>​                            -&gt;AbstractInvoker#invoke</p>
+<p>​                                -&gt;DubboInvoker#doInvoke</p>
+<p>​                                    -&gt;ReferenceCountExchangeClient#request</p>
+<p>​                                        -&gt;HeadExchangeClient#request</p>
+<p>​                                            -&gt;HeadExchangeChannel#request</p>
+<p>​                                                -&gt;AbstractPeer#send</p>
+<p>​                                                    -&gt;AbstractClient#send</p>
+<p>​                                                        -&gt;NettyChannel#send</p>
+<p>​                                                            -&gt;NioClientSocketChannel#write</p>
+<p>调用服务(NAMHAE)  messageReceved+receved*4+execute</p>
+<p>NettyHandler#messageReceived(ChannelHandlerContext, MessageEvent)  </p>
+<p>​    —&gt; AbstractPeer#received(Channel, Object)    </p>
+<p>​        —&gt; MultiMessageHandler#received(Channel, Object)      </p>
+<p>​            —&gt; HeartbeatHandler#received(Channel, Object)        </p>
+<p>​                —&gt; AllChannelHandler#received(Channel, Object)          </p>
+<p>​                    —&gt; ExecutorService#execute(Runnable)    // 由线程池执行后续的调用逻辑</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[GC日志配置]]></title>
+      <url>http://code.idea4j.com/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<p><strong>Java 8</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh</div><div class="line">LOG_DIR=&quot;/tmp/logs&quot;</div><div class="line">JAVA_OPT_LOG=&quot; -verbose:gc&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCDetails&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCDateStamps&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCApplicationStoppedTime&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintTenuringDistribution&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xloggc:$&#123;LOG_DIR&#125;/gc_%p.log&quot;</div><div class="line">JAVA_OPT_OOM=&quot; -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$&#123;LOG_DIR&#125; -XX:ErrorFile=$&#123;LOG_DIR&#125;/hs_error_pid%p.log &quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT_LOG&#125; $&#123;JAVA_OPT_OOM&#125;&quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -XX:-OmitStackTraceInFastThrow&quot;</div></pre></td></tr></table></figure>
+<p>-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps<br>-XX:+PrintGCApplicationStoppedTime -XX:+PrintTenuringDistribution<br>-Xloggc:/tmp/logs/gc_%p.log -XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=/tmp/logs -XX:ErrorFile=/tmp/logs/hs_error_pid%p.log<br>-XX:-OmitStackTraceInFastThrow</p>
+<p><strong>Java 13</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh</div><div class="line">LOG_DIR=&quot;/tmp/logs&quot;</div><div class="line">JAVA_OPT_LOG=&quot; -verbose:gc&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xlog:gc,gc+ref=debug,gc+heap=debug,gc+age=trace:file=$&#123;LOG_DIR&#125;/gc_%p.log:tags,uptime,time,level&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xlog:safepoint:file=$&#123;LOG_DIR&#125;/safepoint_%p.log:tags,uptime,time,level&quot;</div><div class="line">JAVA_OPT_OOM=&quot; -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$&#123;LOG_DIR&#125; -XX:ErrorFile=$&#123;LOG_DIR&#125;/hs_error_pid%p.log &quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT_LOG&#125; $&#123;JAVA_OPT_OOM&#125;&quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -XX:-OmitStackTraceInFastThrow&quot;</div><div class="line">echo $JAVA_OPT</div></pre></td></tr></table></figure>
+<p>-verbose:gc -Xlog:gc,gc+ref=debug,gc+heap=debug,gc+age=trace:file<br>=/tmp/logs/gc<em>%p.log:tags,uptime,time,level -Xlog:safepoint:file=/tmp<br>/logs/safepoint</em>%p.log:tags,uptime,time,level -XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=/tmp/logs -XX:ErrorFile=/tmp/logs/hs_error_pid%p.log<br>-XX:-OmitStackTraceInFastThrow</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Java实现链表]]></title>
+      <url>http://code.idea4j.com/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/</url>
+      <content type="html"><![CDATA[<h1 id="Java实现链表"><a href="#Java实现链表" class="headerlink" title="Java实现链表"></a>Java实现链表</h1><p><strong>单链表</strong>是一种链式存取的数据结构，用一组地址任意的存储单元存放线性表中的数据元素。链表中的数据是以结点来表示的，每个结点的构成:元素(数据元素的映象) + 指针(指示后继元素存储位置)，元素就是存储数据的存储单元，指针就是连接每个结点的地址数据。<strong>(逻辑地址相连，物理地址不相连）</strong></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[dubbo负载均衡]]></title>
+      <url>http://code.idea4j.com/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/</url>
+      <content type="html"><![CDATA[<p>Dubbo 提供了4种负载均衡实现，分别是：</p>
+<ul>
+<li>基于权重随机算法的 RandomLoadBalance；</li>
+<li>基于最少活跃调用数算法的 LeastActiveLoadBalance；</li>
+<li>基于 hash 一致性的 ConsistentHashLoadBalance；</li>
+<li>基于加权轮询算法的 RoundRobinLoadBalance；</li>
+</ul>
+<p>在 Dubbo 中，所有负载均衡实现类均继承自 AbstractLoadBalance，该类实现了 LoadBalance 接口，并封装了一些公共的逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">select</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (invokers == <span class="keyword">null</span> || invokers.isEmpty())</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    <span class="comment">// 如果 invokers 列表中仅有一个 Invoker，直接返回即可，无需进行负载均衡</span></div><div class="line">    <span class="keyword">if</span> (invokers.size() == <span class="number">1</span>)</div><div class="line">        <span class="keyword">return</span> invokers.get(<span class="number">0</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// 调用 doSelect 方法进行负载均衡，该方法为抽象方法，由子类实现</span></div><div class="line">    <span class="keyword">return</span> doSelect(invokers, url, invocation);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span></span>;</div></pre></td></tr></table></figure>
+<h3 id="RandomLoadBalance"><a href="#RandomLoadBalance" class="headerlink" title="RandomLoadBalance"></a>RandomLoadBalance</h3><p>加权随机算法，算法思想：假如有一组服务器servers=[A,B,C]，他们对应的权重为weights[5,3,2],权重总和为10.现在把这些权重值平铺在一维坐标值上，[0, 5) 区间属于服务器 A，[5, 8) 区间属于服务器 B，[8, 10) 区间属于服务器 C。接下来通过随机数生成器生成一个范围在 [0, 10) 之间的随机数，然后计算这个随机数会落到哪个区间上。比如数字3会落到服务器 A 对应的区间上，此时返回服务器 A 即可。权重越大的机器，在坐标轴上对应的区间范围就越大，因此随机数生成器生成的数字就会有更大的概率落到此区间内。只要随机数生成器产生的随机数分布性很好，在经过多次选择后，每个服务器被选中的次数比例接近其权重比例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RandomLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">"random"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Random random = <span class="keyword">new</span> Random();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> length = invokers.size();</div><div class="line">        <span class="keyword">int</span> totalWeight = <span class="number">0</span>;</div><div class="line">        <span class="keyword">boolean</span> sameWeight = <span class="keyword">true</span>;</div><div class="line">        <span class="comment">// 下面这个循环有两个作用，第一是计算总权重 totalWeight，</span></div><div class="line">        <span class="comment">// 第二是检测每个服务提供者的权重是否相同</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">            <span class="keyword">int</span> weight = getWeight(invokers.get(i), invocation);</div><div class="line">            <span class="comment">// 累加权重</span></div><div class="line">            totalWeight += weight;</div><div class="line">            <span class="comment">// 检测当前服务提供者的权重与上一个服务提供者的权重是否相同，</span></div><div class="line">            <span class="comment">// 不相同的话，则将 sameWeight 置为 false。</span></div><div class="line">            <span class="keyword">if</span> (sameWeight &amp;&amp; i &gt; <span class="number">0</span></div><div class="line">                    &amp;&amp; weight != getWeight(invokers.get(i - <span class="number">1</span>), invocation)) &#123;</div><div class="line">                sameWeight = <span class="keyword">false</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 下面的 if 分支主要用于获取随机数，并计算随机数落在哪个区间上</span></div><div class="line">        <span class="keyword">if</span> (totalWeight &gt; <span class="number">0</span> &amp;&amp; !sameWeight) &#123;</div><div class="line">            <span class="comment">// 随机获取一个 [0, totalWeight) 区间内的数字</span></div><div class="line">            <span class="keyword">int</span> offset = random.nextInt(totalWeight);</div><div class="line">            <span class="comment">// 循环让 offset 数减去服务提供者权重值，当 offset 小于0时，返回相应的 Invoker。</span></div><div class="line">            <span class="comment">// 举例说明一下，我们有 servers = [A, B, C]，weights = [5, 3, 2]，offset = 7。</span></div><div class="line">            <span class="comment">// 第一次循环，offset - 5 = 2 &gt; 0，即 offset &gt; 5，</span></div><div class="line">            <span class="comment">// 表明其不会落在服务器 A 对应的区间上。</span></div><div class="line">            <span class="comment">// 第二次循环，offset - 3 = -1 &lt; 0，即 5 &lt; offset &lt; 8，</span></div><div class="line">            <span class="comment">// 表明其会落在服务器 B 对应的区间上</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">                <span class="comment">// 让随机值 offset 减去权重值</span></div><div class="line">                offset -= getWeight(invokers.get(i), invocation);</div><div class="line">                <span class="keyword">if</span> (offset &lt; <span class="number">0</span>) &#123;</div><div class="line">                    <span class="comment">// 返回相应的 Invoker</span></div><div class="line">                    <span class="keyword">return</span> invokers.get(i);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 如果所有服务提供者权重值相同，此时直接随机返回一个即可</span></div><div class="line">        <span class="keyword">return</span> invokers.get(random.nextInt(length));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="LeastActiveLoadBalance"><a href="#LeastActiveLoadBalance" class="headerlink" title="LeastActiveLoadBalance"></a>LeastActiveLoadBalance</h3><p>LeastActiveLoadBalance翻译过来是最小活跃数负载均衡。活跃调用数越小，表明该服务提供者效率越高，单位时间内可处理更多的请求。此时应优先将请求分配给该服务提供者。在具体实现中，每个服务提供者对应一个活跃数 active。初始情况下，所有服务提供者活跃数均为0。每收到一个请求，活跃数加1，完成请求后则将活跃数减1。在服务运行一段时间后，性能好的服务提供者处理请求的速度更快，因此活跃数下降的也越快，此时这样的服务提供者能够优先获取到新的服务请求、这就是最小活跃数负载均衡算法的基本思想。除了最小活跃数，LeastActiveLoadBalance 在实现上还引入了权重值。所以准确的来说，LeastActiveLoadBalance 是基于加权最小活跃数算法实现的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LeastActiveLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">"leastactive"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Random random = <span class="keyword">new</span> Random();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> length = invokers.size();</div><div class="line">        <span class="comment">// 最小的活跃数</span></div><div class="line">        <span class="keyword">int</span> leastActive = -<span class="number">1</span>;</div><div class="line">        <span class="comment">// 具有相同“最小活跃数”的服务者提供者（以下用 Invoker 代称）数量</span></div><div class="line">        <span class="keyword">int</span> leastCount = <span class="number">0</span>; </div><div class="line">        <span class="comment">// leastIndexs 用于记录具有相同“最小活跃数”的 Invoker 在 invokers 列表中的下标信息</span></div><div class="line">        <span class="keyword">int</span>[] leastIndexs = <span class="keyword">new</span> <span class="keyword">int</span>[length];</div><div class="line">        <span class="keyword">int</span> totalWeight = <span class="number">0</span>;</div><div class="line">        <span class="comment">// 第一个最小活跃数的 Invoker 权重值，用于与其他具有相同最小活跃数的 Invoker 的权重进行对比，</span></div><div class="line">        <span class="comment">// 以检测是否“所有具有相同最小活跃数的 Invoker 的权重”均相等</span></div><div class="line">        <span class="keyword">int</span> firstWeight = <span class="number">0</span>;</div><div class="line">        <span class="keyword">boolean</span> sameWeight = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">        <span class="comment">// 遍历 invokers 列表</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">            Invoker&lt;T&gt; invoker = invokers.get(i);</div><div class="line">            <span class="comment">// 获取 Invoker 对应的活跃数</span></div><div class="line">            <span class="keyword">int</span> active = RpcStatus.getStatus(invoker.getUrl(), invocation.getMethodName()).getActive();</div><div class="line">            <span class="comment">// 获取权重 - ⭐️</span></div><div class="line">            <span class="keyword">int</span> weight = invoker.getUrl().getMethodParameter(invocation.getMethodName(), Constants.WEIGHT_KEY, Constants.DEFAULT_WEIGHT);</div><div class="line">            <span class="comment">// 发现更小的活跃数，重新开始</span></div><div class="line">            <span class="keyword">if</span> (leastActive == -<span class="number">1</span> || active &lt; leastActive) &#123;</div><div class="line">            	<span class="comment">// 使用当前活跃数 active 更新最小活跃数 leastActive</span></div><div class="line">                leastActive = active;</div><div class="line">                <span class="comment">// 更新 leastCount 为 1</span></div><div class="line">                leastCount = <span class="number">1</span>;</div><div class="line">                <span class="comment">// 记录当前下标值到 leastIndexs 中</span></div><div class="line">                leastIndexs[<span class="number">0</span>] = i;</div><div class="line">                totalWeight = weight;</div><div class="line">                firstWeight = weight;</div><div class="line">                sameWeight = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">            <span class="comment">// 当前 Invoker 的活跃数 active 与最小活跃数 leastActive 相同 </span></div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (active == leastActive) &#123;</div><div class="line">            	<span class="comment">// 在 leastIndexs 中记录下当前 Invoker 在 invokers 集合中的下标</span></div><div class="line">                leastIndexs[leastCount++] = i;</div><div class="line">                <span class="comment">// 累加权重</span></div><div class="line">                totalWeight += weight;</div><div class="line">                <span class="comment">// 检测当前 Invoker 的权重与 firstWeight 是否相等，</span></div><div class="line">                <span class="comment">// 不相等则将 sameWeight 置为 false</span></div><div class="line">                <span class="keyword">if</span> (sameWeight &amp;&amp; i &gt; <span class="number">0</span></div><div class="line">                    &amp;&amp; weight != firstWeight) &#123;</div><div class="line">                    sameWeight = <span class="keyword">false</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 当只有一个 Invoker 具有最小活跃数，此时直接返回该 Invoker 即可</span></div><div class="line">        <span class="keyword">if</span> (leastCount == <span class="number">1</span>) &#123;</div><div class="line">            <span class="keyword">return</span> invokers.get(leastIndexs[<span class="number">0</span>]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 有多个 Invoker 具有相同的最小活跃数，但它们之间的权重不同</span></div><div class="line">        <span class="keyword">if</span> (!sameWeight &amp;&amp; totalWeight &gt; <span class="number">0</span>) &#123;</div><div class="line">        	<span class="comment">// 随机生成一个 [0, totalWeight) 之间的数字</span></div><div class="line">            <span class="keyword">int</span> offsetWeight = random.nextInt(totalWeight);</div><div class="line">            <span class="comment">// 循环让随机数减去具有最小活跃数的 Invoker 的权重值，</span></div><div class="line">            <span class="comment">// 当 offset 小于等于0时，返回相应的 Invoker</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; leastCount; i++) &#123;</div><div class="line">                <span class="keyword">int</span> leastIndex = leastIndexs[i];</div><div class="line">                <span class="comment">// 获取权重值，并让随机数减去权重值 - ⭐️</span></div><div class="line">                offsetWeight -= getWeight(invokers.get(leastIndex), invocation);</div><div class="line">                <span class="keyword">if</span> (offsetWeight &lt;= <span class="number">0</span>)</div><div class="line">                    <span class="keyword">return</span> invokers.get(leastIndex);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 如果权重相同或权重为0时，随机返回一个 Invoker</span></div><div class="line">        <span class="keyword">return</span> invokers.get(leastIndexs[random.nextInt(leastCount)]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>大致的实现逻辑:</p>
+<ol>
+<li>遍历 invokers 列表，寻找活跃数最小的 Invoker</li>
+<li>如果有多个 Invoker 具有相同的最小活跃数，此时记录下这些 Invoker 在 invokers 集合中的下标，并累加它们的权重，比较它们的权重值是否相等</li>
+<li>如果只有一个 Invoker 具有最小的活跃数，此时直接返回该 Invoker 即可</li>
+<li>如果有多个 Invoker 具有最小活跃数，且它们的权重不相等，此时处理方式和 RandomLoadBalance 一致</li>
+<li>如果有多个 Invoker 具有最小活跃数，但它们的权重相等，此时随机返回一个即可</li>
+</ol>
+<h3 id="ConsistentHashLoadBalance"><a href="#ConsistentHashLoadBalance" class="headerlink" title="ConsistentHashLoadBalance"></a>ConsistentHashLoadBalance</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsistentHashLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConcurrentMap&lt;String, ConsistentHashSelector&lt;?&gt;&gt; selectors = </div><div class="line">        <span class="keyword">new</span> ConcurrentHashMap&lt;String, ConsistentHashSelector&lt;?&gt;&gt;();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        String methodName = RpcUtils.getMethodName(invocation);</div><div class="line">        String key = invokers.get(<span class="number">0</span>).getUrl().getServiceKey() + <span class="string">"."</span> + methodName;</div><div class="line"></div><div class="line">        <span class="comment">// 获取 invokers 原始的 hashcode</span></div><div class="line">        <span class="keyword">int</span> identityHashCode = System.identityHashCode(invokers);</div><div class="line">        ConsistentHashSelector&lt;T&gt; selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);</div><div class="line">        <span class="comment">// 如果 invokers 是一个新的 List 对象，意味着服务提供者数量发生了变化，可能新增也可能减少了。</span></div><div class="line">        <span class="comment">// 此时 selector.identityHashCode != identityHashCode 条件成立</span></div><div class="line">        <span class="keyword">if</span> (selector == <span class="keyword">null</span> || selector.identityHashCode != identityHashCode) &#123;</div><div class="line">            <span class="comment">// 创建新的 ConsistentHashSelector</span></div><div class="line">            selectors.put(key, <span class="keyword">new</span> ConsistentHashSelector&lt;T&gt;(invokers, methodName, identityHashCode));</div><div class="line">            selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 调用 ConsistentHashSelector 的 select 方法选择 Invoker</span></div><div class="line">        <span class="keyword">return</span> selector.select(invocation);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsistentHashSelector</span>&lt;<span class="title">T</span>&gt; </span>&#123;...&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="RoundRobinLoadBalance"><a href="#RoundRobinLoadBalance" class="headerlink" title="RoundRobinLoadBalance"></a>RoundRobinLoadBalance</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoundRobinLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">"roundrobin"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConcurrentMap&lt;String, AtomicPositiveInteger&gt; sequences = </div><div class="line">        <span class="keyword">new</span> ConcurrentHashMap&lt;String, AtomicPositiveInteger&gt;();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        <span class="comment">// key = 全限定类名 + "." + 方法名，比如 com.xxx.DemoService.sayHello</span></div><div class="line">        String key = invokers.get(<span class="number">0</span>).getUrl().getServiceKey() + <span class="string">"."</span> + invocation.getMethodName();</div><div class="line">        <span class="keyword">int</span> length = invokers.size();</div><div class="line">        <span class="comment">// 最大权重</span></div><div class="line">        <span class="keyword">int</span> maxWeight = <span class="number">0</span>;</div><div class="line">        <span class="comment">// 最小权重</span></div><div class="line">        <span class="keyword">int</span> minWeight = Integer.MAX_VALUE;</div><div class="line">        <span class="keyword">final</span> LinkedHashMap&lt;Invoker&lt;T&gt;, IntegerWrapper&gt; invokerToWeightMap = <span class="keyword">new</span> LinkedHashMap&lt;Invoker&lt;T&gt;, IntegerWrapper&gt;();</div><div class="line">        <span class="comment">// 权重总和</span></div><div class="line">        <span class="keyword">int</span> weightSum = <span class="number">0</span>;</div><div class="line"></div><div class="line">        <span class="comment">// 下面这个循环主要用于查找最大和最小权重，计算权重总和等</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">            <span class="keyword">int</span> weight = getWeight(invokers.get(i), invocation);</div><div class="line">            <span class="comment">// 获取最大和最小权重</span></div><div class="line">            maxWeight = Math.max(maxWeight, weight);</div><div class="line">            minWeight = Math.min(minWeight, weight);</div><div class="line">            <span class="keyword">if</span> (weight &gt; <span class="number">0</span>) &#123;</div><div class="line">                <span class="comment">// 将 weight 封装到 IntegerWrapper 中</span></div><div class="line">                invokerToWeightMap.put(invokers.get(i), <span class="keyword">new</span> IntegerWrapper(weight));</div><div class="line">                <span class="comment">// 累加权重</span></div><div class="line">                weightSum += weight;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 查找 key 对应的对应 AtomicPositiveInteger 实例，为空则创建。</span></div><div class="line">        <span class="comment">// 这里可以把 AtomicPositiveInteger 看成一个黑盒，大家只要知道</span></div><div class="line">        <span class="comment">// AtomicPositiveInteger 用于记录服务的调用编号即可。至于细节，</span></div><div class="line">        <span class="comment">// 大家如果感兴趣，可以自行分析</span></div><div class="line">        AtomicPositiveInteger sequence = sequences.get(key);</div><div class="line">        <span class="keyword">if</span> (sequence == <span class="keyword">null</span>) &#123;</div><div class="line">            sequences.putIfAbsent(key, <span class="keyword">new</span> AtomicPositiveInteger());</div><div class="line">            sequence = sequences.get(key);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 获取当前的调用编号</span></div><div class="line">        <span class="keyword">int</span> currentSequence = sequence.getAndIncrement();</div><div class="line">        <span class="comment">// 如果最小权重小于最大权重，表明服务提供者之间的权重是不相等的</span></div><div class="line">        <span class="keyword">if</span> (maxWeight &gt; <span class="number">0</span> &amp;&amp; minWeight &lt; maxWeight) &#123;</div><div class="line">            <span class="comment">// 使用调用编号对权重总和进行取余操作</span></div><div class="line">            <span class="keyword">int</span> mod = currentSequence % weightSum;</div><div class="line">            <span class="comment">// 进行 maxWeight 次遍历</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxWeight; i++) &#123;</div><div class="line">                <span class="comment">// 遍历 invokerToWeightMap</span></div><div class="line">                <span class="keyword">for</span> (Map.Entry&lt;Invoker&lt;T&gt;, IntegerWrapper&gt; each : invokerToWeightMap.entrySet()) &#123;</div><div class="line">					<span class="comment">// 获取 Invoker</span></div><div class="line">                    <span class="keyword">final</span> Invoker&lt;T&gt; k = each.getKey();</div><div class="line">                    <span class="comment">// 获取权重包装类 IntegerWrapper</span></div><div class="line">                    <span class="keyword">final</span> IntegerWrapper v = each.getValue();</div><div class="line">                    </div><div class="line">                    <span class="comment">// 如果 mod = 0，且权重大于0，此时返回相应的 Invoker</span></div><div class="line">                    <span class="keyword">if</span> (mod == <span class="number">0</span> &amp;&amp; v.getValue() &gt; <span class="number">0</span>) &#123;</div><div class="line">                        <span class="keyword">return</span> k;</div><div class="line">                    &#125;</div><div class="line">                    </div><div class="line">                    <span class="comment">// mod != 0，且权重大于0，此时对权重和 mod 分别进行自减操作</span></div><div class="line">                    <span class="keyword">if</span> (v.getValue() &gt; <span class="number">0</span>) &#123;</div><div class="line">                        v.decrement();</div><div class="line">                        mod--;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 服务提供者之间的权重相等，此时通过轮询选择 Invoker</span></div><div class="line">        <span class="keyword">return</span> invokers.get(currentSequence % length);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// IntegerWrapper 是一个 int 包装类，主要包含了一个自减方法。</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerWrapper</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> value;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decrement</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">this</span>.value--;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 省略部分代码</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Class文件格式]]></title>
       <url>http://code.idea4j.com/2020/05/28/Class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/</url>
       <content type="html"><![CDATA[<h2 id="Class文件格式"><a href="#Class文件格式" class="headerlink" title="Class文件格式"></a>Class文件格式</h2><table>
@@ -2241,177 +2466,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[java泛型]]></title>
-      <url>http://code.idea4j.com/2020/05/28/java%E6%B3%9B%E5%9E%8B/</url>
-      <content type="html"><![CDATA[<h1 id="java泛型"><a href="#java泛型" class="headerlink" title="java泛型"></a>java泛型</h1><p>Java从1.5之后支持泛型，泛型的本质是参数化类型，也就是说所操作的数据类型被指定为一个参数。这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。</p>
-<p>1.类型安全。泛型的主要目标是提高Java程序的类型安全。通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中消除强制。一类型安全范畴的主要目标是提高Java程序的类型安全通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中。</p>
-<p>2.消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，</p>
-<p>3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[dubbo架构设计]]></title>
-      <url>http://code.idea4j.com/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</url>
-      <content type="html"><![CDATA[<h3 id="dubbo架构设计"><a href="#dubbo架构设计" class="headerlink" title="dubbo架构设计"></a>dubbo架构设计</h3><p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200821100631881.png" alt="image-20200821100631881"></p>
-<p>淡蓝色是服务提供者使用到的接口，淡绿色是服务消费者使用接口，中轴线上是双方都用到的接口。</p>
-<p>从下至上分为十层，各层均为单向依赖，右边的黑色箭头代表之间的依赖关系，每一层都可以剥离上层被复用，其中，Service和Config层为API，其他各层均为SPI。</p>
-<p>绿色小块的为扩展接口，蓝色小块为实现类</p>
-<p>蓝色虚线为初始化过程，即启动时组装链，红色实线为方法调用过程，即运行是调用链，紫色三角箭头为继承</p>
-<p>config配置层：对外配置接口，以ServiceConfig,ReferenceConfig为中心，可以直接初始化配置类，也可以通过spring解析配置生成配置类</p>
-<p>proxy服务代理层</p>
-<p>registry注册中心层</p>
-<p>cluster路由层</p>
-<p>monitor监控层</p>
-<p>ptotocol远程调用层</p>
-<p>exchange信息交换层</p>
-<p>transport网络传输层</p>
-<p>serialize 数据序列化层</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[dubbo负载均衡]]></title>
-      <url>http://code.idea4j.com/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/</url>
-      <content type="html"><![CDATA[<p>Dubbo 提供了4种负载均衡实现，分别是：</p>
-<ul>
-<li>基于权重随机算法的 RandomLoadBalance；</li>
-<li>基于最少活跃调用数算法的 LeastActiveLoadBalance；</li>
-<li>基于 hash 一致性的 ConsistentHashLoadBalance；</li>
-<li>基于加权轮询算法的 RoundRobinLoadBalance；</li>
-</ul>
-<p>在 Dubbo 中，所有负载均衡实现类均继承自 AbstractLoadBalance，该类实现了 LoadBalance 接口，并封装了一些公共的逻辑。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">select</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (invokers == <span class="keyword">null</span> || invokers.isEmpty())</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    <span class="comment">// 如果 invokers 列表中仅有一个 Invoker，直接返回即可，无需进行负载均衡</span></div><div class="line">    <span class="keyword">if</span> (invokers.size() == <span class="number">1</span>)</div><div class="line">        <span class="keyword">return</span> invokers.get(<span class="number">0</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// 调用 doSelect 方法进行负载均衡，该方法为抽象方法，由子类实现</span></div><div class="line">    <span class="keyword">return</span> doSelect(invokers, url, invocation);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span></span>;</div></pre></td></tr></table></figure>
-<h3 id="RandomLoadBalance"><a href="#RandomLoadBalance" class="headerlink" title="RandomLoadBalance"></a>RandomLoadBalance</h3><p>加权随机算法，算法思想：假如有一组服务器servers=[A,B,C]，他们对应的权重为weights[5,3,2],权重总和为10.现在把这些权重值平铺在一维坐标值上，[0, 5) 区间属于服务器 A，[5, 8) 区间属于服务器 B，[8, 10) 区间属于服务器 C。接下来通过随机数生成器生成一个范围在 [0, 10) 之间的随机数，然后计算这个随机数会落到哪个区间上。比如数字3会落到服务器 A 对应的区间上，此时返回服务器 A 即可。权重越大的机器，在坐标轴上对应的区间范围就越大，因此随机数生成器生成的数字就会有更大的概率落到此区间内。只要随机数生成器产生的随机数分布性很好，在经过多次选择后，每个服务器被选中的次数比例接近其权重比例。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RandomLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">"random"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Random random = <span class="keyword">new</span> Random();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> length = invokers.size();</div><div class="line">        <span class="keyword">int</span> totalWeight = <span class="number">0</span>;</div><div class="line">        <span class="keyword">boolean</span> sameWeight = <span class="keyword">true</span>;</div><div class="line">        <span class="comment">// 下面这个循环有两个作用，第一是计算总权重 totalWeight，</span></div><div class="line">        <span class="comment">// 第二是检测每个服务提供者的权重是否相同</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">            <span class="keyword">int</span> weight = getWeight(invokers.get(i), invocation);</div><div class="line">            <span class="comment">// 累加权重</span></div><div class="line">            totalWeight += weight;</div><div class="line">            <span class="comment">// 检测当前服务提供者的权重与上一个服务提供者的权重是否相同，</span></div><div class="line">            <span class="comment">// 不相同的话，则将 sameWeight 置为 false。</span></div><div class="line">            <span class="keyword">if</span> (sameWeight &amp;&amp; i &gt; <span class="number">0</span></div><div class="line">                    &amp;&amp; weight != getWeight(invokers.get(i - <span class="number">1</span>), invocation)) &#123;</div><div class="line">                sameWeight = <span class="keyword">false</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 下面的 if 分支主要用于获取随机数，并计算随机数落在哪个区间上</span></div><div class="line">        <span class="keyword">if</span> (totalWeight &gt; <span class="number">0</span> &amp;&amp; !sameWeight) &#123;</div><div class="line">            <span class="comment">// 随机获取一个 [0, totalWeight) 区间内的数字</span></div><div class="line">            <span class="keyword">int</span> offset = random.nextInt(totalWeight);</div><div class="line">            <span class="comment">// 循环让 offset 数减去服务提供者权重值，当 offset 小于0时，返回相应的 Invoker。</span></div><div class="line">            <span class="comment">// 举例说明一下，我们有 servers = [A, B, C]，weights = [5, 3, 2]，offset = 7。</span></div><div class="line">            <span class="comment">// 第一次循环，offset - 5 = 2 &gt; 0，即 offset &gt; 5，</span></div><div class="line">            <span class="comment">// 表明其不会落在服务器 A 对应的区间上。</span></div><div class="line">            <span class="comment">// 第二次循环，offset - 3 = -1 &lt; 0，即 5 &lt; offset &lt; 8，</span></div><div class="line">            <span class="comment">// 表明其会落在服务器 B 对应的区间上</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">                <span class="comment">// 让随机值 offset 减去权重值</span></div><div class="line">                offset -= getWeight(invokers.get(i), invocation);</div><div class="line">                <span class="keyword">if</span> (offset &lt; <span class="number">0</span>) &#123;</div><div class="line">                    <span class="comment">// 返回相应的 Invoker</span></div><div class="line">                    <span class="keyword">return</span> invokers.get(i);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 如果所有服务提供者权重值相同，此时直接随机返回一个即可</span></div><div class="line">        <span class="keyword">return</span> invokers.get(random.nextInt(length));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="LeastActiveLoadBalance"><a href="#LeastActiveLoadBalance" class="headerlink" title="LeastActiveLoadBalance"></a>LeastActiveLoadBalance</h3><p>LeastActiveLoadBalance翻译过来是最小活跃数负载均衡。活跃调用数越小，表明该服务提供者效率越高，单位时间内可处理更多的请求。此时应优先将请求分配给该服务提供者。在具体实现中，每个服务提供者对应一个活跃数 active。初始情况下，所有服务提供者活跃数均为0。每收到一个请求，活跃数加1，完成请求后则将活跃数减1。在服务运行一段时间后，性能好的服务提供者处理请求的速度更快，因此活跃数下降的也越快，此时这样的服务提供者能够优先获取到新的服务请求、这就是最小活跃数负载均衡算法的基本思想。除了最小活跃数，LeastActiveLoadBalance 在实现上还引入了权重值。所以准确的来说，LeastActiveLoadBalance 是基于加权最小活跃数算法实现的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LeastActiveLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">"leastactive"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Random random = <span class="keyword">new</span> Random();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> length = invokers.size();</div><div class="line">        <span class="comment">// 最小的活跃数</span></div><div class="line">        <span class="keyword">int</span> leastActive = -<span class="number">1</span>;</div><div class="line">        <span class="comment">// 具有相同“最小活跃数”的服务者提供者（以下用 Invoker 代称）数量</span></div><div class="line">        <span class="keyword">int</span> leastCount = <span class="number">0</span>; </div><div class="line">        <span class="comment">// leastIndexs 用于记录具有相同“最小活跃数”的 Invoker 在 invokers 列表中的下标信息</span></div><div class="line">        <span class="keyword">int</span>[] leastIndexs = <span class="keyword">new</span> <span class="keyword">int</span>[length];</div><div class="line">        <span class="keyword">int</span> totalWeight = <span class="number">0</span>;</div><div class="line">        <span class="comment">// 第一个最小活跃数的 Invoker 权重值，用于与其他具有相同最小活跃数的 Invoker 的权重进行对比，</span></div><div class="line">        <span class="comment">// 以检测是否“所有具有相同最小活跃数的 Invoker 的权重”均相等</span></div><div class="line">        <span class="keyword">int</span> firstWeight = <span class="number">0</span>;</div><div class="line">        <span class="keyword">boolean</span> sameWeight = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">        <span class="comment">// 遍历 invokers 列表</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">            Invoker&lt;T&gt; invoker = invokers.get(i);</div><div class="line">            <span class="comment">// 获取 Invoker 对应的活跃数</span></div><div class="line">            <span class="keyword">int</span> active = RpcStatus.getStatus(invoker.getUrl(), invocation.getMethodName()).getActive();</div><div class="line">            <span class="comment">// 获取权重 - ⭐️</span></div><div class="line">            <span class="keyword">int</span> weight = invoker.getUrl().getMethodParameter(invocation.getMethodName(), Constants.WEIGHT_KEY, Constants.DEFAULT_WEIGHT);</div><div class="line">            <span class="comment">// 发现更小的活跃数，重新开始</span></div><div class="line">            <span class="keyword">if</span> (leastActive == -<span class="number">1</span> || active &lt; leastActive) &#123;</div><div class="line">            	<span class="comment">// 使用当前活跃数 active 更新最小活跃数 leastActive</span></div><div class="line">                leastActive = active;</div><div class="line">                <span class="comment">// 更新 leastCount 为 1</span></div><div class="line">                leastCount = <span class="number">1</span>;</div><div class="line">                <span class="comment">// 记录当前下标值到 leastIndexs 中</span></div><div class="line">                leastIndexs[<span class="number">0</span>] = i;</div><div class="line">                totalWeight = weight;</div><div class="line">                firstWeight = weight;</div><div class="line">                sameWeight = <span class="keyword">true</span>;</div><div class="line"></div><div class="line">            <span class="comment">// 当前 Invoker 的活跃数 active 与最小活跃数 leastActive 相同 </span></div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (active == leastActive) &#123;</div><div class="line">            	<span class="comment">// 在 leastIndexs 中记录下当前 Invoker 在 invokers 集合中的下标</span></div><div class="line">                leastIndexs[leastCount++] = i;</div><div class="line">                <span class="comment">// 累加权重</span></div><div class="line">                totalWeight += weight;</div><div class="line">                <span class="comment">// 检测当前 Invoker 的权重与 firstWeight 是否相等，</span></div><div class="line">                <span class="comment">// 不相等则将 sameWeight 置为 false</span></div><div class="line">                <span class="keyword">if</span> (sameWeight &amp;&amp; i &gt; <span class="number">0</span></div><div class="line">                    &amp;&amp; weight != firstWeight) &#123;</div><div class="line">                    sameWeight = <span class="keyword">false</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 当只有一个 Invoker 具有最小活跃数，此时直接返回该 Invoker 即可</span></div><div class="line">        <span class="keyword">if</span> (leastCount == <span class="number">1</span>) &#123;</div><div class="line">            <span class="keyword">return</span> invokers.get(leastIndexs[<span class="number">0</span>]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 有多个 Invoker 具有相同的最小活跃数，但它们之间的权重不同</span></div><div class="line">        <span class="keyword">if</span> (!sameWeight &amp;&amp; totalWeight &gt; <span class="number">0</span>) &#123;</div><div class="line">        	<span class="comment">// 随机生成一个 [0, totalWeight) 之间的数字</span></div><div class="line">            <span class="keyword">int</span> offsetWeight = random.nextInt(totalWeight);</div><div class="line">            <span class="comment">// 循环让随机数减去具有最小活跃数的 Invoker 的权重值，</span></div><div class="line">            <span class="comment">// 当 offset 小于等于0时，返回相应的 Invoker</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; leastCount; i++) &#123;</div><div class="line">                <span class="keyword">int</span> leastIndex = leastIndexs[i];</div><div class="line">                <span class="comment">// 获取权重值，并让随机数减去权重值 - ⭐️</span></div><div class="line">                offsetWeight -= getWeight(invokers.get(leastIndex), invocation);</div><div class="line">                <span class="keyword">if</span> (offsetWeight &lt;= <span class="number">0</span>)</div><div class="line">                    <span class="keyword">return</span> invokers.get(leastIndex);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 如果权重相同或权重为0时，随机返回一个 Invoker</span></div><div class="line">        <span class="keyword">return</span> invokers.get(leastIndexs[random.nextInt(leastCount)]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>大致的实现逻辑:</p>
-<ol>
-<li>遍历 invokers 列表，寻找活跃数最小的 Invoker</li>
-<li>如果有多个 Invoker 具有相同的最小活跃数，此时记录下这些 Invoker 在 invokers 集合中的下标，并累加它们的权重，比较它们的权重值是否相等</li>
-<li>如果只有一个 Invoker 具有最小的活跃数，此时直接返回该 Invoker 即可</li>
-<li>如果有多个 Invoker 具有最小活跃数，且它们的权重不相等，此时处理方式和 RandomLoadBalance 一致</li>
-<li>如果有多个 Invoker 具有最小活跃数，但它们的权重相等，此时随机返回一个即可</li>
-</ol>
-<h3 id="ConsistentHashLoadBalance"><a href="#ConsistentHashLoadBalance" class="headerlink" title="ConsistentHashLoadBalance"></a>ConsistentHashLoadBalance</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsistentHashLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConcurrentMap&lt;String, ConsistentHashSelector&lt;?&gt;&gt; selectors = </div><div class="line">        <span class="keyword">new</span> ConcurrentHashMap&lt;String, ConsistentHashSelector&lt;?&gt;&gt;();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        String methodName = RpcUtils.getMethodName(invocation);</div><div class="line">        String key = invokers.get(<span class="number">0</span>).getUrl().getServiceKey() + <span class="string">"."</span> + methodName;</div><div class="line"></div><div class="line">        <span class="comment">// 获取 invokers 原始的 hashcode</span></div><div class="line">        <span class="keyword">int</span> identityHashCode = System.identityHashCode(invokers);</div><div class="line">        ConsistentHashSelector&lt;T&gt; selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);</div><div class="line">        <span class="comment">// 如果 invokers 是一个新的 List 对象，意味着服务提供者数量发生了变化，可能新增也可能减少了。</span></div><div class="line">        <span class="comment">// 此时 selector.identityHashCode != identityHashCode 条件成立</span></div><div class="line">        <span class="keyword">if</span> (selector == <span class="keyword">null</span> || selector.identityHashCode != identityHashCode) &#123;</div><div class="line">            <span class="comment">// 创建新的 ConsistentHashSelector</span></div><div class="line">            selectors.put(key, <span class="keyword">new</span> ConsistentHashSelector&lt;T&gt;(invokers, methodName, identityHashCode));</div><div class="line">            selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 调用 ConsistentHashSelector 的 select 方法选择 Invoker</span></div><div class="line">        <span class="keyword">return</span> selector.select(invocation);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsistentHashSelector</span>&lt;<span class="title">T</span>&gt; </span>&#123;...&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="RoundRobinLoadBalance"><a href="#RoundRobinLoadBalance" class="headerlink" title="RoundRobinLoadBalance"></a>RoundRobinLoadBalance</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoundRobinLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String NAME = <span class="string">"roundrobin"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConcurrentMap&lt;String, AtomicPositiveInteger&gt; sequences = </div><div class="line">        <span class="keyword">new</span> ConcurrentHashMap&lt;String, AtomicPositiveInteger&gt;();</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> &lt;T&gt; <span class="function">Invoker&lt;T&gt; <span class="title">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>&#123;</div><div class="line">        <span class="comment">// key = 全限定类名 + "." + 方法名，比如 com.xxx.DemoService.sayHello</span></div><div class="line">        String key = invokers.get(<span class="number">0</span>).getUrl().getServiceKey() + <span class="string">"."</span> + invocation.getMethodName();</div><div class="line">        <span class="keyword">int</span> length = invokers.size();</div><div class="line">        <span class="comment">// 最大权重</span></div><div class="line">        <span class="keyword">int</span> maxWeight = <span class="number">0</span>;</div><div class="line">        <span class="comment">// 最小权重</span></div><div class="line">        <span class="keyword">int</span> minWeight = Integer.MAX_VALUE;</div><div class="line">        <span class="keyword">final</span> LinkedHashMap&lt;Invoker&lt;T&gt;, IntegerWrapper&gt; invokerToWeightMap = <span class="keyword">new</span> LinkedHashMap&lt;Invoker&lt;T&gt;, IntegerWrapper&gt;();</div><div class="line">        <span class="comment">// 权重总和</span></div><div class="line">        <span class="keyword">int</span> weightSum = <span class="number">0</span>;</div><div class="line"></div><div class="line">        <span class="comment">// 下面这个循环主要用于查找最大和最小权重，计算权重总和等</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">            <span class="keyword">int</span> weight = getWeight(invokers.get(i), invocation);</div><div class="line">            <span class="comment">// 获取最大和最小权重</span></div><div class="line">            maxWeight = Math.max(maxWeight, weight);</div><div class="line">            minWeight = Math.min(minWeight, weight);</div><div class="line">            <span class="keyword">if</span> (weight &gt; <span class="number">0</span>) &#123;</div><div class="line">                <span class="comment">// 将 weight 封装到 IntegerWrapper 中</span></div><div class="line">                invokerToWeightMap.put(invokers.get(i), <span class="keyword">new</span> IntegerWrapper(weight));</div><div class="line">                <span class="comment">// 累加权重</span></div><div class="line">                weightSum += weight;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 查找 key 对应的对应 AtomicPositiveInteger 实例，为空则创建。</span></div><div class="line">        <span class="comment">// 这里可以把 AtomicPositiveInteger 看成一个黑盒，大家只要知道</span></div><div class="line">        <span class="comment">// AtomicPositiveInteger 用于记录服务的调用编号即可。至于细节，</span></div><div class="line">        <span class="comment">// 大家如果感兴趣，可以自行分析</span></div><div class="line">        AtomicPositiveInteger sequence = sequences.get(key);</div><div class="line">        <span class="keyword">if</span> (sequence == <span class="keyword">null</span>) &#123;</div><div class="line">            sequences.putIfAbsent(key, <span class="keyword">new</span> AtomicPositiveInteger());</div><div class="line">            sequence = sequences.get(key);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// 获取当前的调用编号</span></div><div class="line">        <span class="keyword">int</span> currentSequence = sequence.getAndIncrement();</div><div class="line">        <span class="comment">// 如果最小权重小于最大权重，表明服务提供者之间的权重是不相等的</span></div><div class="line">        <span class="keyword">if</span> (maxWeight &gt; <span class="number">0</span> &amp;&amp; minWeight &lt; maxWeight) &#123;</div><div class="line">            <span class="comment">// 使用调用编号对权重总和进行取余操作</span></div><div class="line">            <span class="keyword">int</span> mod = currentSequence % weightSum;</div><div class="line">            <span class="comment">// 进行 maxWeight 次遍历</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxWeight; i++) &#123;</div><div class="line">                <span class="comment">// 遍历 invokerToWeightMap</span></div><div class="line">                <span class="keyword">for</span> (Map.Entry&lt;Invoker&lt;T&gt;, IntegerWrapper&gt; each : invokerToWeightMap.entrySet()) &#123;</div><div class="line">					<span class="comment">// 获取 Invoker</span></div><div class="line">                    <span class="keyword">final</span> Invoker&lt;T&gt; k = each.getKey();</div><div class="line">                    <span class="comment">// 获取权重包装类 IntegerWrapper</span></div><div class="line">                    <span class="keyword">final</span> IntegerWrapper v = each.getValue();</div><div class="line">                    </div><div class="line">                    <span class="comment">// 如果 mod = 0，且权重大于0，此时返回相应的 Invoker</span></div><div class="line">                    <span class="keyword">if</span> (mod == <span class="number">0</span> &amp;&amp; v.getValue() &gt; <span class="number">0</span>) &#123;</div><div class="line">                        <span class="keyword">return</span> k;</div><div class="line">                    &#125;</div><div class="line">                    </div><div class="line">                    <span class="comment">// mod != 0，且权重大于0，此时对权重和 mod 分别进行自减操作</span></div><div class="line">                    <span class="keyword">if</span> (v.getValue() &gt; <span class="number">0</span>) &#123;</div><div class="line">                        v.decrement();</div><div class="line">                        mod--;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 服务提供者之间的权重相等，此时通过轮询选择 Invoker</span></div><div class="line">        <span class="keyword">return</span> invokers.get(currentSequence % length);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// IntegerWrapper 是一个 int 包装类，主要包含了一个自减方法。</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerWrapper</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">int</span> value;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decrement</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">this</span>.value--;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">// 省略部分代码</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Docker搭建zookeeper集群]]></title>
-      <url>http://code.idea4j.com/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/</url>
-      <content type="html"><![CDATA[<h2 id="Docker搭建zookeeper集群"><a href="#Docker搭建zookeeper集群" class="headerlink" title="Docker搭建zookeeper集群"></a>Docker搭建zookeeper集群</h2><p>准备在3台虚拟机上搭建zookeeper集群</p>
-<h4 id="创建挂载目录"><a href="#创建挂载目录" class="headerlink" title="创建挂载目录"></a>创建挂载目录</h4><p>用于存储配置文件和数据，使用docker数据和配置文件等需要放在自己的宿主机，而不是容器内，特别是数据</p>
-<p><code>mkdir -p zookeeper/conf</code></p>
-<p><code>mkdir -p zookeeper/data</code></p>
-<h4 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h4><p>在zookeeper/data下创建zoo.cfg</p>
-<p>touch <code>zoo.cfg</code></p>
-<p>clientPort=2181<br>dataDir=/data<br>dataLogDir=/data/log<br>tickTime=2000<br>initLimit=5<br>syncLimit=2<br>autopurge.snapRetainCount=3<br>autopurge.purgeInterval=0<br>maxClientCnxns=60<br>server.111=10.255.200.168:2888:3888<br>server.222=10.255.200.174:2888:3888<br>server.233=10.255.200.172:2888:3888</p>
-<h4 id="配置myid"><a href="#配置myid" class="headerlink" title="配置myid"></a>配置myid</h4><p>在zookeeper/data目录下创建<strong>myid</strong>，并配置id，里面的<strong>id一定要和上面配置的server.id一致</strong></p>
-<p><code>touch myid</code></p>
-<p><code>echo 111 &gt; myid</code></p>
-<h4 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h4><p>docker run  –network host -v /usr/local/zookeeper/data:/data -v  /usr/local/zookeeper/conf:/conf –name zookeeper-2181 -d zookeeper:3.4.13</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[dubbo的原理]]></title>
-      <url>http://code.idea4j.com/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/</url>
-      <content type="html"><![CDATA[<p>dubbo的原理</p>
-<p>scp r cm pets</p>
-<p>框架设计</p>
-<p>启动解析</p>
-<p>服务暴露</p>
-<p>服务引用</p>
-<p>服务调用</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Dubbo请求数据的发送过程]]></title>
-      <url>http://code.idea4j.com/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/</url>
-      <content type="html"><![CDATA[<h3 id="Dubbo请求数据的发送过程"><a href="#Dubbo请求数据的发送过程" class="headerlink" title="Dubbo请求数据的发送过程"></a>Dubbo请求数据的发送过程</h3><p>调用过程（IMAF FLADR HHAANN） （3invoke + doInvoke）*2+3request+3send+write</p>
-<p>Proxy0#sayHello(String)</p>
-<p>​    -&gt;InvokerInvocationHandle#invoke</p>
-<p>​        -&gt;MockClusterInvoker#invoke</p>
-<p>​            -&gt;AbstractClusterInvoker#invoke</p>
-<p>​                -&gt;FailoverClusterInvoker#doInvoke</p>
-<p>​                    -&gt;Filter#invoke</p>
-<p>​                        -&gt;ListenerInvokerWrapper#invoke</p>
-<p>​                            -&gt;AbstractInvoker#invoke</p>
-<p>​                                -&gt;DubboInvoker#doInvoke</p>
-<p>​                                    -&gt;ReferenceCountExchangeClient#request</p>
-<p>​                                        -&gt;HeadExchangeClient#request</p>
-<p>​                                            -&gt;HeadExchangeChannel#request</p>
-<p>​                                                -&gt;AbstractPeer#send</p>
-<p>​                                                    -&gt;AbstractClient#send</p>
-<p>​                                                        -&gt;NettyChannel#send</p>
-<p>​                                                            -&gt;NioClientSocketChannel#write</p>
-<p>调用服务(NAMHAE)  messageReceved+receved*4+execute</p>
-<p>NettyHandler#messageReceived(ChannelHandlerContext, MessageEvent)  </p>
-<p>​    —&gt; AbstractPeer#received(Channel, Object)    </p>
-<p>​        —&gt; MultiMessageHandler#received(Channel, Object)      </p>
-<p>​            —&gt; HeartbeatHandler#received(Channel, Object)        </p>
-<p>​                —&gt; AllChannelHandler#received(Channel, Object)          </p>
-<p>​                    —&gt; ExecutorService#execute(Runnable)    // 由线程池执行后续的调用逻辑</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Java实现链表]]></title>
-      <url>http://code.idea4j.com/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/</url>
-      <content type="html"><![CDATA[<h1 id="Java实现链表"><a href="#Java实现链表" class="headerlink" title="Java实现链表"></a>Java实现链表</h1><p><strong>单链表</strong>是一种链式存取的数据结构，用一组地址任意的存储单元存放线性表中的数据元素。链表中的数据是以结点来表示的，每个结点的构成:元素(数据元素的映象) + 指针(指示后继元素存储位置)，元素就是存储数据的存储单元，指针就是连接每个结点的地址数据。<strong>(逻辑地址相连，物理地址不相连）</strong></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[GC日志配置]]></title>
-      <url>http://code.idea4j.com/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/</url>
-      <content type="html"><![CDATA[<p><strong>Java 8</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh</div><div class="line">LOG_DIR=&quot;/tmp/logs&quot;</div><div class="line">JAVA_OPT_LOG=&quot; -verbose:gc&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCDetails&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCDateStamps&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCApplicationStoppedTime&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintTenuringDistribution&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xloggc:$&#123;LOG_DIR&#125;/gc_%p.log&quot;</div><div class="line">JAVA_OPT_OOM=&quot; -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$&#123;LOG_DIR&#125; -XX:ErrorFile=$&#123;LOG_DIR&#125;/hs_error_pid%p.log &quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT_LOG&#125; $&#123;JAVA_OPT_OOM&#125;&quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -XX:-OmitStackTraceInFastThrow&quot;</div></pre></td></tr></table></figure>
-<p>-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps<br>-XX:+PrintGCApplicationStoppedTime -XX:+PrintTenuringDistribution<br>-Xloggc:/tmp/logs/gc_%p.log -XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=/tmp/logs -XX:ErrorFile=/tmp/logs/hs_error_pid%p.log<br>-XX:-OmitStackTraceInFastThrow</p>
-<p><strong>Java 13</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh</div><div class="line">LOG_DIR=&quot;/tmp/logs&quot;</div><div class="line">JAVA_OPT_LOG=&quot; -verbose:gc&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xlog:gc,gc+ref=debug,gc+heap=debug,gc+age=trace:file=$&#123;LOG_DIR&#125;/gc_%p.log:tags,uptime,time,level&quot;</div><div class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xlog:safepoint:file=$&#123;LOG_DIR&#125;/safepoint_%p.log:tags,uptime,time,level&quot;</div><div class="line">JAVA_OPT_OOM=&quot; -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$&#123;LOG_DIR&#125; -XX:ErrorFile=$&#123;LOG_DIR&#125;/hs_error_pid%p.log &quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT_LOG&#125; $&#123;JAVA_OPT_OOM&#125;&quot;</div><div class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -XX:-OmitStackTraceInFastThrow&quot;</div><div class="line">echo $JAVA_OPT</div></pre></td></tr></table></figure>
-<p>-verbose:gc -Xlog:gc,gc+ref=debug,gc+heap=debug,gc+age=trace:file<br>=/tmp/logs/gc<em>%p.log:tags,uptime,time,level -Xlog:safepoint:file=/tmp<br>/logs/safepoint</em>%p.log:tags,uptime,time,level -XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath=/tmp/logs -XX:ErrorFile=/tmp/logs/hs_error_pid%p.log<br>-XX:-OmitStackTraceInFastThrow</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Context初始化流程]]></title>
-      <url>http://code.idea4j.com/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/</url>
-      <content type="html"><![CDATA[<p>Context初始化流程</p>
-<p>1.prepareRefresh</p>
-<p>对刷新进行准备，包括设置开始时间、设置激活状态、初始化context环境中的占位符这个动作，根据之类的需求由子类来执行，然后验证是否却是必要的properties。</p>
-<p>2.ConfiguratbleListableBeanFactory beanFactory=obtainFreshBeanfactory();</p>
-<p>刷新并获得内部的Bean Factory。</p>
-<p>3.prepareBeanFactory(beanFactory);</p>
-<p>对beanFactory进行准备工作，比如设置类加载器和后置处理器，配置不进行自动装配的类型，注册默认的环境Bean。</p>
-<p>4.postProcessBeanFactory(beanFactory);</p>
-<p>为context的子类提供后置处理BeanFactory的扩展能力。如果子类想在Bean定义加载完成后，开始初始化上下文之前，做一些特殊逻辑，可以复写这个方法。</p>
-<p>5.invokeBeanFactotyPostProcessors(beanFactory);</p>
-<p>执行context中注册的beanfactory后缀处理器，这里有两种后置处理器一种是可以注册bean的后缀处理器。另一种是针对beanfactory进行处理的后置处理器。执行顺序是，先按照优先级执行可注册Bean的处理器，再按优先级执行针对Beanfactory的处理器。对springboot来书，这一步会进行BeanDefinition的解析。</p>
-<p>6.registerBeanPostProcessors(beanFactory);</p>
-<p>按照优先顺序在BeanFactory中注册Bean的后缀处理器，Bean后置处理器可以在Bean初始化前、后执行处理。</p>
-<p>7.initMessageSource();</p>
-<p>初始化消息源，消息源用来支持消息的国际化。</p>
-<p>8.initApplicationEventMulticaster();</p>
-<p>初始化应用事件广播器。事件广播器用来向ApplicationListener通知各种应用产生的事件，是一个标准的观察者模式。</p>
-<p>9.onRefresh();</p>
-<p>是留给子类的扩展步骤，用来让特定的Context子类初始化其他的bean。</p>
-<p>10.registerListeners();</p>
-<p>把实现了ApplicationListener的Bean注册到事件广播器，并对广播器中的早期未广播事件进行通知。</p>
-<p>11.finishBeanFactoryInitialization(beanFactory);</p>
-<p>冻结所有的Bean描述信息的修改，实例化非延迟加载的单例Bean</p>
-<p>12.finishRefresh();</p>
-<p>完成上下文的刷新工作，调用LifecycleProcessor的onFresh()方法以及发布ContextRefreshedEvent事件。</p>
-<p>13.resetCommonCaches();</p>
-<p>在finally中，执行第13步，重置公共的缓存，比如ReflectonUtils中的缓存、AnnotationUtils中的缓存等等。</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[面试题]]></title>
       <url>http://code.idea4j.com/2020/05/28/mst/</url>
       <content type="html"><![CDATA[<a id="more"></a>
@@ -2492,8 +2546,7 @@ G --> 注解处理机制</pre>
 A[系统性能核心关注点] -->B(基础设施优化)
 A --> C(系统层网络优化)
 A --> D(应用层编码优化)
-A --> E(分布式系统优化)
-C --></pre>
+A --> E(分布式系统优化)</pre>
 
 <a id="more"></a>]]></content>
     </entry>
@@ -2531,6 +2584,85 @@ C --></pre>
 <h3 id="3、索引类原则"><a href="#3、索引类原则" class="headerlink" title="3、索引类原则"></a>3、索引类原则</h3><p>合理使用索引(改善查询,减慢更新,索引一定不是越多越好);<br>字符字段必须建前缀索引;<br>不在索引做列运算;<br>innodb主键推荐使用自增列(主键建立聚簇索引,主键不应该被修改,字符串不应该做主键)(理解Innodb的索引保存结构就知道了);<br>不用外键(由程序保证约束);</p>
 <h3 id="4、sql类原则"><a href="#4、sql类原则" class="headerlink" title="4、sql类原则"></a>4、sql类原则</h3><p>sql语句尽可能简单(一条sql只能在一个cpu运算,大语句拆小语句,减少锁时间,一条大sql可以堵死整个库);<br>简单的事务;<br>避免使用trig/func(触发器、函数不用客户端程序取而代之);<br>不用select <em>(消耗cpu,io,内存,带宽,这种程序不具有扩展性);<br>OR改写为IN(or的效率是n级别);<br>OR改写为UNION(mysql的索引合并很弱智);<br>select id from t where phone = ’159′ or name = ‘john’;<br>=&gt;<br>select id from t where phone=’159′<br>union<br>select id from t where name=’jonh’<br>避免负向%;<br>慎用count(</em>);<br>limit高效分页(limit越大，效率越低);<br>使用union all替代union(union有去重开销);<br>少用连接join;<br>使用group by;<br>请使用同类型比较;<br>打散批量更新;</p>
 <h3 id="5、性能分析工具"><a href="#5、性能分析工具" class="headerlink" title="5、性能分析工具"></a>5、性能分析工具</h3><p>show profile;<br>mysqlsla;<br>mysqldumpslow;<br>explain;<br>show slow log;<br>show processlist;</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[程序员必备知识点]]></title>
+      <url>http://code.idea4j.com/2019/12/14/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86%E7%82%B9/</url>
+      <content type="html"><![CDATA[<h2 id="程序员必备知识点"><a href="#程序员必备知识点" class="headerlink" title="程序员必备知识点"></a>程序员必备知识点</h2><h3 id="1、tcp-三次握手，四次挥手"><a href="#1、tcp-三次握手，四次挥手" class="headerlink" title="1、tcp 三次握手，四次挥手"></a>1、tcp 三次握手，四次挥手</h3><p>为什么连接的时候是三次握手，关闭的时候却是四次握手？</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200928193010926.png" alt="image-20200928193010926"></p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200928193246073.png" alt="image-20200928193246073"></p>
+<p>原文链接：<a href="https://blog.csdn.net/whuslei/article/details/6667471" target="_blank" rel="external">https://blog.csdn.net/whuslei/article/details/6667471</a></p>
+<h3 id="2、tcp-拆包、粘包问题。"><a href="#2、tcp-拆包、粘包问题。" class="headerlink" title="2、tcp 拆包、粘包问题。"></a>2、tcp 拆包、粘包问题。</h3><p>应用程序写入的数据大于套接字缓冲区大小，这将会发生拆包。</p>
+<p>应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发生粘包。</p>
+<p>进行MSS（最大报文长度）大小的TCP分段，当TCP报文长度-TCP头部长度&gt;MSS的时候将发生拆包。</p>
+<p>接收方法不及时读取套接字缓冲区数据，这将发生粘包。</p>
+<h4 id="粘包、拆包解决办法"><a href="#粘包、拆包解决办法" class="headerlink" title="粘包、拆包解决办法"></a>粘包、拆包解决办法</h4><p>TCP本身是面向流的，作为网络服务器，如何从这源源不断涌来的数据流中拆分出或者合并出有意义的信息呢？通常会有以下一些常用的方法：</p>
+<p>1、发送端给每个数据包添加包首部，首部中应该至少包含数据包的长度，这样接收端在接收到数据后，通过读取包首部的长度字段，便知道每一个数据包的实际长度了。</p>
+<p>2、发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。</p>
+<p>3、可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。</p>
+<p>3、linux io 类型。</p>
+<p>4、线程reactor 模型。</p>
+<p>5、redis 分布式锁</p>
+<p>6、sortSet 排序时间复杂度，及常用命令</p>
+<h2 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h2><h3 id="ArrayList源码"><a href="#ArrayList源码" class="headerlink" title="ArrayList源码"></a>ArrayList源码</h3><h3 id="HashMap源码"><a href="#HashMap源码" class="headerlink" title="HashMap源码"></a>HashMap源码</h3><h3 id="ConcurrentHashMap源码"><a href="#ConcurrentHashMap源码" class="headerlink" title="ConcurrentHashMap源码"></a>ConcurrentHashMap源码</h3><h3 id="线程池ThreadPool"><a href="#线程池ThreadPool" class="headerlink" title="线程池ThreadPool"></a>线程池ThreadPool</h3><h3 id="synthronized-volatile-Lock的使用和区别"><a href="#synthronized-volatile-Lock的使用和区别" class="headerlink" title="synthronized, volatile, Lock的使用和区别"></a>synthronized, volatile, Lock的使用和区别</h3><h3 id="NIO实现"><a href="#NIO实现" class="headerlink" title="NIO实现"></a>NIO实现</h3><h3 id="工厂，代理，单例模式（单例模式多线程问题）"><a href="#工厂，代理，单例模式（单例模式多线程问题）" class="headerlink" title="工厂，代理，单例模式（单例模式多线程问题）"></a>工厂，代理，单例模式（单例模式多线程问题）</h3><h3 id="cglib与proxy的使用和区别"><a href="#cglib与proxy的使用和区别" class="headerlink" title="cglib与proxy的使用和区别"></a>cglib与proxy的使用和区别</h3><h3 id="Java可重入锁和读写锁"><a href="#Java可重入锁和读写锁" class="headerlink" title="Java可重入锁和读写锁"></a>Java可重入锁和读写锁</h3><h3 id="JVM内存模型"><a href="#JVM内存模型" class="headerlink" title="JVM内存模型"></a>JVM内存模型</h3><h3 id="JVM-GC机制和相关算法"><a href="#JVM-GC机制和相关算法" class="headerlink" title="JVM GC机制和相关算法"></a>JVM GC机制和相关算法</h3><h3 id="JVM类的加载"><a href="#JVM类的加载" class="headerlink" title="JVM类的加载"></a>JVM类的加载</h3><h3 id="JVM性能调优的大体步骤"><a href="#JVM性能调优的大体步骤" class="headerlink" title="JVM性能调优的大体步骤"></a>JVM性能调优的大体步骤</h3><h3 id="CAS算法"><a href="#CAS算法" class="headerlink" title="CAS算法"></a>CAS算法</h3><h3 id="一致性Hash"><a href="#一致性Hash" class="headerlink" title="一致性Hash"></a>一致性Hash</h3><h3 id="arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）"><a href="#arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）" class="headerlink" title="arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）"></a>arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）</h3><h3 id="hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？"><a href="#hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？" class="headerlink" title="hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？"></a>hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？</h3><h3 id="nio和bio相比有啥不同（aio呢）"><a href="#nio和bio相比有啥不同（aio呢）" class="headerlink" title="nio和bio相比有啥不同（aio呢）"></a>nio和bio相比有啥不同（aio呢）</h3><h3 id="jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）"><a href="#jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）" class="headerlink" title="jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）"></a>jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）</h3><h3 id="成员变量、局部变量等等的会分配到jvm的哪块儿区域"><a href="#成员变量、局部变量等等的会分配到jvm的哪块儿区域" class="headerlink" title="成员变量、局部变量等等的会分配到jvm的哪块儿区域"></a>成员变量、局部变量等等的会分配到jvm的哪块儿区域</h3><h3 id="mysql的引擎知道哪些，有啥区别"><a href="#mysql的引擎知道哪些，有啥区别" class="headerlink" title="mysql的引擎知道哪些，有啥区别"></a>mysql的引擎知道哪些，有啥区别</h3><h3 id="乐观锁、悲观锁"><a href="#乐观锁、悲观锁" class="headerlink" title="乐观锁、悲观锁"></a>乐观锁、悲观锁</h3><h3 id="索引相关的（btree、失效、组合索引的最左分配原则、explain使用）"><a href="#索引相关的（btree、失效、组合索引的最左分配原则、explain使用）" class="headerlink" title="索引相关的（btree、失效、组合索引的最左分配原则、explain使用）"></a>索引相关的（btree、失效、组合索引的最左分配原则、explain使用）</h3><h3 id="线程池相关"><a href="#线程池相关" class="headerlink" title="线程池相关"></a>线程池相关</h3><h3 id="volitatle关键字"><a href="#volitatle关键字" class="headerlink" title="volitatle关键字"></a>volitatle关键字</h3><h3 id="lock的读写、中断、自旋"><a href="#lock的读写、中断、自旋" class="headerlink" title="lock的读写、中断、自旋"></a>lock的读写、中断、自旋</h3><h3 id="对threadLocal的理解"><a href="#对threadLocal的理解" class="headerlink" title="对threadLocal的理解"></a>对threadLocal的理解</h3><h3 id="序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）"><a href="#序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）" class="headerlink" title="序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）"></a>序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）</h3><h3 id="servlet是否线程安全（为什么你认为是-否）"><a href="#servlet是否线程安全（为什么你认为是-否）" class="headerlink" title="servlet是否线程安全（为什么你认为是/否）"></a>servlet是否线程安全（为什么你认为是/否）</h3><h3 id="对dubbo的理解（画下provider、consumer、注册中心、监控的关系）"><a href="#对dubbo的理解（画下provider、consumer、注册中心、监控的关系）" class="headerlink" title="对dubbo的理解（画下provider、consumer、注册中心、监控的关系）"></a>对dubbo的理解（画下provider、consumer、注册中心、监控的关系）</h3><h3 id="consumer1次调用provider，在dubbo内部各模块运转的流程"><a href="#consumer1次调用provider，在dubbo内部各模块运转的流程" class="headerlink" title="consumer1次调用provider，在dubbo内部各模块运转的流程"></a>consumer1次调用provider，在dubbo内部各模块运转的流程</h3><h3 id="谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）"><a href="#谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）" class="headerlink" title="谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）"></a>谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）</h3><h3 id="maven中install、package命令的区别"><a href="#maven中install、package命令的区别" class="headerlink" title="maven中install、package命令的区别"></a>maven中install、package命令的区别</h3><h3 id="用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？"><a href="#用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？" class="headerlink" title="用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？"></a>用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？</h3><h3 id="int的位数"><a href="#int的位数" class="headerlink" title="int的位数"></a>int的位数</h3><p>1.字节：byte：用来计量存储容量的一种计量单位；位：bit</p>
+<p>2.一个字节等于8位  1byte = 8bit</p>
+<p>char占用的是2个字节 16位，所以一个char类型的可以存储一个汉字。</p>
+<p>整型：</p>
+<p>byte:1个字节 8位 -128~127</p>
+<p>short ：2个字节 16位</p>
+<p>int ：4个字节 32位</p>
+<p>long：8个字节 64位</p>
+<p>浮点型：</p>
+<p>float：4个字节 32 位</p>
+<p>double ：8个字节 64位</p>
+<p>注：默认的是double类型，如3.14是double类型的，加后缀F（3.14F）则为float类型的。</p>
+<p>char类型：</p>
+<p>char：2个字节。</p>
+<p>Boolean 类型</p>
+<p>boolean: （true or false）（并未指明是多少字节  1字节  1位 4字节）</p>
+<p>补充：BigInteger类实现了任意精度的整数运算，BigDecimal实现了任意精度的浮点数运算。</p>
+<h3 id="hashMap-ConcurrentHashMap-区别，hash冲突如何解决的？"><a href="#hashMap-ConcurrentHashMap-区别，hash冲突如何解决的？" class="headerlink" title="hashMap ConcurrentHashMap 区别，hash冲突如何解决的？"></a>hashMap ConcurrentHashMap 区别，hash冲突如何解决的？</h3><h3 id="synchronized-和lock的区别，synchronized是悲观锁还是乐观锁，cas算法"><a href="#synchronized-和lock的区别，synchronized是悲观锁还是乐观锁，cas算法" class="headerlink" title="synchronized 和lock的区别，synchronized是悲观锁还是乐观锁，cas算法"></a>synchronized 和lock的区别，synchronized是悲观锁还是乐观锁，cas算法</h3><p><a href="https://km.sankuai.com/page/34303789" target="_blank" rel="external">https://km.sankuai.com/page/34303789</a></p>
+<p>即compare and swap（比较与交换），是一种有名的无锁算法。无锁编程，即不使用锁的情况下实现多线程之间的变量同步，也就是在没有线程被阻塞的情况下实现变量的同步，所以也叫非阻塞同步（Non-blocking Synchronization）。CAS算法涉及到三个操作数</p>
+<p>需要读写的内存值 V</p>
+<p>进行比较的值 A</p>
+<p>拟写入的新值 B</p>
+<p>当且仅当 V 的值等于 A时，CAS通过原子方式用新值B来更新V的值，否则不会执行任何操作（比较和替换是一个原子操作）。一般情况下是一个自旋操作，即不断的重试。</p>
+<h3 id="3、谈谈threadLocal的理解、InheritableThreadLocal-、TransmittableThreadLocal-以及fastThreadLocal"><a href="#3、谈谈threadLocal的理解、InheritableThreadLocal-、TransmittableThreadLocal-以及fastThreadLocal" class="headerlink" title="3、谈谈threadLocal的理解、InheritableThreadLocal 、TransmittableThreadLocal 以及fastThreadLocal"></a>3、谈谈threadLocal的理解、InheritableThreadLocal 、TransmittableThreadLocal 以及fastThreadLocal</h3><p>参考答案：<a href="https://mlog.club/article/22197" target="_blank" rel="external">https://mlog.club/article/22197</a></p>
+<p>不清楚，使用注意不清楚。</p>
+<h3 id="3、线程池"><a href="#3、线程池" class="headerlink" title="3、线程池"></a>3、线程池</h3><p><a href="https://www.cnblogs.com/shijiaqi1066/p/3412300.html" target="_blank" rel="external">https://www.cnblogs.com/shijiaqi1066/p/3412300.html</a></p>
+<p>构建常用的线程池不清楚，线程池核心参数不清楚 ，流程不清楚</p>
+<h3 id="4、请你说一下自己对于-AQS-原理的理解、"><a href="#4、请你说一下自己对于-AQS-原理的理解、" class="headerlink" title="4、请你说一下自己对于 AQS 原理的理解、"></a>4、请你说一下自己对于 AQS 原理的理解、</h3><p>参考答案：<a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Multithread/AQS.md" target="_blank" rel="external">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Multithread/AQS.md</a></p>
+<h3 id="5、CyclicBarrier-和-CountDownLatch-的区别"><a href="#5、CyclicBarrier-和-CountDownLatch-的区别" class="headerlink" title="5、CyclicBarrier 和 CountDownLatch 的区别"></a>5、CyclicBarrier 和 CountDownLatch 的区别</h3><p>对于 CountDownLatch 来说，重点是“一个线程（多个线程）等待”，而其他的 N 个线程在完成“某件事情”之后，可以终止，也可以等待。而对于 CyclicBarrier，重点是多个线程，在任意一个线程没有完成，所有的线程都必须等待。</p>
+<p>CountDownLatch 是计数器，线程完成一个记录一个，只不过计数不是递增而是递减，而 CyclicBarrier 更像是一个阀门，需要所有线程都到达，阀门才能打开，然后继续执行。</p>
+<h3 id="6、aop实现原理：动态代理、cglib，"><a href="#6、aop实现原理：动态代理、cglib，" class="headerlink" title="6、aop实现原理：动态代理、cglib，"></a>6、aop实现原理：动态代理、cglib，</h3><p>两种实现有什么区别：基于接口、基于继承类</p>
+<h3 id="MyBatis中-与-的区别"><a href="#MyBatis中-与-的区别" class="headerlink" title="MyBatis中#与$的区别"></a>MyBatis中#与$的区别</h3><h2 id="jvm"><a href="#jvm" class="headerlink" title="jvm"></a>jvm</h2><h3 id="1、描述下jvm内存模型"><a href="#1、描述下jvm内存模型" class="headerlink" title="1、描述下jvm内存模型"></a>1、描述下jvm内存模型</h3><h3 id="2、JVM参数Xms-Xmx是如何设置的-如果大小是一至-为什么这样设置"><a href="#2、JVM参数Xms-Xmx是如何设置的-如果大小是一至-为什么这样设置" class="headerlink" title="2、JVM参数Xms Xmx是如何设置的, 如果大小是一至,为什么这样设置?"></a>2、JVM参数Xms Xmx是如何设置的, 如果大小是一至,为什么这样设置?</h3><p>参考答案:</p>
+<p>Xmx设置JVM 的最大可用内存,Xms 设置JVM实际使用内存,一般Xmx和Xms相同,这是因为当Xmx内存空间不够用时,将进行扩容导致Full GC。将Xmx和Xms设置成相同的值,避免因Xms偏小导致频繁重新分配内存,影响应用使用。</p>
+<h3 id="2、有遇到过OOM么-什么情况-怎么发现的-怎么查原因的"><a href="#2、有遇到过OOM么-什么情况-怎么发现的-怎么查原因的" class="headerlink" title="2、有遇到过OOM么,什么情况,怎么发现的,怎么查原因的?"></a>2、有遇到过OOM么,什么情况,怎么发现的,怎么查原因的?</h3><p>考察点:jstat mat工具</p>
+<h3 id="3、如何定位一个CPU-Load过高的java线程？"><a href="#3、如何定位一个CPU-Load过高的java线程？" class="headerlink" title="3、如何定位一个CPU Load过高的java线程？"></a>3、如何定位一个CPU Load过高的java线程？</h3><p>top -c</p>
+<p>top -Hp pid</p>
+<p>printf “%x\n” pid （将pid转换16进制表示的）</p>
+<p>定位线程堆栈 jstack 29054 | grep ‘0x1a17’ -C30 —color </p>
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>分布式锁：一般，只是提到加超时时间</p>
+<p>持久化：rdb、aof，可以</p>
+<p>AOF更安全，可将数据及时同步到文件中，但需要较多的磁盘IO，AOF文件尺寸较大，文件内容恢复相对较慢， 也更完整。</p>
+<p>RDB持久化，安全性较差，它是正常时期数据备份及 master-slave数据同步的最佳手段，文件尺寸较小，恢复数度较快。</p>
+<p>缓存穿透：可以</p>
+<p>注意事项：大key</p>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p>事务隔离级别：OK，默认级别不清楚</p>
+<p>慢查询：explain 不清楚</p>
+<p>mysql 常见存储引警-清楚 ，聚簇索引和非聚簇索引的区别不清楚</p>
+<p>索引最左前缀：理解，了解了</p>
+<p>分表：分表维度理解可以</p>
+<p>数据迁移：停服务，mq双写</p>
+<p>怎么保证迁移后数据正确：记录数，</p>
+<p>mvcc ：同一份数据临时保留多版本的一种方式，进而实现并发控制</p>
+<h2 id="算法："><a href="#算法：" class="headerlink" title="算法："></a>算法：</h2><p>1、螺旋打印矩阵</p>
+<p><a href="https://leetcode-cn.com/problems/spiral-matrix/solution/luo-xuan-ju-zhen-by-leetcode/" target="_blank" rel="external">https://leetcode-cn.com/problems/spiral-matrix/solution/luo-xuan-ju-zhen-by-leetcode/</a></p>
+<p>2、倒叙速出 </p>
+<p>主动学习：看过什么书，印象深的点是什么？如何自我学习？</p>
+<p>Springboot学习，大V的学习问题解决思路；自己做笔记！</p>
 ]]></content>
     </entry>
     
@@ -2798,10 +2930,10 @@ A(加载<br>loading) --> B(验证<br>Verification)--> C(准备<br>Preparation)--
     </entry>
     
     <entry>
-      <title><![CDATA[mylife170320]]></title>
-      <url>http://code.idea4j.com/2017/03/20/mylife170320/</url>
-      <content type="html"><![CDATA[<p>  又是周一，和以往的周一样被闹铃叫醒，依旧在床上赖了一会儿才战胜疲惫挣扎着起了床。洗漱后出门，锁门的时候口里小声地默念着<br>：“锁了，锁了，锁了……”，这样给自己一个暗示，确定门锁了这个事实已经发生了，以免到了楼下甚至更远突然忘记是否锁门使得自己<br>还得回了再确认一遍。</p>
-<p>  空白地步行5分钟左右后就到了地铁站，地铁入口早就排起了长龙等待安检。宋家庄这个地方有个无包通道，这里<br>不带包就无需安检直接通过，为了节约上班时间，我基本上就不带包。刷卡进了站就往5号线的楼梯走，上班高峰期的自动扶梯是不运行的<br>楼梯上已经熙熙攘攘的挤满了人，一步一个台阶地下了楼梯，就看到一班地铁刚刚关了门，这是个好兆头，因为这代表下一班地铁我应该可以<br>上去。早上由于上班高峰，地铁几乎不得1分钟就会有一班。今天比较顺利，进门的时候关门的铃声还没响。5号线宋家庄是始发站，为了<br>给下几个站留位置，开门时间很短，在排队的人刚一半的时候就会关门，所以人们听到铃声会瞬间往车里挤。正是这个原因，几乎每天<br>都能听见吵架声，所幸今天我这个车厢没有。</p>
+      <title><![CDATA[mac按键符号]]></title>
+      <url>http://code.idea4j.com/2017/03/20/mac%20%E6%8C%89%E9%94%AE%E7%AC%A6%E5%8F%B7/</url>
+      <content type="html"><![CDATA[<h1 id="mac按键符号"><a href="#mac按键符号" class="headerlink" title="mac按键符号"></a>mac按键符号</h1><p>符号    说明<br>⌘    Command<br>⇧    Shift<br>⌥    Option<br>⌃    Control<br>↩︎    Return/Enter<br>⌫    Delete<br>⌦    向前删除键（Fn+Delete）<br>↑    上箭头<br>↓    下箭头<br>→    右箭头<br>←    左箭头<br>⇞    Page Up（Fn+↑）<br>⇟    Page Down（Fn+↓）<br>Home    Fn + ←<br>End    Fn + →<br>⇥    右制表符（Tab键）<br>⇤    左制表符（Shift+Tab）<br>⎋    Escape (Esc)</p>
+<h2 id="mac输入特殊符号的方法"><a href="#mac输入特殊符号的方法" class="headerlink" title="mac输入特殊符号的方法"></a>mac输入特殊符号的方法</h2><p>⚠️ ⌘+⌃+space 可以直接调出输入表情和特殊符号的选框, 开始显示的是emoji表情, 一直往下面拉滑或者点右上角的图标就是各种特殊符号咯.</p>
 ]]></content>
     </entry>
     
@@ -2814,14 +2946,6 @@ A(加载<br>loading) --> B(验证<br>Verification)--> C(准备<br>Preparation)--
 <p>显示效果如下 $ y =x+z$</p>
 <p>如果想要公式居中，再套上一对就行：$$y = x^2 + z^3$$<br>显示效果如下：<br>$$<br>y = x^2 + z^3<br>$$<br>如果想要给公式后面添加编号，那么在公式后添加空格 + \tag{1}就可以了：<br>$$y = x^2 + z^3 \tag{1}$$<br>显示效果如下：<br>$$<br>y = x^2 + z^3 \tag{1}<br>$$</p>
 <p>当然这只是最简单的使用，复杂的编辑方式还是查阅文档的好。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[mac按键符号]]></title>
-      <url>http://code.idea4j.com/2017/03/20/mac%20%E6%8C%89%E9%94%AE%E7%AC%A6%E5%8F%B7/</url>
-      <content type="html"><![CDATA[<h1 id="mac按键符号"><a href="#mac按键符号" class="headerlink" title="mac按键符号"></a>mac按键符号</h1><p>符号    说明<br>⌘    Command<br>⇧    Shift<br>⌥    Option<br>⌃    Control<br>↩︎    Return/Enter<br>⌫    Delete<br>⌦    向前删除键（Fn+Delete）<br>↑    上箭头<br>↓    下箭头<br>→    右箭头<br>←    左箭头<br>⇞    Page Up（Fn+↑）<br>⇟    Page Down（Fn+↓）<br>Home    Fn + ←<br>End    Fn + →<br>⇥    右制表符（Tab键）<br>⇤    左制表符（Shift+Tab）<br>⎋    Escape (Esc)</p>
-<h2 id="mac输入特殊符号的方法"><a href="#mac输入特殊符号的方法" class="headerlink" title="mac输入特殊符号的方法"></a>mac输入特殊符号的方法</h2><p>⚠️ ⌘+⌃+space 可以直接调出输入表情和特殊符号的选框, 开始显示的是emoji表情, 一直往下面拉滑或者点右上角的图标就是各种特殊符号咯.</p>
 ]]></content>
     </entry>
     
@@ -2840,6 +2964,14 @@ A(加载<br>loading) --> B(验证<br>Verification)--> C(准备<br>Preparation)--
 <p>这里是开启了指针压缩，开启指针压缩后，对象头占用字节为14，对象引用占用字节为4，那么，</p>
 <p>浅堆的大小为：对象头（12）+ 两个对象引用（4*2）= 20，20不是8的倍数需要补齐，所以浅堆的大小为24.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">* -XX:+UseCompressedOops开启指针压缩（默认） oop对象指针</div><div class="line">* -XX:-UseCompressedOops关闭指针压缩</div></pre></td></tr></table></figure>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[mylife170320]]></title>
+      <url>http://code.idea4j.com/2017/03/20/mylife170320/</url>
+      <content type="html"><![CDATA[<p>  又是周一，和以往的周一样被闹铃叫醒，依旧在床上赖了一会儿才战胜疲惫挣扎着起了床。洗漱后出门，锁门的时候口里小声地默念着<br>：“锁了，锁了，锁了……”，这样给自己一个暗示，确定门锁了这个事实已经发生了，以免到了楼下甚至更远突然忘记是否锁门使得自己<br>还得回了再确认一遍。</p>
+<p>  空白地步行5分钟左右后就到了地铁站，地铁入口早就排起了长龙等待安检。宋家庄这个地方有个无包通道，这里<br>不带包就无需安检直接通过，为了节约上班时间，我基本上就不带包。刷卡进了站就往5号线的楼梯走，上班高峰期的自动扶梯是不运行的<br>楼梯上已经熙熙攘攘的挤满了人，一步一个台阶地下了楼梯，就看到一班地铁刚刚关了门，这是个好兆头，因为这代表下一班地铁我应该可以<br>上去。早上由于上班高峰，地铁几乎不得1分钟就会有一班。今天比较顺利，进门的时候关门的铃声还没响。5号线宋家庄是始发站，为了<br>给下几个站留位置，开门时间很短，在排队的人刚一半的时候就会关门，所以人们听到铃声会瞬间往车里挤。正是这个原因，几乎每天<br>都能听见吵架声，所幸今天我这个车厢没有。</p>
+]]></content>
     </entry>
     
     <entry>
@@ -4781,6 +4913,17 @@ A(加载<br>loading) --> B(验证<br>Verification)--> C(准备<br>Preparation)--
     </entry>
     
     <entry>
+      <title><![CDATA[Node.js 创建第一个应用]]></title>
+      <url>http://code.idea4j.com/2016/08/14/node1/</url>
+      <content type="html"><![CDATA[<p>node第一个应用<br><a id="more"></a></p>
+<h2 id="步骤一、引入-required-模块"><a href="#步骤一、引入-required-模块" class="headerlink" title="步骤一、引入 required 模块"></a>步骤一、引入 required 模块</h2><p>使用 require 指令来载入 http 模块，并将实例化的 HTTP 赋值给变量 http，实例如下:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="步骤二、创建服务器"><a href="#步骤二、创建服务器" class="headerlink" title="步骤二、创建服务器"></a>步骤二、创建服务器</h2><p>使用 http.createServer() 方法创建服务器，并使用 listen 方法绑定 8888 端口。 函数通过 request, response 参数来接收和响应数据。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">request,response</span>) </span>&#123;</div><div class="line">    response.writeHead(<span class="number">200</span>,&#123;<span class="string">'Content-Type'</span>:<span class="string">'text/plain'</span>&#125;);</div><div class="line">    response.end(<span class="string">'Hello World\n'</span>);</div><div class="line">  </div><div class="line">&#125;).listen(<span class="number">8888</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"Server running at http://localhost:8888/"</span>);</div></pre></td></tr></table></figure></p>
+<p>使用 node 命令执行以上的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node server.js</div></pre></td></tr></table></figure></p>
+<h2 id="gif实例"><a href="#gif实例" class="headerlink" title="gif实例"></a>gif实例</h2><p><img src="/2016/08/14/node1/node1.gif" alt="node1实例"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[排序]]></title>
       <url>http://code.idea4j.com/2016/08/14/%E6%8E%92%E5%BA%8F/</url>
       <content type="html"><![CDATA[<h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><h2 id="基于比较的排序算法"><a href="#基于比较的排序算法" class="headerlink" title="基于比较的排序算法:"></a>基于比较的排序算法:</h2><h3 id="BUB-冒泡排序"><a href="#BUB-冒泡排序" class="headerlink" title="BUB - 冒泡排序"></a>BUB - 冒泡排序</h3><h4 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h4><p>1.比较相邻的元素，如果第一个比第二个大，就交换他们两个；</p>
@@ -4809,6 +4952,12 @@ A(加载<br>loading) --> B(验证<br>Verification)--> C(准备<br>Preparation)--
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(<span class="keyword">int</span>[] a)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; a.length ; i++) &#123;</div><div class="line">            <span class="comment">//第一个元素为一个有序部分，故而，从数组第二个元素提取</span></div><div class="line">            <span class="keyword">int</span> value = a[i];</div><div class="line">            <span class="comment">//依次和有序部分从后往前比较，</span></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i - <span class="number">1</span>; j &gt;<span class="number">0</span>; j--) &#123;</div><div class="line">                <span class="comment">//如果取出的元素小于有序部分的元素，</span></div><div class="line">                <span class="keyword">if</span> (a[j] &gt; value) &#123;</div><div class="line">                    <span class="comment">//那么有序部分的元素往后移动一位 即有序部分下标+1</span></div><div class="line">                    a[j+<span class="number">1</span>] = a[j];</div><div class="line">                    <span class="comment">//否则结束比较，提取元素插入最后移动的哪个元素的位置</span></div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    a[j+<span class="number">1</span>] = value;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <h3 id="MER-归并排序-递归实现"><a href="#MER-归并排序-递归实现" class="headerlink" title="MER - 归并排序 (递归实现)"></a>MER - 归并排序 (递归实现)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> 排序数组</div><div class="line">    * <span class="doctag">@param</span> 数组开头下标</div><div class="line">    * <span class="doctag">@param</span> 数组长度</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] mergeSort(<span class="keyword">int</span>[] a, <span class="keyword">int</span> l, <span class="keyword">int</span> h) &#123;</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (l == h) &#123;</div><div class="line">           <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;a[l]&#125;;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">int</span> middle = l+(h-l)/<span class="number">2</span>;</div><div class="line">       <span class="keyword">int</span>[] leftArray = mergeSort(a, l, middle);</div><div class="line">       <span class="keyword">int</span>[] rightArray = mergeSort(a, middle+<span class="number">1</span>, h);</div><div class="line">       <span class="comment">//新有序数组</span></div><div class="line">       <span class="keyword">int</span>[] newNum = <span class="keyword">new</span> <span class="keyword">int</span>[leftArray.length + rightArray.length];</div><div class="line"></div><div class="line">       <span class="keyword">int</span> leftIndex=<span class="number">0</span>,rightIndex=<span class="number">0</span>,newIndex=<span class="number">0</span>;</div><div class="line"></div><div class="line">       <span class="keyword">while</span> (leftIndex &lt; leftArray.length &amp;&amp; rightIndex &lt; rightArray.length) &#123;</div><div class="line">           newNum[newIndex++]= leftArray[leftIndex]&lt;rightArray[rightIndex]?leftArray[leftIndex++]:rightArray[rightIndex++];</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">while</span> (leftIndex &lt; leftArray.length) &#123;</div><div class="line">           newNum[newIndex++] = leftArray[leftIndex++];</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">while</span> (rightIndex &lt; rightArray.length) &#123;</div><div class="line">           newNum[newIndex++] = rightArray[rightIndex++];</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> newNum;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <h3 id="QUI-快速排序-递归实现"><a href="#QUI-快速排序-递归实现" class="headerlink" title="QUI - 快速排序 (递归实现)"></a>QUI - 快速排序 (递归实现)</h3><h3 id="R-Q-随机快速排序-递归实现"><a href="#R-Q-随机快速排序-递归实现" class="headerlink" title="R-Q - 随机快速排序 (递归实现)"></a>R-Q - 随机快速排序 (递归实现)</h3><h2 id="不基于比较的排序算法"><a href="#不基于比较的排序算法" class="headerlink" title="不基于比较的排序算法:"></a>不基于比较的排序算法:</h2><h3 id="COU-计数排序"><a href="#COU-计数排序" class="headerlink" title="COU - 计数排序"></a>COU - 计数排序</h3><h3 id="RAD-基数排序"><a href="#RAD-基数排序" class="headerlink" title="RAD - 基数排序"></a>RAD - 基数排序</h3>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[深克隆]]></title>
+      <url>http://code.idea4j.com/2016/08/14/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
+      <content type="html"><![CDATA[<h1 id="深克隆和浅克隆有什么区别"><a href="#深克隆和浅克隆有什么区别" class="headerlink" title="深克隆和浅克隆有什么区别"></a>深克隆和浅克隆有什么区别</h1>]]></content>
     </entry>
     
     <entry>
@@ -4875,23 +5024,6 @@ A(loading)-->B(verifying)-->C(preparing)-->D(resolving)-->E(initializing)-->F(us
 <li>执行构造器中的其他代码，即super之外的所有代码</li>
 </ol>
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Node.js 创建第一个应用]]></title>
-      <url>http://code.idea4j.com/2016/08/14/node1/</url>
-      <content type="html"><![CDATA[<p>node第一个应用<br><a id="more"></a></p>
-<h2 id="步骤一、引入-required-模块"><a href="#步骤一、引入-required-模块" class="headerlink" title="步骤一、引入 required 模块"></a>步骤一、引入 required 模块</h2><p>使用 require 指令来载入 http 模块，并将实例化的 HTTP 赋值给变量 http，实例如下:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div></pre></td></tr></table></figure></p>
-<h2 id="步骤二、创建服务器"><a href="#步骤二、创建服务器" class="headerlink" title="步骤二、创建服务器"></a>步骤二、创建服务器</h2><p>使用 http.createServer() 方法创建服务器，并使用 listen 方法绑定 8888 端口。 函数通过 request, response 参数来接收和响应数据。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">request,response</span>) </span>&#123;</div><div class="line">    response.writeHead(<span class="number">200</span>,&#123;<span class="string">'Content-Type'</span>:<span class="string">'text/plain'</span>&#125;);</div><div class="line">    response.end(<span class="string">'Hello World\n'</span>);</div><div class="line">  </div><div class="line">&#125;).listen(<span class="number">8888</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"Server running at http://localhost:8888/"</span>);</div></pre></td></tr></table></figure></p>
-<p>使用 node 命令执行以上的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">node server.js</div></pre></td></tr></table></figure></p>
-<h2 id="gif实例"><a href="#gif实例" class="headerlink" title="gif实例"></a>gif实例</h2><p><img src="/2016/08/14/node1/node1.gif" alt="node1实例"></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[深克隆]]></title>
-      <url>http://code.idea4j.com/2016/08/14/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/</url>
-      <content type="html"><![CDATA[<h1 id="深克隆和浅克隆有什么区别"><a href="#深克隆和浅克隆有什么区别" class="headerlink" title="深克隆和浅克隆有什么区别"></a>深克隆和浅克隆有什么区别</h1>]]></content>
     </entry>
     
     <entry>
