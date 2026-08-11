@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://code.idea4j.com/2026/08/12/2026-codex-skills/</loc>
+    
+    <lastmod>2026-08-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://code.idea4j.com/2026/03/31/2026-axios-npm-supply-chain/</loc>
     
     <lastmod>2026-08-11</lastmod>
@@ -2180,6 +2189,13 @@
   
   <url>
     <loc>https://code.idea4j.com/tags/npm/</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/Skills/</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
