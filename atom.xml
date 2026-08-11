@@ -55,6 +55,48 @@
       <name>markee</name>
       <email>wangjinguang66@163.com</email>
     </author>
+    <category term="安全" scheme="https://code.idea4j.com/categories/%E5%AE%89%E5%85%A8/"/>
+    <category term="JavaScript" scheme="https://code.idea4j.com/tags/JavaScript/"/>
+    <category term="供应链安全" scheme="https://code.idea4j.com/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/"/>
+    <category term="CI/CD" scheme="https://code.idea4j.com/tags/CI-CD/"/>
+    <category term="Axios" scheme="https://code.idea4j.com/tags/Axios/"/>
+    <category term="npm" scheme="https://code.idea4j.com/tags/npm/"/>
+    <content>
+      <![CDATA[<p>2026 年 3 月末，安全团队发现 npm 上出现了两个被投毒的 Axios 版本：<code>1.14.1</code> 与 <code>0.30.4</code>。攻击者没有把恶意逻辑直接写进 Axios 源码，而是通过被劫持的维护者账号发布版本，加入一个伪装依赖，再利用 <code>postinstall</code> 脚本投放面向 macOS、Windows 和 Linux 的远程访问木马。</p><p>Axios 是 JavaScript 生态最常见的 HTTP 客户端之一。事件被迅速处置，相关版本只存活了数小时，却仍在 Hacker News 获得接近两千分讨论。它暴露了一个长期被低估的事实：执行一次依赖安装，本质上是在允许互联网上的一组发布者运行代码。</p><span id="more"></span><h2 id="恶意代码为什么不在-Axios-里"><a href="#恶意代码为什么不在-Axios-里" class="headerlink" title="恶意代码为什么不在 Axios 里"></a>恶意代码为什么不在 Axios 里</h2><p>据 StepSecurity 的事件分析，攻击者向两个 Axios 版本加入了 <code>plain-crypto-js@4.2.1</code> 依赖。这个包复制了合法 <code>crypto-js</code> 的大量文件，真正危险的部分藏在 <code>package.json</code> 的 <code>postinstall</code> 和一个经过混淆的 <code>setup.js</code> 中。</p><p>npm 安装依赖时会自动执行生命周期脚本，因此 Axios 业务代码甚至不需要 <code>import</code> 这个包。只要依赖解析并安装完成，脚本就已经能够访问当前用户权限下的文件、网络和凭证。</p><p>这种间接注入还有一个优势：审查者如果只比较 Axios 的 JavaScript 源码，很可能找不到恶意逻辑。危险发生在依赖图和安装阶段，而不是日常关注的请求函数里。</p><h2 id="攻击者还试图抹掉安装后的证据"><a href="#攻击者还试图抹掉安装后的证据" class="headerlink" title="攻击者还试图抹掉安装后的证据"></a>攻击者还试图抹掉安装后的证据</h2><p>恶意包会联系命令控制服务器，按操作系统下载第二阶段载荷。执行后，它还会删除自身脚本，并用事先准备的干净 <code>package.json</code> 覆盖原文件，把本地显示的版本伪装成无害版本。</p><p>这意味着事故发生后再运行 <code>npm list</code>，未必能还原安装当时的真实状态。一个会主动修改证据的安装脚本，让“看看 <code>node_modules</code> 里现在有什么”失去可靠性。</p><p>更可信的证据应该来自不可变的 lockfile、包管理器缓存、代理仓库日志、CI 网络事件和构建制品哈希。供应链取证不能只依赖已经运行过不可信代码的机器。</p><h2 id="发布身份出现了哪些异常"><a href="#发布身份出现了哪些异常" class="headerlink" title="发布身份出现了哪些异常"></a>发布身份出现了哪些异常</h2><p>正常的 Axios 版本使用 npm Trusted Publisher，由 GitHub Actions 通过短期 OIDC 身份发布。恶意版本却由维护者账号和长期令牌手工发布，没有对应的 Git 提交、标签和 <code>gitHead</code>，发布者元数据也偏离了项目以往模式。</p><p>这些信号单独看都不一定证明攻击，组合起来却非常异常：</p><ul><li>仓库中没有对应 tag，npm 却出现了新版本；</li><li>一贯由 CI 发布的包突然变成人工账号发布；</li><li>新增依赖没有被源码实际导入，却带有安装脚本；</li><li>安装过程访问历史上从未出现的外部域名。</li></ul><p>安全检测如果只扫描代码中的已知恶意字符串，很容易错过这种攻击。发布路径和运行行为同样需要建立基线。</p><h2 id="如果装过恶意版本，不能只降级"><a href="#如果装过恶意版本，不能只降级" class="headerlink" title="如果装过恶意版本，不能只降级"></a>如果装过恶意版本，不能只降级</h2><p>一旦安装脚本已经运行，把 Axios 改回安全版本只会阻止下一次执行，不能撤回已经下载的载荷。更稳妥的处理是把设备或 CI runner 视为已失陷：断开网络、保存独立日志、从可信镜像重建环境，并轮换机器能够访问的 npm、GitHub、云平台和部署凭证。</p><p>开发机的风险尤其容易被低估。它通常同时保存源码、SSH Key、浏览器会话、云凭证和生产访问入口，对攻击者可能比一台隔离服务器更有价值。</p><h2 id="团队可以补上的五道防线"><a href="#团队可以补上的五道防线" class="headerlink" title="团队可以补上的五道防线"></a>团队可以补上的五道防线</h2><p>第一，提交并严格使用 lockfile，依赖更新通过单独 PR 完成，避免构建时静默漂移到最新版本。</p><p>第二，优先使用 Trusted Publisher 和短期 OIDC，逐步删除可长期复用的发布令牌，并对发布身份变化告警。</p><p>第三，对安装脚本建立策略。能禁用时使用 <code>--ignore-scripts</code>；确实需要脚本的包进入白名单，并审查版本变化。</p><p>第四，限制开发与 CI 环境的出站网络。正常构建访问哪些域名应该可见，新出现的命令控制地址才有机会在载荷执行后的几秒内被发现。</p><p>第五，把注册表制品与源码仓库交叉验证。tag、commit、provenance、哈希和发布者身份应当互相支持，任何“只有 npm 上存在”的版本都值得暂停。</p><h2 id="我的理解：包管理器也是执行引擎"><a href="#我的理解：包管理器也是执行引擎" class="headerlink" title="我的理解：包管理器也是执行引擎"></a>我的理解：包管理器也是执行引擎</h2><p>我们习惯把 <code>npm install</code> 当作下载文件，却忽略了包管理器同时拥有脚本执行、依赖递归和网络访问能力。依赖越方便，信任传递得越深；顶层只增加一个包，实际授权的维护者可能有数百个。</p><p>Axios 事件与 xz 后门采用了不同路线，却指向同一问题：现代软件的攻击面不仅是自己写的代码，还包括谁能够发布依赖、构建过程执行了什么，以及异常发生时有没有独立证据。</p><p>真正成熟的供应链安全，不是要求开发者逐行审计整个互联网，而是把安装和发布当成高权限操作，用可复现、最小权限、短期身份与行为监控把信任限制在可检查的范围内。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://www.stepsecurity.io/blog/axios-compromised-on-npm-malicious-versions-drop-remote-access-trojan">StepSecurity：Axios Compromised on npm</a></li><li><a href="https://docs.npmjs.com/trusted-publishers/">npm 文档：Trusted Publishers</a></li><li><a href="https://news.ycombinator.com/item?id=47582220">Hacker News 讨论</a></li></ul><blockquote><p>本文是 2026 年 8 月整理断更期时写下的回顾，发布日期按事件所处阶段归档。</p></blockquote>]]>
+    </content>
+    <id>https://code.idea4j.com/2026/03/31/2026-axios-npm-supply-chain/</id>
+    <link href="https://code.idea4j.com/2026/03/31/2026-axios-npm-supply-chain/"/>
+    <published>2026-03-31T13:48:00.000Z</published>
+    <summary>复盘 Axios 恶意版本如何借维护者凭证、伪装依赖与 postinstall 投放跨平台远控，并给出开发机和 CI 的供应链防线。</summary>
+    <title>Axios npm 投毒事件：依赖安装为什么已经是一种远程代码执行</title>
+    <updated>2026-08-11T06:05:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>markee</name>
+      <email>wangjinguang66@163.com</email>
+    </author>
+    <category term="人工智能" scheme="https://code.idea4j.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    <category term="大语言模型" scheme="https://code.idea4j.com/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/"/>
+    <category term="MicroGPT" scheme="https://code.idea4j.com/tags/MicroGPT/"/>
+    <category term="GPT" scheme="https://code.idea4j.com/tags/GPT/"/>
+    <category term="Python" scheme="https://code.idea4j.com/tags/Python/"/>
+    <category term="深度学习" scheme="https://code.idea4j.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <content>
+      <![CDATA[<p>2026 年 2 月，Andrej Karpathy 发布了 MicroGPT：一个大约 200 行、除了 Python 标准库之外没有依赖的单文件程序。它能读取名字数据集，训练一个类似 GPT-2 的小模型，再生成训练集中没有出现过的新名字。</p><p>这篇文章很快成为 Hacker News 当季热度最高的技术文章之一。它吸引人的地方不是又做出了一个更强模型，而是做了相反的事：把模型压缩到无法继续简化，让我们看清哪些部分才是 GPT 真正不可省略的骨架。</p><span id="more"></span><h2 id="一个-GPT-到底需要哪些零件"><a href="#一个-GPT-到底需要哪些零件" class="headerlink" title="一个 GPT 到底需要哪些零件"></a>一个 GPT 到底需要哪些零件</h2><p>MicroGPT 的两百行代码包含了一条完整链路：</p><ol><li>一组由名字构成的训练文档；</li><li>把字符转换成整数的 tokenizer；</li><li>从标量运算实现的自动微分引擎；</li><li>token embedding、位置 embedding、因果自注意力和 MLP；</li><li>计算下一个 token 概率的交叉熵损失；</li><li>反向传播与 Adam 优化器；</li><li>从模型分布中逐个采样 token 的推理循环。</li></ol><p>今天使用 PyTorch 时，<code>loss.backward()</code> 只是一行代码。MicroGPT 却让每个数值记住自己由哪些数值计算而来，并在反向拓扑顺序中应用链式法则，把损失的梯度传回每一个参数。</p><p>当这些细节被框架隐藏后，我们很容易把“调用训练 API”和“理解训练”混为一谈。MicroGPT 的价值，就是让抽象重新变得可见。</p><h2 id="模型学习的不是答案，而是下一个符号"><a href="#模型学习的不是答案，而是下一个符号" class="headerlink" title="模型学习的不是答案，而是下一个符号"></a>模型学习的不是答案，而是下一个符号</h2><p>示例使用最简单的字符级 tokenizer：26 个小写字母各自对应一个整数，再增加一个表示文档开始和结束的特殊 token。</p><p>训练时，模型看到前面的字符，预测下一个字符。例如读到 <code>emm</code>，它需要提高下一个字符为 <code>a</code> 的概率。每次预测产生损失，反向传播再微调参数。大量名字重复这个过程后，参数逐渐吸收字符组合的统计规律。</p><p>生成阶段仍然做同一件事：给定已经生成的 token，计算下一个 token 的概率，按分布采样，然后把新 token 放回输入。对模型而言，回答问题、续写文章与生成名字，本质上都是对文档进行概率续写。</p><p>这也解释了“幻觉”为何不是偶然附加的 bug。模型的基本任务本来就是生成统计上合理的后续，而不是查询一个天然保证真实的事实库。</p><h2 id="自注意力解决了什么"><a href="#自注意力解决了什么" class="headerlink" title="自注意力解决了什么"></a>自注意力解决了什么</h2><p>在生成当前位置时，模型需要判断前面哪些 token 更有用。自注意力为每个位置构造 query、key 和 value，通过 query 与历史 key 的匹配程度计算权重，再对 value 加权汇总。</p><p>因果遮罩保证当前位置只能看到过去，不能偷看训练答案。多头注意力则允许不同的头学习不同关系。经过注意力和 MLP 的多层变换，最后一层状态被映射到词表，得到下一个 token 的概率。</p><p>公式听起来复杂，落进 MicroGPT 后却只是循环、乘加、softmax 和梯度传播。这种“能慢慢跑，但每一步都看得见”的实现，对理解算法比追求速度更有价值。</p><h2 id="“其他一切只是效率”该怎样理解"><a href="#“其他一切只是效率”该怎样理解" class="headerlink" title="“其他一切只是效率”该怎样理解"></a>“其他一切只是效率”该怎样理解</h2><p>Karpathy 在原文中说，文件已经包含全部算法内容，“其他一切只是效率”。这句话很有冲击力，但不能误解为生产大模型也只有两百行工作。</p><p>真实系统还需要高效 tokenizer、张量计算、GPU 内核、混合精度、分布式训练、检查点、数据清洗、容错、评测、安全对齐与在线服务。这些不一定改变 GPT 的基本算法，却决定它能否从几千个参数扩展到数十亿参数，能否稳定服务真实用户。</p><p>算法骨架可以很小，工程系统依然可以极其复杂。区分两者的好处，是排查问题时知道应该问哪一层：模型结构不对、数据不对，还是并行与服务实现不对。</p><h2 id="我的理解：先亲手造一个慢的，再理解快的"><a href="#我的理解：先亲手造一个慢的，再理解快的" class="headerlink" title="我的理解：先亲手造一个慢的，再理解快的"></a>我的理解：先亲手造一个慢的，再理解快的</h2><p>学习一个复杂系统时，直接进入成熟框架很容易被 API、配置和硬件细节淹没。一个没有依赖、性能很差但逻辑完整的实现，反而能建立稳定的心智模型。</p><p>数据库可以从手写一个 B+ 树开始，编译器可以从解释简单表达式开始，大模型也可以从 MicroGPT 开始。亲眼看见数据怎样变成 token、损失怎样产生、梯度怎样更新参数，之后再使用高级框架，就不再只是在记调用方式。</p><p>MicroGPT 还给快速膨胀的 AI 行业一种难得的克制：理解技术不一定要追逐最大的模型。有时，把系统缩小到一张屏幕能读完，才更接近它真正的本质。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://karpathy.github.io/2026/02/12/microgpt/">Andrej Karpathy：MicroGPT</a></li><li><a href="https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95">MicroGPT 完整源码</a></li><li><a href="https://news.ycombinator.com/item?id=47202708">Hacker News 讨论</a></li></ul><blockquote><p>本文是 2026 年 8 月整理断更期时写下的回顾，发布日期按事件所处阶段归档。</p></blockquote>]]>
+    </content>
+    <id>https://code.idea4j.com/2026/02/15/2026-microgpt/</id>
+    <link href="https://code.idea4j.com/2026/02/15/2026-microgpt/"/>
+    <published>2026-02-15T12:36:00.000Z</published>
+    <summary>从数据、字符分词、自动微分、注意力、优化器到生成循环，MicroGPT 用 200 行零依赖 Python 区分了 GPT 的算法本质与规模化工程。</summary>
+    <title>MicroGPT：200 行 Python 里，藏着大语言模型真正不可省略的部分</title>
+    <updated>2026-08-11T06:00:00.000Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>markee</name>
+      <email>wangjinguang66@163.com</email>
+    </author>
     <category term="软件工程" scheme="https://code.idea4j.com/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
     <category term="编程" scheme="https://code.idea4j.com/tags/%E7%BC%96%E7%A8%8B/"/>
     <category term="AI Agent" scheme="https://code.idea4j.com/tags/AI-Agent/"/>
@@ -369,45 +411,5 @@
     <summary>从 DALL·E 2 的文本生成图像能力，理解扩散模型、自然语言界面以及生成式工具对创作流程的改变。</summary>
     <title>DALL·E 2：当“描述需求”第一次变成了图像生产方式</title>
     <updated>2026-08-11T04:20:00.000Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>markee</name>
-      <email>wangjinguang66@163.com</email>
-    </author>
-    <category term="安全" scheme="https://code.idea4j.com/categories/%E5%AE%89%E5%85%A8/"/>
-    <category term="Java" scheme="https://code.idea4j.com/tags/Java/"/>
-    <category term="Log4j" scheme="https://code.idea4j.com/tags/Log4j/"/>
-    <category term="安全" scheme="https://code.idea4j.com/tags/%E5%AE%89%E5%85%A8/"/>
-    <category term="供应链" scheme="https://code.idea4j.com/tags/%E4%BE%9B%E5%BA%94%E9%93%BE/"/>
-    <content>
-      <![CDATA[<p>2021 年 12 月，Log4Shell 几乎在一夜之间让全世界的 Java 团队开始搜索 <code>log4j-core</code>。它的冲击不只来自漏洞严重，更来自一种集体错愕：一个负责“记日志”的库，为什么能让外部输入一路走到远程代码执行？</p><p>这次事件把软件供应链从安全团队的专业词汇，变成了每个开发者都必须面对的日常问题。</p><span id="more"></span><h2 id="一条日志怎样变成执行入口"><a href="#一条日志怎样变成执行入口" class="headerlink" title="一条日志怎样变成执行入口"></a>一条日志怎样变成执行入口</h2><p>问题的核心是 Log4j 2 的消息查找能力。攻击者把精心构造的 JNDI 表达式放进 User-Agent、用户名或其他会被记录的字段；应用写日志时解析这段内容，随后可能访问攻击者控制的 LDAP 等服务，并在特定环境和版本组合下触发恶意代码加载。</p><p>这条链路之所以反直觉，是因为数据跨越了多层语义：最初它只是网络请求中的普通字符串，进入日志系统后却被当成需要解释的表达式。安全设计中一条朴素但重要的原则再次得到验证：来自外部的数据不应该因为经过了“内部组件”就自动获得执行含义。</p><h2 id="修复难点不只是升级一个版本"><a href="#修复难点不只是升级一个版本" class="headerlink" title="修复难点不只是升级一个版本"></a>修复难点不只是升级一个版本</h2><p>真正排查时，团队很快会遇到几个现实问题：依赖可能是间接引入的；同一个应用包里可能嵌套多个 JAR；服务器上还可能有多年无人维护的独立程序；资产清单与实际运行版本并不一致。</p><p>因此，应急动作不能止于在 <code>pom.xml</code> 里搜索一次。需要同时查看依赖树、制品内容、容器镜像和运行进程，确认所有入口都完成升级，并轮换可能泄露的密钥。网络侧临时规则可以降低暴露面，却不能替代根本修复。</p><p>漏洞公布后的多个补丁版本还暴露出新的边界问题，这也提醒我们：高压下的第一次修复未必是终点。补丁需要持续跟踪，验证需要覆盖绕过方式，管理层也要允许团队暂停普通需求，把资产确认做完整。</p><h2 id="SBOM-为什么在这时突然重要"><a href="#SBOM-为什么在这时突然重要" class="headerlink" title="SBOM 为什么在这时突然重要"></a>SBOM 为什么在这时突然重要</h2><p>软件物料清单（SBOM）听起来像合规文档，Log4Shell 却让它变成了故障响应工具。当一个基础库爆出漏洞时，团队最先需要回答的是：哪些仓库依赖它、哪些制品带着它、哪些实例正在运行、由谁负责升级。</p><p>如果这些问题只能依靠群里逐个询问，应急时间就会被信息搜集吞掉。依赖锁定、制品扫描、镜像签名和部署清单的价值，不只是阻止攻击，更是让组织在出事时知道应该改哪里。</p><h2 id="我的理解：便利功能也有攻击预算"><a href="#我的理解：便利功能也有攻击预算" class="headerlink" title="我的理解：便利功能也有攻击预算"></a>我的理解：便利功能也有攻击预算</h2><p>Log4j 的查找机制最初并不是为了制造漏洞，而是为了让日志配置更灵活。问题在于，基础库处于巨大调用面上，每增加一种自动解析、远程访问或动态加载能力，就扩大一部分攻击面。</p><p>设计通用组件时，我更愿意默认保持“无聊”：输入就是输入，日志就是日志；危险能力需要显式开启，并在边界处留下清楚的审计痕迹。功能越位于基础层，默认行为越应该克制。</p><p>这场事故也不应只归责于少数开源维护者。全球商业系统依赖免费维护的基础组件，却长期没有投入相称的人力、资金和审计。供应链安全最终是一种共同责任：开发者减少不必要的依赖，企业维护资产与升级机制，生态则需要让关键项目获得持续支持。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://logging.apache.org/log4j/2.x/security.html">Apache Log4j：Security Vulnerabilities</a></li><li><a href="https://www.cisa.gov/news-events/news/apache-log4j-vulnerability-guidance">CISA：Apache Log4j Vulnerability Guidance</a></li></ul><blockquote><p>本文是 2026 年整理断更期时写下的回顾，发布日期按事件所处阶段归档。</p></blockquote>]]>
-    </content>
-    <id>https://code.idea4j.com/2021/12/15/2021-log4shell/</id>
-    <link href="https://code.idea4j.com/2021/12/15/2021-log4shell/"/>
-    <published>2021-12-15T14:08:00.000Z</published>
-    <summary>从 Log4Shell 的远程代码执行链路出发，反思依赖清单、默认能力、快速修复和开源基础设施的系统性风险。</summary>
-    <title>Log4Shell 之后：真正危险的是我们不知道自己依赖了什么</title>
-    <updated>2026-08-11T04:15:00.000Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>markee</name>
-      <email>wangjinguang66@163.com</email>
-    </author>
-    <category term="Java" scheme="https://code.idea4j.com/categories/Java/"/>
-    <category term="Java" scheme="https://code.idea4j.com/tags/Java/"/>
-    <category term="JDK 17" scheme="https://code.idea4j.com/tags/JDK-17/"/>
-    <category term="JVM" scheme="https://code.idea4j.com/tags/JVM/"/>
-    <category term="性能优化" scheme="https://code.idea4j.com/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
-    <content>
-      <![CDATA[<p>2021 年 9 月，Java 17 正式发布。对很多仍停留在 Java 8 的团队来说，它看起来像一次跨越九个版本的大升级；对已经适应半年一个版本节奏的开发者来说，它又只是一个新的长期支持节点。</p><p>Java 17 最值得讨论的，并不只是 sealed class 或模式匹配，而是 Java 平台终于用稳定节奏证明：一门二十多岁的语言也可以持续演进，同时保住企业软件最看重的可预测性。</p><span id="more"></span><h2 id="语言开始更准确地表达领域约束"><a href="#语言开始更准确地表达领域约束" class="headerlink" title="语言开始更准确地表达领域约束"></a>语言开始更准确地表达领域约束</h2><p>在 Java 17 之前的几个版本中，record、文本块、switch 表达式陆续成为正式特性；Java 17 又带来了 sealed class，并继续预览 switch 的模式匹配。</p><p>这些语法糖的共同方向，是让代码更接近我们真正想表达的模型。record 适合不可变数据载体，sealed class 可以明确一个类型只允许哪些子类。过去写在注释里、依靠团队默契维持的约束，现在有机会交给编译器检查。</p><p>这不代表所有 DTO 都该改成 record，也不代表继承层次越封闭越好。新语法的价值从来不是少写几行，而是减少非法状态和模糊边界。如果领域本身仍在频繁变化，过早封闭类型反而会增加修改成本。</p><h2 id="JVM-与运行时同样在变化"><a href="#JVM-与运行时同样在变化" class="headerlink" title="JVM 与运行时同样在变化"></a>JVM 与运行时同样在变化</h2><p>Java 17 包含大量不显眼但重要的改进：垃圾收集器继续演进，JDK 内部 API 的封装进一步收紧，旧组件和过时机制逐步退出。很多升级问题并不来自业务代码，而来自框架、字节码工具、代理和监控组件对 JDK 内部实现的依赖。</p><p>因此，从 Java 8 跨到 17 不应被当成“换一个环境变量”。比较稳妥的路线是先升级构建工具和依赖，再处理非法反射与废弃 API，随后用真实流量模型做 GC 和延迟测试，最后通过灰度逐步替换运行实例。</p><p>升级前后只比较平均吞吐量还不够。启动时间、P99 延迟、内存占用、线程数、类加载失败和观测代理是否正常，都应该进入验收清单。</p><h2 id="LTS-不是“永远不用升级”"><a href="#LTS-不是“永远不用升级”" class="headerlink" title="LTS 不是“永远不用升级”"></a>LTS 不是“永远不用升级”</h2><p>很多组织把 LTS 理解成可以长期冻结的版本。我的理解恰好相反：LTS 的意义是给组织一个明确的汇合点，让升级成为有计划的工程，而不是在安全补丁或框架停止支持时被迫跳跃。</p><p>如果每次都跨越八九个版本，团队会同时面对语言、JVM、依赖和运维工具的变化，风险自然被放大。半年发布一次的新节奏，真正要求的是持续兼容意识：在日常 CI 中保留新 JDK 的试运行，在依赖升级时关注最低和最高支持版本，并定期清理对内部 API 的依赖。</p><h2 id="我的理解：Java-的优势是“有秩序地变”"><a href="#我的理解：Java-的优势是“有秩序地变”" class="headerlink" title="我的理解：Java 的优势是“有秩序地变”"></a>我的理解：Java 的优势是“有秩序地变”</h2><p>Java 经常被批评保守，但企业系统需要的并不是最快出现的语法，而是可以解释、可以迁移、可以长期维护的变化。Java 17 一边吸收现代语言的表达方式，一边用预览、弃用和 LTS 节点控制节奏，这种机制本身就是平台价值的一部分。</p><p>对后端团队而言，最有价值的实践不是立即用遍所有新特性，而是建立一条可重复的升级流水线。能够小成本跨版本的系统，才真正享受得到 JVM 性能、安全修复和生态创新；永远停在旧版本，看似稳定，其实只是在积累一次更昂贵的迁移。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://openjdk.org/projects/jdk/17/">OpenJDK：JDK 17</a></li><li><a href="https://www.oracle.com/news/announcement/oracle-releases-java-17-2021-09-14/">Oracle：Java 17 正式发布</a></li></ul><blockquote><p>本文是 2026 年整理断更期时写下的回顾，发布日期按事件所处阶段归档。</p></blockquote>]]>
-    </content>
-    <id>https://code.idea4j.com/2021/09/18/2021-java-17/</id>
-    <link href="https://code.idea4j.com/2021/09/18/2021-java-17/"/>
-    <published>2021-09-18T11:35:00.000Z</published>
-    <summary>Java 17 成为长期支持版本后，语言特性、JVM 演进和升级治理给后端团队带来了哪些真正重要的变化。</summary>
-    <title>Java 17：比新语法更重要的是可预测的升级节奏</title>
-    <updated>2026-08-11T04:10:00.000Z</updated>
   </entry>
 </feed>
