@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+    
+    
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="码客Mark">
+<meta property="og:url" content="https://code.idea4j.com/page/5/index.html">
+<meta property="og:site_name" content="码客Mark">
+<meta property="og:locale">
+<meta property="article:author" content="markee">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="码客Mark" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+    <style> .article { opacity: 0;} </style>
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>码客Mark</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: true,
+        isPost: false,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c160bf5d12f84389ce96c02b54e4575f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Appollo/" rel="tag">Appollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GC/" rel="tag">GC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoF/" rel="tag">GoF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">Java字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mybatis/" rel="tag">Mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/" rel="tag">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/" rel="tag">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinpoint/" rel="tag">Pinpoint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/" rel="tag">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/" rel="tag">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/angularjs2/" rel="tag">angularjs2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iframe/" rel="tag">iframe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jQuery/" rel="tag">jQuery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E6%B3%9B%E5%9E%8B/" rel="tag">java泛型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jps/" rel="tag">jps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maxwell/" rel="tag">maxwell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/servlet/" rel="tag">servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-batch/" rel="tag">spring batch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/starUML/" rel="tag">starUML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/" rel="tag">sublime text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xpath/" rel="tag">xpath</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/" rel="tag">如何替换 JDK 的类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C/" rel="tag">工作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F/" rel="tag">工作方式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="tag">性能调优</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%AA%E6%9D%A5/" rel="tag">未来</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="tag">汇编语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%85%8B%E9%9A%86/" rel="tag">深克隆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A4%BE%E4%BC%9A/" rel="tag">社会</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E8%88%9F%E9%A3%9E%E8%88%B9/" rel="tag">神舟飞船</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E8%A3%85%E8%BD%BD/" rel="tag">类装载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD/" rel="tag">系统性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%85%B3/" rel="tag">网关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%AB%99/" rel="tag">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8C%E7%BA%A6/" rel="tag">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/" rel="tag">链路追踪</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%97%AE%E9%A2%98/" rel="tag">问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-dubbo架构设计" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">dubbo架构设计</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="dubbo架构设计"><a href="#dubbo架构设计" class="headerlink" title="dubbo架构设计"></a>dubbo架构设计</h3><p>scp（远程复制在前）Service、config、proxy</p>
+<p>r 注册中心</p>
+<p>cm（厘米）registry，cluster（），moniter（监控）</p>
+<p>pets（protocol-exchange-transport-serialize）</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200821100631881.png" alt="image-20200821100631881"></p>
+<p>淡蓝色是服务提供者使用到的接口，淡绿色是服务消费者使用接口，中轴线上是双方都用到的接口。</p>
+<p>从下至上分为十层，各层均为单向依赖，右边的黑色箭头代表之间的依赖关系，每一层都可以剥离上层被复用，其中，Service和Config层为API，其他各层均为SPI。</p>
+<p>绿色小块的为扩展接口，蓝色小块为实现类</p>
+<p>蓝色虚线为初始化过程，即启动时组装链，红色实线为方法调用过程，即运行是调用链，紫色三角箭头为继承</p>
+<p>config配置层：对外配置接口，以ServiceConfig,ReferenceConfig为中心，可以直接初始化配置类，也可以通过spring解析配置生成配置类</p>
+<p>proxy服务代理层</p>
+<p>registry注册中心层</p>
+<p>cluster路由层</p>
+<p>monitor监控层</p>
+<p>ptotocol远程调用层</p>
+<p>exchange信息交换层</p>
+<p>transport网络传输层</p>
+<p>serialize 数据序列化层</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/dubbo/">dubbo</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-dubbo的原理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/">dubbo的原理</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>dubbo的原理</p>
+<p>scp r cm pets</p>
+<p>框架设计</p>
+<p>启动解析</p>
+<p>服务暴露</p>
+<p>服务引用</p>
+<p>服务调用</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/dubbo/">dubbo</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-java性能优化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">java性能优化</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="java性能优化"><a href="#java性能优化" class="headerlink" title="java性能优化"></a>java性能优化</h3><p>项目的并发量级是多少？</p>
+<p>有没有性能问题诊断和优化的生产经验</p>
+<p>说说你过往项目的真实调优过程，常用指标有哪些？</p>
+<p>jvm参数设置大小的依据是什么？</p>
+<p>解决过索引失效问题吗？</p>
+<p>基于并发量要求你会从哪些维度考虑</p>
+<p>网络宽带，QPS，TPS，连接数，数据量级</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/">性能调优</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="tag">性能调优</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-java泛型" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/java%E6%B3%9B%E5%9E%8B/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/java%E6%B3%9B%E5%9E%8B/">java泛型</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="java泛型"><a href="#java泛型" class="headerlink" title="java泛型"></a>java泛型</h1><p>Java从1.5之后支持泛型，泛型的本质是参数化类型，也就是说所操作的数据类型被指定为一个参数。这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。</p>
+<p>1.类型安全。泛型的主要目标是提高Java程序的类型安全。通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中消除强制。一类型安全范畴的主要目标是提高Java程序的类型安全通过知道使用放心定义的变量的类型限制，并且可以在一个高得多的成熟度上验证类型。假设如果没有反省，这些假设就只存在于程序员的头脑中。</p>
+<p>2.消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，</p>
+<p>3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。消除强制类型转换翻新的一个附带的好处，是消除源代码中，许多强制类型转换，这使得代码更加可读，并且减少了出错的机会，3000赞的性能收益饭行为较大的优化带来了可能在梵行的初始视线中，编译器将强制类型。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/java%E6%B3%9B%E5%9E%8B/">java泛型</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java%E6%B3%9B%E5%9E%8B/" rel="tag">java泛型</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-java语言特性知识点汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/java%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/java%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/">java语言特性知识点汇总</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <pre class="mermaid">graph LR
+java --> B(JUC)
+B --> ConcurrentXXX
+B --> AtomicXXX
+B --> Executor
+B --> Caller&&Future
+B --> Queue
+B --> Locks
+
+java --> C(数据类型)
+C --> 空间占用
+C --> 基本数据结构
+C --> 自动转型与强制转型
+C --> 封箱与拆箱
+
+java --> 版本差异新特性
+java --> 动态代理与反射
+
+java --> E(常用集合)
+E --> HashMap
+E --> ConcurrentHashMap
+E --> ArrayList&LinkedList
+E --> HashSet
+E --> TreeMap
+
+java --> F(对象引用)
+F --> 强引用
+F --> 弱引用
+F --> 软引用
+F --> 虚引用
+
+java --> G(扩展知识点)
+G --> SPI机制
+G --> 注解处理机制</pre>
+
+
+
+
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/java/">java</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-mst" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/mst/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/mst/">面试题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <span id="more"></span>
+
+<h3 id="如何判断链表有环"><a href="#如何判断链表有环" class="headerlink" title="如何判断链表有环"></a>如何判断链表有环</h3><p>第一种方法是比较笨的方法，那就是依次遍历链表，直到遇到和之前遍历的节点一样的节点，则认为有环。</p>
+<h3 id="为啥要覆盖hashcode"><a href="#为啥要覆盖hashcode" class="headerlink" title="为啥要覆盖hashcode"></a>为啥要覆盖hashcode</h3><h3 id="如何解决hash冲突"><a href="#如何解决hash冲突" class="headerlink" title="如何解决hash冲突"></a>如何解决hash冲突</h3><h3 id="https与http区别"><a href="#https与http区别" class="headerlink" title="https与http区别"></a>https与http区别</h3><ol>
+<li><p>https协议需要到CA  （Certificate Authority，证书颁发机构）申请证书，一般免费证书较少，因而需要一定费用。(原来网易官网是http，而网易邮箱是https。)</p>
+</li>
+<li><p>http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</p>
+</li>
+<li><p>http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
+</li>
+<li><p>http的连接很简单，是无状态的。Https协议是由SSL+Http协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。(无状态的意思是其数据包的发送、传输和接收都是相互独立的。无连接的意思是指通信双方都不长久的维持对方的任何信息。)</p>
+</li>
+</ol>
+<h3 id="mysql数据库默认的数据隔离级别"><a href="#mysql数据库默认的数据隔离级别" class="headerlink" title="mysql数据库默认的数据隔离级别"></a>mysql数据库默认的数据隔离级别</h3>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/java/">java</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-系统性能核心关注点" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E6%A0%B8%E5%BF%83%E5%85%B3%E6%B3%A8%E7%82%B9/" class="article-date">
+      <time datetime="2020-05-21T05:47:07.000Z" itemprop="datePublished">2020-05-21</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E6%A0%B8%E5%BF%83%E5%85%B3%E6%B3%A8%E7%82%B9/">系统性能核心关注点</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <pre class="mermaid">graph LR
+A[系统性能核心关注点] -->B(基础设施优化)
+A --> C(系统层网络优化)
+A --> D(应用层编码优化)
+A --> E(分布式系统优化)</pre>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD/">系统性能</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD/" rel="tag">系统性能</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/05/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E6%A0%B8%E5%BF%83%E5%85%B3%E6%B3%A8%E7%82%B9/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Bean的生命周期" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/01/17/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-date">
+      <time datetime="2020-01-17T03:11:07.000Z" itemprop="datePublished">2020-01-17</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/17/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Bean的生命周期</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>Bean的生命周期</p>
+<p>1.调用Bean的构造方法创建Bean；</p>
+<p>2.通过反射调用setter方法进行属性的依赖注入；</p>
+<p>3.如果bean实现了BeanNameAware，则为bean设置名称；</p>
+<p>4.如果bean实现了BeanFactoryAware，会把 BeanFactory 设置给 Bean；</p>
+<p>5.如果bean实现了ApplicationContextAware，，会给 Bean 设置 ApplictionContext；</p>
+<p>6.如果实现了BeanPostProcessor接口，则执行前置处理方法；</p>
+<p>7.实现了InitializingBean接口的话，执行afterPropertiesSet方法</p>
+<p>8.执行自定义的init方法；</p>
+<p>9.执行BeanPostProcessor接口的后置处理方法；</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/spring/">spring</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-MYSQL数据库设计规范" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/01/17/MYSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/" class="article-date">
+      <time datetime="2020-01-17T03:11:07.000Z" itemprop="datePublished">2020-01-17</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/17/MYSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">MYSQL数据库设计规范</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="MYSQL数据库设计规范"><a href="#MYSQL数据库设计规范" class="headerlink" title="MYSQL数据库设计规范"></a>MYSQL数据库设计规范</h2><h3 id="1、数据库命名规范"><a href="#1、数据库命名规范" class="headerlink" title="1、数据库命名规范"></a>1、数据库命名规范</h3><p>采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’_’组成;<br>命名简洁明确(长度不能超过30个字符);<br>例如：user, stat, log, 也可以wifi_user, wifi_stat, wifi_log给数据库加个前缀;<br>除非是备份数据库可以加0-9的自然数：user_db_20151210;</p>
+<h3 id="2、数据库表名命名规范"><a href="#2、数据库表名命名规范" class="headerlink" title="2、数据库表名命名规范"></a>2、数据库表名命名规范</h3><p>采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’<em>‘组成;<br>命名简洁明确,多个单词用下划线’</em>‘分隔;<br>例如：user_login, user_profile, user_detail, user_role, user_role_relation,<br>user_role_right, user_role_right_relation<br>表前缀’user_’可以有效的把相同关系的表显示在一起;</p>
+<h3 id="3、数据库表字段名命名规范"><a href="#3、数据库表字段名命名规范" class="headerlink" title="3、数据库表字段名命名规范"></a>3、数据库表字段名命名规范</h3><p>采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’<em>‘组成;<br>命名简洁明确,多个单词用下划线’</em>‘分隔;<br>例如：user_login表字段 user_id, user_name, pass_word, eamil, tickit, status, mobile, add_time;<br>每个表中必须有自增主键,add_time(默认系统时间)<br>表与表之间的相关联字段名称要求尽可能的相同;</p>
+<h3 id="4、数据库表字段类型规范"><a href="#4、数据库表字段类型规范" class="headerlink" title="4、数据库表字段类型规范"></a>4、数据库表字段类型规范</h3><p>用尽量少的存储空间来存数一个字段的数据;<br>例如：能使用int就不要使用varchar、char,能用varchar(16)就不要使用varchar(256);<br>IP地址最好使用int类型;<br>固定长度的类型最好使用char,例如：邮编;<br>能使用tinyint就不要使用smallint,int;<br>最好给每个字段一个默认值,最好不能为null;</p>
+<h3 id="5、数据库表索引规范"><a href="#5、数据库表索引规范" class="headerlink" title="5、数据库表索引规范"></a>5、数据库表索引规范</h3><p>命名简洁明确,例如：user_login表user_name字段的索引应为user_name_index唯一索引;<br>为每个表创建一个主键索引;<br>为每个表创建合理的索引;<br>建立复合索引请慎重;</p>
+<h3 id="6、简单熟悉数据库范式"><a href="#6、简单熟悉数据库范式" class="headerlink" title="6、简单熟悉数据库范式"></a>6、简单熟悉数据库范式</h3><p>第一范式(1NF)：字段值具有原子性,不能再分(所有关系型数据库系统都满足第一范式);<br>例如：姓名字段,其中姓和名是一个整体,如果区分姓和名那么必须设立两个独立字段;</p>
+<p>第二范式(2NF)：一个表必须有主键,即每行数据都能被唯一的区分;<br>备注：必须先满足第一范式;</p>
+<p>第三范式(3NF)：一个表中不能包涵其他相关表中非关键字段的信息,即数据表不能有沉余字段;<br>备注：必须先满足第二范式;<br>数据库的三范式：<br>①字段不可分。<br>②有主键，非主键字段依赖主键。<br>③非主键字段不能互相依赖。</p>
+<p>备注：往往我们在设计表中不能遵守第三范式,因为合理的沉余字段将会给我们减少join的查询;<br>例如：相册表中会添加图片的点击数字段,在相册图片表中也会添加图片的点击数字段;</p>
+<h2 id="MYSQL数据库设计原则"><a href="#MYSQL数据库设计原则" class="headerlink" title="MYSQL数据库设计原则"></a>MYSQL数据库设计原则</h2><h3 id="1、核心原则"><a href="#1、核心原则" class="headerlink" title="1、核心原则"></a>1、核心原则</h3><p>不在数据库做运算;<br>cpu计算务必移至业务层;<br>控制列数量(字段少而精,字段数建议在20以内);<br>平衡范式与冗余(效率优先；往往牺牲范式)<br>拒绝3B(拒绝大sql语句：big sql、拒绝大事物：big transaction、拒绝大批量：big batch);</p>
+<h3 id="2、字段类原则"><a href="#2、字段类原则" class="headerlink" title="2、字段类原则"></a>2、字段类原则</h3><p>用好数值类型(用合适的字段类型节约空间);<br>字符转化为数字(能转化的最好转化,同样节约空间、提高查询性能);<br>避免使用NULL字段(NULL字段很难查询优化、NULL字段的索引需要额外空间、NULL字段的复合索引无效);<br>少用text类型(尽量使用varchar代替text字段);</p>
+<h3 id="3、索引类原则"><a href="#3、索引类原则" class="headerlink" title="3、索引类原则"></a>3、索引类原则</h3><p>合理使用索引(改善查询,减慢更新,索引一定不是越多越好);<br>字符字段必须建前缀索引;<br>不在索引做列运算;<br>innodb主键推荐使用自增列(主键建立聚簇索引,主键不应该被修改,字符串不应该做主键)(理解Innodb的索引保存结构就知道了);<br>不用外键(由程序保证约束);</p>
+<h3 id="4、sql类原则"><a href="#4、sql类原则" class="headerlink" title="4、sql类原则"></a>4、sql类原则</h3><p>sql语句尽可能简单(一条sql只能在一个cpu运算,大语句拆小语句,减少锁时间,一条大sql可以堵死整个库);<br>简单的事务;<br>避免使用trig&#x2F;func(触发器、函数不用客户端程序取而代之);<br>不用select <em>(消耗cpu,io,内存,带宽,这种程序不具有扩展性);<br>OR改写为IN(or的效率是n级别);<br>OR改写为UNION(mysql的索引合并很弱智);<br>select id from t where phone &#x3D; ’159′ or name &#x3D; ‘john’;<br>&#x3D;&gt;<br>select id from t where phone&#x3D;’159′<br>union<br>select id from t where name&#x3D;’jonh’<br>避免负向%;<br>慎用count(</em>);<br>limit高效分页(limit越大，效率越低);<br>使用union all替代union(union有去重开销);<br>少用连接join;<br>使用group by;<br>请使用同类型比较;<br>打散批量更新;</p>
+<h3 id="5、性能分析工具"><a href="#5、性能分析工具" class="headerlink" title="5、性能分析工具"></a>5、性能分析工具</h3><p>show profile;<br>mysqlsla;<br>mysqldumpslow;<br>explain;<br>show slow log;<br>show processlist;</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/MYSQL/">MYSQL</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-程序员必备知识点" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/12/14/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86%E7%82%B9/" class="article-date">
+      <time datetime="2019-12-14T09:21:33.000Z" itemprop="datePublished">2019-12-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/14/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86%E7%82%B9/">程序员必备知识点</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="程序员必备知识点"><a href="#程序员必备知识点" class="headerlink" title="程序员必备知识点"></a>程序员必备知识点</h2><h3 id="1、tcp-三次握手，四次挥手"><a href="#1、tcp-三次握手，四次挥手" class="headerlink" title="1、tcp 三次握手，四次挥手"></a>1、tcp 三次握手，四次挥手</h3><p>为什么连接的时候是三次握手，关闭的时候却是四次握手？</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200928193010926.png" alt="image-20200928193010926"></p>
+<p>三次握手是为了确定收发双方都有收发能力：</p>
+<p>第一次握手，证明了client有发送能力</p>
+<p>第二次握手，证明了server又接收和发送能力</p>
+<p>第三次握手，证明了client有接收能力</p>
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200928193246073.png" alt="image-20200928193246073"></p>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/whuslei/article/details/6667471">https://blog.csdn.net/whuslei/article/details/6667471</a></p>
+<h3 id="2、tcp-拆包、粘包问题。"><a href="#2、tcp-拆包、粘包问题。" class="headerlink" title="2、tcp 拆包、粘包问题。"></a>2、tcp 拆包、粘包问题。</h3><p>应用程序写入的数据大于套接字缓冲区大小，这将会发生拆包。</p>
+<p>应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发生粘包。</p>
+<p>进行MSS（最大报文长度）大小的TCP分段，当TCP报文长度-TCP头部长度&gt;MSS的时候将发生拆包。</p>
+<p>接收方法不及时读取套接字缓冲区数据，这将发生粘包。</p>
+<h4 id="粘包、拆包解决办法"><a href="#粘包、拆包解决办法" class="headerlink" title="粘包、拆包解决办法"></a>粘包、拆包解决办法</h4><p>TCP本身是面向流的，作为网络服务器，如何从这源源不断涌来的数据流中拆分出或者合并出有意义的信息呢？通常会有以下一些常用的方法：</p>
+<p>1、发送端给每个数据包添加包首部，首部中应该至少包含数据包的长度，这样接收端在接收到数据后，通过读取包首部的长度字段，便知道每一个数据包的实际长度了。</p>
+<p>2、发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。</p>
+<p>3、可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。</p>
+<p>http和https的区别</p>
+<p>HTTPS是一种应用层协议，本质上来说它是HTTP协议的一种变种。HTTPS比HTTP协议安全，因为HTTP是明文传输，而HTTPS是加密传输，加密过程中使用了三种加密手段，分别是证书，对称加密和非对称加密。HTTPS相比于HTTP多了一层SSL&#x2F;TSL</p>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20201008104044814.png" alt="image-20201008104044814"></p>
+<p>1.客户端向服务端发起HTTPS的请求，连接到服务器的443端口；</p>
+<p>2.服务器端将加密公钥以证书的形式返回；</p>
+<p>3.服务器接受到该公钥进行验证，就是验证2中证书，如果有问题，则HTTPS请求无法继续；如果没有问题，则上述公钥是合格的。（第一次HTTP请求）客户端这个时候随机生成一个私钥，成为client key,客户端私钥，用于对称加密数据的。使用前面的公钥对client key进行非对称加密；</p>
+<p>4.进行二次HTTP请求，将加密之后的client key传递给服务器；</p>
+<p>5.服务器使用私钥进行解密，得到client key,使用client key对数据进行对称加密</p>
+<p>6.将对称加密的数据传递给客户端，客户端使用非对称解密，得到服务器发送的数据，完成第二次HTTP请求。</p>
+<p>区别：</p>
+<p>（1）HTTPS是密文传输，HTTP是明文传输；</p>
+<p>（2）默认连接的端口号是不同的，HTTPS是443端口，而HTTP是80端口；</p>
+<p>（3）HTTPS请求的过程需要CA证书要验证身份以保证客户端请求到服务器端之后，传回的响应是来自于服务器端，而HTTP则不需要CA证书；</p>
+<p>（4）HTTPS&#x3D;HTTP+加密+认证+完整性保护。</p>
+<h3 id="3、linux-io-类型。"><a href="#3、linux-io-类型。" class="headerlink" title="3、linux io 类型。"></a>3、linux io 类型。</h3><p><strong>同步模型（synchronous IO）</strong></p>
+<p>阻塞IO（bloking IO）</p>
+<p>非阻塞IO（non-blocking IO）</p>
+<p>多路复用IO（multiplexing IO）</p>
+<p>信号驱动式IO（signal-driven IO）</p>
+<p>异步IO（asynchronous IO）</p>
+<h3 id="4、线程reactor-模型。"><a href="#4、线程reactor-模型。" class="headerlink" title="4、线程reactor 模型。"></a>4、线程reactor 模型。</h3><p>单线程模型</p>
+<p>多线程模型</p>
+<p>主从线程模型</p>
+<p>5、redis 分布式锁</p>
+<p>setnx</p>
+<p>redission 底层是lua脚本</p>
+<p>6、sortSet 排序时间复杂度，及常用命令</p>
+<p>sortSet 的排序时间复杂度为：O(N+M*Log(M))，跳表？</p>
+<p> 常用命令：</p>
+<p><strong>zadd ：添加元素，格式是：zadd zset的key score值 项的值， Score和项可以是多对，score可以是整数，也可以是浮点数，还可以是+inf表示无穷大，-inf表示负无穷大</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zadd key名称 分数 成员名</span><br></pre></td></tr></table></figure>
+
+<p><strong>zrange ：获取索引区间内的元素，格式是：zrange zset的key 起始索引 终止索引 （withscore）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrange key名称 起始索引 终止索引 withscores</span><br></pre></td></tr></table></figure>
+
+<p><strong>zrangebyscore ：获取分数区间内的元素，格式是：zrangebyscore zset的key 起始score 终止score (withscore),默认是包含端点值的，如果加上”(“表示不包含，后面还可以加上limit来限制。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrangebyscore key名称 startscore endscore withscores</span><br></pre></td></tr></table></figure>
+
+<p><strong>zrem ：删除元素，格式是：zrem zset的key 项的值，项的值可以是多个</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrem key名称 member</span><br></pre></td></tr></table></figure>
+
+<p><strong>zcard ：获取集合中元素个数，格式是：zcard zset的key</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcard key名称</span><br></pre></td></tr></table></figure>
+
+<p><strong>zincrby ：增减元素的score，格式是：zincrby zset的key 正负数字 项的值</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zincrby key名称 score member</span><br></pre></td></tr></table></figure>
+
+<p><strong>zrank : 获取项在zset中的索引，格式是：zrank zset的key 项的值</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrank key名称 member</span><br></pre></td></tr></table></figure>
+
+<p><strong>zscore ：获取元素的分数，格式是：zscore zset的key 项的值，返回项在zset中的score</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zscore key名称 member</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h2><h3 id="ArrayList源码"><a href="#ArrayList源码" class="headerlink" title="ArrayList源码"></a>ArrayList源码</h3><h3 id="HashMap源码"><a href="#HashMap源码" class="headerlink" title="HashMap源码"></a>HashMap源码</h3><h3 id="ConcurrentHashMap源码"><a href="#ConcurrentHashMap源码" class="headerlink" title="ConcurrentHashMap源码"></a>ConcurrentHashMap源码</h3><h3 id="线程池ThreadPool"><a href="#线程池ThreadPool" class="headerlink" title="线程池ThreadPool"></a>线程池ThreadPool</h3><h3 id="synthronized-volatile-Lock的使用和区别"><a href="#synthronized-volatile-Lock的使用和区别" class="headerlink" title="synthronized, volatile, Lock的使用和区别"></a>synthronized, volatile, Lock的使用和区别</h3><h3 id="NIO实现"><a href="#NIO实现" class="headerlink" title="NIO实现"></a>NIO实现</h3><h3 id="工厂，代理，单例模式（单例模式多线程问题）"><a href="#工厂，代理，单例模式（单例模式多线程问题）" class="headerlink" title="工厂，代理，单例模式（单例模式多线程问题）"></a>工厂，代理，单例模式（单例模式多线程问题）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="cglib与proxy的使用和区别"><a href="#cglib与proxy的使用和区别" class="headerlink" title="cglib与proxy的使用和区别"></a>cglib与proxy的使用和区别</h3><p>JDK Proxy 动态代理的实现无需引用第三方类，只需要实现 InvocationHandler 接口，重写 invoke() 方法即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * JDK Proxy</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">JDKProxy</span> <span class="keyword">implements</span> <span class="title class_">InvocationHandler</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> Object target; <span class="comment">// 代理对象</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取到代理对象</span></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">getInstance</span><span class="params">(Object target)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.target = target;</span><br><span class="line">            <span class="comment">// 取得代理对象</span></span><br><span class="line">            <span class="keyword">return</span> Proxy.newProxyInstance(target.getClass().getClassLoader(),</span><br><span class="line">                    target.getClass().getInterfaces(), <span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 执行代理方法</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> proxy  代理对象</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> method 代理方法</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> args   方法的参数</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">         * <span class="doctag">@throws</span> InvocationTargetException</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@throws</span> IllegalAccessException</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span></span><br><span class="line">                <span class="keyword">throws</span> InvocationTargetException, IllegalAccessException &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;动态代理之前的业务处理.&quot;</span>);</span><br><span class="line">            <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> method.invoke(target, args); <span class="comment">// 执行调用方法（此方法执行前后，可以进行相关业务处理）</span></span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现MethodInterceptor接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * CGLib 代理类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">CGLibProxy</span> <span class="keyword">implements</span> <span class="title class_">MethodInterceptor</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> Object target; <span class="comment">// 代理对象</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">getInstance</span><span class="params">(Object target)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.target = target;</span><br><span class="line">            <span class="type">Enhancer</span> <span class="variable">enhancer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Enhancer</span>();</span><br><span class="line">            <span class="comment">// 设置父类为实例类</span></span><br><span class="line">            enhancer.setSuperclass(<span class="built_in">this</span>.target.getClass());</span><br><span class="line">            <span class="comment">// 回调方法</span></span><br><span class="line">            enhancer.setCallback(<span class="built_in">this</span>);</span><br><span class="line">            <span class="comment">// 创建代理对象</span></span><br><span class="line">            <span class="keyword">return</span> enhancer.create();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">intercept</span><span class="params">(Object o, Method method,</span></span><br><span class="line"><span class="params">                                Object[] objects, MethodProxy methodProxy)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;方法调用前业务处理.&quot;</span>);</span><br><span class="line">            <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> methodProxy.invokeSuper(o, objects); <span class="comment">// 执行方法调用</span></span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<ol>
+<li>JDK Proxy 是 Java 语言自带的功能，无需通过加载第三方类实现；</li>
+<li>Java 对 JDK Proxy 提供了稳定的支持，并且会持续的升级和更新 JDK Proxy，例如 Java 8 版本中的 JDK Proxy 性能相比于之前版本提升了很多；</li>
+<li>JDK Proxy 是通过拦截器加反射的方式实现的；</li>
+<li>JDK Proxy 只能代理继承接口的类；</li>
+<li>JDK Proxy 实现和调用起来比较简单；</li>
+<li>CGLib 是第三方提供的工具，基于 ASM 实现的，性能比较高；</li>
+<li>CGLib 无需通过接口来实现，它是通过实现子类的方式来完成调用的。</li>
+</ol>
+<h3 id="Java可重入锁和读写锁"><a href="#Java可重入锁和读写锁" class="headerlink" title="Java可重入锁和读写锁"></a>Java可重入锁和读写锁</h3><h3 id="JVM内存模型"><a href="#JVM内存模型" class="headerlink" title="JVM内存模型"></a>JVM内存模型</h3><h3 id="JVM-GC机制和相关算法"><a href="#JVM-GC机制和相关算法" class="headerlink" title="JVM GC机制和相关算法"></a>JVM GC机制和相关算法</h3><p>GCroot ，可达性分析法。</p>
+<p>标记清除法、复制算法、标记整理法、分代算法</p>
+<p>内存分配的两种方式： <strong>指针碰撞</strong>和<strong>空闲列表</strong></p>
+<h3 id="JVM类的加载"><a href="#JVM类的加载" class="headerlink" title="JVM类的加载"></a>JVM类的加载</h3><p>加载、验证、准备、解释、初始化、使用、卸载</p>
+<p>加载：1）通过一个类的全限定名来获取定义此类的二进制流。</p>
+<p>​		    2）将这个字节流所代表的静态存储结构转化为方法区的运行时数据接口</p>
+<p>​			3）在内存中生成一个代表这个类的java.lang.Class的对象，作为方法区这个类的各种数据访问入口。</p>
+<p>ClassTraceLoading</p>
+<p><strong>加载</strong>是文件到内存的过程，通过类的全限定名查找类字节码文件，并利用字节码创建一个class对象；</p>
+<p><strong>验证</strong>是对类文件内容进行验证。目的在与确保Class文件符合当前虚拟机要求，不会危害虚拟机自身安全。主要包括四种：文件格式验证（魔数，版本号，等等），元数据验证，字节码验证，符号引用验证。</p>
+<p><strong>准备</strong>是进行内存分配，为类变量也就是类中由static修饰的变量分配内存，并设置初始值。这里要注意，初始值是0或者null，false。代码中具体的值是在初始化工程中完成的，final类型在编译过程中就赋值了</p>
+<p><strong>解析</strong>主要是解析字段，接口，方法。主要是将常量池中的符号变量替换为直接引用的过程。</p>
+<p><strong>初始化</strong>，主要完成静态块与静态变量的赋值。这是类加载的最后阶段。</p>
+<h3 id="JVM性能调优的大体步骤"><a href="#JVM性能调优的大体步骤" class="headerlink" title="JVM性能调优的大体步骤"></a>JVM性能调优的大体步骤</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013030086/article/details/85068766#1GC_13">1.监控GC的状态</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013030086/article/details/85068766#2dump_20">2.生成堆的dump文件</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013030086/article/details/85068766#3dump_22">3.分析dump文件</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013030086/article/details/85068766#4_26">4.分析结果，判断是否需要优化</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013030086/article/details/85068766#5GC_33">5.调整GC类型和内存分配</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013030086/article/details/85068766#6_35">6.不断分析和调整</a></li>
+</ul>
+<h3 id="CAS算法"><a href="#CAS算法" class="headerlink" title="CAS算法"></a>CAS算法</h3><p>CAS是英文单词CompareAndSwap的缩写，中文意思是：比较并替换。CAS需要有3个操作数：内存地址V，旧的预期值A，即将要更新的目标值B。</p>
+<p>CAS指令执行时，当且仅当内存地址V的值与预期值A相等时，将内存地址V的值修改为B，否则就什么都不做。整个比较并替换的操作是一个原子操作。</p>
+<p>CAS是<strong>乐观锁</strong>技术，当多个线程尝试使用CAS同时更新同一个变量时，只有其中一个线程能更新变量的值，而其它线程都失败，失败的线程并不会被挂起，而是被告知这次竞争中失败，并可以再次尝试。</p>
+<h4 id="CAS的缺点："><a href="#CAS的缺点：" class="headerlink" title="CAS的缺点："></a>CAS的缺点：</h4><p>CAS虽然很高效的解决了原子操作问题，但是CAS仍然存在三大问题。</p>
+<ol>
+<li>循环时间长开销很大。</li>
+<li>只能保证一个共享变量的原子操作。</li>
+<li>ABA问题。</li>
+</ol>
+<p><strong>循环时间长开销很大：</strong><br>我们可以看到getAndAddInt方法执行时，如果CAS失败，会一直进行尝试。如果CAS长时间一直不成功，可能会给CPU带来很大的开销。</p>
+<p><strong>只能保证一个共享变量的原子操作：</strong><br>当对一个共享变量执行操作时，我们可以使用循环CAS的方式来保证原子操作，但是对多个共享变量操作时，循环CAS就无法保证操作的原子性，这个时候就可以用锁来保证原子性。</p>
+<p><strong>什么是ABA问题？ABA问题怎么解决？</strong><br>如果内存地址V初次读取的值是A，并且在准备赋值的时候检查到它的值仍然为A，那我们就能说它的值没有被其他线程改变过了吗？</p>
+<h3 id="一致性Hash"><a href="#一致性Hash" class="headerlink" title="一致性Hash"></a>一致性Hash</h3><h3 id="arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）"><a href="#arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）" class="headerlink" title="arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）"></a>arrayList底层结构，linkedList底层结构，两者的区别（RandomAccess）</h3><p><strong>1.</strong> 是否保证线程安全: ArrayList 和 LinkedList 都是不同步的，也就是不保证线程安全; <strong>2.</strong> 底层数据结构: Arraylist 底层使用的是 <strong>Object</strong> 数组; LinkedList 底层使用的是 双 向链表 数据结构(JDK1.6之前为循环链表，JDK1.7取消了循环。注意双向链表和双向循环链表 的区别，下面有介绍到!)</p>
+<p><strong>3.</strong> 插入和删除是否受元素位置的影响: </p>
+<p>1 <strong>ArrayList</strong> 采用数组存储，所以插入和删除元素的 时间复杂度受元素位置的影响。 比如:执行 add(E e) 方法的时候， ArrayList 会默认在将指 定的元素追加到此列表的末尾，这种情况时间复杂度就是O(1)。但是如果要在指定位置 i 插入 和删除元素的话( add(int index, E element) )时间复杂度就为 O(n-i)。因为在进行上述操作 的时候集合中第 i 和第 i 个元素之后的(n-i)个元素都要执行向后位&#x2F;向前移一位的操作。</p>
+<p> 2 <strong>LinkedList</strong> 采用链表存储，所以对于 <strong>add(E e)</strong> 方法的插入，删除元素时间复杂度不受元素位 置的影响，近似 <strong>O</strong>(<strong>1</strong>)，如果是要在指定位置 <strong>i</strong> 插入和删除元素的话( <strong>(add(int index, E element)</strong> ) 时间复杂度近似为 <strong>o(n))</strong> 因为需要先移动到指定位置再插入。<br> <strong>4.</strong> 是否支持快速随机访问: LinkedList 不支持高效的随机元素访问，而 ArrayList 支持。 快速随机访问就是通过元素的序号快速获取元素对象(对应于 get(int index) 方法)。</p>
+<p><strong>5.</strong> 内存空间占用: ArrayList的空 间浪费主要体现在在list列表的结尾会预留一定的容量空 间，而LinkedList的空间花费则体现在它的每一个元素都需要消耗比ArrayList更多的空间(因 为要存放直接后继和直接前驱以及数据)。</p>
+<h3 id="hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？"><a href="#hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？" class="headerlink" title="hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？"></a>hashmap底层结构（java8版本），concurrentHashMap（java8版本）、hashTable，三兄弟对比下吧？</h3><h3 id="nio和bio相比有啥不同（aio呢）"><a href="#nio和bio相比有啥不同（aio呢）" class="headerlink" title="nio和bio相比有啥不同（aio呢）"></a>nio和bio相比有啥不同（aio呢）</h3><h3 id="jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）"><a href="#jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）" class="headerlink" title="jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）"></a>jvm内存划分（java8版本呢？），堆的划分（系统遇到瓶颈，确定是JVM引起，怎么调优，说下具体做法）</h3><h3 id="成员变量、局部变量等等的会分配到jvm的哪块儿区域"><a href="#成员变量、局部变量等等的会分配到jvm的哪块儿区域" class="headerlink" title="成员变量、局部变量等等的会分配到jvm的哪块儿区域"></a>成员变量、局部变量等等的会分配到jvm的哪块儿区域</h3><h3 id="mysql的引擎知道哪些，有啥区别"><a href="#mysql的引擎知道哪些，有啥区别" class="headerlink" title="mysql的引擎知道哪些，有啥区别"></a>mysql的引擎知道哪些，有啥区别</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> engines;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200930222745773.png" alt="image-20200930222745773"></p>
+<p>MyISAM、支持事务的 InnoDB、内存类型的 Memory、归档类型的 Archive、列式存储的 Infobright，以及一些新兴的存储引擎，以 RocksDB 为底层基础的 MyRocks 和 RocksDB。</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>InnoDB</th>
+<th>MyiSAM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ACID事务</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>配置ACID</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>崩溃恢复</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>外键支持</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>行级锁粒度</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>MVCC</td>
+<td>是</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>InnoDB 支持 ACID 的事务 4 个特性，而 MyISAM 不支持；</p>
+</li>
+<li><p>InnoDB 支持 4 种事务隔离级别，默认是可重复读 Repeatable Read 的，MyISAM 不支持；</p>
+</li>
+<li><p>InnoDB 支持 crash 安全恢复，MyISAM 不支持；</p>
+</li>
+<li><p>InnoDB 支持外键，MyISAM 不支持；</p>
+</li>
+<li><p>InnoDB 支持行级别的锁粒度，MyISAM 不支持，只支持表级别的锁粒度；</p>
+</li>
+<li><p>InnoDB 支持 MVCC，MyISAM 不支持；</p>
+</li>
+</ul>
+<h3 id="乐观锁、悲观锁"><a href="#乐观锁、悲观锁" class="headerlink" title="乐观锁、悲观锁"></a>乐观锁、悲观锁</h3><p>悲观锁主要是<code>共享锁</code>或<code>排他锁</code><br><code>共享锁</code>又称为读锁，简称S锁，顾名思义，共享锁就是多个事务对于同一数据可以共享一把锁，都能访问到数据，但是只能读不能修改。<br><code>排他锁</code>又称为写锁，简称X锁，顾名思义，排他锁就是不能与其他所并存，如一个事务获取了一个数据行的排他锁，其他事务就不能再获取该行的其他锁，包括共享锁和排他锁，但是获取排他锁的事务是可以对数据就行读取和修改。</p>
+<p>实现乐观锁一般来说有以下2种方式：</p>
+<ul>
+<li>使用版本号<br>使用数据版本（Version）记录机制实现，这是乐观锁最常用的一种实现方式。何谓数据版本？即为数据增加一个版本标识，一般是通过为数据库表增加一个数字类型的 “version” 字段来实现。当读取数据时，将version字段的值一同读出，数据每更新一次，对此version值加一。当我们提交更新的时候，判断数据库表对应记录的当前版本信息与第一次取出来的version值进行比对，如果数据库表当前版本号与第一次取出来的version值相等，则予以更新，否则认为是过期数据。</li>
+<li>使用时间戳<br>乐观锁定的第二种实现方式和第一种差不多，同样是在需要乐观锁控制的table中增加一个字段，名称无所谓，字段类型使用时间戳（timestamp）, 和上面的version类似，也是在更新提交的时候检查当前数据库中数据的时间戳和自己更新前取到的时间戳进行对比，如果一致则OK，否则就是版本冲突。</li>
+</ul>
+<h3 id="索引相关的（btree、失效、组合索引的最左分配原则、explain使用）"><a href="#索引相关的（btree、失效、组合索引的最左分配原则、explain使用）" class="headerlink" title="索引相关的（btree、失效、组合索引的最左分配原则、explain使用）"></a>索引相关的（btree、失效、组合索引的最左分配原则、explain使用）</h3><h3 id="线程池相关"><a href="#线程池相关" class="headerlink" title="线程池相关"></a>线程池相关</h3><table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>corePoolSize</td>
+<td>核心线程数</td>
+</tr>
+<tr>
+<td>maxPoolSize</td>
+<td>最大线程数</td>
+</tr>
+<tr>
+<td>keepAliveTime+单位时间</td>
+<td>空闲线程的存活时间</td>
+</tr>
+<tr>
+<td>ThreadFactory</td>
+<td>线程工厂，用来创建新线程</td>
+</tr>
+<tr>
+<td>workQueue</td>
+<td>用于存放任务的队列</td>
+</tr>
+<tr>
+<td>Handler</td>
+<td>处理被拒绝的任务</td>
+</tr>
+</tbody></table>
+<p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20201001090334020.png" alt="image-20201001090334020"></p>
+<h5 id="四种拒绝策略"><a href="#四种拒绝策略" class="headerlink" title="四种拒绝策略"></a>四种拒绝策略</h5><table>
+<thead>
+<tr>
+<th>策略</th>
+<th>处理方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AbortPolicy</td>
+<td>抛出一个类型为RejectedExecutionExceptiond的RuntimeException，让开发者知道任务被拒绝了，从而根据具体业务选择重试或者放弃提交等策略</td>
+</tr>
+<tr>
+<td>DiscardPolicy</td>
+<td>当新任务提交，直接丢弃，不会给开发者任何通知，所以存在风险</td>
+</tr>
+<tr>
+<td>DiscardOrdestPolicy</td>
+<td>丢弃老任务，同上也有风险</td>
+</tr>
+<tr>
+<td>CallerRunsPolicy</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h3><h3 id="lock的读写、中断、自旋"><a href="#lock的读写、中断、自旋" class="headerlink" title="lock的读写、中断、自旋"></a>lock的读写、中断、自旋</h3><h3 id="对threadLocal的理解"><a href="#对threadLocal的理解" class="headerlink" title="对threadLocal的理解"></a>对threadLocal的理解</h3><p>ThreadLocal 不是用来解决多线程共享变量的问题，而是用来解决线程数据隔离的问题。</p>
+<p><strong>底层实现主要是存有一个map，以线程作为key，泛型作为value，可以理解为线程级别的缓存。每一个线程都会获得一个单独的map。</strong></p>
+<h3 id="序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）"><a href="#序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）" class="headerlink" title="序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）"></a>序列化、反序列化（一个已经实现Serializable的类，新增个属性，怎样让程序直接报错）</h3><p>1.修改序列化id的值</p>
+<h3 id="java关键字Transient"><a href="#java关键字Transient" class="headerlink" title="java关键字Transient"></a>java关键字Transient</h3><p>  <em><strong>*Java的serialization提供了一种持久化对象实例的机制。当持久化对象时，可能有一个特殊的对象数据成员，我们不想用serialization机制来保存它。为了在一个特定对象的一个域上关闭serialization，可以在这个域前加上关键字transient。<br>  transient是Java语言的关键字，用来表示一个域不是该对象串行化的一部分。当一个对象被串行化的时候，transient型变量的值不包括在串行化的表示中，然而非transient型的变量是被包括进去的。*</strong></em> </p>
+<h3 id="servlet是否线程安全（为什么你认为是-否）"><a href="#servlet是否线程安全（为什么你认为是-否）" class="headerlink" title="servlet是否线程安全（为什么你认为是&#x2F;否）"></a>servlet是否线程安全（为什么你认为是&#x2F;否）</h3><h3 id="对dubbo的理解（画下provider、consumer、注册中心、监控的关系）"><a href="#对dubbo的理解（画下provider、consumer、注册中心、监控的关系）" class="headerlink" title="对dubbo的理解（画下provider、consumer、注册中心、监控的关系）"></a>对dubbo的理解（画下provider、consumer、注册中心、监控的关系）</h3><ol>
+<li>服务容器负责启动，加载，运行服务提供者。</li>
+<li>服务提供者在启动时，向注册中心注册自己提供的服务。</li>
+<li>服务消费者在启动时，向注册中心订阅自己所需的服务，并且缓存到本地</li>
+<li>注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。</li>
+<li>服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。</li>
+<li>服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。</li>
+</ol>
+<h3 id="consumer1次调用provider，在dubbo内部各模块运转的流程"><a href="#consumer1次调用provider，在dubbo内部各模块运转的流程" class="headerlink" title="consumer1次调用provider，在dubbo内部各模块运转的流程"></a>consumer1次调用provider，在dubbo内部各模块运转的流程</h3><p>1.首先服务消费者通过代理对象 Proxy 发起远程调用</p>
+<p>2.接着通过网络客户端 Client 将编码后的请求发送给服务提供方的网络层上，也就是 Server。</p>
+<p>3.Server 在收到请求后，首先要做的事情是对数据包进行解码。然后将解码后的请求发送至分发器 Dispatcher，再由分发器将请求派发到指定的线程池上，最后由线程池调用具体的服务</p>
+<h3 id="谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）"><a href="#谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）" class="headerlink" title="谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）"></a>谈谈你对mq的理解（你用的activemq，那kafka与之对比，有啥优势呢）</h3><h3 id="maven中install、package命令的区别"><a href="#maven中install、package命令的区别" class="headerlink" title="maven中install、package命令的区别"></a>maven中install、package命令的区别</h3><h3 id="用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？"><a href="#用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？" class="headerlink" title="用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？"></a>用过哪些设计模式，单例的懒汉、饿汉、线程安全的懒汉、最好的线程安全懒汉实现？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singletion</span>&#123;</span><br><span class="line">  <span class="comment">//构造器私有</span></span><br><span class="line">	<span class="keyword">private</span> Singleton&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">  <span class="comment">//公开+静态的get方法</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> Singletion <span class="title function_">getSingleton</span><span class="params">()</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Holder.instance;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//内部类 私有+静态+new</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Holder</span>&#123;</span><br><span class="line">		<span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="int的位数"><a href="#int的位数" class="headerlink" title="int的位数"></a>int的位数</h3><p>1.字节：byte：用来计量存储容量的一种计量单位；位：bit</p>
+<p>2.一个字节等于8位  1byte &#x3D; 8bit</p>
+<p>char占用的是2个字节 16位，所以一个char类型的可以存储一个汉字。</p>
+<p>整型：</p>
+<p>byte:1个字节 8位 -128~127</p>
+<p>short ：2个字节 16位</p>
+<p>int ：4个字节 32位</p>
+<p>long：8个字节 64位</p>
+<p>浮点型：</p>
+<p>float：4个字节 32 位</p>
+<p>double ：8个字节 64位</p>
+<p>注：默认的是double类型，如3.14是double类型的，加后缀F（3.14F）则为float类型的。</p>
+<p>char类型：</p>
+<p>char：2个字节。</p>
+<p>Boolean 类型</p>
+<p>boolean: （true or false）（并未指明是多少字节  1字节  1位 4字节）</p>
+<p>补充：BigInteger类实现了任意精度的整数运算，BigDecimal实现了任意精度的浮点数运算。</p>
+<h3 id="bitmap"><a href="#bitmap" class="headerlink" title="bitmap"></a>bitmap</h3><p>1000W的数据，32的正整数 4个字节，40M，</p>
+<p>如果用位图的话，1亿的只需要1亿个二进制位12M就够了</p>
+<h3 id="hashMap-ConcurrentHashMap-区别，hash冲突如何解决的？"><a href="#hashMap-ConcurrentHashMap-区别，hash冲突如何解决的？" class="headerlink" title="hashMap ConcurrentHashMap 区别，hash冲突如何解决的？"></a>hashMap ConcurrentHashMap 区别，hash冲突如何解决的？</h3><h3 id="synchronized-和lock的区别，synchronized是悲观锁还是乐观锁，cas算法"><a href="#synchronized-和lock的区别，synchronized是悲观锁还是乐观锁，cas算法" class="headerlink" title="synchronized 和lock的区别，synchronized是悲观锁还是乐观锁，cas算法"></a>synchronized 和lock的区别，synchronized是悲观锁还是乐观锁，cas算法</h3><p><a target="_blank" rel="noopener" href="https://km.sankuai.com/page/34303789">https://km.sankuai.com/page/34303789</a></p>
+<p>即compare and swap（比较与交换），是一种有名的无锁算法。无锁编程，即不使用锁的情况下实现多线程之间的变量同步，也就是在没有线程被阻塞的情况下实现变量的同步，所以也叫非阻塞同步（Non-blocking Synchronization）。CAS算法涉及到三个操作数</p>
+<p>需要读写的内存值 V</p>
+<p>进行比较的值 A</p>
+<p>拟写入的新值 B</p>
+<p>当且仅当 V 的值等于 A时，CAS通过原子方式用新值B来更新V的值，否则不会执行任何操作（比较和替换是一个原子操作）。一般情况下是一个自旋操作，即不断的重试。</p>
+<h3 id="3、谈谈threadLocal的理解、InheritableThreadLocal-、TransmittableThreadLocal-以及fastThreadLocal"><a href="#3、谈谈threadLocal的理解、InheritableThreadLocal-、TransmittableThreadLocal-以及fastThreadLocal" class="headerlink" title="3、谈谈threadLocal的理解、InheritableThreadLocal 、TransmittableThreadLocal 以及fastThreadLocal"></a>3、谈谈threadLocal的理解、InheritableThreadLocal 、TransmittableThreadLocal 以及fastThreadLocal</h3><p>参考答案：<a target="_blank" rel="noopener" href="https://mlog.club/article/22197">https://mlog.club/article/22197</a></p>
+<h4 id="ThreadLocal局限性：无法在父子线程之间传递；"><a href="#ThreadLocal局限性：无法在父子线程之间传递；" class="headerlink" title="ThreadLocal局限性：无法在父子线程之间传递；"></a>ThreadLocal局限性：无法在父子线程之间传递；</h4><h4 id="InheritableThreadLocal：线程池不可用；"><a href="#InheritableThreadLocal：线程池不可用；" class="headerlink" title="InheritableThreadLocal：线程池不可用；"></a>InheritableThreadLocal：线程池不可用；</h4><h4 id="TransmittableThreadLocal：需要TtlExecutors"><a href="#TransmittableThreadLocal：需要TtlExecutors" class="headerlink" title="TransmittableThreadLocal：需要TtlExecutors"></a>TransmittableThreadLocal：需要TtlExecutors</h4><h3 id="3、线程池"><a href="#3、线程池" class="headerlink" title="3、线程池"></a>3、线程池</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/shijiaqi1066/p/3412300.html">https://www.cnblogs.com/shijiaqi1066/p/3412300.html</a></p>
+<p>1.创建一个线程时，查看核心线程数是不是已经满了，如果没有满创建一个核心线程</p>
+<p>2.如果核心线程满了，查看队列是否已经满了，没有满就加入队列，等核心线程有空闲在执行</p>
+<p>3.如果队列满了，查看，max是否超过了，如果没超过，就创建新的线程</p>
+<p>4.如果超过了max，则执行对应的拒绝策略</p>
+<h3 id="4、请你说一下自己对于-AQS-原理的理解、"><a href="#4、请你说一下自己对于-AQS-原理的理解、" class="headerlink" title="4、请你说一下自己对于 AQS 原理的理解、"></a>4、请你说一下自己对于 AQS 原理的理解、</h3><p>参考答案：<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Multithread/AQS.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Multithread/AQS.md</a></p>
+<h3 id="5、CyclicBarrier-和-CountDownLatch-的区别"><a href="#5、CyclicBarrier-和-CountDownLatch-的区别" class="headerlink" title="5、CyclicBarrier 和 CountDownLatch 的区别"></a>5、CyclicBarrier 和 CountDownLatch 的区别</h3><p>对于 CountDownLatch 来说，重点是“一个线程（多个线程）等待”，而其他的 N 个线程在完成“某件事情”之后，可以终止，也可以等待。而对于 CyclicBarrier，重点是多个线程，在任意一个线程没有完成，所有的线程都必须等待。</p>
+<p>CountDownLatch 是计数器，线程完成一个记录一个，只不过计数不是递增而是递减，而 CyclicBarrier 更像是一个阀门，需要所有线程都到达，阀门才能打开，然后继续执行。</p>
+<h3 id="6、aop实现原理：动态代理、cglib，"><a href="#6、aop实现原理：动态代理、cglib，" class="headerlink" title="6、aop实现原理：动态代理、cglib，"></a>6、aop实现原理：动态代理、cglib，</h3><p>两种实现有什么区别：基于接口、基于继承类</p>
+<ol>
+<li>JDK Proxy 是 Java 语言自带的功能，无需通过加载第三方类实现；</li>
+<li>Java 对 JDK Proxy 提供了稳定的支持，并且会持续的升级和更新 JDK Proxy，例如 Java 8 版本中的 JDK Proxy 性能相比于之前版本提升了很多；</li>
+<li>JDK Proxy 是通过拦截器加反射的方式实现的；</li>
+<li>JDK Proxy 只能代理继承接口的类；</li>
+<li>JDK Proxy 实现和调用起来比较简单；</li>
+<li>CGLib 是第三方提供的工具，基于 ASM 实现的，性能比较高；</li>
+<li>CGLib 无需通过接口来实现，它是通过实现子类的方式来完成调用的。</li>
+</ol>
+<h3 id="MyBatis中-与-的区别"><a href="#MyBatis中-与-的区别" class="headerlink" title="MyBatis中#与$的区别"></a>MyBatis中#与$的区别</h3><p>${} 是 Properties 文件中的变量占位符，它可以用于标签属性值和 sql 内部，属于静态文本 替换，比如${driver}会被静态替换为 com.mysql.jdbc.Driver 。</p>
+<p>#{} 是 sql 的参数占位符，Mybatis 会将 sql 中的 #{} 替换为?号，在 sql 执行前会使用 PreparedStatement 的参数设置方法，按序给 sql 的?号占位符设置参数值，比如 ps.setInt(0, parameterValue)， #{item.name} 的取值方式为使用反射从参数对象中获取 item 对象的 name 属性值，相当于 param.getItem().getName() 。</p>
+<h2 id="jvm"><a href="#jvm" class="headerlink" title="jvm"></a>jvm</h2><h3 id="1、描述下jvm内存模型"><a href="#1、描述下jvm内存模型" class="headerlink" title="1、描述下jvm内存模型"></a>1、描述下jvm内存模型</h3><p><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20200930173845666.png" alt="image-20200930173845666"></p>
+<h3 id="2、JVM参数Xms-Xmx是如何设置的-如果大小是一至-为什么这样设置"><a href="#2、JVM参数Xms-Xmx是如何设置的-如果大小是一至-为什么这样设置" class="headerlink" title="2、JVM参数Xms Xmx是如何设置的, 如果大小是一至,为什么这样设置?"></a>2、JVM参数Xms Xmx是如何设置的, 如果大小是一至,为什么这样设置?</h3><p>参考答案:</p>
+<p>Xmx设置JVM 的最大可用内存,Xms 设置JVM实际使用内存,一般Xmx和Xms相同,这是因为当Xmx内存空间不够用时,将进行扩容导致Full GC。将Xmx和Xms设置成相同的值,避免因Xms偏小导致频繁重新分配内存,影响应用使用。</p>
+<h3 id="2、有遇到过OOM么-什么情况-怎么发现的-怎么查原因的"><a href="#2、有遇到过OOM么-什么情况-怎么发现的-怎么查原因的" class="headerlink" title="2、有遇到过OOM么,什么情况,怎么发现的,怎么查原因的?"></a>2、有遇到过OOM么,什么情况,怎么发现的,怎么查原因的?</h3><p>考察点:jstat mat工具</p>
+<h3 id="3、如何定位一个CPU-Load过高的java线程？"><a href="#3、如何定位一个CPU-Load过高的java线程？" class="headerlink" title="3、如何定位一个CPU Load过高的java线程？"></a>3、如何定位一个CPU Load过高的java线程？</h3><p>top -c</p>
+<p>top -Hp pid</p>
+<p>printf “%x\n” pid （将pid转换16进制表示的）</p>
+<p>定位线程堆栈 jstack 29054 | grep ‘0x1a17’ -C30 —color </p>
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>分布式锁：一般，只是提到加超时时间</p>
+<p>持久化：rdb、aof，可以</p>
+<p>AOF更安全，可将数据及时同步到文件中，但需要较多的磁盘IO，AOF文件尺寸较大，文件内容恢复相对较慢， 也更完整。</p>
+<p>RDB持久化，安全性较差，它是正常时期数据备份及 master-slave数据同步的最佳手段，文件尺寸较小，恢复数度较快。</p>
+<p>缓存穿透：缓存穿透是指访问的key在缓存中存在，直接访问的DB，比如有恶意的黑客，故意访问数据库不存在的id，缓存中肯定不存在，压力就会集中在DB上</p>
+<p>注意事项：大key</p>
+<h4 id="大-key解决方案"><a href="#大-key解决方案" class="headerlink" title="大 key解决方案"></a>大 key解决方案</h4><p>1.序列化压缩保存</p>
+<p>2.拆分保存（有点分布式的意思）</p>
+<h4 id="hotKey解决方法"><a href="#hotKey解决方法" class="headerlink" title="hotKey解决方法"></a>hotKey解决方法</h4><p>1.可以将这些热 key 进行分散处理，比如一个热 key 名字叫 hotkey，可以被分散为 hotkey#1、hotkey#2、hotkey#3，……hotkey#n（有点负载均衡的意思）</p>
+<p>2.可以 key 的名字不变，对缓存提前进行多副本+多级结合的缓存架构设计。</p>
+<p>3.如果热 key 较多，还可以通过监控体系对缓存的 SLA 实时监控，通过快速扩容来减少热 key 的冲击。</p>
+<p>4.业务端还可以使用本地缓存，将这些热 key 记录在本地缓存，来减少对远程缓存的冲击。</p>
+<p>redis过期时间，token，验证码之类的时间</p>
+<h4 id="定期删除和惰性删除"><a href="#定期删除和惰性删除" class="headerlink" title="定期删除和惰性删除"></a>定期删除和惰性删除</h4><p>定期删除:redis默认是每隔 100ms 就随机抽取一些设置了过期时间的key，检查其是否过期， 如果过期就删除。注意这里是随机抽取的。为什么要随机呢?你想一想假如 redis 存了几十万 个 key ，每隔100ms就遍历所有的设置过期时间的 key 的话，就会给 CPU 带来很大的负载! </p>
+<p>惰性删除 :定期删除可能会导致很多过期 key 到了时间并没有被删除掉。所以就有了惰性删 除。假如你的过期 key，靠定期删除没有被删除掉，还停留在内存里，除非你的系统去查一下那 个 key，才会被redis给删除掉。这就是所谓的惰性删除。</p>
+<p><strong>edis</strong> 提供 <strong>6</strong>种数据淘汰策略:</p>
+<ol>
+<li><p><strong>volatile-lru</strong>:从已设置过期时间的数据集(server.db[i].expires)中挑选最近最少使用的数据淘汰</p>
+</li>
+<li><p><strong>volatile-ttl</strong>:从已设置过期时间的数据集(server.db[i].expires)中挑选将要过期的数据淘汰</p>
+</li>
+<li><p><strong>volatile-random</strong>:从已设置过期时间的数据集(server.db[i].expires)中任意选择数据淘汰</p>
+</li>
+<li><p><strong>allkeys-lru</strong>:当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key(这个是</p>
+<p>最常用的)</p>
+</li>
+<li><p><strong>allkeys-random</strong>:从数据集(server.db[i].dict)中任意选择数据淘汰</p>
+</li>
+<li><p><strong>no-eviction</strong>:禁止驱逐数据，也就是说当内存不足以容纳新写入数据时，新写入操作会报错。</p>
+<p>这个应该没人使用吧!</p>
+</li>
+</ol>
+<p>4.0版本后增加以下两种:</p>
+<ol>
+<li><strong>volatile-lfu</strong>:从已设置过期时间的数据集(server.db[i].expires)中挑选最不经常使用的数据淘汰</li>
+<li><strong>allkeys-lfu</strong>:当内存不足以容纳新写入数据时，在键空间中，移除最不经常使用的key</li>
+</ol>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p>事务隔离级别：</p>
+<p>读未提交：没提交就可以读取到</p>
+<p>读提交：提交就能读取到</p>
+<p>可重复读：</p>
+<p>慢查询：</p>
+<p>explain 查看扫描行行数，查看查询条件是否落在了索引上</p>
+<p>mysql 常见存储引擎</p>
+<p>myasiam</p>
+<p>innodb</p>
+<p>momory</p>
+<h3 id="聚簇索引和非聚簇索引的区别？"><a href="#聚簇索引和非聚簇索引的区别？" class="headerlink" title="聚簇索引和非聚簇索引的区别？"></a>聚簇索引和非聚簇索引的区别？</h3><p>一般情况下主键会默认创建聚簇索引，且一张表只允许存在一个聚簇索引。</p>
+<p>在《数据库原理》一书中是这么解释聚簇索引和非聚簇索引的区别的：<br>聚簇索引的叶子节点就是数据节点，而非聚簇索引的叶子节点仍然是索引节点，只不过有指向对应数据块的指针。</p>
+<p>索引最左前缀：</p>
+<p>分表：分表维度理解可以</p>
+<p>数据迁移：停服务，mq双写</p>
+<p>怎么保证迁移后数据正确：记录数，</p>
+<p>mvcc ：同一份数据临时保留多版本的一种方式，进而实现并发控制</p>
+<h3 id="生成全局-id-有下面这几种方式"><a href="#生成全局-id-有下面这几种方式" class="headerlink" title="生成全局 id 有下面这几种方式:"></a>生成全局 id 有下面这几种方式:</h3><p><strong>UUID</strong>:不适合作为主键，因为太⻓了，并且无序不可读，查询效率低。比􏰀适合用于生成唯一的 名字的标示比如文件的名字。<br>数据库自增 <strong>id</strong> : 两台数据库分别设置不同步⻓，生成不重复ID的策略来实现高可用。这种方式 生成的 id 有序，但是需要独立部署数据库实例，成本高，还会有性能瓶颈。</p>
+<p>利用 <strong>redis</strong> 生成 <strong>id :</strong> 性能比􏰀好，灵活方便，不依赖于数据库。但是，引入了新的组件造成 系统更加复杂，可用性降低，编码更加复杂，增加了系统成本。</p>
+<p> <strong>Twitter</strong>的<strong>snowflake</strong>算法 :Github 地址:<a target="_blank" rel="noopener" href="https://github.com/twitter-archive/snowflake%E3%80%82">https://github.com/twitter-archive/snowflake。</a> </p>
+<p>美团的<strong>Leaf</strong>分布式<strong>ID</strong>生成系统 :Leaf 是美团开源的分布式ID生成器，能保证全局唯一性、趋势 递增、单调递增、信息安全，里面也提到了几种分布式方案的对比，但也需要依赖关系数据库、 Zookeeper等中间件。感觉还不错。美团技术团队的一篇文章:<a target="_blank" rel="noopener" href="https://tech.meituan.com/2017">https://tech.meituan.com/2017</a> &#x2F;04&#x2F;21&#x2F;mt-leaf.html 。</p>
+<h2 id="算法："><a href="#算法：" class="headerlink" title="算法："></a>算法：</h2><p>1、螺旋打印矩阵</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/spiral-matrix/solution/luo-xuan-ju-zhen-by-leetcode/">https://leetcode-cn.com/problems/spiral-matrix/solution/luo-xuan-ju-zhen-by-leetcode/</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">spiralOrder</span><span class="params">(<span class="type">int</span>[][] matrix)</span> &#123;</span><br><span class="line">        List&lt;Integer&gt; order = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">if</span> (matrix == <span class="literal">null</span> || matrix.length == <span class="number">0</span> || matrix[<span class="number">0</span>].length == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> order;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">rows</span> <span class="operator">=</span> matrix.length, columns = matrix[<span class="number">0</span>].length;</span><br><span class="line">        <span class="type">boolean</span>[][] visited = <span class="keyword">new</span> <span class="title class_">boolean</span>[rows][columns];</span><br><span class="line">        <span class="type">int</span> <span class="variable">total</span> <span class="operator">=</span> rows * columns;</span><br><span class="line">        <span class="type">int</span> <span class="variable">row</span> <span class="operator">=</span> <span class="number">0</span>, column = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span>[][] directions = &#123;&#123;<span class="number">0</span>, <span class="number">1</span>&#125;, &#123;<span class="number">1</span>, <span class="number">0</span>&#125;, &#123;<span class="number">0</span>, -<span class="number">1</span>&#125;, &#123;-<span class="number">1</span>, <span class="number">0</span>&#125;&#125;;</span><br><span class="line">        <span class="type">int</span> <span class="variable">directionIndex</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; total; i++) &#123;</span><br><span class="line">            order.add(matrix[row][column]);</span><br><span class="line">            visited[row][column] = <span class="literal">true</span>;</span><br><span class="line">            <span class="type">int</span> <span class="variable">nextRow</span> <span class="operator">=</span> row + directions[directionIndex][<span class="number">0</span>], nextColumn = column + directions[directionIndex][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (nextRow &lt; <span class="number">0</span> || nextRow &gt;= rows || nextColumn &lt; <span class="number">0</span> || nextColumn &gt;= columns || visited[nextRow][nextColumn]) &#123;</span><br><span class="line">                directionIndex = (directionIndex + <span class="number">1</span>) % <span class="number">4</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            row += directions[directionIndex][<span class="number">0</span>];</span><br><span class="line">            column += directions[directionIndex][<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> order;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2、倒叙速出 </p>
+<p>主动学习：看过什么书，印象深的点是什么？如何自我学习？</p>
+<p>Springboot学习，大V的学习问题解决思路；自己做笔记！</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">知识点</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2026 markee
+            </div>
+            <div class="footer-right">
+                <a href="https://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "forest" });
+</script>
+</body>
+</html>

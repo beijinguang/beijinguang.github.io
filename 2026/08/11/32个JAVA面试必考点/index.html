@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+
+<meta name="description" content="32个JAVA面试必考点一.操作系统与计算机网络1.进程与线程的区别和联系​	进程是系统资源分配的最小单位，线程是程序执行的最小单位； ​	进程使用独立的数据空间，而线程共享进程的数据空间。比如java启动时，本事就是一个进程，其中用多个线程在工作。 2.简单介绍一下进程的切换过程3.你经常用哪些linux命令，用来解决哪些问题？4.为什么tcp建立连接需要3次握手而断连需要4次？  三次握手 第">
+<meta property="og:type" content="article">
+<meta property="og:title" content="码客Mark">
+<meta property="og:url" content="https://code.idea4j.com/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/index.html">
+<meta property="og:site_name" content="码客Mark">
+<meta property="og:description" content="32个JAVA面试必考点一.操作系统与计算机网络1.进程与线程的区别和联系​	进程是系统资源分配的最小单位，线程是程序执行的最小单位； ​	进程使用独立的数据空间，而线程共享进程的数据空间。比如java启动时，本事就是一个进程，其中用多个线程在工作。 2.简单介绍一下进程的切换过程3.你经常用哪些linux命令，用来解决哪些问题？4.为什么tcp建立连接需要3次握手而断连需要4次？  三次握手 第">
+<meta property="og:locale">
+<meta property="og:image" content="https://gitee.com/idea4j/image4md/raw/master/images/image-20201004213552815.png">
+<meta property="og:image" content="https://gitee.com/idea4j/image4md/raw/master/images/image-20201004215013835.png">
+<meta property="og:image" content="https://gitee.com/idea4j/image4md/raw/master/images/image-20201005131112030.png">
+<meta property="og:image" content="https://gitee.com/idea4j/image4md/raw/master/images/image-20201006203307755.png">
+<meta property="article:published_time" content="2026-08-10T23:02:43.751Z">
+<meta property="article:modified_time" content="2026-08-10T23:02:43.751Z">
+<meta property="article:author" content="markee">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/idea4j/image4md/raw/master/images/image-20201004213552815.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="码客Mark" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>码客Mark</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c160bf5d12f84389ce96c02b54e4575f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Appollo/" rel="tag">Appollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GC/" rel="tag">GC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoF/" rel="tag">GoF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">Java字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mybatis/" rel="tag">Mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/" rel="tag">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/" rel="tag">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinpoint/" rel="tag">Pinpoint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/" rel="tag">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/" rel="tag">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/angularjs2/" rel="tag">angularjs2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iframe/" rel="tag">iframe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jQuery/" rel="tag">jQuery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E6%B3%9B%E5%9E%8B/" rel="tag">java泛型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jps/" rel="tag">jps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maxwell/" rel="tag">maxwell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/servlet/" rel="tag">servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-batch/" rel="tag">spring batch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/starUML/" rel="tag">starUML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/" rel="tag">sublime text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xpath/" rel="tag">xpath</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/" rel="tag">如何替换 JDK 的类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C/" rel="tag">工作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F/" rel="tag">工作方式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="tag">性能调优</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%AA%E6%9D%A5/" rel="tag">未来</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="tag">汇编语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%85%8B%E9%9A%86/" rel="tag">深克隆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A4%BE%E4%BC%9A/" rel="tag">社会</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E8%88%9F%E9%A3%9E%E8%88%B9/" rel="tag">神舟飞船</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E8%A3%85%E8%BD%BD/" rel="tag">类装载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD/" rel="tag">系统性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%85%B3/" rel="tag">网关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%AB%99/" rel="tag">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8C%E7%BA%A6/" rel="tag">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/" rel="tag">链路追踪</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%97%AE%E9%A2%98/" rel="tag">问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-32个JAVA面试必考点" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/" class="article-date">
+      <time datetime="2026-08-10T23:02:43.751Z" itemprop="datePublished">2026-08-11</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="32个JAVA面试必考点"><a href="#32个JAVA面试必考点" class="headerlink" title="32个JAVA面试必考点"></a>32个JAVA面试必考点</h1><h2 id="一-操作系统与计算机网络"><a href="#一-操作系统与计算机网络" class="headerlink" title="一.操作系统与计算机网络"></a>一.操作系统与计算机网络</h2><h3 id="1-进程与线程的区别和联系"><a href="#1-进程与线程的区别和联系" class="headerlink" title="1.进程与线程的区别和联系"></a>1.进程与线程的区别和联系</h3><p>​	进程是系统资源分配的最小单位，线程是程序执行的最小单位；</p>
+<p>​	进程使用独立的数据空间，而线程共享进程的数据空间。比如java启动时，本事就是一个进程，其中用多个线程在工作。</p>
+<h3 id="2-简单介绍一下进程的切换过程"><a href="#2-简单介绍一下进程的切换过程" class="headerlink" title="2.简单介绍一下进程的切换过程"></a>2.简单介绍一下进程的切换过程</h3><h3 id="3-你经常用哪些linux命令，用来解决哪些问题？"><a href="#3-你经常用哪些linux命令，用来解决哪些问题？" class="headerlink" title="3.你经常用哪些linux命令，用来解决哪些问题？"></a>3.你经常用哪些linux命令，用来解决哪些问题？</h3><h3 id="4-为什么tcp建立连接需要3次握手而断连需要4次？"><a href="#4-为什么tcp建立连接需要3次握手而断连需要4次？" class="headerlink" title="4.为什么tcp建立连接需要3次握手而断连需要4次？"></a>4.为什么tcp建立连接需要3次握手而断连需要4次？</h3><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20201004213552815.png" alt="image-20201004213552815" style="zoom:50%;" />
+
+<p>三次握手</p>
+<p>第一次握手：客户端将标志位SYN（同步序列编号Synchronize Sequence Numbers）置为1，随机产生一个值seq&#x3D;J，并将该数据包发送给服务器端，客户端进入SYN_SENT状态，等待服务端确认。</p>
+<p>第二次握手：服务器端收到数据包后由标志位SYN&#x3D;1知道客户端请求建立连接，服务端将标志位SYN和ACK都置为1，ack&#x3D;J+1，随机产生一个值seq&#x3D;k，并将该数据包发送给客户端已确认连接请求，服务端进入SYN_RCVD状态。</p>
+<p>第三次握手：客户端收到确认后，检查ack是否为J+1，ACK是否为1，如果正确就把标志位ACK置为1，ack&#x3D;K+1，并将数据包发给服务器端，服务器端检查ack是否为K+1，ACK是否为1，如果正确，则连接建立成功。客户端和服务器端进入ESTABLISHED状态，完成三次握手，两端就可以传输数据了。</p>
+<p>注意：可以设置 tcp_synack_retries &#x3D; 0 加快半链接的回收速度，或者调大 tcp_max_syn_backlog 来应对少量的 SYN 洪水攻击</p>
+<img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20201004215013835.png" alt="image-20201004215013835" style="zoom:50%;" />
+
+<p>四次挥手</p>
+<p>中断的可以是服务端也可以是客户端。</p>
+<p>第一次挥手：客户端发送一个FIN&#x3D;M，用来关闭客户端到服务端的数据传送，客户端进入FIN_WAIT_1状态，意思是说”我客户端没有数据要发给你了”，但是如果你服务器端还有数据没有发送完成，则不必急着关闭连接，可以继续发送数据。</p>
+<p>第二次挥手：服务器端收到FIN后，先发送ack&#x3D;M+1，告诉客户端，你的请求我收到了，但我还没准备好，请你继续等我的消息。这个时候客户端就进入FIN_WAIT_2状态，继续等待服务端的FIN报文。</p>
+<p>第三次挥手：当服务器端确定数据已经传输完成，则向客户端发送FIN&#x3D;N的报文，告诉客户端，数据发送完毕了，准备好关闭连接了，服务器端进入LAST_ACK状态。</p>
+<p>第四次挥手：客户端收到FIN&#x3D;N时，就知道要关闭连接了，通知服务器端自己要关闭了，发送ack&#x3D;N+1后进入TIME_WAIT状态，如果服务器端没有收到ACK则可以重传。服务器收到ACK后，就知道断开连接了。客户端等待了2MSL后依然没有收到回复，则证明服务器端已正常关闭，那好，我客户端也可以关闭连接了。最终完成了四次握手。</p>
+<p>可以提到实际应用中有可能遇到大量 Socket 处在 TIME_WAIT 或者 CLOSE_WAIT 状态的问题。一般开启 <strong>tcp_tw_reuse</strong> 和 <strong>tcp_tw_recycle</strong> 能够加快 TIME-WAIT 的 Sockets 回收；而大量 CLOSE_WAIT 可能是被动关闭的一方存在代码 bug，没有正确关闭链接导致的。</p>
+<h3 id="5-为什么tcp关闭连接时需要TIME-WAIT状态，为什么要等2MSL"><a href="#5-为什么tcp关闭连接时需要TIME-WAIT状态，为什么要等2MSL" class="headerlink" title="5.为什么tcp关闭连接时需要TIME_WAIT状态，为什么要等2MSL?"></a>5.为什么tcp关闭连接时需要TIME_WAIT状态，为什么要等2MSL?</h3><p>为什么需要等待 2 倍最大报文段生存时间之后再关闭链接，原因有两个：</p>
+<p>保证 TCP 协议的全双工连接能够可靠关闭；</p>
+<p>保证这次连接的重复数据段从网络中消失，防止端口被重用时可能产生数据混淆。</p>
+<h3 id="6-一次完整的http请求是怎样的？"><a href="#6-一次完整的http请求是怎样的？" class="headerlink" title="6.一次完整的http请求是怎样的？"></a>6.一次完整的http请求是怎样的？</h3><p><strong>1.解析URL</strong></p>
+<p>  首先浏览器会检测这个url是否正确存在，如果不合法，将会返回一个默认的搜索引擎。</p>
+<p>  如果存在并合法，那么可以解析得到协议（http或者https）、域名（baidu）、资源（首页）等信息。</p>
+<p><strong>2.DNS查询</strong></p>
+<ul>
+<li>浏览器会先检查域名信息是否在缓存中。</li>
+<li>再检查域名是否在本地的Hosts文件中。</li>
+<li>如果还不在，那么浏览器会向DNS服务器发送一个查询请求，获得目标服务器的IP地址。</li>
+</ul>
+<p><strong>3.TCP传输及运输</strong></p>
+<p>这时候浏览器获得了目标服务器的IP（DNS返回）、端口（URL中包含，没有就使用默认（HTTP默认80端口）），浏览器会调用库函数socket，生成一个TCP流套接字，也就是完成了TCP的封包。</p>
+<p>TCP封包完成之后，就可以传输了，浏览器和服务器就完成了TCP的三次握手，建立了连接，后面就可以请求服务器资源了。</p>
+<p><strong>4.服务器接收请求并响应</strong></p>
+<ul>
+<li>HTTP有很多请求方法，比如：GET&#x2F;POST&#x2F;PUT&#x2F;DELETE等等，我们浏览器输入URL这种，是GET方法。</li>
+<li>服务器接收到GET请求，服务器根据请求信息，获得相应的相应内容。例如我们输入的是：\<a target="_blank" rel="noopener" href="http://www.baidu.com/%EF%BC%8C%E9%82%A3%E4%B9%88%E6%84%8F%E5%91%B3%E7%9D%80%E8%AE%BF%E9%97%AE%E7%99%BE%E5%BA%A6%E7%9A%84%E9%A6%96%E9%A1%B5%E6%96%87%E4%BB%B6">www.baidu.com\，那么意味着访问百度的首页文件</a></li>
+</ul>
+<p><strong>5.浏览器解析并渲染</strong></p>
+<p>浏览器从服务器拿到了想要访问的资源，大多数时候，这个资源就是HTML页面，当然也可能是一个其他类型的文件。</p>
+<ul>
+<li>浏览器先对HTML文档进行解析，生成解析树（以DOM元素为节点的树）。</li>
+<li>加载页面的外部资源，比如JS、CSS、图片。</li>
+<li>遍历DOM树，并计算每个节点的样式，最终完成渲染，变成我们看到的页面。</li>
+</ul>
+<h3 id="7-http，https，http2的区别有哪些？"><a href="#7-http，https，http2的区别有哪些？" class="headerlink" title="7.http，https，http2的区别有哪些？"></a>7.http，https，http2的区别有哪些？</h3><h3 id="8-在你的项目中你使用过哪些设计模式，主要解决哪些问题？"><a href="#8-在你的项目中你使用过哪些设计模式，主要解决哪些问题？" class="headerlink" title="8.在你的项目中你使用过哪些设计模式，主要解决哪些问题？"></a>8.在你的项目中你使用过哪些设计模式，主要解决哪些问题？</h3><h3 id="9-Object中的equals和hashcode的作用是什么？"><a href="#9-Object中的equals和hashcode的作用是什么？" class="headerlink" title="9.Object中的equals和hashcode的作用是什么？"></a>9.Object中的equals和hashcode的作用是什么？</h3><h3 id="10-java的异常机制"><a href="#10-java的异常机制" class="headerlink" title="10.java的异常机制"></a>10.java的异常机制</h3><h3 id="11-网络的-4-7-层模型"><a href="#11-网络的-4-7-层模型" class="headerlink" title="11.网络的 4&#x2F;7 层模型"></a>11.网络的 4&#x2F;7 层模型</h3><p>应表会传网数物（应表回传王树屋）</p>
+<p>![image-20201004213213211](&#x2F;Users&#x2F;wangjinguang&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20201004213213211.png)</p>
+<h2 id="二-JVM相关"><a href="#二-JVM相关" class="headerlink" title="二.JVM相关"></a>二.JVM相关</h2><h3 id="1-jvm内存模型"><a href="#1-jvm内存模型" class="headerlink" title="1.jvm内存模型"></a>1.jvm内存模型</h3><p>jvm分为程序技术器、堆、栈、元空间、直接内存；</p>
+<p><strong>栈</strong>，虚拟机栈和本地方法栈</p>
+<p><strong>栈</strong>，也叫方法栈是线程私有的，线程执行每一个方法时都会创建一个栈帧，用来存储局部变量表，操作栈，动态链接，方法出口等信息。调用方法时执行入栈，方法返回时执行出栈。</p>
+<p><strong>本地方法栈</strong>，与栈类似，也是保存线程执行方法时的信息，不同的是执行java方法使用栈，而执行native方法使用本地方法栈。</p>
+<p><strong>程序计数器</strong>保存着当前线程所执行字节码的位置，每个线程都有独立的计数器。</p>
+<p><strong>堆</strong>是jvm最大的一块，堆被所有的线程共享，目的是为了存储对象实例，几乎所有对象的实例都在堆上分配，当堆内存没有空间时，会OOM异常。</p>
+<p><strong>方法区</strong>也是各个线程共享的区域，也叫非堆区。用于存储已被虚拟机加载的类信息、常量、静态变量、及时编译器编译后的代码等数据。jdk1.7在永久代，jdk1.8在元空间。</p>
+<p><strong>直接内存</strong>，bytebuffer创建的内存</p>
+<h3 id="2-什么情况下会触发FullGC？"><a href="#2-什么情况下会触发FullGC？" class="headerlink" title="2.什么情况下会触发FullGC？"></a>2.什么情况下会触发FullGC？</h3><ol>
+<li>老年代空间不足时</li>
+<li>主动调用System.gc()时</li>
+<li>方法区空间不足时，或 Metaspace Space 使用达到 MetaspaceSize 但未达到 MaxMetaspaceSize 阈值；大多情况下扩容都会触发；</li>
+<li>concurrent mode failure ；</li>
+</ol>
+<h3 id="3-java的类加载器有哪几种？关系是怎样的？"><a href="#3-java的类加载器有哪几种？关系是怎样的？" class="headerlink" title="3.java的类加载器有哪几种？关系是怎样的？"></a>3.java的类加载器有哪几种？关系是怎样的？</h3><p>BootstrapClassLoader启动类加载器（<JAVA_HOME>&#x2F;lib）</p>
+<p>ExtClassLoader扩展类加载器（<JAVA_HOME>&#x2F;lib&#x2F;ext）</p>
+<p>AppClassLoader应用加载器(classpath)</p>
+<p>CustomClassLoader自定义加载器</p>
+<h3 id="4-双亲委派机制的加载流程是怎样的，有什么好处？"><a href="#4-双亲委派机制的加载流程是怎样的，有什么好处？" class="headerlink" title="4.双亲委派机制的加载流程是怎样的，有什么好处？"></a>4.双亲委派机制的加载流程是怎样的，有什么好处？</h3><p>双亲委派模式，一个类加载器在加载类时，首先会把这个请求委托给父类去执行，如果父类加载器还存在父类再继续向上委托，直到顶层就是启动类加载器。如果父类加载器能够完成类加载，就成功返回，如果父类加载器无法完成加载，那么子加载器才会尝试自己去加载。双亲委派模式避免了类的重复加载，也避免了核心api被篡改。</p>
+<h3 id="5-jdk1-8为什么用metaspace替换掉permGen？metaspace保存在哪里？"><a href="#5-jdk1-8为什么用metaspace替换掉permGen？metaspace保存在哪里？" class="headerlink" title="5.jdk1.8为什么用metaspace替换掉permGen？metaspace保存在哪里？"></a>5.jdk1.8为什么用metaspace替换掉permGen？metaspace保存在哪里？</h3><ol>
+<li>移除永久代是为融合HotSpot JVM与JRockit VM而做出的努力，因为JRockit没有永久代，不需要配置永久代。</li>
+<li>现实使用中，由于永久代内存占用堆内存，运行时生成大量类的造成经常 Full GC，爆出异常java.lang.OutOfMemoryError : PermGen.而元空间占用的是堆外内存。</li>
+</ol>
+<h3 id="6-编译期会对哪些治指令进行优化？"><a href="#6-编译期会对哪些治指令进行优化？" class="headerlink" title="6.编译期会对哪些治指令进行优化？"></a>6.编译期会对哪些治指令进行优化？</h3><p>jvm在编译代码的时候 ，为了提高程序运行效率，在不影响单线程程序执行结果的前提下，对指令进行的排序</p>
+<p>前端编译器 javac 的编译过程、AST 抽象语法树、编译期优化和运行期优化。编译优化的常用技术包括公共子表达式的消除、方法内联、逃逸分析、栈上分配、同步消除等。明白了这些才能写出对编译器友好的代码。</p>
+<h3 id="7-volatile可以解决什么问题？是如何做到的？"><a href="#7-volatile可以解决什么问题？是如何做到的？" class="headerlink" title="7.volatile可以解决什么问题？是如何做到的？"></a>7.volatile可以解决什么问题？是如何做到的？</h3><p>volatile主要解决内存可见性的问题。jmm中，主内存有一个数据，每个线程都有自己的内存副本（工作内存），单个线程修改主内存的过程是先修改自己的内存副本再刷新到主内存中，这样就会出现线程安全问题。加上volatile关键字，线程修改volatile变量时，会强制刷新修改后的值到主内存中，并其他线程工作内存中的引用值失效，再读取该变量就必须重新从主内存中读取。</p>
+<p>有序性，被volatile修饰的，会禁止指令重排；</p>
+<h3 id="8-GC的分代回收"><a href="#8-GC的分代回收" class="headerlink" title="8.GC的分代回收"></a>8.GC的分代回收</h3><p>垃圾回收算法：标记清除法，复制算法，标记整理法，分代算法；</p>
+<p>为了高效率的进行内存回收。堆内存就划分成了几个区域：</p>
+<p>年轻代，用来存放新创建的对象实例，年轻代有划分为eden和两个survivor空间，年轻代采用复制算法，效率高，这也是minorGC使用时间短的原因之一。</p>
+<p>老年代，用来存放放年轻代晋升来存放时间长的对象。老年代采用标记清理法或者标志整理法。</p>
+<h3 id="9-G1回收算法和CMS的区别有哪些？"><a href="#9-G1回收算法和CMS的区别有哪些？" class="headerlink" title="9.G1回收算法和CMS的区别有哪些？"></a>9.G1回收算法和CMS的区别有哪些？</h3><p>cms回收器执行步骤</p>
+<p>1、初始标记：GC roots 可以理解为对象指向的标记</p>
+<p>2、并发标记： GC roots Tracing 可以理解为 通过初始标记找到了要删除的对象 也就是堆中的指向对象</p>
+<p>3、重新标记： 可以理解为重新执行了一遍 初始标记 和 并行标记 产生标记记录</p>
+<p>4、删除标记：标记删除发进行并发删除</p>
+<p><strong>优点</strong>：并行执行，低停顿</p>
+<p><strong>缺点</strong>：</p>
+<p>1、不停顿耗线程，耗内存，整体效率低</p>
+<p>2、标记清除法会产生垃圾碎片 容易FGC</p>
+<p>3、会产生浮动垃圾容易FGC</p>
+<p>g1回收器：</p>
+<p>1、初始标识：GC roots 可以理解为对象指向的标记 并且更改tame值出发并发标记</p>
+<p>2、并发标记：GC roots Tracing 可以理解为 通过初始标记找到了要删除的对象 也就是堆中的指向对象</p>
+<p>3、最终标记： 可以理解为重新执行了一遍 初始标记 和 并行标记 产生标记记录 将标记记录存到remember set log中，然后在合并到 remember set中，通过remember set 来管理对象的引用</p>
+<p>4、筛选回收：通过Region区块对回收价值和成本进行排序，根据用户所希望的GC时间进行回收。</p>
+<p><strong>优点</strong>：</p>
+<p>1、空间整合：g1使用Region独立区域概念，g1利用的是标记复制法，不会产生垃圾碎片</p>
+<p>2、分代收集：g1可以自己管理新生代和老年代</p>
+<p>3、并行于并发：g1可以通过机器的多核来并发处理 stop - The - world停顿，减少停顿时间，并且可不停顿java线程执行GC动作，可通过并发方式让GC和java程序同时执行。</p>
+<p>4、可预测停顿：g1除了追求停顿时间，还建立了可预测停顿时间模型，能让制定的M毫秒时间片段内，消耗在垃圾回收器上的时间不超过N毫秒</p>
+<p>最大的区别是出现了Region区块概念，可对回收价值和成本进行排序回收，根据GC期望时间回收，还出现了member set概念，</p>
+<p>将回收对象放入其中，避免全堆扫描</p>
+<h3 id="10-对象引用有哪几种方式，有什么特点？"><a href="#10-对象引用有哪几种方式，有什么特点？" class="headerlink" title="10.对象引用有哪几种方式，有什么特点？"></a>10.对象引用有哪几种方式，有什么特点？</h3><p>强引用：如果一个对象具有强引用，那么垃圾回收器绝不会回收他，当内存不足时，Java虚拟机宁愿抛出OutOfMemoryError错误，也不会回收强引用。</p>
+<p>软引用：如果一个对象只具有软引用，则内存空间足够，垃圾回收器就不会回收它；如果内存空间不足了，就会回收这些对象的内存。只要垃圾回收器没有回收它，该对象就可以被程序使用。</p>
+<p>弱引用：弱引用与软引用的区别在于：只具有弱引用的对象拥有更短暂的生命周期。在垃圾回收器线程扫描它所管辖的内存区域的过程中，一旦发现了只具有弱引用的对象，不管当前内存空间足够与否，都会回收它的内存。不过，由于垃圾回收器是一个优先级很低的线程，因此不一定会很快发现那些只具有弱引用的对象。</p>
+<p>虚引用：“虚引用”顾名思义，就是形同虚设，与其他几种引用都不同，虚引用并不会决定对象的生命周期。如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收器回收。</p>
+<p>虚引用主要用来跟踪对象被垃圾回收器回收的活动。虚引用与软引用和弱引用的一个区别在于：虚引用必须和引用队列 （ReferenceQueue）联合使用。当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象的内存之前，把这个虚引用加入到与之 关联的引用队列中。</p>
+<h3 id="11-使用过哪些jvm调试工具，主要分析哪些内容？"><a href="#11-使用过哪些jvm调试工具，主要分析哪些内容？" class="headerlink" title="11.使用过哪些jvm调试工具，主要分析哪些内容？"></a>11.使用过哪些jvm调试工具，主要分析哪些内容？</h3><p>MAT：查看内存泄露，看镜像内堆内存的组成，查看对象的深堆和浅堆等</p>
+<p>visualVm：查看jvm各个分区的占用情况，查看各个分区的时间曲线</p>
+<p>jstack -l 查看死锁，jps等</p>
+<h2 id="三、并发与多线程"><a href="#三、并发与多线程" class="headerlink" title="三、并发与多线程"></a>三、并发与多线程</h2><h3 id="1-如何实现一个生产者消费者模型？"><a href="#1-如何实现一个生产者消费者模型？" class="headerlink" title="1.如何实现一个生产者消费者模型？"></a>1.如何实现一个生产者消费者模型？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.BlockingQueue;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用 BlockingQueue 实现生产者消费者模式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">BlockingQueue</span> <span class="variable">blockingQueue</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayBlockingQueue</span>(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">Runnable</span> <span class="variable">producer</span> <span class="operator">=</span> () -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                    blockingQueue.put(<span class="keyword">new</span> <span class="title class_">Object</span>());</span><br><span class="line">                    System.out.println(<span class="string">&quot;producor:&quot;</span> + blockingQueue.size());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(producer).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(producer).start();</span><br><span class="line"></span><br><span class="line">        <span class="type">Runnable</span> <span class="variable">consumer</span> <span class="operator">=</span> () -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;consumer:&quot;</span> + blockingQueue.size());</span><br><span class="line">                    blockingQueue.take();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(consumer).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(consumer).start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-如何理解线程的同步和异步，阻塞和非阻塞？"><a href="#2-如何理解线程的同步和异步，阻塞和非阻塞？" class="headerlink" title="2.如何理解线程的同步和异步，阻塞和非阻塞？"></a>2.如何理解线程的同步和异步，阻塞和非阻塞？</h3><h3 id="3-线程池处理任务的流程是怎么样的？"><a href="#3-线程池处理任务的流程是怎么样的？" class="headerlink" title="3.线程池处理任务的流程是怎么样的？"></a>3.线程池处理任务的流程是怎么样的？</h3><ol>
+<li><p>向线程池提交任务时，会首先判断线程池中的线程数是否大于设置的核心线程数，如果不大于，就创建一个核心线程来执行任务。</p>
+</li>
+<li><p>如果大于核心线程数，就会判断缓冲队列是否满了，如果没有满，则放入队列，等待线程空闲时执行任务。</p>
+</li>
+<li><p>如果队列已经满了，则判断是否达到了线程池设置的最大线程数，如果没有达到，就创建新线程来执行任务。</p>
+</li>
+<li><p>如果已经达到了最大线程数，则执行指定的拒绝策略。</p>
+</li>
+</ol>
+<h3 id="4-wait和sleep有什么不同？"><a href="#4-wait和sleep有什么不同？" class="headerlink" title="4.wait和sleep有什么不同？"></a>4.wait和sleep有什么不同？</h3><p>wait 属于 Object 类，sleep 属于 Thread 类；</p>
+<p>wait 会释放锁对象，而 sleep 不会；</p>
+<p>使用的位置不同，wait 需要在同步块中使用，sleep 可以在任意地方；</p>
+<p>sleep 需要捕获异常，而 wait 不需要。</p>
+<h3 id="5-Synchronized和ReentrantLock有什么不同，各适用于什么场景？"><a href="#5-Synchronized和ReentrantLock有什么不同，各适用于什么场景？" class="headerlink" title="5.Synchronized和ReentrantLock有什么不同，各适用于什么场景？"></a>5.Synchronized和ReentrantLock有什么不同，各适用于什么场景？</h3><p><strong>1</strong> 两者都是可重入锁</p>
+<p>两者都是可重入锁。“可重入锁”概念是:自己可以再次获取自己的内部锁。比如一个线程获得了某个对 象的锁，此时这个对象锁还没有释放，当其再次想要获取这个对象的锁的时候还是可以获取的，如果不 可锁重入的话，就会造成死锁。同一个线程每次获取锁，锁的计数器都自增1，所以要等到锁的计数器 下降为0时才能释放锁。</p>
+<p><strong>2 synchronized</strong> 依赖于 <strong>JVM</strong> 而 <strong>ReentrantLock</strong> 依赖于 <strong>API</strong></p>
+<p>synchronized 是依赖于 JVM 实现的，前面我们也讲到了 虚拟机团队在 JDK1.6 为 synchronized 关 键字进行了很多优化，但是这些优化都是在虚拟机层面实现的，并没有直接暴露给我们。 ReentrantLock 是 JDK 层面实现的(也就是 API 层面，需要 lock() 和 unlock() 方法配合 try&#x2F;finally 语句块来完成)，所以我们可以通过查看它的源代码，来看它是如何实现的。</p>
+<p><strong>3 ReentrantLock</strong> 比 <strong>synchronized</strong> 增加了一些高级功能 相比synchronized，ReentrantLock增加了一些高级功能。主要来说主要有三点:<strong>1</strong>等待可中断;<strong>2</strong>可实现公平锁;<strong>3</strong>可实现选择性通知(锁可以绑定多个条件) <strong>ReentrantLock</strong>提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制。也就是说正在等待的线程可以选择放弃等待，改为处理其他事情。</p>
+<p><strong>ReentrantLock</strong>可以指定是公平锁还是非公平锁。而<strong>synchronized</strong>只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。 ReentrantLock默认情况是非公平的，可以通过 ReentrantLock 类的 ReentrantLock(boolean fair) 构造方法来制定是否是公平的。 </p>
+<p>synchronized关键字与wait()和notify()&#x2F;notifyAll()方法相结合可以实现等待&#x2F;通知机制， ReentrantLock类当然也可以实现，但是需要借助于Condition接口与newCondition() 方法。 Condition是JDK1.5之后才有的，它具有很好的灵活性，比如可以实现多路通知功能也就是在一 个Lock对象中可以创建多个Condition实例(即对象监视器)，线程对象可以注册在指定的 <strong>Condition</strong>中，从而可以有选择性的进行线程通知，在调度线程上更加灵活。 在使用 <strong>notify()&#x2F;notifyAll()<strong>方法进行通知时，被通知的线程是由 <strong>JVM</strong> 选择的，用</strong>ReentrantLock</strong>类结 合<strong>Condition</strong>实例可以实现**“<strong>选择性通知</strong>”** ，这个功能非常重要，而且是Condition接口默认提供 的。而synchronized关键字就相当于整个Lock对象中只有一个Condition实例，所有的线程都注 册在它一个身上。如果执行notifyAll()方法的话就会通知所有处于等待状态的线程这样会造成 很大的效率问题，而Condition实例的signalAll()方法 只会唤醒注册在该Condition实例中的所有等待线程。</p>
+<h3 id="6-读写锁适用于什么场景？ReentrantReadWriteLock是如何实现的？"><a href="#6-读写锁适用于什么场景？ReentrantReadWriteLock是如何实现的？" class="headerlink" title="6.读写锁适用于什么场景？ReentrantReadWriteLock是如何实现的？"></a>6.读写锁适用于什么场景？ReentrantReadWriteLock是如何实现的？</h3><p>适用于读多写少的场景。</p>
+<p>整体思路是它有两把锁，第 1 把锁是写锁，获得写锁之后，既可以读数据又可以修改数据，而第 2 把锁是读锁，获得读锁之后，只能查看数据，不能修改数据。读锁可以被多个线程同时持有，所以多个线程可以同时查看数据。</p>
+<p>在读的地方合理使用读锁，在写的地方合理使用写锁，灵活控制，可以提高程序的执行效率。</p>
+<p>读写锁的获取规则<br>我们在使用读写锁时遵守下面的获取规则：</p>
+<p>如果有一个线程已经占用了读锁，则此时其他线程如果要申请读锁，可以申请成功。</p>
+<p>如果有一个线程已经占用了读锁，则此时其他线程如果要申请写锁，则申请写锁的线程会一直等待释放读锁，因为读写不能同时操作。</p>
+<p>如果有一个线程已经占用了写锁，则此时其他线程如果申请写锁或者读锁，都必须等待之前的线程释放写锁，同样也因为读写不能同时，并且两个线程不应该同时写。</p>
+<p>所以我们用一句话总结：要么是一个或多个线程同时有读锁，要么是一个线程有写锁，但是两者不会同时出现。也可以总结为：读读共享、其他都互斥（写写互斥、读写互斥、写读互斥）。</p>
+<h3 id="7-线程之间如何通信？"><a href="#7-线程之间如何通信？" class="headerlink" title="7.线程之间如何通信？"></a>7.线程之间如何通信？</h3><p>利用线程唤醒机制wait()、notify()、notifyAll()；</p>
+<p>wait()方法：线程调用wait()方法，<strong>释放</strong>它对锁的拥有权，同时他会在等待的位置加一个标志，为了以后使用notify()或者notifyAll()方法 唤醒它时，它好能从当前位置获得锁的拥有权，变成就绪状态，要确保调用wait()方法的时候<strong>拥有锁</strong>，即，wait()方法的调用必须放在<strong>synchronized</strong>方法或<strong>synchronized</strong>块中。 <strong>在哪里等待被唤醒时，就在那里开始执行。</strong></p>
+<p>notify&#x2F;notifyAll()方法：<strong>notify()方法：</strong><code>**notify()方法会唤醒一个等待当前对象的锁的线程。唤醒在此对象监视器上等待的单个线程。**</code></p>
+<p><code>　***\*notifyAll\**()方法：**</code><em><code> **notifyAll（）方法会唤醒在此对象监视器上等待的所有线程。**</code></em></p>
+<p> <strong>当执行notify&#x2F;notifyAll方法时，会唤醒一个处于等待该 对象锁 的线程，然后继续往下执行，直到执行完退出对象锁锁住的区域（synchronized修饰的代码块）后再释放锁。</strong></p>
+<h3 id="8-保证线程安全的方法有哪些？"><a href="#8-保证线程安全的方法有哪些？" class="headerlink" title="8.保证线程安全的方法有哪些？"></a>8.保证线程安全的方法有哪些？</h3><p>CAS、synchronized、Lock，以及 ThreadLocal 等机制。</p>
+<h3 id="9-如何尽可能提高多线程并发性能？"><a href="#9-如何尽可能提高多线程并发性能？" class="headerlink" title="9.如何尽可能提高多线程并发性能？"></a>9.如何尽可能提高多线程并发性能？</h3><h3 id="10-ThreadLocal用来解决什么问题？ThreadLocal是如何实现的？"><a href="#10-ThreadLocal用来解决什么问题？ThreadLocal是如何实现的？" class="headerlink" title="10.ThreadLocal用来解决什么问题？ThreadLocal是如何实现的？"></a>10.ThreadLocal用来解决什么问题？ThreadLocal是如何实现的？</h3><p>ThreadLocal 不是用来解决多线程共享变量的问题，而是用来解决线程数据隔离的问题。</p>
+<p><strong>底层实现主要是存有一个map，以线程作为key，泛型作为value，可以理解为线程级别的缓存。每一个线程都会获得一个单独的map。</strong></p>
+<h3 id="11-死锁产生的条件？如何分析线程是否有死锁？"><a href="#11-死锁产生的条件？如何分析线程是否有死锁？" class="headerlink" title="11.死锁产生的条件？如何分析线程是否有死锁？"></a>11.死锁产生的条件？如何分析线程是否有死锁？</h3><p>jstack l</p>
+<h3 id="12-在实际工作中遇到过什么并发问题，如何发现排查解决的？"><a href="#12-在实际工作中遇到过什么并发问题，如何发现排查解决的？" class="headerlink" title="12.在实际工作中遇到过什么并发问题，如何发现排查解决的？"></a>12.在实际工作中遇到过什么并发问题，如何发现排查解决的？</h3><p>提现不能多提</p>
+<p>前端按钮，不能重复提交，后端加锁验证</p>
+<h2 id="四、数据结构与算法"><a href="#四、数据结构与算法" class="headerlink" title="四、数据结构与算法"></a>四、数据结构与算法</h2><h3 id="1-各种排序算法实现、复杂度和稳定性"><a href="#1-各种排序算法实现、复杂度和稳定性" class="headerlink" title="1.各种排序算法实现、复杂度和稳定性"></a>1.各种排序算法实现、复杂度和稳定性</h3><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20201005131112030.png" alt="image-20201005131112030" style="zoom:50%;" />
+
+<h3 id="2-二叉树的前中后序遍历"><a href="#2-二叉树的前中后序遍历" class="headerlink" title="2.二叉树的前中后序遍历"></a>2.二叉树的前中后序遍历</h3><p>前序遍历：前序遍历首先访问根节点，然后遍历左子树，最后遍历右子树。（根左右）</p>
+<p>递归：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">preorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        List&lt;Integer&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        preorder(root,res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">preorder</span><span class="params">(TreeNode root,List&lt;Integer&gt; res)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(root!=<span class="literal">null</span>)&#123;</span><br><span class="line">    res.add(root.val);</span><br><span class="line">  	preorder(root.left,res);</span><br><span class="line">  	preorder(root.left,res);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>迭代：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">preorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        LinkedList&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        LinkedList&lt;Integer&gt; output = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> output;</span><br><span class="line">        &#125;</span><br><span class="line">        stack.add(root);</span><br><span class="line">        <span class="keyword">while</span>(!stack.isEmpty())&#123;</span><br><span class="line">            <span class="type">TreeNode</span> <span class="variable">node</span> <span class="operator">=</span> stack.pollLast();</span><br><span class="line">            output.add(node.val);</span><br><span class="line">            <span class="keyword">if</span>(node.left!=<span class="literal">null</span>)&#123;</span><br><span class="line">                stack.add(node.left);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(node.right!=<span class="literal">null</span>)&#123;</span><br><span class="line">                stack.add(node.right);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> output;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>中序遍历：先遍历左子树，然后访问根节点，然后遍历右子树。（左根右）</p>
+<p>递归：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">inorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  inorder(root,res);</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title function_">inorder</span><span class="params">(TreeNode root,List&lt;Integer&gt; res)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(root != <span class="literal">null</span>)&#123;</span><br><span class="line">  	inorder(root.left,res);</span><br><span class="line">    res.add(root.val);</span><br><span class="line">    inorder(root.right,res);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>迭代：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">inorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">        List&lt;Integer&gt; output = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(root==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> output;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">cur</span> <span class="operator">=</span> root;</span><br><span class="line">        <span class="keyword">while</span>(cur!=<span class="literal">null</span>||!stack.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">if</span>(cur!=<span class="literal">null</span>)&#123;</span><br><span class="line">                stack.add(cur);</span><br><span class="line">                cur = cur.left;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                cur = stack.pop();</span><br><span class="line">                output.add(cur.val);</span><br><span class="line">                cur = cur.right;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> output;   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>后序遍历：先遍历左子树，然后遍历右子树，最后访问树的根节点。（左右根）</p>
+<p>递归：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">postorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">  List&lt;Integer&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  inorder(root,res);</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title function_">postorder</span><span class="params">(TreeNode root,List&lt;Integer&gt; res)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(root != <span class="literal">null</span>)&#123;</span><br><span class="line">  	postorder(root.left,res);</span><br><span class="line">    postorder(root.right,res);</span><br><span class="line">    res.add(root.val);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>迭代：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">postorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        List&lt;Integer&gt; res = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">null</span>)<span class="keyword">return</span> res;</span><br><span class="line">        Stack&lt;TreeNode&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;TreeNode&gt;();</span><br><span class="line">        stack.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!stack.isEmpty())&#123;</span><br><span class="line">            <span class="type">TreeNode</span> <span class="variable">node</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">            <span class="keyword">if</span>(node.left != <span class="literal">null</span>) stack.push(node.left);<span class="comment">//和传统先序遍历不一样，先将左结点入栈</span></span><br><span class="line">            <span class="keyword">if</span>(node.right != <span class="literal">null</span>) stack.push(node.right);<span class="comment">//后将右结点入栈</span></span><br><span class="line">            res.add(<span class="number">0</span>,node.val);                        <span class="comment">//逆序添加结点值</span></span><br><span class="line">        &#125;     </span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-翻转句子中单词的顺序"><a href="#3-翻转句子中单词的顺序" class="headerlink" title="3.翻转句子中单词的顺序"></a>3.翻转句子中单词的顺序</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-用栈模拟队列（或用队列模拟栈）"><a href="#4-用栈模拟队列（或用队列模拟栈）" class="headerlink" title="4.用栈模拟队列（或用队列模拟栈）"></a>4.用栈模拟队列（或用队列模拟栈）</h3><h3 id="5-对10亿个数进行排序，限制内存为1G"><a href="#5-对10亿个数进行排序，限制内存为1G" class="headerlink" title="5.对10亿个数进行排序，限制内存为1G"></a>5.对10亿个数进行排序，限制内存为1G</h3><h3 id="6-去掉找出两个数组中重复的数字"><a href="#6-去掉找出两个数组中重复的数字" class="headerlink" title="6.去掉找出两个数组中重复的数字"></a>6.去掉找出两个数组中重复的数字</h3><h3 id="7-将一个二叉树转换成其镜像"><a href="#7-将一个二叉树转换成其镜像" class="headerlink" title="7.将一个二叉树转换成其镜像"></a>7.将一个二叉树转换成其镜像</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">mirrorTree</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(root==<span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">TreeNode</span> <span class="variable">temp</span> <span class="operator">=</span> root.left;</span><br><span class="line">    root.left = mirrorTree(root.right);</span><br><span class="line">    root.right = mirrorTree(temp);</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-确定一个字符串中的符号是否匹配"><a href="#8-确定一个字符串中的符号是否匹配" class="headerlink" title="8.确定一个字符串中的符号是否匹配"></a>8.确定一个字符串中的符号是否匹配</h3><h3 id="9-给定一个开始词，一个结束词，一个字典，如何找到从开始词到结束词的最短单词接龙路径"><a href="#9-给定一个开始词，一个结束词，一个字典，如何找到从开始词到结束词的最短单词接龙路径" class="headerlink" title="9.给定一个开始词，一个结束词，一个字典，如何找到从开始词到结束词的最短单词接龙路径"></a>9.给定一个开始词，一个结束词，一个字典，如何找到从开始词到结束词的最短单词接龙路径</h3><h3 id="10-如何查找两个二叉树节点的最近公共祖先"><a href="#10-如何查找两个二叉树节点的最近公共祖先" class="headerlink" title="10.如何查找两个二叉树节点的最近公共祖先"></a>10.如何查找两个二叉树节点的最近公共祖先</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> &#123;</span><br><span class="line">         <span class="comment">/**</span></span><br><span class="line"><span class="comment">        注意p,q必然存在树内, 且所有节点的值唯一!!!</span></span><br><span class="line"><span class="comment">        递归思想, 对以root为根的(子)树进行查找p和q, 如果root == null || p || q 直接返回root</span></span><br><span class="line"><span class="comment">        表示对于当前树的查找已经完毕, 否则对左右子树进行查找, 根据左右子树的返回值判断:</span></span><br><span class="line"><span class="comment">        1. 左右子树的返回值都不为null, 由于值唯一左右子树的返回值就是p和q, 此时root为LCA</span></span><br><span class="line"><span class="comment">        2. 如果左右子树返回值只有一个不为null, 说明只有p和q存在与左或右子树中, 最先找到的那个节点为LCA</span></span><br><span class="line"><span class="comment">        3. 左右子树返回值均为null, p和q均不在树中, 返回null</span></span><br><span class="line"><span class="comment">        **/</span></span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">null</span> || root == p || root == q) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">left</span> <span class="operator">=</span> lowestCommonAncestor(root.left, p, q);</span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">right</span> <span class="operator">=</span> lowestCommonAncestor(root.right, p, q);</span><br><span class="line">        <span class="keyword">if</span>(left == <span class="literal">null</span> &amp;&amp; right == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(left != <span class="literal">null</span> &amp;&amp; right != <span class="literal">null</span>) <span class="keyword">return</span> root;</span><br><span class="line">  			<span class="comment">//3. 左右子树返回值均为null, p和q均不在树中, 返回null</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> left == <span class="literal">null</span> ? right : left;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="不用加减乘除做加法"><a href="#不用加减乘除做加法" class="headerlink" title="不用加减乘除做加法"></a>不用加减乘除做加法</h3><img src="https://gitee.com/idea4j/image4md/raw/master/images/image-20201006203307755.png" alt="image-20201006203307755" style="zoom:50%;" />
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(b!=<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> (a&amp;b)&lt;&lt;<span class="number">1</span>;</span><br><span class="line">    a^=b;</span><br><span class="line">    b=c;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="字节跳动校招题"><a href="#字节跳动校招题" class="headerlink" title="字节跳动校招题"></a>字节跳动校招题</h2><h3 id="挑战字符串"><a href="#挑战字符串" class="headerlink" title="挑战字符串"></a>挑战字符串</h3><p>无重复字符的最长子串</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//滑动窗口法</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lengthOfLongestSubstring</span><span class="params">(String s)</span> &#123;</span><br><span class="line">	Set&lt;Character&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">  <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> s.length();</span><br><span class="line">  <span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">max</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="comment">//j为先行指针，为后行指针，如果先行指针位置在数组尾部之前</span></span><br><span class="line">  <span class="keyword">while</span> (j&lt;length)&#123;</span><br><span class="line">    <span class="keyword">if</span>(!set.contains(s.charAt(j)))&#123;</span><br><span class="line">      set.add(s.charAt(j));</span><br><span class="line">      j++;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="keyword">while</span>(set.contains(s.charAt(j)))&#123;</span><br><span class="line">        set.remove(s.charAt(i));</span><br><span class="line">        i++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    max = Math.max(max,j-i)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> max;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最长公共前缀</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">longestCommonPrefix</span><span class="params">(String[] strs)</span> &#123;</span><br><span class="line">  <span class="comment">//如果str[]是空或者null,没有共同前缀</span></span><br><span class="line">  <span class="keyword">if</span> (strs == <span class="literal">null</span> || strs.length == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//拿到第一个字符串的长度</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> strs[<span class="number">0</span>].length();</span><br><span class="line">  <span class="comment">//拿到字符串的数量</span></span><br><span class="line">  <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> strs.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">    	 <span class="comment">//第一个字符串的首字母</span></span><br><span class="line">      <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> strs[<span class="number">0</span>].charAt(i);</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt; count; j++) &#123;</span><br><span class="line">        <span class="comment">//如果第j个字符串的长度等于当前前缀长度，或者字符串的字符与前面的字符不相等</span></span><br><span class="line">        <span class="comment">//则返回前一个字符</span></span><br><span class="line">        <span class="keyword">if</span> (i == strs[j].length() || strs[j].charAt(i) != c) &#123;</span><br><span class="line">            <span class="keyword">return</span> strs[<span class="number">0</span>].substring(<span class="number">0</span>, i);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> strs[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>字符串的排列</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>&#123;</span><br><span class="line"> 		List&lt;String&gt; res = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    <span class="type">char</span>[] c;</span><br><span class="line">    <span class="keyword">public</span> String[] permutation(String s) &#123;</span><br><span class="line">        c = s.toCharArray();</span><br><span class="line">        dfs(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res.toArray(<span class="keyword">new</span> <span class="title class_">String</span>[res.size()]);</span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">dfs</span><span class="params">(<span class="type">int</span> x)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(x==c.length-<span class="number">1</span>)&#123;</span><br><span class="line">          res.add(String.valueOf(c));</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        HashSet&lt;Character&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> x; i &lt; c.length; i++)&#123;</span><br><span class="line">          <span class="keyword">if</span>(set.contains(c[i]))<span class="keyword">continue</span>;</span><br><span class="line">          set.add(c[i]);</span><br><span class="line">          swap(i,x);</span><br><span class="line">          dfs(x+<span class="number">1</span>);</span><br><span class="line">          swap(i,x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span>&#123;</span><br><span class="line">      <span class="type">char</span> <span class="variable">tmp</span> <span class="operator">=</span> c[a];</span><br><span class="line">      c[a] = c[b];</span><br><span class="line">      c[b] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>字符串相乘</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">ZERO</span> <span class="operator">=</span> <span class="string">&quot;0&quot;</span>;</span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">multiply</span><span class="params">(String num1, String num2)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (num1.equals(<span class="string">&quot;0&quot;</span>) || num2.equals(<span class="string">&quot;0&quot;</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;0&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">int</span>[] res = <span class="keyword">new</span> <span class="title class_">int</span>[num1.length() + num2.length()];</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> num1.length() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">n1</span> <span class="operator">=</span> num1.charAt(i) - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> num2.length() - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">n2</span> <span class="operator">=</span> num2.charAt(j) - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">      <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> (res[i + j + <span class="number">1</span>] + n1 * n2);</span><br><span class="line">      res[i + j + <span class="number">1</span>] = sum % <span class="number">10</span>;</span><br><span class="line">      res[i + j] += sum / <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="type">StringBuilder</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; res.length; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">0</span> &amp;&amp; res[i] == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">    result.append(res[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result.toString();</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>翻转字符串里的单词</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>简化路径</p>
+<p>复原ip地址</p>
+<h4 id="数组与排序"><a href="#数组与排序" class="headerlink" title="数组与排序"></a>数组与排序</h4><p>三数之和</p>
+<p>岛屿的最大面积</p>
+<p>搜索旋转排列数组</p>
+<p>最长连续递增序列</p>
+<p>数组中的第K个最大元素（中序遍历第k个）</p>
+<p>最长连续序列</p>
+<p>第K个排列</p>
+<p>朋友圈</p>
+<p>合并区间</p>
+<p>接雨水</p>
+<h3 id="链表与数"><a href="#链表与数" class="headerlink" title="链表与数"></a>链表与数</h3><p>合并两个有序链表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">merge</span><span class="params">(ListNode l1,ListNode l2)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(l1==<span class="literal">null</span>)<span class="keyword">return</span> l1;</span><br><span class="line">  <span class="keyword">if</span>(l2==<span class="literal">null</span>)<span class="keyword">return</span> l2;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">temp</span> <span class="operator">=</span> l1.val&lt;l2.val?l1:l2;</span><br><span class="line">  temp.next = mergeTwoLists(temp.next,l1.val&gt;=l2.val?l1:l2);</span><br><span class="line">  <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>翻转链表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseList</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">	<span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">next</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="type">ListNode</span> <span class="variable">curr</span> <span class="operator">=</span> head;</span><br><span class="line">  <span class="keyword">while</span>(curr!=<span class="literal">null</span>)&#123;</span><br><span class="line">    next = curr.next;</span><br><span class="line">    curr.next = prev;</span><br><span class="line">    prev = curr;</span><br><span class="line">    curr = next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> prev;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两数相加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>排序链表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>环形链表II</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>相交链表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>合并k个升序链表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">mergeKLists</span><span class="params">(ListNode[] lists)</span> &#123;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">ans</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; lists.length; ++i) &#123;</span><br><span class="line">            ans = mergeTwoLists(ans, lists[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">mergeTwoLists</span><span class="params">(ListNode a, ListNode b)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (a == <span class="literal">null</span> || b == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> a != <span class="literal">null</span> ? a : b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">head</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">tail</span> <span class="operator">=</span> head, aPtr = a, bPtr = b;</span><br><span class="line">        <span class="keyword">while</span> (aPtr != <span class="literal">null</span> &amp;&amp; bPtr != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (aPtr.val &lt; bPtr.val) &#123;</span><br><span class="line">                tail.next = aPtr;</span><br><span class="line">                aPtr = aPtr.next;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                tail.next = bPtr;</span><br><span class="line">                bPtr = bPtr.next;</span><br><span class="line">            &#125;</span><br><span class="line">            tail = tail.next;</span><br><span class="line">        &#125;</span><br><span class="line">        tail.next = (aPtr != <span class="literal">null</span> ? aPtr : bPtr);</span><br><span class="line">        <span class="keyword">return</span> head.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>二叉树的最近公共祖先</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> TreeNode <span class="title function_">lowestCommonAncestor</span><span class="params">(TreeNode root, TreeNode p, TreeNode q)</span> &#123;</span><br><span class="line">  	<span class="comment">//如果root==null,或者p为root,q为root则最近公共祖先为root</span></span><br><span class="line">    <span class="keyword">if</span>(root==<span class="literal">null</span>||root==p||root==q)<span class="keyword">return</span> root;</span><br><span class="line">  	</span><br><span class="line">  	<span class="type">TreeNode</span> <span class="variable">left</span> <span class="operator">=</span> lowestCommonAncestor(root.left,p,q);</span><br><span class="line">  	<span class="type">TreeNode</span> <span class="variable">right</span> <span class="operator">=</span> lowestCommonAncestor(root.right,p,q);</span><br><span class="line">  </span><br><span class="line">  	<span class="keyword">if</span>(left==<span class="literal">null</span>&amp;&amp;right==<span class="literal">null</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(left!=<span class="literal">null</span>&amp;&amp;right!=<span class="literal">null</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> root;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> left==<span class="literal">null</span>?right:left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二叉树的锯齿形层次遍历</p>
+<h3 id="动态或贪心"><a href="#动态或贪心" class="headerlink" title="动态或贪心"></a>动态或贪心</h3><p>买卖股票的最佳时机</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">maxProfit</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">minPrice</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">     minPrice = Math.min(minPrice, prices[i]);</span><br><span class="line">     maxProfit = Math.max(maxProfit, prices[i] - minPrice);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxProfit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>买卖股票的最佳时机II</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">1</span>; i &lt; prices.length; i++)&#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">profit</span> <span class="operator">=</span> prices[i]-prices[i-<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">if</span>(profit&gt;<span class="number">0</span>) sum+=profit;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最大正方形</p>
+<p>最大子序和</p>
+<p>三角形最小路径和</p>
+<p>俄罗斯套娃信封问题</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>最小栈</p>
+<p>LRU缓存机制</p>
+<p>全 O(1) 的数据结构</p>
+<h3 id="拓展练习"><a href="#拓展练习" class="headerlink" title="拓展练习"></a>拓展练习</h3><h4 id="x-的平方根"><a href="#x-的平方根" class="headerlink" title="x 的平方根"></a>x 的平方根</h4><h5 id="方法一：袖珍计算器算法"><a href="#方法一：袖珍计算器算法" class="headerlink" title="方法一：袖珍计算器算法"></a>方法一：袖珍计算器算法</h5><p>「袖珍计算器算法」是一种用指数函数 $\exp$ 和对数函数 $\ln$代替平方根函数的方法。我们通过有限的可以使用的数学函数，得到我们想要计算的结果。</p>
+<p>我们将 $\sqrt{x}$ 写成幂的形式  $x^{1&#x2F;2}$ ，再使用自然对数$e$进行换底，即可得到$\sqrt{x}&#x3D;x^{1&#x2F;2}&#x3D;(e^{lnx})^{1&#x2F;2}&#x3D;e^{\frac{1}{2}lnx} $，这样我们就可以得到$\sqrt{x}$的值了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">mySqrt</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span>(x==<span class="number">0</span>)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> <span class="variable">ans</span> <span class="operator">=</span> Math.exp(<span class="number">0.5</span>*Math.log(x));</span><br><span class="line">  <span class="keyword">return</span> (ans+<span class="number">1</span>)*(ans+<span class="number">1</span>)&lt;=x?(ans+<span class="number">1</span>):ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="UTF-8-编码验证"><a href="#UTF-8-编码验证" class="headerlink" title="UTF-8 编码验证"></a>UTF-8 编码验证</h4><p>第二高的薪水</p>
+<h2 id="五、必会框架"><a href="#五、必会框架" class="headerlink" title="五、必会框架"></a>五、必会框架</h2>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/"></a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
+        <p><span>发布时间:</span>2026-08-11, 07:02:43</p>
+        <p><span>最后更新:</span>2026-08-11, 07:02:43</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/" title="">https://code.idea4j.com/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://code.idea4j.com/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2026/08/11/LevelDB/">
+                    
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2020/07/27/quickstart/">
+                    使用maxwell
+                </a>
+            </div>
+        
+    </nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">32个JAVA面试必考点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%8E%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="toc-number">1.1.</span> <span class="toc-text">一.操作系统与计算机网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.进程与线程的区别和联系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%88%87%E6%8D%A2%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.简单介绍一下进程的切换过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BD%A0%E7%BB%8F%E5%B8%B8%E7%94%A8%E5%93%AA%E4%BA%9Blinux%E5%91%BD%E4%BB%A4%EF%BC%8C%E7%94%A8%E6%9D%A5%E8%A7%A3%E5%86%B3%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.你经常用哪些linux命令，用来解决哪些问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88tcp%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E9%9C%80%E8%A6%813%E6%AC%A1%E6%8F%A1%E6%89%8B%E8%80%8C%E6%96%AD%E8%BF%9E%E9%9C%80%E8%A6%814%E6%AC%A1%EF%BC%9F"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.为什么tcp建立连接需要3次握手而断连需要4次？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88tcp%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5%E6%97%B6%E9%9C%80%E8%A6%81TIME-WAIT%E7%8A%B6%E6%80%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%AD%892MSL"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.为什么tcp关闭连接时需要TIME_WAIT状态，为什么要等2MSL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E7%9A%84http%E8%AF%B7%E6%B1%82%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="toc-number">1.1.6.</span> <span class="toc-text">6.一次完整的http请求是怎样的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-http%EF%BC%8Chttps%EF%BC%8Chttp2%E7%9A%84%E5%8C%BA%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">1.1.7.</span> <span class="toc-text">7.http，https，http2的区别有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%9C%A8%E4%BD%A0%E7%9A%84%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%A0%E4%BD%BF%E7%94%A8%E8%BF%87%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%8C%E4%B8%BB%E8%A6%81%E8%A7%A3%E5%86%B3%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.1.8.</span> <span class="toc-text">8.在你的项目中你使用过哪些设计模式，主要解决哪些问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Object%E4%B8%AD%E7%9A%84equals%E5%92%8Chashcode%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.1.9.</span> <span class="toc-text">9.Object中的equals和hashcode的作用是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-java%E7%9A%84%E5%BC%82%E5%B8%B8%E6%9C%BA%E5%88%B6"><span class="toc-number">1.1.10.</span> <span class="toc-text">10.java的异常机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E7%BD%91%E7%BB%9C%E7%9A%84-4-7-%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.11.</span> <span class="toc-text">11.网络的 4&#x2F;7 层模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-JVM%E7%9B%B8%E5%85%B3"><span class="toc-number">1.2.</span> <span class="toc-text">二.JVM相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-jvm%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.jvm内存模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E8%A7%A6%E5%8F%91FullGC%EF%BC%9F"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.什么情况下会触发FullGC？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-java%E7%9A%84%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%EF%BC%9F%E5%85%B3%E7%B3%BB%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.java的类加载器有哪几种？关系是怎样的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%8C%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E5%A4%84%EF%BC%9F"><span class="toc-number">1.2.4.</span> <span class="toc-text">4.双亲委派机制的加载流程是怎样的，有什么好处？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-jdk1-8%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8metaspace%E6%9B%BF%E6%8D%A2%E6%8E%89permGen%EF%BC%9Fmetaspace%E4%BF%9D%E5%AD%98%E5%9C%A8%E5%93%AA%E9%87%8C%EF%BC%9F"><span class="toc-number">1.2.5.</span> <span class="toc-text">5.jdk1.8为什么用metaspace替换掉permGen？metaspace保存在哪里？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%BC%96%E8%AF%91%E6%9C%9F%E4%BC%9A%E5%AF%B9%E5%93%AA%E4%BA%9B%E6%B2%BB%E6%8C%87%E4%BB%A4%E8%BF%9B%E8%A1%8C%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="toc-number">1.2.6.</span> <span class="toc-text">6.编译期会对哪些治指令进行优化？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-volatile%E5%8F%AF%E4%BB%A5%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9F%E6%98%AF%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E7%9A%84%EF%BC%9F"><span class="toc-number">1.2.7.</span> <span class="toc-text">7.volatile可以解决什么问题？是如何做到的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-GC%E7%9A%84%E5%88%86%E4%BB%A3%E5%9B%9E%E6%94%B6"><span class="toc-number">1.2.8.</span> <span class="toc-text">8.GC的分代回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-G1%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8CCMS%E7%9A%84%E5%8C%BA%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">1.2.9.</span> <span class="toc-text">9.G1回收算法和CMS的区别有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8C%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F"><span class="toc-number">1.2.10.</span> <span class="toc-text">10.对象引用有哪几种方式，有什么特点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E4%BD%BF%E7%94%A8%E8%BF%87%E5%93%AA%E4%BA%9Bjvm%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%EF%BC%8C%E4%B8%BB%E8%A6%81%E5%88%86%E6%9E%90%E5%93%AA%E4%BA%9B%E5%86%85%E5%AE%B9%EF%BC%9F"><span class="toc-number">1.2.11.</span> <span class="toc-text">11.使用过哪些jvm调试工具，主要分析哪些内容？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">三、并发与多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%9E%8B%EF%BC%9F"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.如何实现一个生产者消费者模型？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E5%BC%82%E6%AD%A5%EF%BC%8C%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%EF%BC%9F"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.如何理解线程的同步和异步，阻塞和非阻塞？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%A4%84%E7%90%86%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.线程池处理任务的流程是怎么样的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-wait%E5%92%8Csleep%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">1.3.4.</span> <span class="toc-text">4.wait和sleep有什么不同？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Synchronized%E5%92%8CReentrantLock%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%EF%BC%8C%E5%90%84%E9%80%82%E7%94%A8%E4%BA%8E%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%EF%BC%9F"><span class="toc-number">1.3.5.</span> <span class="toc-text">5.Synchronized和ReentrantLock有什么不同，各适用于什么场景？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%AF%BB%E5%86%99%E9%94%81%E9%80%82%E7%94%A8%E4%BA%8E%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%EF%BC%9FReentrantReadWriteLock%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="toc-number">1.3.6.</span> <span class="toc-text">6.读写锁适用于什么场景？ReentrantReadWriteLock是如何实现的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E9%80%9A%E4%BF%A1%EF%BC%9F"><span class="toc-number">1.3.7.</span> <span class="toc-text">7.线程之间如何通信？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E4%BF%9D%E8%AF%81%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">1.3.8.</span> <span class="toc-text">8.保证线程安全的方法有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%A6%82%E4%BD%95%E5%B0%BD%E5%8F%AF%E8%83%BD%E6%8F%90%E9%AB%98%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%80%A7%E8%83%BD%EF%BC%9F"><span class="toc-number">1.3.9.</span> <span class="toc-text">9.如何尽可能提高多线程并发性能？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-ThreadLocal%E7%94%A8%E6%9D%A5%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9FThreadLocal%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F"><span class="toc-number">1.3.10.</span> <span class="toc-text">10.ThreadLocal用来解决什么问题？ThreadLocal是如何实现的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E6%AD%BB%E9%94%81%E4%BA%A7%E7%94%9F%E7%9A%84%E6%9D%A1%E4%BB%B6%EF%BC%9F%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90%E7%BA%BF%E7%A8%8B%E6%98%AF%E5%90%A6%E6%9C%89%E6%AD%BB%E9%94%81%EF%BC%9F"><span class="toc-number">1.3.11.</span> <span class="toc-text">11.死锁产生的条件？如何分析线程是否有死锁？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E5%9C%A8%E5%AE%9E%E9%99%85%E5%B7%A5%E4%BD%9C%E4%B8%AD%E9%81%87%E5%88%B0%E8%BF%87%E4%BB%80%E4%B9%88%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98%EF%BC%8C%E5%A6%82%E4%BD%95%E5%8F%91%E7%8E%B0%E6%8E%92%E6%9F%A5%E8%A7%A3%E5%86%B3%E7%9A%84%EF%BC%9F"><span class="toc-number">1.3.12.</span> <span class="toc-text">12.在实际工作中遇到过什么并发问题，如何发现排查解决的？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">四、数据结构与算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%90%84%E7%A7%8D%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E3%80%81%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-number">1.4.1.</span> <span class="toc-text">1.各种排序算法实现、复杂度和稳定性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E4%B8%AD%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="toc-number">1.4.2.</span> <span class="toc-text">2.二叉树的前中后序遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BF%BB%E8%BD%AC%E5%8F%A5%E5%AD%90%E4%B8%AD%E5%8D%95%E8%AF%8D%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.翻转句子中单词的顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%94%A8%E6%A0%88%E6%A8%A1%E6%8B%9F%E9%98%9F%E5%88%97%EF%BC%88%E6%88%96%E7%94%A8%E9%98%9F%E5%88%97%E6%A8%A1%E6%8B%9F%E6%A0%88%EF%BC%89"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.用栈模拟队列（或用队列模拟栈）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AF%B910%E4%BA%BF%E4%B8%AA%E6%95%B0%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F%EF%BC%8C%E9%99%90%E5%88%B6%E5%86%85%E5%AD%98%E4%B8%BA1G"><span class="toc-number">1.4.5.</span> <span class="toc-text">5.对10亿个数进行排序，限制内存为1G</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%8E%BB%E6%8E%89%E6%89%BE%E5%87%BA%E4%B8%A4%E4%B8%AA%E6%95%B0%E7%BB%84%E4%B8%AD%E9%87%8D%E5%A4%8D%E7%9A%84%E6%95%B0%E5%AD%97"><span class="toc-number">1.4.6.</span> <span class="toc-text">6.去掉找出两个数组中重复的数字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%B0%86%E4%B8%80%E4%B8%AA%E4%BA%8C%E5%8F%89%E6%A0%91%E8%BD%AC%E6%8D%A2%E6%88%90%E5%85%B6%E9%95%9C%E5%83%8F"><span class="toc-number">1.4.7.</span> <span class="toc-text">7.将一个二叉树转换成其镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E7%A1%AE%E5%AE%9A%E4%B8%80%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E7%AC%A6%E5%8F%B7%E6%98%AF%E5%90%A6%E5%8C%B9%E9%85%8D"><span class="toc-number">1.4.8.</span> <span class="toc-text">8.确定一个字符串中的符号是否匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E5%BC%80%E5%A7%8B%E8%AF%8D%EF%BC%8C%E4%B8%80%E4%B8%AA%E7%BB%93%E6%9D%9F%E8%AF%8D%EF%BC%8C%E4%B8%80%E4%B8%AA%E5%AD%97%E5%85%B8%EF%BC%8C%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0%E4%BB%8E%E5%BC%80%E5%A7%8B%E8%AF%8D%E5%88%B0%E7%BB%93%E6%9D%9F%E8%AF%8D%E7%9A%84%E6%9C%80%E7%9F%AD%E5%8D%95%E8%AF%8D%E6%8E%A5%E9%BE%99%E8%B7%AF%E5%BE%84"><span class="toc-number">1.4.9.</span> <span class="toc-text">9.给定一个开始词，一个结束词，一个字典，如何找到从开始词到结束词的最短单词接龙路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E5%A6%82%E4%BD%95%E6%9F%A5%E6%89%BE%E4%B8%A4%E4%B8%AA%E4%BA%8C%E5%8F%89%E6%A0%91%E8%8A%82%E7%82%B9%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88"><span class="toc-number">1.4.10.</span> <span class="toc-text">10.如何查找两个二叉树节点的最近公共祖先</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E7%94%A8%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4%E5%81%9A%E5%8A%A0%E6%B3%95"><span class="toc-number">1.4.11.</span> <span class="toc-text">不用加减乘除做加法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%E6%A0%A1%E6%8B%9B%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">字节跳动校招题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%91%E6%88%98%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.5.1.</span> <span class="toc-text">挑战字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8E%92%E5%BA%8F"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">数组与排序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E4%B8%8E%E6%95%B0"><span class="toc-number">1.5.2.</span> <span class="toc-text">链表与数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%88%96%E8%B4%AA%E5%BF%83"><span class="toc-number">1.5.3.</span> <span class="toc-text">动态或贪心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.5.4.</span> <span class="toc-text">数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E7%BB%83%E4%B9%A0"><span class="toc-number">1.5.5.</span> <span class="toc-text">拓展练习</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#x-%E7%9A%84%E5%B9%B3%E6%96%B9%E6%A0%B9"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">x 的平方根</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E8%A2%96%E7%8F%8D%E8%AE%A1%E7%AE%97%E5%99%A8%E7%AE%97%E6%B3%95"><span class="toc-number">1.5.5.1.1.</span> <span class="toc-text">方法一：袖珍计算器算法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UTF-8-%E7%BC%96%E7%A0%81%E9%AA%8C%E8%AF%81"><span class="toc-number">1.5.5.2.</span> <span class="toc-text">UTF-8 编码验证</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%BF%85%E4%BC%9A%E6%A1%86%E6%9E%B6"><span class="toc-number">1.6.</span> <span class="toc-text">五、必会框架</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"　| 码客Mark　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2026/08/11/LevelDB/" title="上一篇: ">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2020/07/27/quickstart/" title="下一篇: 使用maxwell">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/">有AI了，为什么感觉越来越累了</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E5%85%B3%E4%BA%8E%E5%AF%B9AI%E6%9C%AA%E6%9D%A5%E7%9A%84%E6%83%B3%E8%B1%A1/">关于对 AI 未来的想象</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/">项目管理实战</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%AF%BC%E6%89%8B%E5%86%8C/">《数据结构与算法之美》学习指导手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E6%B1%A0%E5%8C%96%E6%80%9D%E6%83%B3/">池化思想</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/Redis%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E5%8F%8A%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">Redis缓存设计及常见问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/LevelDB/">LevelDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/">32个JAVA面试必考点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/quickstart/">使用maxwell</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E4%BD%BF%E7%94%A8maxwell%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE%E5%88%B0%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97(rabbitMQ)/">使用maxwell实时同步mysql数据到消息队列(rabbitMQ)</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83%E8%BF%87%E7%A8%8B/">前后端联调过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/20/%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%A6%E4%B9%A0/">如何有效的学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/">Redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%20Boot/">Springboot</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Spring事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Zuul%E4%B8%8EGateWay%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">网关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/">zookeeper选举规则</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E4%BD%BF%E7%94%A8jvm%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C/">jps</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E7%9B%B8%E5%85%B3/">zookeeper相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/">如何替换 JDK 的类</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/03/%E6%97%A5%E6%8B%B1%E4%B8%80%E5%8D%92/">日拱一卒</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/30/%E6%89%8B%E5%86%99RPC%E6%A1%86%E6%9E%B6/">手写RPC框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E9%97%AE%E9%A2%98%E5%A4%A7%E5%85%A8/">问题大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E7%BC%96%E5%86%99springboot%E5%90%AF%E5%8A%A8%E5%99%A8/">springboot启动器</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/09/Pinpoint/">Pinpoint安装使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/04/RabbitMQ%E5%91%BD%E4%BB%A4%E8%A1%8C/">RabbitMQ命令行</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%91%BD%E4%BB%A4/">docker 命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dockerfile%E6%8C%87%E4%BB%A4/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/">Class文件格式</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/">Context初始化流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/">Docker搭建zookeeper集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/">Dubbo请求数据的发送过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/">GC日志配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E6%94%B6%E9%9B%86%E5%A4%A7%E5%85%A8/">Java字节码指令收集大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/">Java实现链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7/">Java性能调优工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/">dubbo负载均衡</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">dubbo架构设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/">dubbo的原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">java性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%B3%9B%E5%9E%8B/">java泛型</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/">java语言特性知识点汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/mst/">面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E6%A0%B8%E5%BF%83%E5%85%B3%E6%B3%A8%E7%82%B9/">系统性能核心关注点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Bean的生命周期</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/MYSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">MYSQL数据库设计规范</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/14/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86%E7%82%B9/">程序员必备知识点</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/17/Appollo%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8E%9F%E7%90%86/">Appollo配置中心原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/14/%E7%BC%93%E5%AD%98/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/24/Netty%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/">Netty权威指南目录抄写</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/17/bat/">BAT后端开发面试108题</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/27/MySQL%E6%9D%83%E9%99%90%E5%88%86%E9%85%8D/">MySQL权限分配</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/19/mysql%E5%93%AA%E4%BA%9B%E6%83%85%E5%86%B5%E4%B8%8D%E9%80%82%E5%90%88%E5%BB%BA%E7%B4%A2%E5%BC%95/">mysql哪些情况不适合建索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/xpath/">常用xpath例子</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/Netty/">Netty</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/MyBatis%E4%BD%BF%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%8C%E5%9C%A8%E6%BA%90%E7%A0%81%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%93%E7%8E%B0%E7%9A%84%EF%BC%9F/">MyBatis使用了哪些设计模式，在源码上是如何体现的？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/yinyangshi/">我的阴阳师之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/MAT%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B9%8B%E6%B7%B1%E5%A0%86%E5%92%8C%E6%B5%85%E5%A0%86/">MAT工具应用之深堆和浅堆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Markdown%E6%93%8D%E4%BD%9C/">Markdown操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mac%20%E6%8C%89%E9%94%AE%E7%AC%A6%E5%8F%B7/">mac按键符号</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mylife170320/">mylife170320</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/java1/">pacakge-info.java</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/28/mybatis2/">MyBatis Generator配置文件详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/27/springbatch/">springbatch</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/docker/">Boot2Docker 启动闪退</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/jenkins/">jenkins 安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux2/">linux 端口查看</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux1/">linux下的文件结构，每个文件夹用途</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/svn1/">linux下svn安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/jvm2/">堆分配参数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/questions/">开发中遇到的异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/12/mybatis1/">mybatis generator 配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/jinyan/">jinyan</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/javaapi1/">Java API 学习之ClassLoader</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/lua1/">Lua语言积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/sqljl/">sql语句：根据身份证得到省份、生日、性别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/jqiframe/">js与jQuery 获取父窗、子窗的iframe</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/sqlty/">sql优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/usapresident/">美国历任总统，在任年限及所属党派</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/xingnen2/">改善性能的几个技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/xingnen/">性能概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/servlet3/">一行配置文件引发的“血案”</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/btyeclass/">Class类文件的结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/24/jvm1/">java虚拟机性能监控与故障管理工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/mvnenvironmentseparate/">Maven 打包实现环境配置分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/huibian/">汇编语言(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/byyl/">byyl</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/shenzhou/">神舟飞船系列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/angularjs2d1/">angularjs2d1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/mvnarchetype/">创建自己maven archetype</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/hexo/">hexo + github建站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongodb/">mongodb</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/society/">房地产资本主义时代</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0923/">微信小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/node15/">Express 框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/node14/">使用 Node 创建 Web 服务器和客户端</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/node13/">Node.js GET/POST请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node12/">Node.js 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/maven/">maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node11/">Node.js 常用工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/19/node10/">Node.js 全局对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/node9/">Node.js 路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node8/">Node.js模块系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node7/">Node.js Stream(流)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/vim/">vim命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node6/">Node.js Buffer(缓冲区)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node5/">Node.js EventEmitter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node4/">Node.js 事件循环</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node3/">Node.js 回调函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/markdown/">markdown语法积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node2/">NPM 使用介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/sublime/">sublime text 3 使用积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/node1/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">深克隆</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E7%B1%BB%E8%A3%85%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/staruml1/">使用快速生成GoF设计模式的类图与代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/builderpattern/">builderpattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/DesignPatterns/">设计模式(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程的优缺点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2026 markee
+            </div>
+            <div class="footer-right">
+                <a href="https://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

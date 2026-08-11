@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+
+<meta name="description" content="AI 明明替我们节省了搜索、写作和编码的时间，为什么许多人反而更忙、更累？也许问题不在效率本身，而在不断上涨的预期、切换和责任。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有AI了，为什么感觉越来越累了">
+<meta property="og:url" content="https://code.idea4j.com/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/index.html">
+<meta property="og:site_name" content="码客Mark">
+<meta property="og:description" content="AI 明明替我们节省了搜索、写作和编码的时间，为什么许多人反而更忙、更累？也许问题不在效率本身，而在不断上涨的预期、切换和责任。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-08-11T01:06:22.000Z">
+<meta property="article:modified_time" content="2026-08-11T01:06:22.000Z">
+<meta property="article:author" content="markee">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="工作方式">
+<meta property="article:tag" content="效率">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="码客Mark" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>有AI了，为什么感觉越来越累了 | 码客Mark</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c160bf5d12f84389ce96c02b54e4575f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Appollo/" rel="tag">Appollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GC/" rel="tag">GC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoF/" rel="tag">GoF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">Java字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mybatis/" rel="tag">Mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/" rel="tag">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/" rel="tag">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinpoint/" rel="tag">Pinpoint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/" rel="tag">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/" rel="tag">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/angularjs2/" rel="tag">angularjs2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iframe/" rel="tag">iframe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jQuery/" rel="tag">jQuery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E6%B3%9B%E5%9E%8B/" rel="tag">java泛型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jps/" rel="tag">jps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maxwell/" rel="tag">maxwell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/servlet/" rel="tag">servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-batch/" rel="tag">spring batch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/starUML/" rel="tag">starUML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/" rel="tag">sublime text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xpath/" rel="tag">xpath</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/" rel="tag">如何替换 JDK 的类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C/" rel="tag">工作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F/" rel="tag">工作方式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="tag">性能调优</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%AA%E6%9D%A5/" rel="tag">未来</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="tag">汇编语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%85%8B%E9%9A%86/" rel="tag">深克隆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A4%BE%E4%BC%9A/" rel="tag">社会</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E8%88%9F%E9%A3%9E%E8%88%B9/" rel="tag">神舟飞船</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E8%A3%85%E8%BD%BD/" rel="tag">类装载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD/" rel="tag">系统性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%85%B3/" rel="tag">网关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%AB%99/" rel="tag">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8C%E7%BA%A6/" rel="tag">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/" rel="tag">链路追踪</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%97%AE%E9%A2%98/" rel="tag">问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-有AI了，为什么感觉越来越累了" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/" class="article-date">
+      <time datetime="2026-08-11T01:06:22.000Z" itemprop="datePublished">2026-08-11</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      有AI了，为什么感觉越来越累了
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F/" rel="tag">工作方式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>AI 刚开始进入工作时，我以为它会像一台更聪明的自动化机器：以前两小时完成的事情，现在二十分钟做完，省下的一小时四十分钟自然就能还给自己。</p>
+<p>现实却常常相反。</p>
+<p>邮件写得更快了，于是一天可以处理更多邮件；代码生成得更快了，于是同一时间要推进更多需求；资料总结只需要几分钟，于是会议之前又多看了几份报告。AI 确实缩短了完成一件事的时间，但那些被节省下来的时间，并没有变成休息，而是很快被新的任务填满。</p>
+<p>于是，一个很反直觉的感受出现了：工具越来越强，人却越来越累。</p>
+<span id="more"></span>
+
+<h2 id="AI-降低了成本，也抬高了预期"><a href="#AI-降低了成本，也抬高了预期" class="headerlink" title="AI 降低了成本，也抬高了预期"></a>AI 降低了成本，也抬高了预期</h2><p>一种工具只要能显著提高效率，组织和个人对产出的预期就会随之改变。</p>
+<p>过去，做一份完整的行业分析需要几天，大家会接受它需要几天。现在 AI 可以在十分钟内整理出框架，人们就会自然地追问：能不能再补三个角度？能不能顺便做成表格？既然这么快，今天下班前能不能再出一个版本？</p>
+<p>从单个任务来看，我们的确更高效了；从一天的总量来看，工作却变得更密集了。原本任务之间那些等待、整理和发呆的缝隙，被一项项新要求严丝合缝地填上。</p>
+<p>效率提高并不会自动带来闲暇。只有当我们允许“提前完成”意味着“可以结束”，时间才真正被节省下来。否则，效率只是让单位时间容纳更多工作。</p>
+<h2 id="生成变快了，判断并没有变便宜"><a href="#生成变快了，判断并没有变便宜" class="headerlink" title="生成变快了，判断并没有变便宜"></a>生成变快了，判断并没有变便宜</h2><p>AI 最擅长迅速给出一个看起来完整的结果。它可以写方案、改文案、列数据、生成代码，而且往往表达流畅、结构清晰。</p>
+<p>但“得到结果”和“确认结果可信”是两件事。</p>
+<p>一段代码能运行，不代表它能承受真实流量；一份报告逻辑通顺，不代表引用的数据真实；一封邮件措辞漂亮，不代表它准确表达了自己的立场。AI 把生成的成本降得很低，却把更多工作推到了判断这一端：我们需要核对事实、补充背景、识别遗漏、测试边界，并决定这个结果是否可以由自己签字发出。</p>
+<p>生成十个方案只要一分钟，认真比较十个方案却可能比从头思考一个更累。我们面对的不再是“没有答案”，而是“答案太多，却不知道应该相信哪一个”。</p>
+<p>这种疲惫不容易被看见，因为表面上 AI 已经完成了大部分内容。真正消耗注意力的验证、取舍和责任，仍然留给了人。</p>
+<h2 id="我们从做一件事，变成同时盯着很多件事"><a href="#我们从做一件事，变成同时盯着很多件事" class="headerlink" title="我们从做一件事，变成同时盯着很多件事"></a>我们从做一件事，变成同时盯着很多件事</h2><p>没有 AI 时，一个人写文档，通常会沿着一条线慢慢向前推进。有了 AI 之后，我们可以在等待它生成代码时让另一个窗口整理会议纪要，同时让第三个窗口分析日志。</p>
+<p>机器确实可以并行，人脑却没有因此获得三倍的注意力。</p>
+<p>我们不断在上下文之间切换：刚才在判断接口设计，下一秒去修改宣传文案，随后又回来检查一段并不熟悉的代码。每个任务只推进了一点，看上去处处都有进展，头脑里却始终挂着一串没有关闭的进程。</p>
+<p>AI 缩短了执行时间，也增加了启动任务的冲动。因为“让它先做着”几乎没有成本，我们很容易同时打开太多事情。最后让人疲惫的，未必是工作量本身，而是持续切换、持续等待、持续惦记。</p>
+<h2 id="节省的是操作，留下的是责任"><a href="#节省的是操作，留下的是责任" class="headerlink" title="节省的是操作，留下的是责任"></a>节省的是操作，留下的是责任</h2><p>AI 可以代替我们完成很多操作，却不能真正接走责任。</p>
+<p>它可以帮医生整理病历，但最终的诊断需要医生负责；可以帮程序员生成代码，但系统故障时不能由模型去解释；可以为管理者提供建议，但团队不会接受一句“这是 AI 说的”作为决策依据。</p>
+<p>这意味着我们一边享受速度，一边承担一种新的心理压力：结果并不完全由自己产生，却必须由自己保证。尤其当 AI 的输出超出自己的熟悉领域时，验证它可能比亲手完成更没有把握。</p>
+<p>“做得更快”不等于“心里更确定”。很多时候，真正让人累的不是敲了多少字、写了多少行代码，而是始终不敢确信有没有漏掉什么。</p>
+<h2 id="AI-还制造了另一种比较"><a href="#AI-还制造了另一种比较" class="headerlink" title="AI 还制造了另一种比较"></a>AI 还制造了另一种比较</h2><p>当 AI 能力成为公开可用的资源，人与人之间的产出差距看起来突然被放大了。</p>
+<p>社交媒体上总有人展示：一天做完一个产品，一小时写完一篇长文，一个人完成过去一个团队的工作。看得多了，我们很容易觉得，如果自己没有保持同样的速度，就是不会使用 AI，甚至是不够努力。</p>
+<p>但展示出来的通常只是完成的一刻，很少包括选错方向的尝试、反复验证的过程、长期维护的成本，以及使用者原本积累的专业能力。</p>
+<p>AI 让创造更容易，也让“我本来还可以做得更多”的声音变得更响。工具没有催促我们，关于效率的想象却在不停催促我们。</p>
+<h2 id="怎样让-AI-真正替自己减负"><a href="#怎样让-AI-真正替自己减负" class="headerlink" title="怎样让 AI 真正替自己减负"></a>怎样让 AI 真正替自己减负</h2><p>问题并不是要不要使用 AI。它依然是非常有价值的工具。真正需要调整的，是我们衡量工作的方式。</p>
+<h3 id="先定义完成，再开始生成"><a href="#先定义完成，再开始生成" class="headerlink" title="先定义完成，再开始生成"></a>先定义完成，再开始生成</h3><p>在打开 AI 之前，先写清楚这项任务做到什么程度就算结束。如果没有完成标准，AI 每给出一个版本，我们都会想到还能再优化一点、再补充一点。无限生成很容易，无限修改也就随之而来。</p>
+<h3 id="把省下的时间明确地留下来"><a href="#把省下的时间明确地留下来" class="headerlink" title="把省下的时间明确地留下来"></a>把省下的时间明确地留下来</h3><p>如果 AI 把两个小时的任务缩短到四十分钟，不要默认剩下的时间必须再塞进一项任务。可以把其中一部分用于检查和思考，也可以真的休息。节省时间是一种选择，不是工具自动兑现的奖励。</p>
+<h3 id="限制同时进行的任务"><a href="#限制同时进行的任务" class="headerlink" title="限制同时进行的任务"></a>限制同时进行的任务</h3><p>AI 可以在后台并行，人最好仍然保持有限的进行中任务。让一个结果经过判断、完成和关闭，再启动下一件事，往往比同时维护五个“已经做了 60%”的任务更轻松，也更可靠。</p>
+<h3 id="把-AI-用在消耗上，把注意力留给判断"><a href="#把-AI-用在消耗上，把注意力留给判断" class="headerlink" title="把 AI 用在消耗上，把注意力留给判断"></a>把 AI 用在消耗上，把注意力留给判断</h3><p>资料格式化、重复转换、初步归纳、测试样例生成，这些工作适合尽量交给 AI；目标是什么、信息是否可信、应该舍弃什么、最终由谁负责，则值得保留完整的注意力。</p>
+<p>不是所有事情都要与 AI 一起做。对于那些自己很享受、需要深入理解或关系重大的任务，亲自慢慢完成并不是低效。</p>
+<h3 id="不只记录产出，也记录负荷"><a href="#不只记录产出，也记录负荷" class="headerlink" title="不只记录产出，也记录负荷"></a>不只记录产出，也记录负荷</h3><p>一天生成了多少文档、提交了多少代码，很容易统计；一天切换了多少次上下文、有多少事情一直悬而未决，却经常被忽略。如果效率提高了，疲惫感也持续提高，就说明优化的可能只是机器可见的产出，而不是人的工作体验。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>每一次效率革命，最初都承诺把人从劳动中解放出来。但时间会不会真正回到人手里，从来不只由工具决定，也取决于我们如何分配效率带来的收益。</p>
+<p>AI 可以让一件事完成得更快，却不会主动告诉我们什么时候应该停下；可以生成更多可能，却不会替我们决定哪些事情根本不必做；可以模仿清晰的答案，却无法替我们承担选择之后的人生。</p>
+<p>有 AI 以后越来越累，并不证明 AI 没有提高效率。恰恰可能是因为它太有效了，以至于我们还没有学会怎样与突然增加的能力相处。</p>
+<p>真正值得追求的，不是让自己始终像机器一样满负荷运转，而是借助机器，把人的时间重新留给思考、关系、创造和生活。</p>
+<p>如果一种技术让我们能做更多，却始终没有机会问一句“这些事情真的都值得做吗”，那么我们得到的只是更快的忙碌。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/">有AI了，为什么感觉越来越累了</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
+        <p><span>发布时间:</span>2026-08-11, 09:06:22</p>
+        <p><span>最后更新:</span>2026-08-11, 09:06:22</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/" title="有AI了，为什么感觉越来越累了">https://code.idea4j.com/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://code.idea4j.com/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2026/08/11/%E5%85%B3%E4%BA%8E%E5%AF%B9AI%E6%9C%AA%E6%9D%A5%E7%9A%84%E6%83%B3%E8%B1%A1/">
+                    关于对 AI 未来的想象
+                </a>
+            </div>
+        
+    </nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E9%99%8D%E4%BD%8E%E4%BA%86%E6%88%90%E6%9C%AC%EF%BC%8C%E4%B9%9F%E6%8A%AC%E9%AB%98%E4%BA%86%E9%A2%84%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">AI 降低了成本，也抬高了预期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%8F%98%E5%BF%AB%E4%BA%86%EF%BC%8C%E5%88%A4%E6%96%AD%E5%B9%B6%E6%B2%A1%E6%9C%89%E5%8F%98%E4%BE%BF%E5%AE%9C"><span class="toc-number">2.</span> <span class="toc-text">生成变快了，判断并没有变便宜</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E4%BB%8E%E5%81%9A%E4%B8%80%E4%BB%B6%E4%BA%8B%EF%BC%8C%E5%8F%98%E6%88%90%E5%90%8C%E6%97%B6%E7%9B%AF%E7%9D%80%E5%BE%88%E5%A4%9A%E4%BB%B6%E4%BA%8B"><span class="toc-number">3.</span> <span class="toc-text">我们从做一件事，变成同时盯着很多件事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8A%82%E7%9C%81%E7%9A%84%E6%98%AF%E6%93%8D%E4%BD%9C%EF%BC%8C%E7%95%99%E4%B8%8B%E7%9A%84%E6%98%AF%E8%B4%A3%E4%BB%BB"><span class="toc-number">4.</span> <span class="toc-text">节省的是操作，留下的是责任</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E8%BF%98%E5%88%B6%E9%80%A0%E4%BA%86%E5%8F%A6%E4%B8%80%E7%A7%8D%E6%AF%94%E8%BE%83"><span class="toc-number">5.</span> <span class="toc-text">AI 还制造了另一种比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E6%A0%B7%E8%AE%A9-AI-%E7%9C%9F%E6%AD%A3%E6%9B%BF%E8%87%AA%E5%B7%B1%E5%87%8F%E8%B4%9F"><span class="toc-number">6.</span> <span class="toc-text">怎样让 AI 真正替自己减负</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E5%AE%9A%E4%B9%89%E5%AE%8C%E6%88%90%EF%BC%8C%E5%86%8D%E5%BC%80%E5%A7%8B%E7%94%9F%E6%88%90"><span class="toc-number">6.1.</span> <span class="toc-text">先定义完成，再开始生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E7%9C%81%E4%B8%8B%E7%9A%84%E6%97%B6%E9%97%B4%E6%98%8E%E7%A1%AE%E5%9C%B0%E7%95%99%E4%B8%8B%E6%9D%A5"><span class="toc-number">6.2.</span> <span class="toc-text">把省下的时间明确地留下来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%90%E5%88%B6%E5%90%8C%E6%97%B6%E8%BF%9B%E8%A1%8C%E7%9A%84%E4%BB%BB%E5%8A%A1"><span class="toc-number">6.3.</span> <span class="toc-text">限制同时进行的任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A-AI-%E7%94%A8%E5%9C%A8%E6%B6%88%E8%80%97%E4%B8%8A%EF%BC%8C%E6%8A%8A%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%95%99%E7%BB%99%E5%88%A4%E6%96%AD"><span class="toc-number">6.4.</span> <span class="toc-text">把 AI 用在消耗上，把注意力留给判断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%8F%AA%E8%AE%B0%E5%BD%95%E4%BA%A7%E5%87%BA%EF%BC%8C%E4%B9%9F%E8%AE%B0%E5%BD%95%E8%B4%9F%E8%8D%B7"><span class="toc-number">6.5.</span> <span class="toc-text">不只记录产出，也记录负荷</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">7.</span> <span class="toc-text">写在最后</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"有AI了，为什么感觉越来越累了　| 码客Mark　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2026/08/11/%E5%85%B3%E4%BA%8E%E5%AF%B9AI%E6%9C%AA%E6%9D%A5%E7%9A%84%E6%83%B3%E8%B1%A1/" title="下一篇: 关于对 AI 未来的想象">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/">有AI了，为什么感觉越来越累了</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E5%85%B3%E4%BA%8E%E5%AF%B9AI%E6%9C%AA%E6%9D%A5%E7%9A%84%E6%83%B3%E8%B1%A1/">关于对 AI 未来的想象</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/">项目管理实战</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%AF%BC%E6%89%8B%E5%86%8C/">《数据结构与算法之美》学习指导手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E6%B1%A0%E5%8C%96%E6%80%9D%E6%83%B3/">池化思想</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/Redis%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E5%8F%8A%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">Redis缓存设计及常见问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/LevelDB/">LevelDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/">32个JAVA面试必考点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/quickstart/">使用maxwell</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E4%BD%BF%E7%94%A8maxwell%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE%E5%88%B0%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97(rabbitMQ)/">使用maxwell实时同步mysql数据到消息队列(rabbitMQ)</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83%E8%BF%87%E7%A8%8B/">前后端联调过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/20/%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%A6%E4%B9%A0/">如何有效的学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/">Redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%20Boot/">Springboot</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Spring事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Zuul%E4%B8%8EGateWay%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">网关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/">zookeeper选举规则</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E4%BD%BF%E7%94%A8jvm%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C/">jps</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E7%9B%B8%E5%85%B3/">zookeeper相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/">如何替换 JDK 的类</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/03/%E6%97%A5%E6%8B%B1%E4%B8%80%E5%8D%92/">日拱一卒</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/30/%E6%89%8B%E5%86%99RPC%E6%A1%86%E6%9E%B6/">手写RPC框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E9%97%AE%E9%A2%98%E5%A4%A7%E5%85%A8/">问题大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E7%BC%96%E5%86%99springboot%E5%90%AF%E5%8A%A8%E5%99%A8/">springboot启动器</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/09/Pinpoint/">Pinpoint安装使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/04/RabbitMQ%E5%91%BD%E4%BB%A4%E8%A1%8C/">RabbitMQ命令行</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%91%BD%E4%BB%A4/">docker 命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dockerfile%E6%8C%87%E4%BB%A4/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/">Class文件格式</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/">Context初始化流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/">Docker搭建zookeeper集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/">Dubbo请求数据的发送过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/">GC日志配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E6%94%B6%E9%9B%86%E5%A4%A7%E5%85%A8/">Java字节码指令收集大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/">Java实现链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7/">Java性能调优工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/">dubbo负载均衡</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">dubbo架构设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/">dubbo的原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">java性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%B3%9B%E5%9E%8B/">java泛型</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/">java语言特性知识点汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/mst/">面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E6%A0%B8%E5%BF%83%E5%85%B3%E6%B3%A8%E7%82%B9/">系统性能核心关注点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Bean的生命周期</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/MYSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">MYSQL数据库设计规范</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/14/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86%E7%82%B9/">程序员必备知识点</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/17/Appollo%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8E%9F%E7%90%86/">Appollo配置中心原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/14/%E7%BC%93%E5%AD%98/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/24/Netty%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/">Netty权威指南目录抄写</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/17/bat/">BAT后端开发面试108题</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/27/MySQL%E6%9D%83%E9%99%90%E5%88%86%E9%85%8D/">MySQL权限分配</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/19/mysql%E5%93%AA%E4%BA%9B%E6%83%85%E5%86%B5%E4%B8%8D%E9%80%82%E5%90%88%E5%BB%BA%E7%B4%A2%E5%BC%95/">mysql哪些情况不适合建索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/xpath/">常用xpath例子</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/Netty/">Netty</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/MyBatis%E4%BD%BF%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%8C%E5%9C%A8%E6%BA%90%E7%A0%81%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%93%E7%8E%B0%E7%9A%84%EF%BC%9F/">MyBatis使用了哪些设计模式，在源码上是如何体现的？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/yinyangshi/">我的阴阳师之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/MAT%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B9%8B%E6%B7%B1%E5%A0%86%E5%92%8C%E6%B5%85%E5%A0%86/">MAT工具应用之深堆和浅堆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Markdown%E6%93%8D%E4%BD%9C/">Markdown操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mac%20%E6%8C%89%E9%94%AE%E7%AC%A6%E5%8F%B7/">mac按键符号</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mylife170320/">mylife170320</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/java1/">pacakge-info.java</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/28/mybatis2/">MyBatis Generator配置文件详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/27/springbatch/">springbatch</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/docker/">Boot2Docker 启动闪退</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/jenkins/">jenkins 安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux2/">linux 端口查看</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux1/">linux下的文件结构，每个文件夹用途</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/svn1/">linux下svn安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/jvm2/">堆分配参数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/questions/">开发中遇到的异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/12/mybatis1/">mybatis generator 配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/jinyan/">jinyan</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/javaapi1/">Java API 学习之ClassLoader</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/lua1/">Lua语言积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/sqljl/">sql语句：根据身份证得到省份、生日、性别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/jqiframe/">js与jQuery 获取父窗、子窗的iframe</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/sqlty/">sql优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/usapresident/">美国历任总统，在任年限及所属党派</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/xingnen2/">改善性能的几个技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/xingnen/">性能概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/servlet3/">一行配置文件引发的“血案”</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/btyeclass/">Class类文件的结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/24/jvm1/">java虚拟机性能监控与故障管理工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/mvnenvironmentseparate/">Maven 打包实现环境配置分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/huibian/">汇编语言(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/byyl/">byyl</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/shenzhou/">神舟飞船系列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/angularjs2d1/">angularjs2d1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/mvnarchetype/">创建自己maven archetype</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/hexo/">hexo + github建站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongodb/">mongodb</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/society/">房地产资本主义时代</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0923/">微信小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/node15/">Express 框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/node14/">使用 Node 创建 Web 服务器和客户端</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/node13/">Node.js GET/POST请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node12/">Node.js 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/maven/">maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node11/">Node.js 常用工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/19/node10/">Node.js 全局对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/node9/">Node.js 路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node8/">Node.js模块系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node7/">Node.js Stream(流)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/vim/">vim命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node6/">Node.js Buffer(缓冲区)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node5/">Node.js EventEmitter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node4/">Node.js 事件循环</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node3/">Node.js 回调函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/markdown/">markdown语法积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node2/">NPM 使用介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/sublime/">sublime text 3 使用积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/node1/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">深克隆</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E7%B1%BB%E8%A3%85%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/staruml1/">使用快速生成GoF设计模式的类图与代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/builderpattern/">builderpattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/DesignPatterns/">设计模式(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程的优缺点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2026 markee
+            </div>
+            <div class="footer-right">
+                <a href="https://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

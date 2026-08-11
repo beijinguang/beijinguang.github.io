@@ -1,0 +1,2739 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+    
+    
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="码客Mark">
+<meta property="og:url" content="https://code.idea4j.com/page/4/index.html">
+<meta property="og:site_name" content="码客Mark">
+<meta property="og:locale">
+<meta property="article:author" content="markee">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="码客Mark" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+    <style> .article { opacity: 0;} </style>
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>码客Mark</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: true,
+        isPost: false,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c160bf5d12f84389ce96c02b54e4575f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Appollo/" rel="tag">Appollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GC/" rel="tag">GC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoF/" rel="tag">GoF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">Java字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mybatis/" rel="tag">Mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NBA/" rel="tag">NBA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/" rel="tag">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pinpoint/" rel="tag">Pinpoint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/" rel="tag">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/" rel="tag">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/angularjs2/" rel="tag">angularjs2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iframe/" rel="tag">iframe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jQuery/" rel="tag">jQuery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E6%B3%9B%E5%9E%8B/" rel="tag">java泛型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jps/" rel="tag">jps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/" rel="tag">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maxwell/" rel="tag">maxwell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/" rel="tag">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/" rel="tag">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/servlet/" rel="tag">servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring-batch/" rel="tag">spring batch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/starUML/" rel="tag">starUML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sublime-text/" rel="tag">sublime text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xpath/" rel="tag">xpath</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2-JDK-%E7%9A%84%E7%B1%BB/" rel="tag">如何替换 JDK 的类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">字节码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C/" rel="tag">工作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F/" rel="tag">工作方式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="tag">性能调优</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%AA%E6%9D%A5/" rel="tag">未来</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="tag">汇编语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%85%8B%E9%9A%86/" rel="tag">深克隆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A4%BE%E4%BC%9A/" rel="tag">社会</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E8%88%9F%E9%A3%9E%E8%88%B9/" rel="tag">神舟飞船</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E8%A3%85%E8%BD%BD/" rel="tag">类装载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD/" rel="tag">系统性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E5%85%B3/" rel="tag">网关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%AB%99/" rel="tag">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%8C%E7%BA%A6/" rel="tag">里约</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/" rel="tag">链路追踪</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%97%AE%E9%A2%98/" rel="tag">问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-Dockerfile指令" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Dockerfile%E6%8C%87%E4%BB%A4/" class="article-date">
+      <time datetime="2020-05-28T15:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Dockerfile%E6%8C%87%E4%BB%A4/">docker 容器数据卷</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Dockerfile指令"><a href="#Dockerfile指令" class="headerlink" title="Dockerfile指令"></a>Dockerfile指令</h2><h4 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h4><p>  基础镜像，当前镜像是基于哪个镜像的</p>
+<h4 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h4><p>  镜像维护者的姓名和邮箱地址等</p>
+<h4 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a>WORKDIR</h4><p>  指定创建容器后，终端默认位置（pwd的位置）</p>
+<h4 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a>ENV</h4><p>  构建镜像过程中的环境变量</p>
+<h5 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h5><p>  构建容器过程中的执行的命令</p>
+<h4 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a>EXPOSE</h4><p>  当前容器对外暴露出的端口</p>
+<h4 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a>VOLUME</h4><p>  容器数据卷，用于数据保存和持久化</p>
+<h4 id="ADD"><a href="#ADD" class="headerlink" title="ADD"></a>ADD</h4><p>  将宿主机目录下的文件拷贝到镜像中，且会解压 tar包和自动处理URL</p>
+<h4 id="COPY"><a href="#COPY" class="headerlink" title="COPY"></a>COPY</h4><h4 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h4><p>指定容器启动时要执行的命令</p>
+<h4 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h4><h4 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a>ONBUILD</h4>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Class文件格式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/">Class文件格式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Class文件格式"><a href="#Class文件格式" class="headerlink" title="Class文件格式"></a>Class文件格式</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u4</td>
+<td>magic</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>minor_version</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>major_version</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>constant_pool_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>cp_info</td>
+<td>constant_pool</td>
+<td>constant_pool_count-1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>access_flag</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>this_class</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>super_class</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>interfaces_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>interfaces</td>
+<td>interfaces_count</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>fields_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>field_info</td>
+<td>fields</td>
+<td>fields_count</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>methods_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>method_info</td>
+<td>methods</td>
+<td>methods_count</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>attributes_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>attribute_info</td>
+<td>attributes</td>
+<td>attributes_count</td>
+</tr>
+</tbody></table>
+<p>字节码的组成：</p>
+<ul>
+<li>魔数（magic）+最小版本号（monir_version）+最大版本号(major_version)</li>
+<li>常量池大小+常量池</li>
+<li>访问标志</li>
+<li>类索引，父类索引，接口索引集合</li>
+<li>字段表集合</li>
+<li>方法表集合</li>
+<li>属性表集合</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E5%AD%97%E8%8A%82%E7%A0%81/">字节码</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">字节码</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Context初始化流程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/">Context初始化流程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>Context初始化流程</p>
+<p>1.prepareRefresh</p>
+<p>对刷新进行准备，包括设置开始时间、设置激活状态、初始化context环境中的占位符这个动作，根据之类的需求由子类来执行，然后验证是否却是必要的properties。</p>
+<p>2.ConfiguratbleListableBeanFactory beanFactory&#x3D;obtainFreshBeanfactory();</p>
+<p>刷新并获得内部的Bean Factory。</p>
+<p>3.prepareBeanFactory(beanFactory);</p>
+<p>对beanFactory进行准备工作，比如设置类加载器和后置处理器，配置不进行自动装配的类型，注册默认的环境Bean。</p>
+<p>4.postProcessBeanFactory(beanFactory);</p>
+<p>为context的子类提供后置处理BeanFactory的扩展能力。如果子类想在Bean定义加载完成后，开始初始化上下文之前，做一些特殊逻辑，可以复写这个方法。</p>
+<p>5.invokeBeanFactotyPostProcessors(beanFactory);</p>
+<p>执行context中注册的beanfactory后缀处理器，这里有两种后置处理器一种是可以注册bean的后缀处理器。另一种是针对beanfactory进行处理的后置处理器。执行顺序是，先按照优先级执行可注册Bean的处理器，再按优先级执行针对Beanfactory的处理器。对springboot来书，这一步会进行BeanDefinition的解析。</p>
+<p>6.registerBeanPostProcessors(beanFactory);</p>
+<p>按照优先顺序在BeanFactory中注册Bean的后缀处理器，Bean后置处理器可以在Bean初始化前、后执行处理。</p>
+<p>7.initMessageSource();</p>
+<p>初始化消息源，消息源用来支持消息的国际化。</p>
+<p>8.initApplicationEventMulticaster();</p>
+<p>初始化应用事件广播器。事件广播器用来向ApplicationListener通知各种应用产生的事件，是一个标准的观察者模式。</p>
+<p>9.onRefresh();</p>
+<p>是留给子类的扩展步骤，用来让特定的Context子类初始化其他的bean。</p>
+<p>10.registerListeners();</p>
+<p>把实现了ApplicationListener的Bean注册到事件广播器，并对广播器中的早期未广播事件进行通知。</p>
+<p>11.finishBeanFactoryInitialization(beanFactory);</p>
+<p>冻结所有的Bean描述信息的修改，实例化非延迟加载的单例Bean</p>
+<p>12.finishRefresh();</p>
+<p>完成上下文的刷新工作，调用LifecycleProcessor的onFresh()方法以及发布ContextRefreshedEvent事件。</p>
+<p>13.resetCommonCaches();</p>
+<p>在finally中，执行第13步，重置公共的缓存，比如ReflectonUtils中的缓存、AnnotationUtils中的缓存等等。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/spring/">spring</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Docker搭建zookeeper集群" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/">Docker搭建zookeeper集群</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Docker搭建zookeeper集群"><a href="#Docker搭建zookeeper集群" class="headerlink" title="Docker搭建zookeeper集群"></a>Docker搭建zookeeper集群</h2><p>准备在3台虚拟机上搭建zookeeper集群</p>
+<h4 id="创建挂载目录"><a href="#创建挂载目录" class="headerlink" title="创建挂载目录"></a>创建挂载目录</h4><p>用于存储配置文件和数据，使用docker数据和配置文件等需要放在自己的宿主机，而不是容器内，特别是数据</p>
+<p><code>mkdir -p zookeeper/conf</code></p>
+<p><code>mkdir -p zookeeper/data</code></p>
+<h4 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h4><p>在zookeeper&#x2F;data下创建zoo.cfg</p>
+<p>touch <code>zoo.cfg</code></p>
+<p>clientPort&#x3D;2181<br>dataDir&#x3D;&#x2F;data<br>dataLogDir&#x3D;&#x2F;data&#x2F;log<br>tickTime&#x3D;2000<br>initLimit&#x3D;5<br>syncLimit&#x3D;2<br>autopurge.snapRetainCount&#x3D;3<br>autopurge.purgeInterval&#x3D;0<br>maxClientCnxns&#x3D;60<br>server.111&#x3D;10.255.200.168:2888:3888<br>server.222&#x3D;10.255.200.174:2888:3888<br>server.233&#x3D;10.255.200.172:2888:3888</p>
+<h4 id="配置myid"><a href="#配置myid" class="headerlink" title="配置myid"></a>配置myid</h4><p>在zookeeper&#x2F;data目录下创建<strong>myid</strong>，并配置id，里面的<strong>id一定要和上面配置的server.id一致</strong></p>
+<p><code>touch myid</code></p>
+<p><code>echo 111 &gt; myid</code></p>
+<h4 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h4><p>docker run  –network host -v &#x2F;usr&#x2F;local&#x2F;zookeeper&#x2F;data:&#x2F;data -v  &#x2F;usr&#x2F;local&#x2F;zookeeper&#x2F;conf:&#x2F;conf –name zookeeper-2181 -d zookeeper:3.4.13</p>
+<p>节点查看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkServer.sh status</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/" rel="tag">zookeeper</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Dubbo请求数据的发送过程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/">Dubbo请求数据的发送过程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="Dubbo请求数据的发送过程"><a href="#Dubbo请求数据的发送过程" class="headerlink" title="Dubbo请求数据的发送过程"></a>Dubbo请求数据的发送过程</h3><p>调用过程（IMAF FLADR HHAANN） （3invoke + doInvoke）*2+3request+3send+write</p>
+<p>Proxy0#sayHello(String)</p>
+<p>​	-&gt;InvokerInvocationHandle#invoke</p>
+<p>​		-&gt;MockClusterInvoker#invoke</p>
+<p>​			-&gt;AbstractClusterInvoker#invoke</p>
+<p>​				-&gt;FailoverClusterInvoker#doInvoke</p>
+<p>​					-&gt;Filter#invoke</p>
+<p>​						-&gt;ListenerInvokerWrapper#invoke</p>
+<p>​							-&gt;AbstractInvoker#invoke</p>
+<p>​								-&gt;DubboInvoker#doInvoke</p>
+<p>​									-&gt;ReferenceCountExchangeClient#request</p>
+<p>​										-&gt;HeadExchangeClient#request</p>
+<p>​											-&gt;HeadExchangeChannel#request</p>
+<p>​												-&gt;AbstractPeer#send</p>
+<p>​													-&gt;AbstractClient#send</p>
+<p>​														-&gt;NettyChannel#send</p>
+<p>​															-&gt;NioClientSocketChannel#write</p>
+<p>调用服务(NAMHAE)  messageReceved+receved*4+execute</p>
+<p>NettyHandler#messageReceived(ChannelHandlerContext, MessageEvent)  </p>
+<p>​	—&gt; AbstractPeer#received(Channel, Object)    </p>
+<p>​		—&gt; MultiMessageHandler#received(Channel, Object)      </p>
+<p>​			—&gt; HeartbeatHandler#received(Channel, Object)        </p>
+<p>​				—&gt; AllChannelHandler#received(Channel, Object)          </p>
+<p>​					—&gt; ExecutorService#execute(Runnable)    &#x2F;&#x2F; 由线程池执行后续的调用逻辑</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/dubbo/">dubbo</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-GC日志配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/">GC日志配置</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p><strong>Java 8</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">LOG_DIR=&quot;/tmp/logs&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot; -verbose:gc&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCDetails&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCDateStamps&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintGCApplicationStoppedTime&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -XX:+PrintTenuringDistribution&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xloggc:$&#123;LOG_DIR&#125;/gc_%p.log&quot;</span><br><span class="line">JAVA_OPT_OOM=&quot; -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$&#123;LOG_DIR&#125; -XX:ErrorFile=$&#123;LOG_DIR&#125;/hs_error_pid%p.log &quot;</span><br><span class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT_LOG&#125; $&#123;JAVA_OPT_OOM&#125;&quot;</span><br><span class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -XX:-OmitStackTraceInFastThrow&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps<br>-XX:+PrintGCApplicationStoppedTime -XX:+PrintTenuringDistribution<br>-Xloggc:&#x2F;tmp&#x2F;logs&#x2F;gc_%p.log -XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath&#x3D;&#x2F;tmp&#x2F;logs -XX:ErrorFile&#x3D;&#x2F;tmp&#x2F;logs&#x2F;hs_error_pid%p.log<br>-XX:-OmitStackTraceInFastThrow</p>
+<p><strong>Java 13</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">LOG_DIR=&quot;/tmp/logs&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot; -verbose:gc&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xlog:gc,gc+ref=debug,gc+heap=debug,gc+age=trace:file=$&#123;LOG_DIR&#125;/gc_%p.log:tags,uptime,time,level&quot;</span><br><span class="line">JAVA_OPT_LOG=&quot;$&#123;JAVA_OPT_LOG&#125; -Xlog:safepoint:file=$&#123;LOG_DIR&#125;/safepoint_%p.log:tags,uptime,time,level&quot;</span><br><span class="line">JAVA_OPT_OOM=&quot; -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$&#123;LOG_DIR&#125; -XX:ErrorFile=$&#123;LOG_DIR&#125;/hs_error_pid%p.log &quot;</span><br><span class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT_LOG&#125; $&#123;JAVA_OPT_OOM&#125;&quot;</span><br><span class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -XX:-OmitStackTraceInFastThrow&quot;</span><br><span class="line">echo $JAVA_OPT</span><br></pre></td></tr></table></figure>
+
+
+
+<p>-verbose:gc -Xlog:gc,gc+ref&#x3D;debug,gc+heap&#x3D;debug,gc+age&#x3D;trace:file<br>&#x3D;&#x2F;tmp&#x2F;logs&#x2F;gc_%p.log:tags,uptime,time,level -Xlog:safepoint:file&#x3D;&#x2F;tmp<br>&#x2F;logs&#x2F;safepoint_%p.log:tags,uptime,time,level -XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath&#x3D;&#x2F;tmp&#x2F;logs -XX:ErrorFile&#x3D;&#x2F;tmp&#x2F;logs&#x2F;hs_error_pid%p.log<br>-XX:-OmitStackTraceInFastThrow</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/GC/">GC</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GC/" rel="tag">GC</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Java字节码指令收集大全" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E6%94%B6%E9%9B%86%E5%A4%A7%E5%85%A8/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E6%94%B6%E9%9B%86%E5%A4%A7%E5%85%A8/">Java字节码指令收集大全</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Java字节码指令收集大全"><a href="#Java字节码指令收集大全" class="headerlink" title="Java字节码指令收集大全"></a>Java字节码指令收集大全</h2><h3 id="常量入栈指令"><a href="#常量入栈指令" class="headerlink" title="常量入栈指令"></a>常量入栈指令</h3><table>
+<thead>
+<tr>
+<th align="left"><strong>指令码</strong></th>
+<th align="left"><strong>操作码（助记符）</strong></th>
+<th align="left"><strong>操作数</strong></th>
+<th align="left"><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0x01</td>
+<td align="left">aconst_null</td>
+<td align="left"></td>
+<td align="left">null值入栈</td>
+</tr>
+<tr>
+<td align="left">0x02</td>
+<td align="left">iconst_m1</td>
+<td align="left"></td>
+<td align="left">-1（int）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x03</td>
+<td align="left">iconst_0</td>
+<td align="left"></td>
+<td align="left">0（int）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x04</td>
+<td align="left">iconst_1</td>
+<td align="left"></td>
+<td align="left">1（int）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x05</td>
+<td align="left">iconst_2</td>
+<td align="left"></td>
+<td align="left">2（int）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x06</td>
+<td align="left">iconst_3</td>
+<td align="left"></td>
+<td align="left">3（int）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x07</td>
+<td align="left">iconst_4</td>
+<td align="left"></td>
+<td align="left">4（int）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x08</td>
+<td align="left">iconst_5</td>
+<td align="left"></td>
+<td align="left">5（int）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x09</td>
+<td align="left">lconst_0</td>
+<td align="left"></td>
+<td align="left">0（long）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x0a</td>
+<td align="left">lconst_1</td>
+<td align="left"></td>
+<td align="left">1（long）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x0b</td>
+<td align="left">fconst_0</td>
+<td align="left"></td>
+<td align="left">0（float）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x0c</td>
+<td align="left">fconst_1</td>
+<td align="left"></td>
+<td align="left">1（float）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x0d</td>
+<td align="left">fconst_2</td>
+<td align="left"></td>
+<td align="left">2（float）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x0e</td>
+<td align="left">dconst_0</td>
+<td align="left"></td>
+<td align="left">0（double）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x0f</td>
+<td align="left">dconst_1</td>
+<td align="left"></td>
+<td align="left">1（double）值入栈</td>
+</tr>
+<tr>
+<td align="left">0x10</td>
+<td align="left">bipush</td>
+<td align="left">valuebyte</td>
+<td align="left">valuebyte值带符号扩展成int值入栈</td>
+</tr>
+<tr>
+<td align="left">0x11</td>
+<td align="left">sipush</td>
+<td align="left">valuebyte1  valuebyte2</td>
+<td align="left">(valuebyte1 &lt;&lt; 8)|valuebyte2 值带符号扩展成int值入栈。</td>
+</tr>
+<tr>
+<td align="left">0x12</td>
+<td align="left">ldc</td>
+<td align="left">indexbyte1</td>
+<td align="left">常量池中的常量值<br/>（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td align="left">0x13</td>
+<td align="left">ldc_w</td>
+<td align="left">indexbyte1 indexbyte2</td>
+<td align="left">常量池中常量<br/>（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td align="left">0x14</td>
+<td align="left">ldc2_2</td>
+<td align="left">indexbyte1 indexbyte2</td>
+<td align="left">常量池中常量（long, double）入栈。</td>
+</tr>
+</tbody></table>
+<h3 id="局部变量值转载到栈中指令"><a href="#局部变量值转载到栈中指令" class="headerlink" title="局部变量值转载到栈中指令"></a>局部变量值转载到栈中指令</h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x19</td>
+<td>(wide)aload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x2a</td>
+<td>aload_0</td>
+<td></td>
+<td>从局部变量0中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x2b</td>
+<td>aload_1</td>
+<td></td>
+<td>从局部变量1中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x2c</td>
+<td>aload_2</td>
+<td></td>
+<td>从局部变量2中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0a2d</td>
+<td>aload_3</td>
+<td></td>
+<td>从局部变量3中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x15</td>
+<td>(wide)iload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1a</td>
+<td>iload_0</td>
+<td></td>
+<td>从局部变量0中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1b</td>
+<td>iload_1</td>
+<td></td>
+<td>从局部变量1中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1c</td>
+<td>iload_2</td>
+<td></td>
+<td>从局部变量2中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x1d</td>
+<td>iload_3</td>
+<td></td>
+<td>从局部变量3中装载int类型值入栈</td>
+</tr>
+<tr>
+<td>0x16</td>
+<td>(wide)lload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x1e</td>
+<td>lload_0</td>
+<td></td>
+<td>从局部变量0中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x1f</td>
+<td>lload_1</td>
+<td></td>
+<td>从局部变量1中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>lload_2</td>
+<td></td>
+<td>从局部变量2中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x21</td>
+<td>lload_3</td>
+<td></td>
+<td>从局部变量3中装载long类型值入栈</td>
+</tr>
+<tr>
+<td>0x17</td>
+<td>f(wide)load</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x22</td>
+<td>fload_0</td>
+<td></td>
+<td>从局部变量0中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x23</td>
+<td>fload_1</td>
+<td></td>
+<td>从局部变量1中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x24</td>
+<td>fload_2</td>
+<td></td>
+<td>从局部变量2中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x25</td>
+<td>fload_3</td>
+<td></td>
+<td>从局部变量3中装载float类型值入栈</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>（wide）dload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载引用类型值入栈</td>
+</tr>
+<tr>
+<td>0x26</td>
+<td>dload_0</td>
+<td></td>
+<td>从局部变量0中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x27</td>
+<td>dload_1</td>
+<td></td>
+<td>从局部变量1中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x28</td>
+<td>dload_2</td>
+<td></td>
+<td>从局部变量3中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x29</td>
+<td>dload_3</td>
+<td></td>
+<td>从局部变量3中装载double类型值入栈</td>
+</tr>
+<tr>
+<td>0x32</td>
+<td>aaload</td>
+<td></td>
+<td>从引用类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x2e</td>
+<td>iaload</td>
+<td></td>
+<td>从int类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x2f</td>
+<td>laload</td>
+<td></td>
+<td>从long类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x30</td>
+<td>faload</td>
+<td></td>
+<td>从float类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x31</td>
+<td>daload</td>
+<td></td>
+<td>从double类型数组中装载指定项的值入栈</td>
+</tr>
+<tr>
+<td>0x33</td>
+<td>baload</td>
+<td></td>
+<td>从boolean或者byte类型数组中装载指定项的值入栈（<br/>先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>0x34</td>
+<td>caload</td>
+<td></td>
+<td>从char类型数组中装载指定项的值入栈 <br/>（先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>0x35</td>
+<td>saload</td>
+<td></td>
+<td>从short类型数组中装载指定项的值入栈 <br/>（先转换为int类型值，后压栈）。</td>
+</tr>
+</tbody></table>
+<h3 id="将栈顶值保存到局部变量中指令"><a href="#将栈顶值保存到局部变量中指令" class="headerlink" title="将栈顶值保存到局部变量中指令"></a><strong>将栈顶值保存到局部变量中指令</strong></h3><table>
+<thead>
+<tr>
+<th>0x3a</th>
+<th>(wide)astore</th>
+<th>indexbyte</th>
+<th>将栈顶引用类型值保存到局部变量indexbyte中。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x4b</td>
+<td>astroe_0</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x4c</td>
+<td>astore_1</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x4d</td>
+<td>astore_2</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x4e</td>
+<td>astore_3</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x36</td>
+<td>(wide)istore</td>
+<td>indexbyte</td>
+<td>将栈顶int类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x3b</td>
+<td>istore_0</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x3c</td>
+<td>istore_1</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x3d</td>
+<td>istore_2</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x3e</td>
+<td>istore_3</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x37</td>
+<td>(wide)lstore</td>
+<td>indexbyte</td>
+<td>将栈顶long类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x3f</td>
+<td>lstore_0</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x40</td>
+<td>lstore_1</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x41</td>
+<td>lstore_2</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>lstroe_3</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x38</td>
+<td>(wide)fstore</td>
+<td>indexbyte</td>
+<td>将栈顶float类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x43</td>
+<td>fstore_0</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x44</td>
+<td>fstore_1</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x45</td>
+<td>fstore_2</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x46</td>
+<td>fstore_3</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x39</td>
+<td>(wide)dstore</td>
+<td>indexbyte</td>
+<td>将栈顶double类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>0x47</td>
+<td>dstore_0</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>0x48</td>
+<td>dstore_1</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>0x49</td>
+<td>dstore_2</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>0x4a</td>
+<td>dstore_3</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>0x53</td>
+<td>aastore</td>
+<td></td>
+<td>将栈顶引用类型值保存到指定引用类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x4f</td>
+<td>iastore</td>
+<td></td>
+<td>将栈顶int类型值保存到指定int类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x50</td>
+<td>lastore</td>
+<td></td>
+<td>将栈顶long类型值保存到指定long类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x51</td>
+<td>fastore</td>
+<td></td>
+<td>将栈顶float类型值保存到指定float类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x52</td>
+<td>dastore</td>
+<td></td>
+<td>将栈顶double类型值保存到指定double类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x54</td>
+<td>bastroe</td>
+<td></td>
+<td>将栈顶boolean类型值或byte类型值保存到指定boolean<br/>类型数组或byte类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x55</td>
+<td>castore</td>
+<td></td>
+<td>将栈顶char类型值保存到指定char类型数组的指定项。</td>
+</tr>
+<tr>
+<td>0x56</td>
+<td>sastore</td>
+<td></td>
+<td>将栈顶short类型值保存到指定short类型数组的指定项。</td>
+</tr>
+</tbody></table>
+<h3 id="wide-指令"><a href="#wide-指令" class="headerlink" title="wide****指令"></a><strong>wide****指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xc4</td>
+<td>wide</td>
+<td></td>
+<td>使用附加字节扩展局部变量索引（iinc指令特殊）。</td>
+</tr>
+</tbody></table>
+<h3 id="通用（无类型）栈操作指令"><a href="#通用（无类型）栈操作指令" class="headerlink" title="通用（无类型）栈操作指令"></a><strong>通用（无类型）栈操作指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x00</td>
+<td>nop</td>
+<td></td>
+<td>空操作。</td>
+</tr>
+<tr>
+<td>0x57</td>
+<td>pop</td>
+<td></td>
+<td>从栈顶弹出一个字长的数据。</td>
+</tr>
+<tr>
+<td>0x58</td>
+<td>pop2</td>
+<td></td>
+<td>从栈顶弹出两个字长的数据。</td>
+</tr>
+<tr>
+<td>0x59</td>
+<td>dup</td>
+<td></td>
+<td>复制栈顶一个字长的数据，将复制后的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5a</td>
+<td>dup_x1</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶两个字长数据，<br/>先将复制后的数据压栈，再将弹出的两个字长数据压栈。</td>
+</tr>
+<tr>
+<td>0x5b</td>
+<td>dup_x2</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶三个字长的数据，<br/>将复制后的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5c</td>
+<td>dup2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，将复制后的两个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5d</td>
+<td>dup2_x1</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶三个字长的数据，<br/>将复制后的两个字长的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5e</td>
+<td>dup2_x2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶四个字长的数据，<br/>将复制后的两个字长的数据压栈，再将弹出的四个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>0x5f</td>
+<td>swap</td>
+<td></td>
+<td>交换栈顶两个字长的数据的位置。<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/javaee">Java</a>指令中没有提供以<br/>两个字长为单位的交换指令。</td>
+</tr>
+</tbody></table>
+<h3 id="类型转换指令"><a href="#类型转换指令" class="headerlink" title="类型转换指令"></a><strong>类型转换指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x86</td>
+<td>i2f</td>
+<td></td>
+<td>将栈顶int类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x85</td>
+<td>i2l</td>
+<td></td>
+<td>将栈顶int类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x87</td>
+<td>i2d</td>
+<td></td>
+<td>将栈顶int类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>0x8b</td>
+<td>f2i</td>
+<td></td>
+<td>将栈顶float类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x8c</td>
+<td>f2l</td>
+<td></td>
+<td>将栈顶float类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x8d</td>
+<td>f2d</td>
+<td></td>
+<td>将栈顶float类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>0x88</td>
+<td>l2i</td>
+<td></td>
+<td>将栈顶long类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x89</td>
+<td>l2f</td>
+<td></td>
+<td>将栈顶long类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x8a</td>
+<td>l2d</td>
+<td></td>
+<td>将栈顶long类型值转换double类型值。</td>
+</tr>
+<tr>
+<td>0x8e</td>
+<td>d2i</td>
+<td></td>
+<td>将栈顶double类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>0x90</td>
+<td>d2f</td>
+<td></td>
+<td>将栈顶double类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>0x8f</td>
+<td>d2l</td>
+<td></td>
+<td>将栈顶double类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>0x91</td>
+<td>i2b</td>
+<td></td>
+<td>将栈顶int类型值截断成byte类型，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x92</td>
+<td>i2c</td>
+<td></td>
+<td>将栈顶int类型值截断成char类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>0x93</td>
+<td>i2s</td>
+<td></td>
+<td>将栈顶int类型值截断成short类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+</tbody></table>
+<h3 id="整数运算"><a href="#整数运算" class="headerlink" title="整数运算"></a><strong>整数运算</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x60</td>
+<td>iadd</td>
+<td></td>
+<td>将栈顶两int类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x64</td>
+<td>isub</td>
+<td></td>
+<td>将栈顶两int类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x68</td>
+<td>imul</td>
+<td></td>
+<td>将栈顶两int类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6c</td>
+<td>idiv</td>
+<td></td>
+<td>将栈顶两int类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x70</td>
+<td>irem</td>
+<td></td>
+<td>将栈顶两int类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x74</td>
+<td>ineg</td>
+<td></td>
+<td>将栈顶int类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>0x61</td>
+<td>ladd</td>
+<td></td>
+<td>将栈顶两long类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x65</td>
+<td>lsub</td>
+<td></td>
+<td>将栈顶两long类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x69</td>
+<td>lmul</td>
+<td></td>
+<td>将栈顶两long类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6d</td>
+<td>ldiv</td>
+<td></td>
+<td>将栈顶两long类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x71</td>
+<td>lrem</td>
+<td></td>
+<td>将栈顶两long类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x75</td>
+<td>lneg</td>
+<td></td>
+<td>将栈顶long类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>0x84</td>
+<td>(wide)iinc</td>
+<td>indexbyteconstbyte</td>
+<td>将整数值constbyte加到indexbyte指定的int类型的局部变量中。</td>
+</tr>
+</tbody></table>
+<p><strong>浮点运算</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x62</td>
+<td>fadd</td>
+<td></td>
+<td>将栈顶两float类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x66</td>
+<td>fsub</td>
+<td></td>
+<td>将栈顶两float类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6a</td>
+<td>fmul</td>
+<td></td>
+<td>将栈顶两float类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6e</td>
+<td>fdiv</td>
+<td></td>
+<td>将栈顶两float类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x72</td>
+<td>frem</td>
+<td></td>
+<td>将栈顶两float类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x76</td>
+<td>fneg</td>
+<td></td>
+<td>将栈顶float类型值取反，结果入栈。</td>
+</tr>
+<tr>
+<td>0x63</td>
+<td>dadd</td>
+<td></td>
+<td>将栈顶两double类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>0x67</td>
+<td>dsub</td>
+<td></td>
+<td>将栈顶两double类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6b</td>
+<td>dmul</td>
+<td></td>
+<td>将栈顶两double类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>0x6f</td>
+<td>ddiv</td>
+<td></td>
+<td>将栈顶两double类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>0x73</td>
+<td>drem</td>
+<td></td>
+<td>将栈顶两double类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>0x77</td>
+<td>dneg</td>
+<td></td>
+<td>将栈顶double类型值取负，结果入栈。</td>
+</tr>
+</tbody></table>
+<h3 id="逻辑运算——移位运算"><a href="#逻辑运算——移位运算" class="headerlink" title="逻辑运算——移位运算"></a><strong>逻辑运算——移位运算</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x78</td>
+<td>ishl</td>
+<td></td>
+<td>左移int类型值。</td>
+</tr>
+<tr>
+<td>0x79</td>
+<td>lshl</td>
+<td></td>
+<td>左移long类型值。</td>
+</tr>
+<tr>
+<td>0x7a</td>
+<td>ishr</td>
+<td></td>
+<td>算术右移int类型值。</td>
+</tr>
+<tr>
+<td>0x7b</td>
+<td>lshr</td>
+<td></td>
+<td>算术右移long类型值。</td>
+</tr>
+<tr>
+<td>0x7c</td>
+<td>iushr</td>
+<td></td>
+<td>逻辑右移int类型值。</td>
+</tr>
+<tr>
+<td>0x7d</td>
+<td>lushr</td>
+<td></td>
+<td>逻辑右移long类型值。</td>
+</tr>
+</tbody></table>
+<h3 id="逻辑运算——按位布尔运算"><a href="#逻辑运算——按位布尔运算" class="headerlink" title="逻辑运算——按位布尔运算"></a><strong>逻辑运算——按位布尔运算</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x73</td>
+<td>iand</td>
+<td></td>
+<td>对int类型按位与运算。</td>
+</tr>
+<tr>
+<td>0x7f</td>
+<td>land</td>
+<td></td>
+<td>对long类型的按位与运算。</td>
+</tr>
+<tr>
+<td>0x80</td>
+<td>ior</td>
+<td></td>
+<td>对int类型的按位或运算。</td>
+</tr>
+<tr>
+<td>0x81</td>
+<td>lor</td>
+<td></td>
+<td>对long类型的按位或运算。</td>
+</tr>
+<tr>
+<td>0x82</td>
+<td>ixor</td>
+<td></td>
+<td>对int类型的按位异或运算。</td>
+</tr>
+<tr>
+<td>0x83</td>
+<td>lxor</td>
+<td></td>
+<td>对long类型的按位异或运算。</td>
+</tr>
+</tbody></table>
+<h3 id="控制流指令——条件跳转指令"><a href="#控制流指令——条件跳转指令" class="headerlink" title="控制流指令——条件跳转指令"></a><strong>控制流指令——条件跳转指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x99</td>
+<td>ifeq</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值为0则跳转。</td>
+</tr>
+<tr>
+<td>0x9a</td>
+<td>ifne</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值不为0则跳转。</td>
+</tr>
+<tr>
+<td>0x9b</td>
+<td>iflt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值小于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9e</td>
+<td>ifle</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值小于等于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9d</td>
+<td>ifgt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值大于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9c</td>
+<td>ifge</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶int类型值大于等于0则跳转。</td>
+</tr>
+<tr>
+<td>0x9f</td>
+<td>if_icmpeq</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa0</td>
+<td>if_icmpne</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值不相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa1</td>
+<td>if_icmplt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前小于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa4</td>
+<td>if_icmple</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前小于等于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa3</td>
+<td>if_icmpgt</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前大于后则跳转。</td>
+</tr>
+<tr>
+<td>0xa2</td>
+<td>if_icmpge</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两int类型值前大于等于后则跳转。</td>
+</tr>
+<tr>
+<td>0xc6</td>
+<td>ifnull</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶引用值为null则跳转。</td>
+</tr>
+<tr>
+<td>0xc7</td>
+<td>ifnonnull</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶引用值不为null则跳转。</td>
+</tr>
+<tr>
+<td>0xa5</td>
+<td>if_acmpeq</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两引用类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>0xa6</td>
+<td>if_acmpne</td>
+<td>branchbyte1branchbyte2</td>
+<td>若栈顶两引用类型值不相等则跳转。</td>
+</tr>
+</tbody></table>
+<h3 id="控制流指令——比较指令"><a href="#控制流指令——比较指令" class="headerlink" title="控制流指令——比较指令"></a><strong>控制流指令——比较指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x94</td>
+<td>lcmp</td>
+<td></td>
+<td>比较栈顶两long类型值，前者大，1入栈；相等，0入栈；<br/>后者大，-1入栈。</td>
+</tr>
+<tr>
+<td>0x95</td>
+<td>fcmpl</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；<br/>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x96</td>
+<td>fcmpg</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；<br/>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x97</td>
+<td>dcmpl</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；<br/>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>0x98</td>
+<td>dcmpg</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；<br/>后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+</tbody></table>
+<h3 id="控制流指令——无条件跳转指令"><a href="#控制流指令——无条件跳转指令" class="headerlink" title="控制流指令——无条件跳转指令"></a><strong>控制流指令——无条件跳转指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xa7</td>
+<td>goto</td>
+<td>branchbyte1branchbyte2</td>
+<td>无条件跳转到指定位置。</td>
+</tr>
+<tr>
+<td>0xc8</td>
+<td>goto_w</td>
+<td>branchbyte1branchbyte2branchbyte3branchbyte4</td>
+<td>无条件跳转到指定位置（宽索引）。</td>
+</tr>
+</tbody></table>
+<h3 id="控制流指令——表跳转指令"><a href="#控制流指令——表跳转指令" class="headerlink" title="控制流指令——表跳转指令"></a><strong>控制流指令——表跳转指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xaa</td>
+<td>tableswitch</td>
+<td>&lt;0-3bytepad&gt;<br/>defaultbyte1<br/>defaultbyte2<br/>defaultbyte3<br/>defaultbyte4<br/>lowbyte1<br/>lowbyte2<br/>lowbyte3<br/>lowbyte4<br/>highbyte1<br/>highbyte2<br/>highbyte3<br/>highbyte4<br/>jump offsets…</td>
+<td>通过索引访问跳转表，并跳转。</td>
+</tr>
+<tr>
+<td>0xab</td>
+<td>lookupswitch</td>
+<td>&lt;0-3bytepad&gt;<br/>defaultbyte1<br/>defaultbyte2<br/>defaultbyte3<br/>defaultbyte4<br/>npairs1<br/>npairs2<br/>npairs3<br/>npairs4<br/>match offsets</td>
+<td>通过键值访问跳转表，并跳转。</td>
+</tr>
+</tbody></table>
+<h3 id="控制流指令——异常和-finally"><a href="#控制流指令——异常和-finally" class="headerlink" title="控制流指令——异常和****finally"></a><strong>控制流指令——异常和****finally</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xbf</td>
+<td>athrow</td>
+<td></td>
+<td>抛出异常。</td>
+</tr>
+<tr>
+<td>0xa8</td>
+<td>jsr</td>
+<td>branchbyte1branchbyte2</td>
+<td>跳转到子例程序。</td>
+</tr>
+<tr>
+<td>0xc9</td>
+<td>jsr_w</td>
+<td>branchbyte1branchbyte2branchbyte3branchbyte4</td>
+<td>跳转到子例程序（宽索引）。</td>
+</tr>
+<tr>
+<td>0xa9</td>
+<td>(wide)ret</td>
+<td>indexbyte</td>
+<td>返回子例程序</td>
+</tr>
+</tbody></table>
+<h3 id="对象操作指令"><a href="#对象操作指令" class="headerlink" title="对象操作指令"></a><strong>对象操作指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xbb</td>
+<td>new</td>
+<td>indexbyte1indexbyte2</td>
+<td>创建新的对象实例。</td>
+</tr>
+<tr>
+<td>0xc0</td>
+<td>checkcast</td>
+<td>indexbyte1indexbyte</td>
+<td>类型强转。</td>
+</tr>
+<tr>
+<td>0xc1</td>
+<td>instanceof</td>
+<td>indexbyte1indexbyte2</td>
+<td>判断类型。</td>
+</tr>
+<tr>
+<td>0xb4</td>
+<td>getfield</td>
+<td>indexbyte1indexbyte2</td>
+<td>获取对象字段的值。</td>
+</tr>
+<tr>
+<td>0xb5</td>
+<td>putfield</td>
+<td>indexbyte1indexbyte2</td>
+<td>给对象字段赋值。</td>
+</tr>
+<tr>
+<td>0xb2</td>
+<td>getstatic</td>
+<td>indexbyte1indexbyte2</td>
+<td>获取静态字段的值。</td>
+</tr>
+<tr>
+<td>0xb3</td>
+<td>putstatic</td>
+<td>indexbyte1indexbyte2</td>
+<td>给静态字段赋值。</td>
+</tr>
+</tbody></table>
+<h3 id="数组操作指令"><a href="#数组操作指令" class="headerlink" title="数组操作指令"></a><strong>数组操作指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xbc</td>
+<td>newarray</td>
+<td>atype</td>
+<td>创建type类型的数组。</td>
+</tr>
+<tr>
+<td>0xbd</td>
+<td>anewarray</td>
+<td>indexbyte1indexbyte2</td>
+<td>创建引用类型的数组。</td>
+</tr>
+<tr>
+<td>0xbe</td>
+<td>arraylength</td>
+<td></td>
+<td>获取一维数组的长度。</td>
+</tr>
+<tr>
+<td>0xc5</td>
+<td>multianewarray</td>
+<td>indexbyte1indexbyte2dimension</td>
+<td>创建dimension维度的数组。</td>
+</tr>
+</tbody></table>
+<h3 id="方法调用指令"><a href="#方法调用指令" class="headerlink" title="方法调用指令"></a><strong>方法调用指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xb7</td>
+<td>invokespecial</td>
+<td>indexbyte1indexbyte2</td>
+<td>编译时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>0xb6</td>
+<td>invokevirtual</td>
+<td>indexbyte1indexbyte2</td>
+<td>运行时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>0xb8</td>
+<td>invokestatic</td>
+<td>indexbyte1indexbyte2</td>
+<td>调用静态方法。</td>
+</tr>
+<tr>
+<td>0xb9</td>
+<td>invokeinterface</td>
+<td>indexbyte1indexbyte2count0</td>
+<td>调用接口方法。</td>
+</tr>
+</tbody></table>
+<h3 id="方法返回指令"><a href="#方法返回指令" class="headerlink" title="方法返回指令"></a><strong>方法返回指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xac</td>
+<td>ireturn</td>
+<td></td>
+<td>返回int类型值。</td>
+</tr>
+<tr>
+<td>0xad</td>
+<td>lreturn</td>
+<td></td>
+<td>返回long类型值。</td>
+</tr>
+<tr>
+<td>0xae</td>
+<td>freturn</td>
+<td></td>
+<td>返回float类型值。</td>
+</tr>
+<tr>
+<td>0xaf</td>
+<td>dreturn</td>
+<td></td>
+<td>返回double类型值。</td>
+</tr>
+<tr>
+<td>0xb0</td>
+<td>areturn</td>
+<td></td>
+<td>返回引用类型值。</td>
+</tr>
+<tr>
+<td>0xb1</td>
+<td>return</td>
+<td></td>
+<td>void函数返回。</td>
+</tr>
+</tbody></table>
+<h3 id="线程同步指令"><a href="#线程同步指令" class="headerlink" title="线程同步指令"></a><strong>线程同步指令</strong></h3><table>
+<thead>
+<tr>
+<th><strong>指令码</strong></th>
+<th><strong>操作码（助记符）</strong></th>
+<th><strong>操作数</strong></th>
+<th><strong>描述（栈指操作数栈）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xc2</td>
+<td>monitorenter</td>
+<td></td>
+<td>进入并获得对象监视器。</td>
+</tr>
+<tr>
+<td>0xc3</td>
+<td>monitorexit</td>
+<td></td>
+<td>释放并退出对象监视器。</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Java%E5%AD%97%E8%8A%82%E7%A0%81/">Java字节码</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java%E5%AD%97%E8%8A%82%E7%A0%81/" rel="tag">Java字节码</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Java实现链表" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/">Java实现链表</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="Java实现链表"><a href="#Java实现链表" class="headerlink" title="Java实现链表"></a>Java实现链表</h1><p><strong>单链表</strong>是一种链式存取的数据结构，用一组地址任意的存储单元存放线性表中的数据元素。链表中的数据是以结点来表示的，每个结点的构成:元素(数据元素的映象) + 指针(指示后继元素存储位置)，元素就是存储数据的存储单元，指针就是连接每个结点的地址数据。<strong>(逻辑地址相连，物理地址不相连）</strong></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Java性能调优工具" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7/">Java性能调优工具</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="Java性能调优工具"><a href="#Java性能调优工具" class="headerlink" title="Java性能调优工具"></a>Java性能调优工具</h1><h2 id="Linux命令行工具"><a href="#Linux命令行工具" class="headerlink" title="Linux命令行工具"></a>Linux命令行工具</h2><h3 id="top命令"><a href="#top命令" class="headerlink" title="top命令"></a>top命令</h3><h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top [-] [d delay] [q] [c] [S] [s] [i] [n] [b]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/idea4j/imagerep/raw/master/images/image-20200901095826286.png" alt="image-20200901095826286"></p>
+<p>两大区域<strong>统计信息区</strong>和<strong>进程信息区</strong></p>
+<h4 id="统计信息区"><a href="#统计信息区" class="headerlink" title="统计信息区"></a>统计信息区</h4><ul>
+<li><p>第一行：任务队列信息，与<code>uptime</code>命令执行结果相同。</p>
+<ul>
+<li>09:58:07：系统当前时间</li>
+<li>up 195 days, 23:28：主机已运行时间</li>
+<li>5 users：用户连接数（不是用户数，who命令）</li>
+<li>load average: 0.03, 0.09, 0.12：系统平均负载，统计最近1,5,15分钟的系统平均负载</li>
+</ul>
+<p><strong>补充</strong>：<code>uptime -V</code>可查询版本</p>
+</li>
+<li><p>第二行：进程信息</p>
+<ul>
+<li>Tasks: 128 total：进程总数</li>
+<li>1 running：正在运行的进程数</li>
+<li>127 sleeping：睡眠的进程数</li>
+<li>0 stopped：停止的进程数</li>
+<li>0 zombie：僵尸进程数</li>
+</ul>
+</li>
+<li><p>第三行：CPU信息（当有多个CPU时，这些内容可能会超过两行）</p>
+<ul>
+<li>2.8us：用户空间所占CPU百分比</li>
+<li>1.0sy：内核空间占用CPU百分比</li>
+<li>0.0 ni：用户进程空间内改变过优先级的进程占用CPU百分比</li>
+<li>96.3id：空闲CPU百分比</li>
+<li>0.0 wa：等待输入输出的CPU时间百分比</li>
+<li>0.0 hi：硬件CPU中断占用百分比</li>
+<li>0.0 si：软中断占用百分比</li>
+<li>0.0 st：虚拟机占用百分比</li>
+</ul>
+</li>
+<li><p>第四行：内存信息（与第五行的信息类似与free命令）</p>
+<ul>
+<li>8010424 total：物理内存总量</li>
+<li>6038816 used：已使用的内存总量</li>
+<li>274220 free：空闲的内存总量（free+used&#x3D;total）</li>
+<li>1723692 buffers：用作内核缓存的内存量</li>
+</ul>
+</li>
+<li><p>第五行：swap信息</p>
+<ul>
+<li>0total：交换分区总量</li>
+<li>0used：已使用的交换分区总量</li>
+<li>0free：空闲交换区总量</li>
+<li>1663496cached Mem：缓冲的交换区总量，内存中的内容被换出到交换区，然后又被换入到内存，但是使用过的交换区没有被覆盖，交换区的这些内容已存在于内存中的交换区的大小，相应的内存再次被换出时可不必再对交换区写入。</li>
+</ul>
+</li>
+</ul>
+<h4 id="进程信息区"><a href="#进程信息区" class="headerlink" title="进程信息区"></a>进程信息区</h4><ul>
+<li>PID:进程id</li>
+<li>PPID:父进程id</li>
+<li>RUSER:Real user name（看了好多，都是这样写，也不知道和user有什么区别，欢迎补充此处）</li>
+<li>UID:进程所有者的id</li>
+<li>USER:进程所有者的用户名</li>
+<li>GROUP:进程所有者的组名</li>
+<li>TTY:启动进程的终端名。不是从终端启动的进程则显示为?</li>
+<li>PR:优先级</li>
+<li>NI:nice值。负值表示高优先级，正值表示低优先级</li>
+<li>P:最后使用的CPU，仅在多CPU环境下有意义</li>
+<li>%CPU:上次更新到现在的CPU时间占用百分比</li>
+<li>TIME:进程使用的CPU时间总计，单位秒</li>
+<li>TIME+：进程所使用的CPU时间总计，单位1&#x2F;100秒</li>
+<li>%MEM:进程使用的物理内存百分比</li>
+<li>VIRT:进程使用的虚拟内存总量，单位kb。VIRT&#x3D;SWAP+RES</li>
+<li>SWAP:进程使用的虚拟内存中被被换出的大小</li>
+<li>RES:进程使用的、未被换出的物理内存的大小</li>
+<li>CODE:可执行代码占用的物理内存大小</li>
+<li>DATA:可执行代码以外的部分（数据段+栈）占用的物理内存大小</li>
+<li>SHR:共享内存大小</li>
+<li>nFLT:页面错误次数</li>
+<li>nDRT:最后一次写入到现在，被修改过的页面数</li>
+<li>S:进程状态（D&#x3D;不可中断的睡眠状态，R&#x3D;运行，S&#x3D;睡眠，T&#x3D;跟踪&#x2F;停止，Z&#x3D;僵尸进程）</li>
+<li>COMMAND:命令名&#x2F;行</li>
+<li>WCHAN:若该进程在睡眠，则显示睡眠中的系统函数名</li>
+<li>Flags:任务标志</li>
+</ul>
+<h3 id="top命令的使用"><a href="#top命令的使用" class="headerlink" title="top命令的使用"></a>top命令的使用</h3><h4 id="top使用格式"><a href="#top使用格式" class="headerlink" title="top使用格式"></a>top使用格式</h4><p>top [-] [d] [p] [q] [c] [C] [S] [s] [n]</p>
+<h4 id="top参数说明"><a href="#top参数说明" class="headerlink" title="top参数说明"></a>top参数说明</h4><ul>
+<li>d: 指定每两次屏幕信息刷新之间的时间间隔。当然用户可以使用s交互命令来改变之。</li>
+<li>p: 通过指定监控进程ID来仅仅监控某个进程的状态。</li>
+<li>q: 该选项将使top没有任何延迟的进行刷新。如果调用程序有超级用户权限，那么top将以尽可能高的优先级运行。</li>
+<li>S: 指定累计模式</li>
+<li>s: 使top命令在安全模式中运行。这将去除交互命令所带来的潜在危险。</li>
+<li>i: 使top不显示任何闲置或者僵死进程。</li>
+<li>c: 显示整个命令行而不只是显示命令名</li>
+</ul>
+<h4 id="交互命令"><a href="#交互命令" class="headerlink" title="交互命令"></a>交互命令</h4><ul>
+<li>Ctrl+L: 擦除并且重写屏幕。</li>
+<li>h或者?: 显示帮助画面，给出一些简短的命令总结说明。</li>
+<li>k: 终止一个进程。系统将提示用户输入需要终止的进程PID，以及需要发送给该进程什么样的信号。一般的终止进程可以使用15信号;如果不能正常结束那就使用信号9强制结束该进程。默认值是信号15。在安全模式中此命令被屏蔽。</li>
+<li>i: 忽略闲置和僵死进程。这是一个开关式命令。</li>
+<li>q: 退出程序。</li>
+<li>r: 重新安排一个进程的优先级别。系统提示用户输入需要改变的进程PID以及需要设置的进程优先级值。输入一个正值将使优先级降低，反之则可以使该进程拥有更高的优先权。默认值是10。</li>
+<li>S: 切换到累计模式。</li>
+<li>s: 改变两次刷新之间的延迟时间。系统将提示用户输入新的时间，单位为s。如果有小数，就换算成m s。输入0值则系统将不断刷新，默认值是5 s。需要注意的是如果设置太小的时间，很可能会引起不断刷新，从而根本来不及看清显示的情况，而且系统负载也会大大增加。</li>
+<li>f或者F: 从当前显示中添加或者删除项目。</li>
+<li>o或者O: 改变显示项目的顺序。</li>
+<li>l: 切换显示平均负载和启动时间信息。</li>
+<li>m: 切换显示内存信息。</li>
+<li>t: 切换显示进程和CPU状态信息。</li>
+<li>c: 切换显示命令名称和完整命令行。</li>
+<li>M: 根据驻留内存大小进行排序。</li>
+<li>P: 根据CPU使用百分比大小进行排序。</li>
+<li>T: 根据时间&#x2F;累计时间进行排序。</li>
+<li>W: 将当前设置写入~&#x2F;.toprc文件中。这是写top配置文件的推荐方法。</li>
+</ul>
+<h3 id="sar命令"><a href="#sar命令" class="headerlink" title="sar命令"></a>sar命令</h3><h3 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h3><h3 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h3><h3 id="pidstat"><a href="#pidstat" class="headerlink" title="pidstat"></a>pidstat</h3>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/">性能调优</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="tag">性能调优</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-dubbo文档摘抄" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/" class="article-date">
+      <time datetime="2020-05-28T12:10:32.000Z" itemprop="datePublished">2020-05-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/">dubbo负载均衡</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>Dubbo 提供了4种负载均衡实现，分别是：</p>
+<ul>
+<li>基于权重随机算法的 RandomLoadBalance；</li>
+<li>基于最少活跃调用数算法的 LeastActiveLoadBalance；</li>
+<li>基于 hash 一致性的 ConsistentHashLoadBalance；</li>
+<li>基于加权轮询算法的 RoundRobinLoadBalance；</li>
+</ul>
+<p>在 Dubbo 中，所有负载均衡实现类均继承自 AbstractLoadBalance，该类实现了 LoadBalance 接口，并封装了一些公共的逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; Invoker&lt;T&gt; <span class="title function_">select</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (invokers == <span class="literal">null</span> || invokers.isEmpty())</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 如果 invokers 列表中仅有一个 Invoker，直接返回即可，无需进行负载均衡</span></span><br><span class="line">    <span class="keyword">if</span> (invokers.size() == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> invokers.get(<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 调用 doSelect 方法进行负载均衡，该方法为抽象方法，由子类实现</span></span><br><span class="line">    <span class="keyword">return</span> doSelect(invokers, url, invocation);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;T&gt; Invoker&lt;T&gt; <span class="title function_">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="RandomLoadBalance"><a href="#RandomLoadBalance" class="headerlink" title="RandomLoadBalance"></a>RandomLoadBalance</h3><p>加权随机算法，算法思想：假如有一组服务器servers&#x3D;[A,B,C]，他们对应的权重为weights[5,3,2],权重总和为10.现在把这些权重值平铺在一维坐标值上，[0, 5) 区间属于服务器 A，[5, 8) 区间属于服务器 B，[8, 10) 区间属于服务器 C。接下来通过随机数生成器生成一个范围在 [0, 10) 之间的随机数，然后计算这个随机数会落到哪个区间上。比如数字3会落到服务器 A 对应的区间上，此时返回服务器 A 即可。权重越大的机器，在坐标轴上对应的区间范围就越大，因此随机数生成器生成的数字就会有更大的概率落到此区间内。只要随机数生成器产生的随机数分布性很好，在经过多次选择后，每个服务器被选中的次数比例接近其权重比例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RandomLoadBalance</span> <span class="keyword">extends</span> <span class="title class_">AbstractLoadBalance</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">NAME</span> <span class="operator">=</span> <span class="string">&quot;random&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Random</span> <span class="variable">random</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> &lt;T&gt; Invoker&lt;T&gt; <span class="title function_">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> invokers.size();</span><br><span class="line">        <span class="type">int</span> <span class="variable">totalWeight</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">sameWeight</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">// 下面这个循环有两个作用，第一是计算总权重 totalWeight，</span></span><br><span class="line">        <span class="comment">// 第二是检测每个服务提供者的权重是否相同</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">weight</span> <span class="operator">=</span> getWeight(invokers.get(i), invocation);</span><br><span class="line">            <span class="comment">// 累加权重</span></span><br><span class="line">            totalWeight += weight;</span><br><span class="line">            <span class="comment">// 检测当前服务提供者的权重与上一个服务提供者的权重是否相同，</span></span><br><span class="line">            <span class="comment">// 不相同的话，则将 sameWeight 置为 false。</span></span><br><span class="line">            <span class="keyword">if</span> (sameWeight &amp;&amp; i &gt; <span class="number">0</span></span><br><span class="line">                    &amp;&amp; weight != getWeight(invokers.get(i - <span class="number">1</span>), invocation)) &#123;</span><br><span class="line">                sameWeight = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 下面的 if 分支主要用于获取随机数，并计算随机数落在哪个区间上</span></span><br><span class="line">        <span class="keyword">if</span> (totalWeight &gt; <span class="number">0</span> &amp;&amp; !sameWeight) &#123;</span><br><span class="line">            <span class="comment">// 随机获取一个 [0, totalWeight) 区间内的数字</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">offset</span> <span class="operator">=</span> random.nextInt(totalWeight);</span><br><span class="line">            <span class="comment">// 循环让 offset 数减去服务提供者权重值，当 offset 小于0时，返回相应的 Invoker。</span></span><br><span class="line">            <span class="comment">// 举例说明一下，我们有 servers = [A, B, C]，weights = [5, 3, 2]，offset = 7。</span></span><br><span class="line">            <span class="comment">// 第一次循环，offset - 5 = 2 &gt; 0，即 offset &gt; 5，</span></span><br><span class="line">            <span class="comment">// 表明其不会落在服务器 A 对应的区间上。</span></span><br><span class="line">            <span class="comment">// 第二次循环，offset - 3 = -1 &lt; 0，即 5 &lt; offset &lt; 8，</span></span><br><span class="line">            <span class="comment">// 表明其会落在服务器 B 对应的区间上</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">                <span class="comment">// 让随机值 offset 减去权重值</span></span><br><span class="line">                offset -= getWeight(invokers.get(i), invocation);</span><br><span class="line">                <span class="keyword">if</span> (offset &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="comment">// 返回相应的 Invoker</span></span><br><span class="line">                    <span class="keyword">return</span> invokers.get(i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果所有服务提供者权重值相同，此时直接随机返回一个即可</span></span><br><span class="line">        <span class="keyword">return</span> invokers.get(random.nextInt(length));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="LeastActiveLoadBalance"><a href="#LeastActiveLoadBalance" class="headerlink" title="LeastActiveLoadBalance"></a>LeastActiveLoadBalance</h3><p>LeastActiveLoadBalance翻译过来是最小活跃数负载均衡。活跃调用数越小，表明该服务提供者效率越高，单位时间内可处理更多的请求。此时应优先将请求分配给该服务提供者。在具体实现中，每个服务提供者对应一个活跃数 active。初始情况下，所有服务提供者活跃数均为0。每收到一个请求，活跃数加1，完成请求后则将活跃数减1。在服务运行一段时间后，性能好的服务提供者处理请求的速度更快，因此活跃数下降的也越快，此时这样的服务提供者能够优先获取到新的服务请求、这就是最小活跃数负载均衡算法的基本思想。除了最小活跃数，LeastActiveLoadBalance 在实现上还引入了权重值。所以准确的来说，LeastActiveLoadBalance 是基于加权最小活跃数算法实现的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LeastActiveLoadBalance</span> <span class="keyword">extends</span> <span class="title class_">AbstractLoadBalance</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">NAME</span> <span class="operator">=</span> <span class="string">&quot;leastactive&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Random</span> <span class="variable">random</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> &lt;T&gt; Invoker&lt;T&gt; <span class="title function_">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> invokers.size();</span><br><span class="line">        <span class="comment">// 最小的活跃数</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">leastActive</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 具有相同“最小活跃数”的服务者提供者（以下用 Invoker 代称）数量</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">leastCount</span> <span class="operator">=</span> <span class="number">0</span>; </span><br><span class="line">        <span class="comment">// leastIndexs 用于记录具有相同“最小活跃数”的 Invoker 在 invokers 列表中的下标信息</span></span><br><span class="line">        <span class="type">int</span>[] leastIndexs = <span class="keyword">new</span> <span class="title class_">int</span>[length];</span><br><span class="line">        <span class="type">int</span> <span class="variable">totalWeight</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 第一个最小活跃数的 Invoker 权重值，用于与其他具有相同最小活跃数的 Invoker 的权重进行对比，</span></span><br><span class="line">        <span class="comment">// 以检测是否“所有具有相同最小活跃数的 Invoker 的权重”均相等</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">firstWeight</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">sameWeight</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 遍历 invokers 列表</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            Invoker&lt;T&gt; invoker = invokers.get(i);</span><br><span class="line">            <span class="comment">// 获取 Invoker 对应的活跃数</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">active</span> <span class="operator">=</span> RpcStatus.getStatus(invoker.getUrl(), invocation.getMethodName()).getActive();</span><br><span class="line">            <span class="comment">// 获取权重 - ⭐️</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">weight</span> <span class="operator">=</span> invoker.getUrl().getMethodParameter(invocation.getMethodName(), Constants.WEIGHT_KEY, Constants.DEFAULT_WEIGHT);</span><br><span class="line">            <span class="comment">// 发现更小的活跃数，重新开始</span></span><br><span class="line">            <span class="keyword">if</span> (leastActive == -<span class="number">1</span> || active &lt; leastActive) &#123;</span><br><span class="line">            	<span class="comment">// 使用当前活跃数 active 更新最小活跃数 leastActive</span></span><br><span class="line">                leastActive = active;</span><br><span class="line">                <span class="comment">// 更新 leastCount 为 1</span></span><br><span class="line">                leastCount = <span class="number">1</span>;</span><br><span class="line">                <span class="comment">// 记录当前下标值到 leastIndexs 中</span></span><br><span class="line">                leastIndexs[<span class="number">0</span>] = i;</span><br><span class="line">                totalWeight = weight;</span><br><span class="line">                firstWeight = weight;</span><br><span class="line">                sameWeight = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 当前 Invoker 的活跃数 active 与最小活跃数 leastActive 相同 </span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (active == leastActive) &#123;</span><br><span class="line">            	<span class="comment">// 在 leastIndexs 中记录下当前 Invoker 在 invokers 集合中的下标</span></span><br><span class="line">                leastIndexs[leastCount++] = i;</span><br><span class="line">                <span class="comment">// 累加权重</span></span><br><span class="line">                totalWeight += weight;</span><br><span class="line">                <span class="comment">// 检测当前 Invoker 的权重与 firstWeight 是否相等，</span></span><br><span class="line">                <span class="comment">// 不相等则将 sameWeight 置为 false</span></span><br><span class="line">                <span class="keyword">if</span> (sameWeight &amp;&amp; i &gt; <span class="number">0</span></span><br><span class="line">                    &amp;&amp; weight != firstWeight) &#123;</span><br><span class="line">                    sameWeight = <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 当只有一个 Invoker 具有最小活跃数，此时直接返回该 Invoker 即可</span></span><br><span class="line">        <span class="keyword">if</span> (leastCount == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> invokers.get(leastIndexs[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 有多个 Invoker 具有相同的最小活跃数，但它们之间的权重不同</span></span><br><span class="line">        <span class="keyword">if</span> (!sameWeight &amp;&amp; totalWeight &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        	<span class="comment">// 随机生成一个 [0, totalWeight) 之间的数字</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">offsetWeight</span> <span class="operator">=</span> random.nextInt(totalWeight);</span><br><span class="line">            <span class="comment">// 循环让随机数减去具有最小活跃数的 Invoker 的权重值，</span></span><br><span class="line">            <span class="comment">// 当 offset 小于等于0时，返回相应的 Invoker</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; leastCount; i++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">leastIndex</span> <span class="operator">=</span> leastIndexs[i];</span><br><span class="line">                <span class="comment">// 获取权重值，并让随机数减去权重值 - ⭐️</span></span><br><span class="line">                offsetWeight -= getWeight(invokers.get(leastIndex), invocation);</span><br><span class="line">                <span class="keyword">if</span> (offsetWeight &lt;= <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">return</span> invokers.get(leastIndex);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果权重相同或权重为0时，随机返回一个 Invoker</span></span><br><span class="line">        <span class="keyword">return</span> invokers.get(leastIndexs[random.nextInt(leastCount)]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大致的实现逻辑:</p>
+<ol>
+<li>遍历 invokers 列表，寻找活跃数最小的 Invoker</li>
+<li>如果有多个 Invoker 具有相同的最小活跃数，此时记录下这些 Invoker 在 invokers 集合中的下标，并累加它们的权重，比较它们的权重值是否相等</li>
+<li>如果只有一个 Invoker 具有最小的活跃数，此时直接返回该 Invoker 即可</li>
+<li>如果有多个 Invoker 具有最小活跃数，且它们的权重不相等，此时处理方式和 RandomLoadBalance 一致</li>
+<li>如果有多个 Invoker 具有最小活跃数，但它们的权重相等，此时随机返回一个即可</li>
+</ol>
+<h3 id="ConsistentHashLoadBalance"><a href="#ConsistentHashLoadBalance" class="headerlink" title="ConsistentHashLoadBalance"></a>ConsistentHashLoadBalance</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConsistentHashLoadBalance</span> <span class="keyword">extends</span> <span class="title class_">AbstractLoadBalance</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConcurrentMap&lt;String, ConsistentHashSelector&lt;?&gt;&gt; selectors = </span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, ConsistentHashSelector&lt;?&gt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> &lt;T&gt; Invoker&lt;T&gt; <span class="title function_">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">methodName</span> <span class="operator">=</span> RpcUtils.getMethodName(invocation);</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> invokers.get(<span class="number">0</span>).getUrl().getServiceKey() + <span class="string">&quot;.&quot;</span> + methodName;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取 invokers 原始的 hashcode</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">identityHashCode</span> <span class="operator">=</span> System.identityHashCode(invokers);</span><br><span class="line">        ConsistentHashSelector&lt;T&gt; selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);</span><br><span class="line">        <span class="comment">// 如果 invokers 是一个新的 List 对象，意味着服务提供者数量发生了变化，可能新增也可能减少了。</span></span><br><span class="line">        <span class="comment">// 此时 selector.identityHashCode != identityHashCode 条件成立</span></span><br><span class="line">        <span class="keyword">if</span> (selector == <span class="literal">null</span> || selector.identityHashCode != identityHashCode) &#123;</span><br><span class="line">            <span class="comment">// 创建新的 ConsistentHashSelector</span></span><br><span class="line">            selectors.put(key, <span class="keyword">new</span> <span class="title class_">ConsistentHashSelector</span>&lt;T&gt;(invokers, methodName, identityHashCode));</span><br><span class="line">            selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用 ConsistentHashSelector 的 select 方法选择 Invoker</span></span><br><span class="line">        <span class="keyword">return</span> selector.select(invocation);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">ConsistentHashSelector</span>&lt;T&gt; &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="RoundRobinLoadBalance"><a href="#RoundRobinLoadBalance" class="headerlink" title="RoundRobinLoadBalance"></a>RoundRobinLoadBalance</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RoundRobinLoadBalance</span> <span class="keyword">extends</span> <span class="title class_">AbstractLoadBalance</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">NAME</span> <span class="operator">=</span> <span class="string">&quot;roundrobin&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConcurrentMap&lt;String, AtomicPositiveInteger&gt; sequences = </span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;String, AtomicPositiveInteger&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> &lt;T&gt; Invoker&lt;T&gt; <span class="title function_">doSelect</span><span class="params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> &#123;</span><br><span class="line">        <span class="comment">// key = 全限定类名 + &quot;.&quot; + 方法名，比如 com.xxx.DemoService.sayHello</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> invokers.get(<span class="number">0</span>).getUrl().getServiceKey() + <span class="string">&quot;.&quot;</span> + invocation.getMethodName();</span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> invokers.size();</span><br><span class="line">        <span class="comment">// 最大权重</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">maxWeight</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 最小权重</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">minWeight</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">final</span> LinkedHashMap&lt;Invoker&lt;T&gt;, IntegerWrapper&gt; invokerToWeightMap = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;Invoker&lt;T&gt;, IntegerWrapper&gt;();</span><br><span class="line">        <span class="comment">// 权重总和</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">weightSum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 下面这个循环主要用于查找最大和最小权重，计算权重总和等</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">weight</span> <span class="operator">=</span> getWeight(invokers.get(i), invocation);</span><br><span class="line">            <span class="comment">// 获取最大和最小权重</span></span><br><span class="line">            maxWeight = Math.max(maxWeight, weight);</span><br><span class="line">            minWeight = Math.min(minWeight, weight);</span><br><span class="line">            <span class="keyword">if</span> (weight &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 将 weight 封装到 IntegerWrapper 中</span></span><br><span class="line">                invokerToWeightMap.put(invokers.get(i), <span class="keyword">new</span> <span class="title class_">IntegerWrapper</span>(weight));</span><br><span class="line">                <span class="comment">// 累加权重</span></span><br><span class="line">                weightSum += weight;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查找 key 对应的对应 AtomicPositiveInteger 实例，为空则创建。</span></span><br><span class="line">        <span class="comment">// 这里可以把 AtomicPositiveInteger 看成一个黑盒，大家只要知道</span></span><br><span class="line">        <span class="comment">// AtomicPositiveInteger 用于记录服务的调用编号即可。至于细节，</span></span><br><span class="line">        <span class="comment">// 大家如果感兴趣，可以自行分析</span></span><br><span class="line">        <span class="type">AtomicPositiveInteger</span> <span class="variable">sequence</span> <span class="operator">=</span> sequences.get(key);</span><br><span class="line">        <span class="keyword">if</span> (sequence == <span class="literal">null</span>) &#123;</span><br><span class="line">            sequences.putIfAbsent(key, <span class="keyword">new</span> <span class="title class_">AtomicPositiveInteger</span>());</span><br><span class="line">            sequence = sequences.get(key);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取当前的调用编号</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">currentSequence</span> <span class="operator">=</span> sequence.getAndIncrement();</span><br><span class="line">        <span class="comment">// 如果最小权重小于最大权重，表明服务提供者之间的权重是不相等的</span></span><br><span class="line">        <span class="keyword">if</span> (maxWeight &gt; <span class="number">0</span> &amp;&amp; minWeight &lt; maxWeight) &#123;</span><br><span class="line">            <span class="comment">// 使用调用编号对权重总和进行取余操作</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">mod</span> <span class="operator">=</span> currentSequence % weightSum;</span><br><span class="line">            <span class="comment">// 进行 maxWeight 次遍历</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; maxWeight; i++) &#123;</span><br><span class="line">                <span class="comment">// 遍历 invokerToWeightMap</span></span><br><span class="line">                <span class="keyword">for</span> (Map.Entry&lt;Invoker&lt;T&gt;, IntegerWrapper&gt; each : invokerToWeightMap.entrySet()) &#123;</span><br><span class="line">					<span class="comment">// 获取 Invoker</span></span><br><span class="line">                    <span class="keyword">final</span> Invoker&lt;T&gt; k = each.getKey();</span><br><span class="line">                    <span class="comment">// 获取权重包装类 IntegerWrapper</span></span><br><span class="line">                    <span class="keyword">final</span> <span class="type">IntegerWrapper</span> <span class="variable">v</span> <span class="operator">=</span> each.getValue();</span><br><span class="line">                    </span><br><span class="line">                    <span class="comment">// 如果 mod = 0，且权重大于0，此时返回相应的 Invoker</span></span><br><span class="line">                    <span class="keyword">if</span> (mod == <span class="number">0</span> &amp;&amp; v.getValue() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> k;</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                    <span class="comment">// mod != 0，且权重大于0，此时对权重和 mod 分别进行自减操作</span></span><br><span class="line">                    <span class="keyword">if</span> (v.getValue() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                        v.decrement();</span><br><span class="line">                        mod--;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 服务提供者之间的权重相等，此时通过轮询选择 Invoker</span></span><br><span class="line">        <span class="keyword">return</span> invokers.get(currentSequence % length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// IntegerWrapper 是一个 int 包装类，主要包含了一个自减方法。</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">IntegerWrapper</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> value;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">decrement</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.value--;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 省略部分代码</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/dubbo/">dubbo</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/" rel="tag">dubbo</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2026 markee
+            </div>
+            <div class="footer-right">
+                <a href="https://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
