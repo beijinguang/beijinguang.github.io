@@ -12,7 +12,28 @@
   <rights>All rights reserved 2026, markee</rights>
   <subtitle>预测未来最好的方法是在现在创造未来</subtitle>
   <title>码客Mark</title>
-  <updated>2026-08-12T12:30:00.000Z</updated>
+  <updated>2026-08-15T00:02:11.000Z</updated>
+  <entry>
+    <author>
+      <name>markee</name>
+      <email>wangjinguang66@163.com</email>
+    </author>
+    <category term="安全" scheme="https://code.idea4j.com/categories/%E5%AE%89%E5%85%A8/"/>
+    <category term="安全" scheme="https://code.idea4j.com/tags/%E5%AE%89%E5%85%A8/"/>
+    <category term="macOS" scheme="https://code.idea4j.com/tags/macOS/"/>
+    <category term="CVE" scheme="https://code.idea4j.com/tags/CVE/"/>
+    <category term="屏幕共享" scheme="https://code.idea4j.com/tags/%E5%B1%8F%E5%B9%95%E5%85%B1%E4%BA%AB/"/>
+    <category term="远程访问" scheme="https://code.idea4j.com/tags/%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/"/>
+    <content>
+      <![CDATA[<p>如果一台 Mac 的屏幕共享服务暴露在互联网中，攻击者现在可能不需要有效密码，就能取得远程访问入口。荷兰国家网络安全中心（NCSC-NL）在 2026 年 8 月 12 日更新的安全公告中确认，macOS 屏幕共享漏洞 CVE-2026-65400 已有公开 PoC，并且已经观察到实际滥用：受影响主机被取得 root 权限，随后被安装 Monero 挖矿程序。</p><p>这不是一个“等下次重启再更新”的普通漏洞。Apple 已经发布修复版本，安全团队也已经看到攻击者在寻找暴露的服务。对于开发者来说，今天最重要的动作不是研究 PoC，而是确认自己的 Mac 和团队资产是否开启了不必要的远程访问。</p><span id="more"></span><h2 id="发生了什么"><a href="#发生了什么" class="headerlink" title="发生了什么"></a>发生了什么</h2><p>CVE-2026-65400 影响 macOS 的 Screen Sharing 功能。Apple 在安全公告中给出的影响描述很直接：网络上的攻击者可能在没有有效凭据的情况下通过 Screen Sharing 完成认证。</p><p>NCSC-NL 将问题归类为认证不当（Improper Authentication），并进一步解释，漏洞与认证过程中的状态管理不足有关。简单说，屏幕共享服务需要在多次交互之间保存和验证认证状态；如果状态机没有严格区分“尚未认证”“认证失败”和“认证成功”等阶段，攻击者就可能构造出不应该被接受的认证流程。</p><p>这里不展开利用所需的请求细节。一方面，公开 PoC 已经存在；另一方面，防守者真正需要回答的问题不是“我能不能复现”，而是“哪些机器的服务已经暴露、是否已经打过补丁、有没有异常登录或权限提升迹象”。</p><h2 id="为什么暴露端口会让风险迅速放大"><a href="#为什么暴露端口会让风险迅速放大" class="headerlink" title="为什么暴露端口会让风险迅速放大"></a>为什么暴露端口会让风险迅速放大</h2><p>屏幕共享通常通过网络服务提供远程桌面能力，常见配置会涉及 TCP 5900。这个端口如果直接暴露到互联网，就相当于把一项高权限的交互式服务交给全网扫描器检查。</p><p>远程桌面和普通 Web 服务不同。它的目标不是返回一段公开内容，而是让远程用户查看屏幕、控制键盘和鼠标。一旦认证边界被绕过，攻击者得到的往往不是单个接口的数据，而是更接近“坐在这台机器前面”的能力。</p><p>NCSC-NL 记录的实际案例说明了这种风险的后果：多个从互联网可以访问 5900 端口的系统遭到利用，攻击者取得 root 权限，并安装了加密货币挖矿程序。挖矿程序未必是最严重的结果，它更像是已经取得主机控制权后的一个明显信号。开发机上还可能保存 SSH 密钥、云平台令牌、浏览器会话、代码仓库凭据和本地配置文件。</p><p>因此，风险可以粗略理解为：</p><blockquote><p>远程服务暴露面 × 认证漏洞 × 开发机上的凭据密度 &#x3D; 一次漏洞事件的实际影响</p></blockquote><p>即使某台机器没有生产数据，只要它能访问代码仓库或云环境，也可能成为横向移动的起点。</p><h2 id="受影响的系统和修复版本"><a href="#受影响的系统和修复版本" class="headerlink" title="受影响的系统和修复版本"></a>受影响的系统和修复版本</h2><p>Apple 已分别为以下系统发布包含修复的版本：</p><ul><li>macOS Tahoe 26.6.1；</li><li>macOS Sequoia 15.7.9；</li><li>macOS Sonoma 14.8.9。</li></ul><p>Apple 的安全公告说明，修复重点是改进 Screen Sharing 的状态管理，并确保只有有效凭据才能通过认证。NCSC-NL 给出的 CVSS v3 评分为 7.1，漏洞类型为认证问题。</p><p>需要注意的是，“我平时没有主动使用屏幕共享”不等于“服务一定没有开启”。远程管理、第三方远程桌面软件、公司设备管理策略和历史遗留配置，都可能让远程访问能力处于开启状态。补丁升级和服务盘点应该同时进行。</p><h2 id="个人开发机现在应该做什么"><a href="#个人开发机现在应该做什么" class="headerlink" title="个人开发机现在应该做什么"></a>个人开发机现在应该做什么</h2><h3 id="第一，立即安装系统更新"><a href="#第一，立即安装系统更新" class="headerlink" title="第一，立即安装系统更新"></a>第一，立即安装系统更新</h3><p>在系统设置中打开“通用 → 软件更新”，确认系统已经达到对应的修复版本。不要只依赖“最近刚更新过”的印象，直接核对当前版本号。</p><p>如果设备由公司统一管理，应当确认 MDM 或补丁平台已经将这几个版本纳入合规策略。开发机经常因为需要兼容旧工具而延迟升级，但对正在被利用的认证漏洞来说，延迟本身就是风险。</p><h3 id="第二，关闭不需要的远程服务"><a href="#第二，关闭不需要的远程服务" class="headerlink" title="第二，关闭不需要的远程服务"></a>第二，关闭不需要的远程服务</h3><p>在“系统设置 → 通用 → 共享”中检查屏幕共享、远程管理和远程登录。没有明确业务需求的服务应该关闭；确实需要的服务，也不应直接暴露到公网。</p><p>如果团队需要远程办公，更合理的做法是通过 VPN、零信任访问网关或其他经过身份验证的内网通道连接，再使用访问控制限制来源，而不是在路由器上把 5900 端口转发给整张互联网。</p><h3 id="第三，检查网络暴露面"><a href="#第三，检查网络暴露面" class="headerlink" title="第三，检查网络暴露面"></a>第三，检查网络暴露面</h3><p>路由器、云安全组和公司边界防火墙都需要检查。只在 Mac 本机关闭服务还不够，团队应该确认历史端口转发、临时调试规则和测试环境配置是否仍然存在。</p><p>对于开发环境，建议建立一个简单的服务清单：主机名、系统版本、是否开启屏幕共享、允许哪些来源访问、最后一次补丁时间、负责人是谁。没有负责人和过期时间的临时远程访问，最终通常会变成长期暴露。</p><h3 id="第四，发现异常时不要只重装应用"><a href="#第四，发现异常时不要只重装应用" class="headerlink" title="第四，发现异常时不要只重装应用"></a>第四，发现异常时不要只重装应用</h3><p>如果设备曾经将 5900 端口暴露在公网，或者出现陌生账户、异常 CPU 占用、未知挖矿进程、奇怪的出站连接和登录记录，不要只关闭屏幕共享后继续工作。</p><p>更稳妥的顺序是：</p><ol><li>先从网络中隔离设备，保留必要的系统和安全日志；</li><li>在另一台可信设备上轮换 SSH、云平台、代码仓库和部署凭据；</li><li>检查同一网络或同一账号下的其他主机；</li><li>按公司的应急响应流程判断是否需要从可信介质重建系统。</li></ol><p>如果攻击者已经取得 root 权限，系统里看到的“当前状态”未必足以证明机器干净。重建和凭据轮换通常比在一台可能被篡改的机器上反复删除可疑文件更可靠。</p><h2 id="团队可以补上的三道防线"><a href="#团队可以补上的三道防线" class="headerlink" title="团队可以补上的三道防线"></a>团队可以补上的三道防线</h2><p>第一道是“服务默认关闭”。开发机、构建机和测试机不应该因为方便排查问题，就默认开放交互式远程服务。临时开启时要有负责人、来源限制和自动失效时间。</p><p>第二道是“补丁不只看严重度，还看利用状态”。一个 CVSS 7.1 的漏洞，如果只是理论风险，可以按照常规窗口处理；但一旦权威机构确认有公开 PoC 和真实滥用，就应该升级为紧急变更，优先处理暴露资产。</p><p>第三道是“把开发机当作凭据边界”。开发机不是一台普通个人电脑。它经常连接 GitHub、云平台、镜像仓库、数据库和生产系统。SSH Key、云令牌和部署凭据应该尽量使用短期凭据、硬件密钥或细粒度权限，并且在主机疑似失陷时能够快速吊销和重新签发。</p><p>还可以把外部暴露扫描纳入日常工程：定期从组织外部检查公网 IP 是否仍然开放不必要的远程服务，并将结果和资产负责人关联起来。这样，漏洞响应就不必等到新闻出现之后才开始寻找“到底有哪些机器受影响”。</p><h2 id="我的理解：认证漏洞最怕被当成配置问题"><a href="#我的理解：认证漏洞最怕被当成配置问题" class="headerlink" title="我的理解：认证漏洞最怕被当成配置问题"></a>我的理解：认证漏洞最怕被当成配置问题</h2><p>这次事件表面上是 macOS 的一个安全缺陷，实际暴露的却是远程服务管理中的常见误区：大家把“是否开启服务”当成了配置问题，却没有把它当成攻击面持续管理。</p><p>服务开启以后，它至少需要回答四个问题：谁可以访问、从哪里访问、用什么方式认证、异常时如何撤销。任何一个问题没有明确答案，服务就会依赖默认配置、历史规则和“应该没人能访问”的假设。</p><p>安全更新解决的是漏洞本身，网络隔离解决的是暴露面，凭据治理解决的是失陷后的扩散范围。三者缺一不可。只更新系统、不检查公网端口，可能仍然留下不必要的入口；只关闭端口、不轮换凭据，也不能排除攻击者已经进入过系统的可能。</p><h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>CVE-2026-65400 给开发者的提醒很具体：今天就检查系统版本、共享设置和公网暴露面。Apple 已经给出了修复版本，NCSC-NL 也已经确认存在实际滥用，没有必要等待更多受害案例来证明风险。</p><p>更长期的做法，是把远程服务、补丁状态和开发机凭据纳入同一张资产地图。真正有效的安全工作，不是每次新闻出现后临时寻找补丁，而是让团队始终知道哪些服务开着、哪些机器能访问生产、哪些凭据需要在事故发生后立即吊销。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://support.apple.com/en-us/148170">Apple：About the security content of macOS Tahoe 26.6.1</a></li><li><a href="https://support.apple.com/en-us/148171">Apple：About the security content of macOS Sequoia 15.7.9</a></li><li><a href="https://support.apple.com/en-us/148172">Apple：About the security content of macOS Sonoma 14.8.9</a></li><li><a href="https://advisories.ncsc.nl/2026/ncsc-2026-0280.html">荷兰国家网络安全中心：NCSC-2026-0280</a></li><li><a href="https://arstechnica.com/security/2026/08/vulnerability-giving-attackers-full-control-of-macs-is-under-active-exploitation/">Ars Technica：Vulnerability giving attackers full control of Macs is under active exploitation</a></li></ul>]]>
+    </content>
+    <id>https://code.idea4j.com/2026/08/15/2026-macos-screen-sharing-cve-2026-65400/</id>
+    <link href="https://code.idea4j.com/2026/08/15/2026-macos-screen-sharing-cve-2026-65400/"/>
+    <published>2026-08-15T00:02:11.000Z</published>
+    <summary>macOS 屏幕共享认证漏洞 CVE-2026-65400 已出现实际滥用。本文梳理漏洞影响、暴露面和个人开发机与团队环境可以立即执行的防护措施。</summary>
+    <title>macOS 屏幕共享漏洞正在被利用：CVE-2026-65400 的风险与防护</title>
+    <updated>2026-08-15T00:02:11.000Z</updated>
+  </entry>
   <entry>
     <author>
       <name>markee</name>
@@ -391,25 +412,5 @@
     <summary>Linux 6.1 合入初步 Rust 支持背后的意义：不是重写内核，而是用新的类型与所有权工具减少未来驱动中的内存错误。</summary>
     <title>Rust 进入 Linux 内核：内存安全终于从口号走进基础设施</title>
     <updated>2026-08-11T04:30:00.000Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>markee</name>
-      <email>wangjinguang66@163.com</email>
-    </author>
-    <category term="人工智能" scheme="https://code.idea4j.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    <category term="Stable Diffusion" scheme="https://code.idea4j.com/tags/Stable-Diffusion/"/>
-    <category term="生成式AI" scheme="https://code.idea4j.com/tags/%E7%94%9F%E6%88%90%E5%BC%8FAI/"/>
-    <category term="开源" scheme="https://code.idea4j.com/tags/%E5%BC%80%E6%BA%90/"/>
-    <category term="扩散模型" scheme="https://code.idea4j.com/tags/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/"/>
-    <content>
-      <![CDATA[<p>2022 年 8 月，Stable Diffusion 的公开发布让文本生成图像从少数公司的在线演示，迅速变成普通开发者可以下载、修改和部署的模型。很快，Web UI、插件、微调模型和工作流工具大量出现，迭代速度远超单一产品团队。</p><p>如果说 DALL·E 2 让大众看见生成图像的可能，Stable Diffusion 则让社区第一次大规模参与这项技术。</p><span id="more"></span><h2 id="为什么“潜空间”很关键"><a href="#为什么“潜空间”很关键" class="headerlink" title="为什么“潜空间”很关键"></a>为什么“潜空间”很关键</h2><p>直接在高分辨率像素上进行多轮扩散计算，成本非常高。Stable Diffusion 采用潜在扩散：先用编码器把图像压缩到更小的潜空间，在潜空间完成主要去噪过程，最后再解码回像素。</p><p>这项设计在质量和计算量之间取得了实用平衡，使模型可以在消费级 GPU 上运行。技术只有在足够便宜时才会形成生态。能够本地生成，意味着开发者可以批量实验、接入自己的流程，并在一些场景下让数据不离开设备。</p><p>文本编码器、U-Net 去噪网络和 VAE 各自负责不同环节，也让后续社区有了可替换的接口。ControlNet、LoRA 等方法之所以能迅速流行，正是因为大家不必每次从头训练整个系统，而能针对结构控制或风格进行较轻量的扩展。</p><h2 id="开放带来的不仅是免费"><a href="#开放带来的不仅是免费" class="headerlink" title="开放带来的不仅是免费"></a>开放带来的不仅是免费</h2><p>开放权重最直接的好处是可访问，但更深的价值是可组合。有人优化推理速度，有人制作界面，有人训练垂直风格，有人把模型接入 Blender、Photoshop 或游戏管线。一项能力从产品变成了基础组件。</p><p>与此同时，风险也从平台集中管理变成了生态共同承担。训练数据的版权、艺术家风格的使用、生成不当内容和深度伪造，都无法只靠一个网站的审核按钮解决。本地可运行意味着更强的个人控制，也意味着更少的中心化约束。</p><p>开放不是“没有规则”，而是规则必须从单个平台扩展到模型许可证、数据治理、应用设计和社会规范。</p><h2 id="对应用开发者真正有用的是什么"><a href="#对应用开发者真正有用的是什么" class="headerlink" title="对应用开发者真正有用的是什么"></a>对应用开发者真正有用的是什么</h2><p>我认为最容易犯的错，是把生成图像 API 当成一个确定性服务。相同提示会得到不同结果，模型升级会改变风格，安全过滤和采样参数也会影响输出。把它接入生产系统时，需要像管理搜索或推荐一样管理概率结果：保存模型版本和参数，建立人工选择环节，对关键内容设置审核，并允许用户追溯来源。</p><p>另一个变化是，产品价值不再只由模型大小决定。工作流、领域数据、可控编辑、速度和用户反馈闭环，往往比“底座模型又高了几个指标”更接近真实体验。</p><h2 id="我的理解：开放模型把创新从纵向变成横向"><a href="#我的理解：开放模型把创新从纵向变成横向" class="headerlink" title="我的理解：开放模型把创新从纵向变成横向"></a>我的理解：开放模型把创新从纵向变成横向</h2><p>封闭服务通常沿一条产品路线向前优化；开放模型会被成千上万的人拉向不同方向。它不一定在每个方向都更安全、更精致，却更容易出现原团队从未设想的用途。</p><p>Stable Diffusion 留下的长期启示是：当模型能力逐渐通用，竞争焦点会转向谁能把它嵌进具体流程。对于开发者，理解推理成本、版本可复现、数据边界和人机协作，比只会调用一次生成接口更重要。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul><li><a href="https://stability.ai/news/stable-diffusion-public-release">Stability AI：Stable Diffusion Public Release</a></li><li><a href="https://arxiv.org/abs/2112.10752">论文：High-Resolution Image Synthesis with Latent Diffusion Models</a></li></ul><blockquote><p>本文是 2026 年整理断更期时写下的回顾，发布日期按事件所处阶段归档。</p></blockquote>]]>
-    </content>
-    <id>https://code.idea4j.com/2022/08/25/2022-stable-diffusion/</id>
-    <link href="https://code.idea4j.com/2022/08/25/2022-stable-diffusion/"/>
-    <published>2022-08-25T13:06:00.000Z</published>
-    <summary>Stable Diffusion 的意义不只是会画图，而是开放权重、本地运行和社区扩展共同改变了生成式 AI 的创新方式。</summary>
-    <title>Stable Diffusion 开放权重之后，生成式 AI 第一次真正进入个人电脑</title>
-    <updated>2026-08-11T04:25:00.000Z</updated>
   </entry>
 </feed>
