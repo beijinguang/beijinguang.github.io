@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+
+<meta name="description" content="荷兰数据保护机构因 Uber 自动化停用司机账户的问题开出 8.25 亿欧元罚款。本文不预判 Uber 的申诉结果，而是从 GDPR 自动化决策、证据链、人工复核和申诉系统分析平台开发者应该如何设计高影响决策。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉">
+<meta property="og:url" content="https://code.idea4j.com/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/index.html">
+<meta property="og:site_name" content="码客Mark">
+<meta property="og:description" content="荷兰数据保护机构因 Uber 自动化停用司机账户的问题开出 8.25 亿欧元罚款。本文不预判 Uber 的申诉结果，而是从 GDPR 自动化决策、证据链、人工复核和申诉系统分析平台开发者应该如何设计高影响决策。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-08-24T00:02:06.000Z">
+<meta property="article:modified_time" content="2026-08-24T00:02:06.000Z">
+<meta property="article:author" content="markee">
+<meta property="article:tag" content="GDPR">
+<meta property="article:tag" content="Uber">
+<meta property="article:tag" content="平台工程">
+<meta property="article:tag" content="算法治理">
+<meta property="article:tag" content="自动化决策">
+<meta property="article:tag" content="隐私">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="码客Mark" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉 | 码客Mark</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c160bf5d12f84389ce96c02b54e4575f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/A2A/" rel="tag">A2A</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-%E7%BD%91%E5%85%B3/" rel="tag">AI 网关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ARC-AGI-3/" rel="tag">ARC-AGI-3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATT/" rel="tag">ATT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AVO/" rel="tag">AVO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-%E5%AE%89%E5%85%A8/" rel="tag">Android 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Anthropic/" rel="tag">Anthropic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apple/" rel="tag">Apple</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Axios/" rel="tag">Axios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI-CD/" rel="tag">CI&#x2F;CD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVE/" rel="tag">CVE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude/" rel="tag">Claude</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DALL-E/" rel="tag">DALL-E</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek-R1/" rel="tag">DeepSeek-R1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DevOps/" rel="tag">DevOps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dubbo/" rel="tag">Dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GDPR/" rel="tag">GDPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPT-4/" rel="tag">GPT-4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub-Copilot/" rel="tag">GitHub Copilot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrapheneOS/" rel="tag">GrapheneOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grok/" rel="tag">Grok</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK-17/" rel="tag">JDK 17</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM-%E5%AE%89%E5%85%A8/" rel="tag">LLM 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LevelDB/" rel="tag">LevelDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Llama-2/" rel="tag">Llama 2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Log4j/" rel="tag">Log4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maxwell/" rel="tag">Maxwell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroGPT/" rel="tag">MicroGPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Motorola/" rel="tag">Motorola</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NVIDIA/" rel="tag">NVIDIA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/" rel="tag">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenRouter/" rel="tag">OpenRouter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Passkey/" rel="tag">Passkey</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prompt-Injection/" rel="tag">Prompt Injection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAG/" rel="tag">RAG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RLHF/" rel="tag">RLHF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-19/" rel="tag">React 19</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Server-Components/" rel="tag">Server Components</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Skills/" rel="tag">Skills</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stable-Diffusion/" rel="tag">Stable Diffusion</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stripe/" rel="tag">Stripe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SynthID-Text/" rel="tag">SynthID-Text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Uber/" rel="tag">Uber</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Verified-Boot/" rel="tag">Verified Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Warp/" rel="tag">Warp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/" rel="tag">ZooKeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/containerd/" rel="tag">containerd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/" rel="tag">npm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xz/" rel="tag">xz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" rel="tag">云原生</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">云端开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/" rel="tag">产品设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E6%9C%BA%E4%BA%A4%E4%BA%92/" rel="tag">人机交互</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">代码生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%82%B2/" rel="tag">体育</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE/" rel="tag">供应链</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/" rel="tag">供应链安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%AE%89%E5%85%A8/" rel="tag">内存安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AE%B9%E6%BA%AF%E6%BA%90/" rel="tag">内容溯源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" rel="tag">分布式系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%86%E5%8F%B2/" rel="tag">历史</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">向量数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/" rel="tag">多模态</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" rel="tag">大语言模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B1%8F%E5%B9%95%E5%85%B1%E4%BA%AB/" rel="tag">屏幕共享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%AE%9E%E8%B7%B5/" rel="tag">工作实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E5%8F%B0%E5%B7%A5%E7%A8%8B/" rel="tag">平台工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%BF%E5%91%8A%E6%8A%80%E6%9C%AF/" rel="tag">广告技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag">开发工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%80%E6%94%BE%E6%A8%A1%E5%9E%8B/" rel="tag">开放模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag">性能优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" rel="tag">扩散模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E7%90%86%E6%A8%A1%E5%9E%8B/" rel="tag">推理模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%96%E6%B3%84/" rel="tag">数据外泄</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%88%90%E5%BC%8FAI/" rel="tag">生成式AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E8%88%9F%E9%A3%9E%E8%88%B9/" rel="tag">神舟飞船</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E6%B2%BB%E7%90%86/" rel="tag">算法治理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/" rel="tag">类加载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/" rel="tag">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" rel="tag">系统设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%86%B3%E7%AD%96/" rel="tag">自动化决策</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81/" rel="tag">身份认证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%8E%82/" rel="tag">软件工厂</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/" rel="tag">远程访问</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%95%BF%E5%91%A8%E6%9C%9F%E4%BB%BB%E5%8A%A1/" rel="tag">长周期任务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="tag">问题排查</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%90%E7%A7%81/" rel="tag">隐私</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-2026-Uber自动化停用司机" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/" class="article-date">
+      <time datetime="2026-08-24T00:02:06.000Z" itemprop="datePublished">2026-08-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><a class="article-category-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E9%9A%90%E7%A7%81/">隐私</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GDPR/" rel="tag">GDPR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Uber/" rel="tag">Uber</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B3%E5%8F%B0%E5%B7%A5%E7%A8%8B/" rel="tag">平台工程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E6%B2%BB%E7%90%86/" rel="tag">算法治理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%86%B3%E7%AD%96/" rel="tag">自动化决策</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%90%E7%A7%81/" rel="tag">隐私</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>8 月 23 日，TechCrunch 报道称，荷兰数据保护机构因 Uber 通过自动化流程停用司机账户、且在部分情况下缺少充分告知和人工监督，拟处以 8.25 亿欧元罚款。报道援引 Reuters 称，这将是欧洲《通用数据保护条例》（GDPR）实施以来金额最高的处罚之一。Uber 否认监管机构对其流程的部分描述，表示大多数停用时间很短、永久停用需要人工复核，司机也可以申诉，并称将提起上诉。</p>
+<p>这条新闻的技术重点不是“算法能不能封号”，而是一个平台能不能证明：它知道自己为什么做出决定，能让受影响的人理解并挑战决定，也能在错误发生时及时纠正。对网约车、内容审核、支付风控、企业账号和招聘系统来说，这是一条通用的工程边界：风险评分可以自动化，重大后果不能只剩一个不可解释的分数。</p>
+<h2 id="先区分处罚事实与争议事实"><a href="#先区分处罚事实与争议事实" class="headerlink" title="先区分处罚事实与争议事实"></a>先区分处罚事实与争议事实</h2><p>目前公开报道能够确认的是：荷兰监管机构对 Uber 的司机账户停用流程作出了重大处罚决定，争议集中在自动化处理、人工监督和司机申诉等问题上。Uber 不接受监管机构对部分永久停用案例的描述，并表示会申诉。</p>
+<p>因此，文章不应把“Uber 已经承认完全由机器封号”写成事实，也不应把监管处罚直接等同于法院最终判决。更稳妥的技术结论是：监管机构认为平台在高影响账户决策中承担了足够严重的合规责任，而平台需要通过申诉和司法程序继续争辩具体事实与法律适用。</p>
+<h2 id="什么是高影响的自动化决策"><a href="#什么是高影响的自动化决策" class="headerlink" title="什么是高影响的自动化决策"></a>什么是高影响的自动化决策</h2><p>一个账户停用流程通常不是一个单独的模型调用，而是一条完整链路：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">订单、投诉、位置和设备信号</span><br><span class="line">              ↓</span><br><span class="line">数据清洗与风险特征计算</span><br><span class="line">              ↓</span><br><span class="line">规则 / 模型输出风险分数</span><br><span class="line">              ↓</span><br><span class="line">临时限制、人工复核或永久停用</span><br><span class="line">              ↓</span><br><span class="line">通知、申诉、重新评估与恢复</span><br></pre></td></tr></table></figure>
+
+<p>如果最终动作只是给用户推荐一个内容，影响可能相对有限；如果动作让司机失去接单资格、让商户无法收款或让员工无法访问工作系统，它就可能产生法律、经济或职业上的重大后果。此时真正需要治理的不是某个模型的准确率，而是从输入到最终动作的整个决策系统。</p>
+<p>GDPR 第 22 条通常被用来讨论这类问题：个人有权不受完全基于自动化处理、并对其产生法律效力或类似重大影响的决定约束。条文同时规定了若干例外，并要求提供相应保障，包括获得人工干预、表达观点和对决定提出异议的机会。具体案件如何适用，需要结合监管决定、平台事实和后续程序判断，不能只用一句“GDPR 禁止算法封号”概括。</p>
+<h2 id="“有人看过”不等于有效人工复核"><a href="#“有人看过”不等于有效人工复核" class="headerlink" title="“有人看过”不等于有效人工复核"></a>“有人看过”不等于有效人工复核</h2><p>很多系统会在架构图中增加一个人工节点，然后宣称流程已经有人监督。但人工复核至少要满足四个条件：</p>
+<ol>
+<li><strong>能看到足够证据</strong>：复核者不能只看到一个 <code>risk_score=0.98</code>，还应知道触发了哪些事实、数据时间范围和规则版本；</li>
+<li><strong>有真正的决定权</strong>：如果人工只能点击“确认”，不能暂停或推翻模型建议，这更像记录动作，不是复核；</li>
+<li><strong>具备上下文和时间</strong>：复核者应能看到司机的解释、历史异常是否属于重复事件，以及数据是否可能来自错误匹配；</li>
+<li><strong>留下可审计记录</strong>：系统需要记录谁在什么时候看到了什么证据、作出了什么决定，以及决定是否改变了原始建议。</li>
+</ol>
+<p>人工不是为了给模型的结论盖章，而是为了把模型看不到的事实和责任带回决策流程。对于大规模平台，人工不可能检查每一个低风险事件，但可以对临时限制、永久停用、收入冻结和重复违规等高影响动作设定不同等级的人工介入。</p>
+<h2 id="账户治理系统应该怎样拆分"><a href="#账户治理系统应该怎样拆分" class="headerlink" title="账户治理系统应该怎样拆分"></a>账户治理系统应该怎样拆分</h2><h3 id="1-把风险检测和惩罚动作分开"><a href="#1-把风险检测和惩罚动作分开" class="headerlink" title="1. 把风险检测和惩罚动作分开"></a>1. 把风险检测和惩罚动作分开</h3><p>模型适合回答“哪些行为值得进一步检查”，不适合直接决定“这个人永远不能再使用平台”。风险分数应先进入分级处置：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">低风险：记录并继续观察</span><br><span class="line">中风险：限制部分功能，要求补充验证</span><br><span class="line">高风险：临时冻结，进入人工复核</span><br><span class="line">确认违规：依据规则执行可申诉的处置</span><br></pre></td></tr></table></figure>
+
+<p>这样做不代表平台放弃安全，而是把误报的代价控制在可恢复范围内。临时限制要有时间上限和自动复查条件；永久停用则应当有更高的证据要求、人工责任人和申诉入口。</p>
+<h3 id="2-为每个决定建立证据链"><a href="#2-为每个决定建立证据链" class="headerlink" title="2. 为每个决定建立证据链"></a>2. 为每个决定建立证据链</h3><p>决策日志不能只保存最终结果。至少应该能追溯：</p>
+<ul>
+<li>使用了哪些事件和数据字段；</li>
+<li>数据从哪个系统进入，是否经过人工确认；</li>
+<li>使用了哪个规则、模型和特征版本；</li>
+<li>模型输出了什么，阈值如何配置；</li>
+<li>系统采取了什么动作，动作何时生效；</li>
+<li>通知向用户解释了什么；</li>
+<li>申诉后谁修改了什么决定。</li>
+</ul>
+<p>这类日志既服务于合规，也服务于工程排障。如果某一批设备指纹被错误归并，或者某次规则发布把时区解析错了，团队必须能够定位受影响的账户范围，而不是只知道“投诉变多了”。</p>
+<h3 id="3-解释应该使用原因代码，而不是模型术语"><a href="#3-解释应该使用原因代码，而不是模型术语" class="headerlink" title="3. 解释应该使用原因代码，而不是模型术语"></a>3. 解释应该使用原因代码，而不是模型术语</h3><p>用户需要知道的是“哪一类行为导致了限制、时间范围是什么、怎样补充材料和申诉”，而不是一段 SHAP 图或“模型置信度很高”。系统可以在内部保留详细特征和模型解释，在外部提供稳定、准确、不会泄露反作弊策略的原因代码。</p>
+<p>原因代码也不能成为新的黑盒。它应该和规则版本绑定，并能在申诉时重新展开为可理解的事实。例如，“多次未完成订单”比“异常分数超过阈值”更接近用户需要知道的内容；如果平台不能披露具体检测细节，也应该说明时间范围、申诉材料和人工检查的范围。</p>
+<h3 id="4-申诉必须是重新评估，不是客服脚本"><a href="#4-申诉必须是重新评估，不是客服脚本" class="headerlink" title="4. 申诉必须是重新评估，不是客服脚本"></a>4. 申诉必须是重新评估，不是客服脚本</h3><p>一个有效的申诉系统不应只是把用户原文转发给原来的自动化流程。它需要允许提交新证据，重新检查原始数据，识别是否存在账号错配，并在必要时由不同人员或不同队列复核。</p>
+<p>申诉结果应该与原决定关联保存。若同一规则版本在大量案件中被推翻，系统应自动触发规则回滚、样本复查或模型再评估。申诉数据不是客服部门的孤岛，它是检测模型错误和系统性偏差的重要反馈集。</p>
+<h2 id="对机器学习系统的三个具体提醒"><a href="#对机器学习系统的三个具体提醒" class="headerlink" title="对机器学习系统的三个具体提醒"></a>对机器学习系统的三个具体提醒</h2><h3 id="用“决策质量”替代单一准确率"><a href="#用“决策质量”替代单一准确率" class="headerlink" title="用“决策质量”替代单一准确率"></a>用“决策质量”替代单一准确率</h3><p>风控模型的离线准确率不能直接代表账户治理质量。团队还应测量误停率、不同群体之间的差异、人工推翻率、申诉成功率、平均恢复时间和错误造成的收入影响。</p>
+<p>尤其要关注低频但高代价的错误：一个账户被错误永久停用，可能比很多次低风险误报更值得优先修复。指标应反映后果，而不仅是分类器在测试集上的平均分。</p>
+<h3 id="版本化阈值与策略"><a href="#版本化阈值与策略" class="headerlink" title="版本化阈值与策略"></a>版本化阈值与策略</h3><p>模型版本、特征版本、阈值、规则配置和人工队列都需要单独版本化。否则，当运营人员临时调整阈值后出现投诉，工程团队可能无法复现当时的决定。</p>
+<p>部署前要保留回放能力：给定同一组输入、策略版本和时间，系统可以重建当时的建议与最终动作。对于涉及收入、身份或账户访问的系统，不能把“线上配置随时可改”当成灵活性的全部。</p>
+<h3 id="为错误保留可逆路径"><a href="#为错误保留可逆路径" class="headerlink" title="为错误保留可逆路径"></a>为错误保留可逆路径</h3><p>冻结账户、拒绝支付或限制服务的动作应该有明确的撤销接口和最大影响时间。系统还要区分“阻止正在发生的高风险行为”和“永久判断一个用户不可信”：前者可以快速、临时、保守地执行，后者需要更多证据和更高等级的审查。</p>
+<p>这与安全工程中的隔离和回滚很相似。高风险动作越容易执行，就越要让恢复、审计和责任分配足够清晰。</p>
+<h2 id="一个可落地的最小检查清单"><a href="#一个可落地的最小检查清单" class="headerlink" title="一个可落地的最小检查清单"></a>一个可落地的最小检查清单</h2><p>开发或审查一个自动化账户决策系统时，可以先问下面这些问题：</p>
+<ul>
+<li>用户是否明确知道自己受到什么限制、从什么时候开始、如何申诉？</li>
+<li>最终动作是完全由机器触发，还是存在有权限的人工复核？</li>
+<li>人工复核者能否查看原始证据、规则版本和用户提交的新材料？</li>
+<li>系统能否在规定时间内恢复被错误限制的账户？</li>
+<li>是否记录了输入数据、模型版本、阈值、通知和人工决定？</li>
+<li>申诉成功率、人工推翻率和错误恢复时间是否进入监控？</li>
+<li>运营人员修改规则后，是否能回放并找出受影响的历史决定？</li>
+<li>反作弊策略的保密要求，是否被错误地用来拒绝一切解释？</li>
+</ul>
+<p>如果这些问题没有答案，继续提升模型复杂度并不会自动带来更好的平台治理。很多事故不是因为模型完全不准，而是因为系统没有为错误、争议和恢复设计路径。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Uber 这起处罚的最终法律结论仍要等待申诉和后续程序，但它已经给平台工程一个清晰提醒：自动化系统可以帮助发现异常，却不能把责任隐藏在“机器自己做的决定”后面。</p>
+<p>对开发者而言，成熟的算法治理不是在模型旁边加一段合规文案，而是把证据、版本、权限、人工复核、用户通知、申诉和回滚真正做成系统能力。只要一个自动化决定会影响人的收入、身份、工作或基本服务，它就应该可解释、可审计，也必须保留一条现实可行的纠错通道。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://techcrunch.com/2026/08/23/uber-faces-fine-of-nearly-1b-over-automated-driver-suspensions/">TechCrunch：Uber faces fine of nearly $1B over automated driver suspensions（2026-08-23）</a></li>
+<li><a target="_blank" rel="noopener" href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">EUR-Lex：通用数据保护条例（GDPR），第 22 条自动化个体决策</a></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/">Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
+        <p><span>发布时间:</span>2026-08-24, 08:02:06</p>
+        <p><span>最后更新:</span>2026-08-24, 08:02:06</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/" title="Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉">https://code.idea4j.com/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://code.idea4j.com/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2026/08/23/2026-NVIDIA-AVO%E9%95%BF%E5%91%A8%E6%9C%9FAgent/">
+                    NVIDIA AVO 研究：Agent 的上限不只由模型决定，Harness 才是工程主战场
+                </a>
+            </div>
+        
+    </nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E5%8C%BA%E5%88%86%E5%A4%84%E7%BD%9A%E4%BA%8B%E5%AE%9E%E4%B8%8E%E4%BA%89%E8%AE%AE%E4%BA%8B%E5%AE%9E"><span class="toc-number">1.</span> <span class="toc-text">先区分处罚事实与争议事实</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%AB%98%E5%BD%B1%E5%93%8D%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%86%B3%E7%AD%96"><span class="toc-number">2.</span> <span class="toc-text">什么是高影响的自动化决策</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9C%E6%9C%89%E4%BA%BA%E7%9C%8B%E8%BF%87%E2%80%9D%E4%B8%8D%E7%AD%89%E4%BA%8E%E6%9C%89%E6%95%88%E4%BA%BA%E5%B7%A5%E5%A4%8D%E6%A0%B8"><span class="toc-number">3.</span> <span class="toc-text">“有人看过”不等于有效人工复核</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A6%E6%88%B7%E6%B2%BB%E7%90%86%E7%B3%BB%E7%BB%9F%E5%BA%94%E8%AF%A5%E6%80%8E%E6%A0%B7%E6%8B%86%E5%88%86"><span class="toc-number">4.</span> <span class="toc-text">账户治理系统应该怎样拆分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8A%8A%E9%A3%8E%E9%99%A9%E6%A3%80%E6%B5%8B%E5%92%8C%E6%83%A9%E7%BD%9A%E5%8A%A8%E4%BD%9C%E5%88%86%E5%BC%80"><span class="toc-number">4.1.</span> <span class="toc-text">1. 把风险检测和惩罚动作分开</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%BA%E6%AF%8F%E4%B8%AA%E5%86%B3%E5%AE%9A%E5%BB%BA%E7%AB%8B%E8%AF%81%E6%8D%AE%E9%93%BE"><span class="toc-number">4.2.</span> <span class="toc-text">2. 为每个决定建立证据链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%A7%A3%E9%87%8A%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%9B%A0%E4%BB%A3%E7%A0%81%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E6%A8%A1%E5%9E%8B%E6%9C%AF%E8%AF%AD"><span class="toc-number">4.3.</span> <span class="toc-text">3. 解释应该使用原因代码，而不是模型术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%94%B3%E8%AF%89%E5%BF%85%E9%A1%BB%E6%98%AF%E9%87%8D%E6%96%B0%E8%AF%84%E4%BC%B0%EF%BC%8C%E4%B8%8D%E6%98%AF%E5%AE%A2%E6%9C%8D%E8%84%9A%E6%9C%AC"><span class="toc-number">4.4.</span> <span class="toc-text">4. 申诉必须是重新评估，不是客服脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%89%E4%B8%AA%E5%85%B7%E4%BD%93%E6%8F%90%E9%86%92"><span class="toc-number">5.</span> <span class="toc-text">对机器学习系统的三个具体提醒</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E2%80%9C%E5%86%B3%E7%AD%96%E8%B4%A8%E9%87%8F%E2%80%9D%E6%9B%BF%E4%BB%A3%E5%8D%95%E4%B8%80%E5%87%86%E7%A1%AE%E7%8E%87"><span class="toc-number">5.1.</span> <span class="toc-text">用“决策质量”替代单一准确率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%8C%96%E9%98%88%E5%80%BC%E4%B8%8E%E7%AD%96%E7%95%A5"><span class="toc-number">5.2.</span> <span class="toc-text">版本化阈值与策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E9%94%99%E8%AF%AF%E4%BF%9D%E7%95%99%E5%8F%AF%E9%80%86%E8%B7%AF%E5%BE%84"><span class="toc-number">5.3.</span> <span class="toc-text">为错误保留可逆路径</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%8F%AF%E8%90%BD%E5%9C%B0%E7%9A%84%E6%9C%80%E5%B0%8F%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">6.</span> <span class="toc-text">一个可落地的最小检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">7.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">8.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉　| 码客Mark　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2026/08/23/2026-NVIDIA-AVO%E9%95%BF%E5%91%A8%E6%9C%9FAgent/" title="下一篇: NVIDIA AVO 研究：Agent 的上限不只由模型决定，Harness 才是工程主战场">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/">Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/23/2026-NVIDIA-AVO%E9%95%BF%E5%91%A8%E6%9C%9FAgent/">NVIDIA AVO 研究：Agent 的上限不只由模型决定，Harness 才是工程主战场</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/22/2026-Motorola-GrapheneOS%E6%89%8B%E6%9C%BA/">Motorola 支持 GrapheneOS：隐私手机真正难的是硬件与供应链</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/21/2026-Grok%E5%8A%A0%E5%AF%86%E4%B8%8A%E4%B8%8B%E6%96%87%E6%B3%A8%E5%85%A5/">加密提示也能劫持 Agent：Grok 数据外泄事件暴露的 LLM 安全边界</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/19/2026-Warp%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%8E%82/">Warp Factories：编码 Agent 如何被组织成一座软件工厂</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/18/2026-%E8%8B%B9%E6%9E%9C%E8%B0%83%E6%95%B4ATT%E6%8E%88%E6%9D%83%E6%8F%90%E7%A4%BA/">德国监管要求苹果调整 ATT 授权提示：iOS 开发者该关注什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/17/2026-openrouter-ai-gateway/">OpenRouter 被报道称将以 70 亿美元以上卖给 Stripe：AI 网关为何成为基础设施</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/16/2026-claude-text-watermark/">Claude 文本水印如何工作：从词语选择到 AI 内容溯源</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/15/2026-macos-screen-sharing-cve-2026-65400/">macOS 屏幕共享漏洞正在被利用：CVE-2026-65400 的风险与防护</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/12/2026-codex-skills/">Codex 到底需要安装哪些 Skill：一份按工作流整理的清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/">有AI了，为什么感觉越来越累了</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E5%85%B3%E4%BA%8E%E5%AF%B9AI%E6%9C%AA%E6%9D%A5%E7%9A%84%E6%83%B3%E8%B1%A1/">关于对 AI 未来的想象</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/03/31/2026-axios-npm-supply-chain/">Axios npm 投毒事件：依赖安装为什么已经是一种远程代码执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/02/15/2026-microgpt/">MicroGPT：200 行 Python 里，藏着大语言模型真正不可省略的部分</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/20/2025-codex-software-agent/">Codex 云端编程智能体：软件开发开始拥有“可委托的后台任务”</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/12/2025-a2a-protocol/">A2A 协议：当一个智能体需要把任务交给另一个智能体</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/02/10/2025-copilot-agent-mode/">Copilot Agent Mode：AI 编程从补全一行走向完成一项任务</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/24/2025-deepseek-r1/">DeepSeek-R1：推理模型开始把训练方法写在明面上</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/08/2024-react-19/">React 19：前端框架开始把异步状态当成一等公民</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/28/2024-model-context-protocol/">MCP 的真正价值：给 AI 与工具之间一个统一插座</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/06/09/2024-kubernetes-10-years/">Kubernetes 十周年：它赢下的不是编排功能，而是基础设施接口</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/04/02/2024-xz-backdoor/">xz 后门事件：一次持续数年的开源供应链渗透</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/14/2023-passkeys/">Passkey 成为默认登录方式：密码为什么终于可以被替代</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/09/2023-rag/">RAG 为什么成为 2023 年大模型应用的标准答案</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/07/22/2023-llama-2/">Llama 2：开放权重大模型为什么改变了 AI 的竞争方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/03/18/2023-gpt-4/">GPT-4 发布之后，大模型竞争开始从“会说话”走向“能解决问题”</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/12/03/2022-chatgpt/">ChatGPT 为什么是一个界面革命，而不只是更大的模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/10/12/2022-rust-linux/">Rust 进入 Linux 内核：内存安全终于从口号走进基础设施</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/25/2022-stable-diffusion/">Stable Diffusion 开放权重之后，生成式 AI 第一次真正进入个人电脑</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/20/2022-dall-e-2/">DALL·E 2：当“描述需求”第一次变成了图像生产方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/12/15/2021-log4shell/">Log4Shell 之后：真正危险的是我们不知道自己依赖了什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/18/2021-java-17/">Java 17：比新语法更重要的是可预测的升级节奏</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/04/2021-github-copilot/">GitHub Copilot 出现之后，编程开始从“输入代码”转向“审查意图”</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/18/2021-kubernetes-dockershim/">Kubernetes 不再内置 Docker：真正被移除的到底是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/12/LevelDB/">LevelDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/12/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/">项目管理实战</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/06/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%AF%BC%E6%89%8B%E5%86%8C/">《数据结构与算法之美》学习指导手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/06/%E6%B1%A0%E5%8C%96%E6%80%9D%E6%83%B3/">池化思想</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/04/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/">32 个 Java 面试必考点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/13/Redis%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E5%8F%8A%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">Redis 缓存设计及常见问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/quickstart/">使用maxwell</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E4%BD%BF%E7%94%A8maxwell%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE%E5%88%B0%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97(rabbitMQ)/">使用maxwell实时同步mysql数据到消息队列(rabbitMQ)</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83%E8%BF%87%E7%A8%8B/">前后端联调过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/20/%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%A6%E4%B9%A0/">如何有效的学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%20Boot/">Springboot</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/">Redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Spring事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Zuul%E4%B8%8EGateWay%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">网关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E7%9B%B8%E5%85%B3/">zookeeper相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/">zookeeper选举规则</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E4%BD%BF%E7%94%A8jvm%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C/">jps</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/">如何替换 JDK 的类</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/03/%E6%97%A5%E6%8B%B1%E4%B8%80%E5%8D%92/">日拱一卒</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/30/%E6%89%8B%E5%86%99RPC%E6%A1%86%E6%9E%B6/">手写RPC框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E7%BC%96%E5%86%99springboot%E5%90%AF%E5%8A%A8%E5%99%A8/">springboot启动器</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E9%97%AE%E9%A2%98%E5%A4%A7%E5%85%A8/">问题大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/09/Pinpoint/">Pinpoint安装使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/04/RabbitMQ%E5%91%BD%E4%BB%A4%E8%A1%8C/">RabbitMQ命令行</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%91%BD%E4%BB%A4/">docker 命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dockerfile%E6%8C%87%E4%BB%A4/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/">Class文件格式</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/">Context初始化流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/">Docker搭建zookeeper集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/">Dubbo请求数据的发送过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/">GC日志配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/">Java实现链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E6%94%B6%E9%9B%86%E5%A4%A7%E5%85%A8/">Java字节码指令收集大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7/">Java性能调优工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/">dubbo负载均衡</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">dubbo架构设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/">dubbo的原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">java性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%B3%9B%E5%9E%8B/">java泛型</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/">java语言特性知识点汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/mst/">面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E6%A0%B8%E5%BF%83%E5%85%B3%E6%B3%A8%E7%82%B9/">系统性能核心关注点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Bean的生命周期</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/MYSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">MYSQL数据库设计规范</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/14/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86%E7%82%B9/">程序员必备知识点</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/17/Appollo%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8E%9F%E7%90%86/">Appollo配置中心原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/14/%E7%BC%93%E5%AD%98/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/24/Netty%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/">Netty权威指南目录抄写</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/17/bat/">BAT后端开发面试108题</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/27/MySQL%E6%9D%83%E9%99%90%E5%88%86%E9%85%8D/">MySQL权限分配</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/19/mysql%E5%93%AA%E4%BA%9B%E6%83%85%E5%86%B5%E4%B8%8D%E9%80%82%E5%90%88%E5%BB%BA%E7%B4%A2%E5%BC%95/">mysql哪些情况不适合建索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/xpath/">常用xpath例子</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/Netty/">Netty</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/MyBatis%E4%BD%BF%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%8C%E5%9C%A8%E6%BA%90%E7%A0%81%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%93%E7%8E%B0%E7%9A%84%EF%BC%9F/">MyBatis使用了哪些设计模式，在源码上是如何体现的？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/yinyangshi/">我的阴阳师之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/MAT%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B9%8B%E6%B7%B1%E5%A0%86%E5%92%8C%E6%B5%85%E5%A0%86/">MAT工具应用之深堆和浅堆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Markdown%E6%93%8D%E4%BD%9C/">Markdown操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mac%20%E6%8C%89%E9%94%AE%E7%AC%A6%E5%8F%B7/">mac按键符号</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mylife170320/">mylife170320</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/java1/">pacakge-info.java</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/28/mybatis2/">MyBatis Generator配置文件详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/27/springbatch/">springbatch</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/docker/">Boot2Docker 启动闪退</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/jenkins/">jenkins 安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux2/">linux 端口查看</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux1/">linux下的文件结构，每个文件夹用途</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/svn1/">linux下svn安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/jvm2/">堆分配参数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/questions/">开发中遇到的异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/12/mybatis1/">mybatis generator 配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/jinyan/">jinyan</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/javaapi1/">Java API 学习之ClassLoader</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/lua1/">Lua语言积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/sqljl/">sql语句：根据身份证得到省份、生日、性别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/jqiframe/">js与jQuery 获取父窗、子窗的iframe</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/sqlty/">sql优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/usapresident/">美国历任总统，在任年限及所属党派</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/xingnen2/">改善性能的几个技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/xingnen/">性能概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/servlet3/">一行配置文件引发的“血案”</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/btyeclass/">Class类文件的结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/24/jvm1/">java虚拟机性能监控与故障管理工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/mvnenvironmentseparate/">Maven 打包实现环境配置分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/huibian/">汇编语言(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/byyl/">byyl</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/shenzhou/">神舟飞船系列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/angularjs2d1/">angularjs2d1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/mvnarchetype/">创建自己maven archetype</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/hexo/">hexo + github建站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongodb/">mongodb</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/society/">房地产资本主义时代</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0923/">微信小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/node15/">Express 框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/node14/">使用 Node 创建 Web 服务器和客户端</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/node13/">Node.js GET/POST请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node12/">Node.js 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/maven/">maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node11/">Node.js 常用工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/19/node10/">Node.js 全局对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/node9/">Node.js 路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node8/">Node.js模块系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node7/">Node.js Stream(流)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/vim/">vim命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node6/">Node.js Buffer(缓冲区)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node5/">Node.js EventEmitter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node4/">Node.js 事件循环</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node3/">Node.js 回调函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/markdown/">markdown语法积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node2/">NPM 使用介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/sublime/">sublime text 3 使用积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/node1/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">深克隆</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E7%B1%BB%E8%A3%85%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/staruml1/">使用快速生成GoF设计模式的类图与代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/builderpattern/">builderpattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/DesignPatterns/">设计模式(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程的优缺点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2026 markee
+            </div>
+            <div class="footer-right">
+                <a href="https://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
