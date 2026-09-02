@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="markee" />
+
+
+
+<meta name="description" content="Python 官方在 9 月 1 日发布 Python 3.15.0 RC2，这是正式版前的最终计划候选版本。本文梳理显式惰性导入、内置 profiling 包、JIT 与 free-threaded Stable ABI 等变化，并给出项目升级前的测试重点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 3.15.0 RC2 发布：惰性导入、JIT 与可观测性改进值得提前测试">
+<meta property="og:url" content="https://code.idea4j.com/2026/09/02/2026-Python315RC2%E6%8F%90%E5%89%8D%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="码客Mark">
+<meta property="og:description" content="Python 官方在 9 月 1 日发布 Python 3.15.0 RC2，这是正式版前的最终计划候选版本。本文梳理显式惰性导入、内置 profiling 包、JIT 与 free-threaded Stable ABI 等变化，并给出项目升级前的测试重点。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-09-02T00:01:00.000Z">
+<meta property="article:modified_time" content="2026-09-02T00:01:00.000Z">
+<meta property="article:author" content="markee">
+<meta property="article:tag" content="CPython">
+<meta property="article:tag" content="JIT">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="开发工具">
+<meta property="article:tag" content="性能优化">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="码客Mark" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Python 3.15.0 RC2 发布：惰性导入、JIT 与可观测性改进值得提前测试 | 码客Mark</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?c160bf5d12f84389ce96c02b54e4575f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/head.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">markee</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/A2A/" rel="tag">A2A</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-Agent/" rel="tag">AI Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-%E5%AE%89%E5%85%A8/" rel="tag">AI 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-%E7%BD%91%E5%85%B3/" rel="tag">AI 网关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ARC-AGI-3/" rel="tag">ARC-AGI-3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ATT/" rel="tag">ATT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AVO/" rel="tag">AVO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-%E5%AE%89%E5%85%A8/" rel="tag">Android 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Anthropic/" rel="tag">Anthropic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apple/" rel="tag">Apple</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Axios/" rel="tag">Axios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bot-Management/" rel="tag">Bot Management</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI-CD/" rel="tag">CI&#x2F;CD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPython/" rel="tag">CPython</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVE/" rel="tag">CVE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude/" rel="tag">Claude</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cloudflare/" rel="tag">Cloudflare</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Copilot-CLI/" rel="tag">Copilot CLI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DALL-E/" rel="tag">DALL-E</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DeepSeek-R1/" rel="tag">DeepSeek-R1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dependabot/" rel="tag">Dependabot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DevOps/" rel="tag">DevOps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dubbo/" rel="tag">Dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/" rel="tag">Express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FFmpeg/" rel="tag">FFmpeg</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GDPR/" rel="tag">GDPR</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPT/" rel="tag">GPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPT-4/" rel="tag">GPT-4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/" rel="tag">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub-Actions/" rel="tag">GitHub Actions</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub-Copilot/" rel="tag">GitHub Copilot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrapheneOS/" rel="tag">GrapheneOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grok/" rel="tag">Grok</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Harness/" rel="tag">Harness</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hugging-Face/" rel="tag">Hugging Face</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JDK-17/" rel="tag">JDK 17</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JIT/" rel="tag">JIT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM-%E5%AE%89%E5%85%A8/" rel="tag">LLM 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LevelDB/" rel="tag">LevelDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Llama-2/" rel="tag">Llama 2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Log4j/" rel="tag">Log4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/" rel="tag">Lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MCP/" rel="tag">MCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maxwell/" rel="tag">Maxwell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroGPT/" rel="tag">MicroGPT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model-Hardware-Standard/" rel="tag">Model Hardware Standard</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Motorola/" rel="tag">Motorola</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NVIDIA/" rel="tag">NVIDIA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/" rel="tag">Netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/" rel="tag">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenAI/" rel="tag">OpenAI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenRouter/" rel="tag">OpenRouter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optical-Flow/" rel="tag">Optical Flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Passkey/" rel="tag">Passkey</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prompt-Injection/" rel="tag">Prompt Injection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RAG/" rel="tag">RAG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RLHF/" rel="tag">RLHF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-19/" rel="tag">React 19</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Rust/" rel="tag">Rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Secret-Scanning/" rel="tag">Secret Scanning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Server-Components/" rel="tag">Server Components</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Skills/" rel="tag">Skills</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stable-Diffusion/" rel="tag">Stable Diffusion</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stripe/" rel="tag">Stripe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SynthID-Text/" rel="tag">SynthID-Text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Uber/" rel="tag">Uber</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Verified-Boot/" rel="tag">Verified Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vulkan/" rel="tag">Vulkan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Warp/" rel="tag">Warp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAuthn/" rel="tag">WebAuthn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web%E5%AE%89%E5%85%A8/" rel="tag">Web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/" rel="tag">ZooKeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/containerd/" rel="tag">containerd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macOS/" rel="tag">macOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/" rel="tag">npm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xz/" rel="tag">xz</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" rel="tag">云原生</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">云端开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/" rel="tag">产品设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E6%9C%BA%E4%BA%A4%E4%BA%92/" rel="tag">人机交互</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">代码生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%93%E8%82%B2/" rel="tag">体育</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE/" rel="tag">供应链</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BE%9B%E5%BA%94%E9%93%BE%E5%AE%89%E5%85%A8/" rel="tag">供应链安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%AE%89%E5%85%A8/" rel="tag">内存安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AE%B9%E6%BA%AF%E6%BA%90/" rel="tag">内容溯源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/" rel="tag">分布式系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8E%86%E5%8F%B2/" rel="tag">历史</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">向量数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/" rel="tag">多模态</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" rel="tag">大语言模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E9%AA%8C%E5%AE%A4%E8%87%AA%E5%8A%A8%E5%8C%96/" rel="tag">实验室自动化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B1%8F%E5%B9%95%E5%85%B1%E4%BA%AB/" rel="tag">屏幕共享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C%E5%AE%9E%E8%B7%B5/" rel="tag">工作实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E5%8F%B0%E5%B7%A5%E7%A8%8B/" rel="tag">平台工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%BF%E5%91%8A%E6%8A%80%E6%9C%AF/" rel="tag">广告技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag">开发工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%80%E6%94%BE%E6%A8%A1%E5%9E%8B/" rel="tag">开放模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag">性能优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" rel="tag">扩散模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag">持续集成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E7%90%86%E6%A8%A1%E5%9E%8B/" rel="tag">推理模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag">搜索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%88%E7%8E%87/" rel="tag">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%96%E6%B3%84/" rel="tag">数据外泄</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/" rel="tag">机器人</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%94%BB%E5%87%BB/" rel="tag">机器人攻击</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B2%99%E7%AE%B1/" rel="tag">沙箱</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%88%90%E5%BC%8FAI/" rel="tag">生成式AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E8%88%9F%E9%A3%9E%E8%88%B9/" rel="tag">神舟飞船</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E6%B2%BB%E7%90%86/" rel="tag">算法治理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/" rel="tag">类加载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/" rel="tag">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" rel="tag">系统设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/" rel="tag">自动化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%86%B3%E7%AD%96/" rel="tag">自动化决策</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/" rel="tag">视频处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%84%E6%B5%8B/" rel="tag">评测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81/" rel="tag">身份认证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E4%BE%9B%E5%BA%94%E9%93%BE/" rel="tag">软件供应链</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%8E%82/" rel="tag">软件工厂</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/" rel="tag">远程访问</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%95%BF%E5%91%A8%E6%9C%9F%E4%BB%BB%E5%8A%A1/" rel="tag">长周期任务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="tag">问题排查</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%90%E7%A7%81/" rel="tag">隐私</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+                    </div>
+                </section>
+                
+
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">笨鸟也飞</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">markee</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/head.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">markee</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:wangjinguang66@163.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/beijinguang" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-2026-Python315RC2提前测试" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2026/09/02/2026-Python315RC2%E6%8F%90%E5%89%8D%E6%B5%8B%E8%AF%95/" class="article-date">
+      <time datetime="2026-09-02T00:01:00.000Z" itemprop="datePublished">2026-09-02</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python 3.15.0 RC2 发布：惰性导入、JIT 与可观测性改进值得提前测试
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E5%BC%80%E6%BA%90%E8%BD%AF%E4%BB%B6/">开源软件</a><a class="article-category-link" href="/categories/%E5%BC%80%E6%BA%90%E8%BD%AF%E4%BB%B6/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPython/" rel="tag">CPython</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JIT/" rel="tag">JIT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag">开发工具</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag">性能优化</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>9 月 1 日，Python 官方发布了 Python 3.15.0 RC2。这是 3.15 的最终计划候选版本，官方公告称它包含从 RC1 以来约 144 项错误修复、构建改进和文档变更，正式版计划在 2026 年 10 月 1 日发布。</p>
+<p>候选版的价值不在于让生产环境立刻升级，而在于给库作者、应用维护者和有 C 扩展的项目留出最后一轮兼容性验证时间。从 Python 3.15 的变更来看，开发者会碰到的不只是语法增量，还包括导入时机、性能分析接口、JIT 构建条件，以及 free-threaded 构建的扩展兼容问题。</p>
+<span id="more"></span>
+
+<h2 id="先看清-RC2-处在什么阶段"><a href="#先看清-RC2-处在什么阶段" class="headerlink" title="先看清 RC2 处在什么阶段"></a>先看清 RC2 处在什么阶段</h2><p>Python 官方把 3.15.0rc2 称为最终计划候选版本。从这个版本开始，候选版到正式版之间原则上只接受经过审查、且明确属于错误修复的改动。官方还说明，3.15 系列从现在起不会再发生 ABI 变化，使用 3.15.0 发行候选版构建的二进制 wheel 可以继续用于后续 3.15 版本。</p>
+<p>这对第三方库维护者很重要。现在发布针对 3.15 的 wheel，可以帮助下游项目发现构建脚本、C 扩展、类型检查和运行时行为问题；但对业务服务来说，候选版依然是预览版本，Python 官方明确不建议把它用于生产环境。</p>
+<p>因此，比较稳妥的做法是把 RC2 当作兼容性测试目标，而不是生产运行时。可以在 CI 中增加一个允许失败的 3.15 任务，或者在独立的预发布环境执行完整测试，把问题尽早反馈到依赖库和 CPython 的 issue tracker。</p>
+<h2 id="显式惰性导入，先解决启动阶段的浪费"><a href="#显式惰性导入，先解决启动阶段的浪费" class="headerlink" title="显式惰性导入，先解决启动阶段的浪费"></a>显式惰性导入，先解决启动阶段的浪费</h2><p>大型 Python 应用的启动时间，常常消耗在导入链上。解释器找到模块后，要读取文件、编译字节码并执行顶层代码；而一个命令行工具、Web 服务或插件系统在某次运行中可能只会真正使用其中一小部分模块。</p>
+<p>过去常见的处理方式是把 <code>import</code> 移进函数，或者通过 <code>importlib</code> 手动延迟加载。这些办法有效，却会让导入语句分散到业务代码里，增加阅读和维护成本。Python 3.15 通过 PEP 810 引入了显式的 <code>lazy</code> 导入，让导入声明仍然可以放在模块顶部，但把真正的加载推迟到名称第一次被使用时。</p>
+<p>示例语法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lazy <span class="keyword">import</span> myapp.reporting</span><br><span class="line">lazy <span class="keyword">from</span> myapp.exporters <span class="keyword">import</span> CsvExporter</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;服务启动&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一次访问时才加载对应模块</span></span><br><span class="line">myapp.reporting.generate()</span><br><span class="line">exporter = CsvExporter()</span><br></pre></td></tr></table></figure>
+
+<p>这里的关键不是把所有导入都改成惰性，而是把可选路径和重型依赖标记出来。比如命令行工具有多个子命令时，只有用户真正执行某个子命令，才需要加载对应的数据库驱动、图像库或云服务 SDK。主进程可以更快进入参数解析和健康检查阶段。</p>
+<p>惰性导入也会改变错误出现的时机。模块不存在、依赖缺失或顶层初始化失败等问题，可能从进程启动阶段推迟到名称第一次访问时。错误发生点更贴近真实使用路径，但启动检查不能再简单地等同于“所有依赖都已经加载成功”。</p>
+<p>官方文档还列出了几个限制：<code>lazy</code> 只能出现在模块作用域，不能放在函数、类或 <code>try</code>&#x2F;<code>except</code>&#x2F;<code>finally</code> 中；星号导入和 <code>__future__</code> 导入也不能惰性化。对需要兼容旧版本 Python 的项目，可以通过 <code>__lazy_modules__</code> 提供模块名列表，但旧版本不会自动获得 3.15 的惰性导入语义。</p>
+<p>在真实项目里，建议先测量再改造。重点比较冷启动时间、常驻内存、首次请求延迟和异常堆栈位置。若一个依赖几乎每次都会被访问，惰性导入可能只是把成本从启动阶段搬到了第一次请求，甚至让尾延迟变差。</p>
+<h2 id="统一-profiling-入口，让性能排查更容易组合"><a href="#统一-profiling-入口，让性能排查更容易组合" class="headerlink" title="统一 profiling 入口，让性能排查更容易组合"></a>统一 profiling 入口，让性能排查更容易组合</h2><p>Python 3.15 新增了 <code>profiling</code> 包，用一个统一的命名空间组织内置性能分析工具。官方文档列出两个主要部分：<code>profiling.tracing</code> 提供确定性的函数调用追踪，原有的 <code>cProfile</code> 仍作为向后兼容的别名；<code>profiling.sampling</code> 则提供新的统计采样分析器 Tachyon。</p>
+<p>确定性分析会记录函数调用和返回，适合回答“哪些函数累计耗时最多”这类问题，但对线上服务有一定侵入性。采样分析器则按时间间隔获取运行中的调用栈，通常更适合观察长时间运行的进程和生产环境中的热点。</p>
+<p>官方文档描述的 Tachyon 支持几种不同的目标模式：可以附加到已有进程，直接运行脚本或模块，也可以对运行中的进程做一次线程栈快照。它还区分 wall-clock、CPU、GIL 持有时间和异常处理时间等分析模式。</p>
+<p>这套接口的实际意义，是让“性能分析”从一个需要事先改代码、重启进程的动作，逐步变成可以按问题选择采样方式的工具链。例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">请求变慢</span><br><span class="line">  -&gt; 先用 wall-clock 采样确认是在等 I/O 还是执行 Python 代码</span><br><span class="line">  -&gt; 再用 CPU 模式定位计算热点</span><br><span class="line">  -&gt; 多线程场景下观察 GIL 持有时间</span><br><span class="line">  -&gt; 用火焰图或 pstats 输出进一步分析</span><br></pre></td></tr></table></figure>
+
+<p>这不代表所有线上问题都能靠采样器解决。采样频率、权限、容器 PID 命名空间、符号信息和输出格式，仍然会影响结果。上线前还要确认生产镜像是否包含对应工具，以及采样数据会不会暴露请求参数、路径或业务信息。</p>
+<p>另外，Python 3.15 把 frame pointer 在支持的平台上设为默认构建选项。这样，系统级 profiler、调试器、崩溃分析工具和 eBPF 可观测性工具更容易沿着原生调用栈回溯 Python 解释器、扩展模块和嵌入程序。</p>
+<p>对使用 C、C++、Rust 扩展的项目，这意味着构建链不能随意丢弃 Python 提供的编译参数。只要某个原生组件没有保留等价的 frame-pointer 选项，混合 Python&#x2F;原生调用栈就可能出现无法展开的断点。</p>
+<h2 id="JIT-继续扩大覆盖范围，但不要把它当成开关"><a href="#JIT-继续扩大覆盖范围，但不要把它当成开关" class="headerlink" title="JIT 继续扩大覆盖范围，但不要把它当成开关"></a>JIT 继续扩大覆盖范围，但不要把它当成开关</h2><p>Python 3.15 的 JIT 编译器也有较大调整。官方 What’s New 文档提到，新的 tracing frontend 能处理比 Python 3.14 更多的字节码操作和控制流，简单的 Python 对象创建、部分重载操作和生成器也进入了支持范围；优化器还加入了基础寄存器分配和更多常量传播。</p>
+<p>这类变化的方向很明确：JIT 不再只针对少数容易优化的路径，而是尝试覆盖更广的实际 Python 代码。不过，JIT 是否带来收益仍然取决于代码形状、解释器构建方式、热路径是否足够稳定，以及程序里有多少时间消耗在 I&#x2F;O、数据库和网络等待上。</p>
+<p>Python 官方文档还说明，JIT 构建阶段使用 LLVM 21 生成相关 stencil；运行已经构建好的 Python 并不要求终端用户安装 LLVM。换句话说，部署团队首先要确认发行版或基础镜像提供的 Python 是否启用了 JIT，而不是在运行容器里盲目安装 LLVM 就认为 JIT 已经生效。</p>
+<p>对于性能敏感服务，应该把 JIT 当成一个需要基准测试的构建变体。至少比较以下几组数据：</p>
+<ul>
+<li>冷启动时间和首个请求延迟；</li>
+<li>稳态吞吐、P50、P95 和 P99 延迟；</li>
+<li>进程 RSS、代码缓存和容器镜像大小；</li>
+<li>不同输入规模下的性能曲线；</li>
+<li>异常堆栈、调试器和 profiling 工具是否仍然可用。</li>
+</ul>
+<p>只有在固定硬件、固定依赖和固定负载下得到稳定结果，才适合把 JIT 构建放进正式发布流程。一次微基准测试中的加速，不能直接推导出整个 Web 服务会按同样比例提速。</p>
+<h2 id="free-threaded-构建有了新的-Stable-ABI-方向"><a href="#free-threaded-构建有了新的-Stable-ABI-方向" class="headerlink" title="free-threaded 构建有了新的 Stable ABI 方向"></a>free-threaded 构建有了新的 Stable ABI 方向</h2><p>Python 的 free-threaded 构建持续受到关注，Python 3.15 又为 C 扩展补充了面向 free-threaded 构建的 Stable ABI，名称为 <code>abi3t</code>。官方文档说明，目标 Stable ABI 的 C 扩展可以编译为与 free-threaded CPython 兼容的形式，但通常需要对源代码做不小的调整。</p>
+<p>这解决的是扩展生态的长期兼容问题，不等于现有的二进制包会自动兼容。项目里只要使用了 NumPy、数据库驱动、加密库、图像处理库或自研 C 扩展，就需要查看依赖是否发布了对应 wheel，以及构建后是否真的通过了 free-threaded 测试。</p>
+<p>迁移时可以把运行时矩阵明确列出来：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CPython 3.15 GIL 构建</span><br><span class="line">CPython 3.15 free-threaded 构建</span><br><span class="line">Linux / macOS / Windows</span><br><span class="line">源码安装 / 二进制 wheel</span><br><span class="line">常规测试 / 并发压力测试</span><br></pre></td></tr></table></figure>
+
+<p>free-threaded 主要改变的是并发执行的约束，不能替代对共享状态、线程安全和第三方库行为的检查。一个扩展即使能够成功安装，也可能在并发压力下暴露引用计数、全局状态或锁粒度方面的问题。</p>
+<h2 id="3-15-还有哪些值得留意的语言和标准库变化"><a href="#3-15-还有哪些值得留意的语言和标准库变化" class="headerlink" title="3.15 还有哪些值得留意的语言和标准库变化"></a>3.15 还有哪些值得留意的语言和标准库变化</h2><p>除了性能和工具链，Python 3.15 还加入了一些会直接影响日常代码的特性：</p>
+<ul>
+<li>PEP 814 增加内置不可变映射类型 <code>frozendict</code>，在键和值都可哈希时可以参与哈希操作；</li>
+<li>PEP 661 增加内置 <code>sentinel</code> 类型，用于创建具有稳定身份和简洁表示的哨兵值；</li>
+<li>PEP 798 允许列表、集合、字典推导式和生成器表达式使用 <code>*</code>、<code>**</code> 解包；</li>
+<li>PEP 686 让 UTF-8 成为默认编码；</li>
+<li>PEP 728 为 <code>TypedDict</code> 增加 <code>closed</code> 和 <code>extra_items</code> 等更严格的类型描述能力。</li>
+</ul>
+<p>这些变化的迁移成本并不相同。<code>frozendict</code> 和 <code>sentinel</code> 更像是新增工具，通常不会影响旧代码；UTF-8 默认编码则可能暴露以前依赖系统本地编码的文件处理问题；类型系统变化主要影响类型检查器、库作者和生成代码的工具链。</p>
+<p>特别是编码问题，不能只在开发机上验证。应在 Linux、macOS、Windows 和不同区域设置下测试配置文件、CSV、日志、模板和命令行输出，检查隐式 <code>open()</code>、<code>sys.stdin</code>、<code>sys.stdout</code> 等路径是否仍符合预期。</p>
+<h2 id="项目现在应该怎样准备"><a href="#项目现在应该怎样准备" class="headerlink" title="项目现在应该怎样准备"></a>项目现在应该怎样准备</h2><h3 id="先把-RC2-放进兼容性矩阵"><a href="#先把-RC2-放进兼容性矩阵" class="headerlink" title="先把 RC2 放进兼容性矩阵"></a>先把 RC2 放进兼容性矩阵</h3><p>不要直接替换系统 Python。为 3.15 RC2 创建独立虚拟环境，运行单元测试、集成测试、类型检查、打包和安装测试。对于发布库，还要在干净环境中验证源码包和 wheel，而不是只在维护者本机执行 <code>pip install -e .</code>。</p>
+<h3 id="让-CI-暴露真正的失败位置"><a href="#让-CI-暴露真正的失败位置" class="headerlink" title="让 CI 暴露真正的失败位置"></a>让 CI 暴露真正的失败位置</h3><p>可以把测试拆成几类：导入测试、API 行为测试、编码测试、C 扩展构建测试、并发测试和性能基准。这样即使某一项只在 3.15 失败，也能知道是语言行为变化、构建链问题还是第三方依赖没有跟上。</p>
+<h3 id="把惰性导入和-JIT-分开评估"><a href="#把惰性导入和-JIT-分开评估" class="headerlink" title="把惰性导入和 JIT 分开评估"></a>把惰性导入和 JIT 分开评估</h3><p>它们解决的是不同问题。惰性导入主要影响启动阶段和首次使用某个模块的成本，JIT 主要影响经过足够预热后的执行路径。两者一起打开后，性能变化更难归因，建议先单独测试，再做组合基准。</p>
+<h3 id="预先检查原生依赖"><a href="#预先检查原生依赖" class="headerlink" title="预先检查原生依赖"></a>预先检查原生依赖</h3><p>带 C、C++ 或 Rust 扩展的项目，至少应确认：</p>
+<ul>
+<li>构建后是否保留 frame-pointer 相关选项；</li>
+<li>依赖是否提供 Python 3.15 wheel；</li>
+<li>free-threaded 构建是否有单独的 wheel 和测试结果；</li>
+<li>调试器、采样 profiler 与符号信息是否可用；</li>
+<li>生产基础镜像是否固定了 Python 小版本。</li>
+</ul>
+<p>如果这些问题还没有答案，升级的主要风险往往不在 Python 代码本身，而在打包和运行环境。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Python 3.15.0 RC2 是一个适合“提前验证”的版本。它把惰性导入、统一 profiling 包、JIT 覆盖范围、frame pointer 默认构建和 free-threaded Stable ABI 一起推进，影响了从应用启动到性能排查、再到原生扩展发布的多个环节。</p>
+<p>对应用团队来说，当前最有价值的动作是把它加入 CI 和预发布环境，记录启动、延迟、内存、构建和依赖兼容数据；对库作者来说，则应尽快构建 3.15 wheel，检查 <code>abi3t</code>、编码默认值和新的导入语义。等正式版发布时，真正需要解决的问题应该已经从“能不能运行”变成“是否值得切换”。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.python.org/2026/09/python-3150-rc2/">Python Insider：Python 3.15.0 candidate 2 is here（2026-09-01）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.python.org/downloads/release/python-3150rc2/">Python 官方下载页：Python 3.15.0rc2</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3.15/whatsnew/3.15.html">Python 3.15 What’s New</a></li>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0810/">PEP 810：Explicit lazy imports</a></li>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0799/">PEP 799：A dedicated profiling package</a></li>
+<li><a target="_blank" rel="noopener" href="https://peps.python.org/pep-0803/">PEP 803：Stable ABI for free-threaded builds</a></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2026/09/02/2026-Python315RC2%E6%8F%90%E5%89%8D%E6%B5%8B%E8%AF%95/">Python 3.15.0 RC2 发布：惰性导入、JIT 与可观测性改进值得提前测试</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
+        <p><span>发布时间:</span>2026-09-02, 08:01:00</p>
+        <p><span>最后更新:</span>2026-09-02, 08:01:00</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2026/09/02/2026-Python315RC2%E6%8F%90%E5%89%8D%E6%B5%8B%E8%AF%95/" title="Python 3.15.0 RC2 发布：惰性导入、JIT 与可观测性改进值得提前测试">https://code.idea4j.com/2026/09/02/2026-Python315RC2%E6%8F%90%E5%89%8D%E6%B5%8B%E8%AF%95/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://code.idea4j.com/2026/09/02/2026-Python315RC2%E6%8F%90%E5%89%8D%E6%B5%8B%E8%AF%95/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2026/09/01/2026-Cloudflare%E8%87%AA%E9%80%82%E5%BA%94%E6%99%BA%E8%83%BD%E6%9C%BA%E5%99%A8%E4%BA%BA%E9%98%B2%E6%8A%A4/">
+                    Cloudflare 发布 Adaptive Intelligence：机器人防护开始和攻击者比拼适应速度
+                </a>
+            </div>
+        
+    </nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E7%9C%8B%E6%B8%85-RC2-%E5%A4%84%E5%9C%A8%E4%BB%80%E4%B9%88%E9%98%B6%E6%AE%B5"><span class="toc-number">1.</span> <span class="toc-text">先看清 RC2 处在什么阶段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E5%BC%8F%E6%83%B0%E6%80%A7%E5%AF%BC%E5%85%A5%EF%BC%8C%E5%85%88%E8%A7%A3%E5%86%B3%E5%90%AF%E5%8A%A8%E9%98%B6%E6%AE%B5%E7%9A%84%E6%B5%AA%E8%B4%B9"><span class="toc-number">2.</span> <span class="toc-text">显式惰性导入，先解决启动阶段的浪费</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80-profiling-%E5%85%A5%E5%8F%A3%EF%BC%8C%E8%AE%A9%E6%80%A7%E8%83%BD%E6%8E%92%E6%9F%A5%E6%9B%B4%E5%AE%B9%E6%98%93%E7%BB%84%E5%90%88"><span class="toc-number">3.</span> <span class="toc-text">统一 profiling 入口，让性能排查更容易组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JIT-%E7%BB%A7%E7%BB%AD%E6%89%A9%E5%A4%A7%E8%A6%86%E7%9B%96%E8%8C%83%E5%9B%B4%EF%BC%8C%E4%BD%86%E4%B8%8D%E8%A6%81%E6%8A%8A%E5%AE%83%E5%BD%93%E6%88%90%E5%BC%80%E5%85%B3"><span class="toc-number">4.</span> <span class="toc-text">JIT 继续扩大覆盖范围，但不要把它当成开关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#free-threaded-%E6%9E%84%E5%BB%BA%E6%9C%89%E4%BA%86%E6%96%B0%E7%9A%84-Stable-ABI-%E6%96%B9%E5%90%91"><span class="toc-number">5.</span> <span class="toc-text">free-threaded 构建有了新的 Stable ABI 方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-15-%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E5%80%BC%E5%BE%97%E7%95%99%E6%84%8F%E7%9A%84%E8%AF%AD%E8%A8%80%E5%92%8C%E6%A0%87%E5%87%86%E5%BA%93%E5%8F%98%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">3.15 还有哪些值得留意的语言和标准库变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%8E%B0%E5%9C%A8%E5%BA%94%E8%AF%A5%E6%80%8E%E6%A0%B7%E5%87%86%E5%A4%87"><span class="toc-number">7.</span> <span class="toc-text">项目现在应该怎样准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E6%8A%8A-RC2-%E6%94%BE%E8%BF%9B%E5%85%BC%E5%AE%B9%E6%80%A7%E7%9F%A9%E9%98%B5"><span class="toc-number">7.1.</span> <span class="toc-text">先把 RC2 放进兼容性矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A9-CI-%E6%9A%B4%E9%9C%B2%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%A4%B1%E8%B4%A5%E4%BD%8D%E7%BD%AE"><span class="toc-number">7.2.</span> <span class="toc-text">让 CI 暴露真正的失败位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E6%83%B0%E6%80%A7%E5%AF%BC%E5%85%A5%E5%92%8C-JIT-%E5%88%86%E5%BC%80%E8%AF%84%E4%BC%B0"><span class="toc-number">7.3.</span> <span class="toc-text">把惰性导入和 JIT 分开评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%85%88%E6%A3%80%E6%9F%A5%E5%8E%9F%E7%94%9F%E4%BE%9D%E8%B5%96"><span class="toc-number">7.4.</span> <span class="toc-text">预先检查原生依赖</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">8.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Python 3.15.0 RC2 发布：惰性导入、JIT 与可观测性改进值得提前测试　| 码客Mark　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2026/09/01/2026-Cloudflare%E8%87%AA%E9%80%82%E5%BA%94%E6%99%BA%E8%83%BD%E6%9C%BA%E5%99%A8%E4%BA%BA%E9%98%B2%E6%8A%A4/" title="下一篇: Cloudflare 发布 Adaptive Intelligence：机器人防护开始和攻击者比拼适应速度">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2026/09/02/2026-Python315RC2%E6%8F%90%E5%89%8D%E6%B5%8B%E8%AF%95/">Python 3.15.0 RC2 发布：惰性导入、JIT 与可观测性改进值得提前测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/09/01/2026-Cloudflare%E8%87%AA%E9%80%82%E5%BA%94%E6%99%BA%E8%83%BD%E6%9C%BA%E5%99%A8%E4%BA%BA%E9%98%B2%E6%8A%A4/">Cloudflare 发布 Adaptive Intelligence：机器人防护开始和攻击者比拼适应速度</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/31/2026-FFmpeg-Vulkan%E5%B8%A7%E7%8E%87%E6%8F%90%E5%8D%87/">FFmpeg 主线加入 Vulkan 帧率提升：fruc_vulkan 如何把光流插帧搬到 GPU</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/30/2026-GitHub-Actions%E6%A3%80%E6%9F%A5%E8%AE%B0%E5%BD%95%E4%BF%9D%E7%95%99%E6%9C%9F/">GitHub Actions 将统一清理旧检查记录：CI 保留期要重新设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/29/2026-GitHub-Copilot-CLI%E5%8E%9F%E7%94%9FRust%E8%BF%90%E8%A1%8C%E6%97%B6/">GitHub Copilot CLI 改用原生 Rust 运行时：终端 Agent 开始补上运行时基础设施</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/28/2026-Anthropic-Model-Hardware-Standard%E8%AE%A9AI%E6%93%8D%E4%BD%9C%E7%9C%9F%E5%AE%9E%E7%A1%AC%E4%BB%B6/">Anthropic 推出 Model Hardware Standard：让 AI Agent 走进真实硬件</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/27/2026-GitHub-Copilot%E8%87%AA%E5%8A%A8%E6%95%B4%E7%90%86Dependabot/">GitHub Copilot 自动整理 Dependabot PR：把依赖维护变成晨间摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/26/2026-GitHub-LLM%E4%B8%8A%E7%BA%BF%E5%89%8D%E8%AF%84%E6%B5%8B%E6%96%B9%E6%B3%95/">GitHub 分享 LLM 上线前评测方法：别只看准确率，要守住安全边界</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/25/2026-OpenAI%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9E%8B%E8%B6%8A%E8%BF%87%E6%B2%99%E7%AE%B1/">OpenAI 网络安全模型越过隔离环境：AI Agent 评测首先要证明“能被关住”</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/24/2026-Uber%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9C%E7%94%A8%E5%8F%B8%E6%9C%BA/">Uber 被罚 8.25 亿欧元：自动化停用账户为什么必须可解释、可申诉</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/23/2026-NVIDIA-AVO%E9%95%BF%E5%91%A8%E6%9C%9FAgent/">NVIDIA AVO 研究：Agent 的上限不只由模型决定，Harness 才是工程主战场</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/22/2026-Motorola-GrapheneOS%E6%89%8B%E6%9C%BA/">Motorola 支持 GrapheneOS：隐私手机真正难的是硬件与供应链</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/21/2026-Grok%E5%8A%A0%E5%AF%86%E4%B8%8A%E4%B8%8B%E6%96%87%E6%B3%A8%E5%85%A5/">加密提示也能劫持 Agent：Grok 数据外泄事件暴露的 LLM 安全边界</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/19/2026-Warp%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%8E%82/">Warp Factories：编码 Agent 如何被组织成一座软件工厂</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/18/2026-%E8%8B%B9%E6%9E%9C%E8%B0%83%E6%95%B4ATT%E6%8E%88%E6%9D%83%E6%8F%90%E7%A4%BA/">德国监管要求苹果调整 ATT 授权提示：iOS 开发者该关注什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/17/2026-openrouter-ai-gateway/">OpenRouter 被报道称将以 70 亿美元以上卖给 Stripe：AI 网关为何成为基础设施</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/16/2026-claude-text-watermark/">Claude 文本水印如何工作：从词语选择到 AI 内容溯源</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/15/2026-macos-screen-sharing-cve-2026-65400/">macOS 屏幕共享漏洞正在被利用：CVE-2026-65400 的风险与防护</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/12/2026-codex-skills/">Codex 到底需要安装哪些 Skill：一份按工作流整理的清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E6%9C%89AI%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%84%9F%E8%A7%89%E8%B6%8A%E6%9D%A5%E8%B6%8A%E7%B4%AF%E4%BA%86/">有AI了，为什么感觉越来越累了</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/08/11/%E5%85%B3%E4%BA%8E%E5%AF%B9AI%E6%9C%AA%E6%9D%A5%E7%9A%84%E6%83%B3%E8%B1%A1/">关于对 AI 未来的想象</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/03/31/2026-axios-npm-supply-chain/">Axios npm 投毒事件：依赖安装为什么已经是一种远程代码执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/02/15/2026-microgpt/">MicroGPT：200 行 Python 里，藏着大语言模型真正不可省略的部分</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/20/2025-codex-software-agent/">Codex 云端编程智能体：软件开发开始拥有“可委托的后台任务”</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/12/2025-a2a-protocol/">A2A 协议：当一个智能体需要把任务交给另一个智能体</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/02/10/2025-copilot-agent-mode/">Copilot Agent Mode：AI 编程从补全一行走向完成一项任务</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/24/2025-deepseek-r1/">DeepSeek-R1：推理模型开始把训练方法写在明面上</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/08/2024-react-19/">React 19：前端框架开始把异步状态当成一等公民</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/28/2024-model-context-protocol/">MCP 的真正价值：给 AI 与工具之间一个统一插座</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/06/09/2024-kubernetes-10-years/">Kubernetes 十周年：它赢下的不是编排功能，而是基础设施接口</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/04/02/2024-xz-backdoor/">xz 后门事件：一次持续数年的开源供应链渗透</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/14/2023-passkeys/">Passkey 成为默认登录方式：密码为什么终于可以被替代</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/09/09/2023-rag/">RAG 为什么成为 2023 年大模型应用的标准答案</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/07/22/2023-llama-2/">Llama 2：开放权重大模型为什么改变了 AI 的竞争方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/03/18/2023-gpt-4/">GPT-4 发布之后，大模型竞争开始从“会说话”走向“能解决问题”</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/12/03/2022-chatgpt/">ChatGPT 为什么是一个界面革命，而不只是更大的模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/10/12/2022-rust-linux/">Rust 进入 Linux 内核：内存安全终于从口号走进基础设施</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/25/2022-stable-diffusion/">Stable Diffusion 开放权重之后，生成式 AI 第一次真正进入个人电脑</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/20/2022-dall-e-2/">DALL·E 2：当“描述需求”第一次变成了图像生产方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/12/15/2021-log4shell/">Log4Shell 之后：真正危险的是我们不知道自己依赖了什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/09/18/2021-java-17/">Java 17：比新语法更重要的是可预测的升级节奏</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/04/2021-github-copilot/">GitHub Copilot 出现之后，编程开始从“输入代码”转向“审查意图”</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/18/2021-kubernetes-dockershim/">Kubernetes 不再内置 Docker：真正被移除的到底是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/12/LevelDB/">LevelDB</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/12/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%AE%9E%E6%88%98/">项目管理实战</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/06/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%E3%80%8B%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%AF%BC%E6%89%8B%E5%86%8C/">《数据结构与算法之美》学习指导手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/06/%E6%B1%A0%E5%8C%96%E6%80%9D%E6%83%B3/">池化思想</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/04/32%E4%B8%AAJAVA%E9%9D%A2%E8%AF%95%E5%BF%85%E8%80%83%E7%82%B9/">32 个 Java 面试必考点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/13/Redis%E7%BC%93%E5%AD%98%E8%AE%BE%E8%AE%A1%E5%8F%8A%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">Redis 缓存设计及常见问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/quickstart/">使用maxwell</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E4%BD%BF%E7%94%A8maxwell%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5mysql%E6%95%B0%E6%8D%AE%E5%88%B0%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97(rabbitMQ)/">使用maxwell实时同步mysql数据到消息队列(rabbitMQ)</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/27/%E5%89%8D%E5%90%8E%E7%AB%AF%E8%81%94%E8%B0%83%E8%BF%87%E7%A8%8B/">前后端联调过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/20/%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%A6%E4%B9%A0/">如何有效的学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%20Boot/">Springboot</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Redis%20%E6%95%99%E7%A8%8B/">Redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Spring%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">Spring事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/Zuul%E4%B8%8EGateWay%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">网关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E7%9B%B8%E5%85%B3/">zookeeper相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/zookeeper%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99/">zookeeper选举规则</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E4%BD%BF%E7%94%A8jvm%E5%B7%A5%E5%85%B7%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C/">jps</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%A6%82%E4%BD%95%E6%9B%BF%E6%8D%A2%20JDK%20%E7%9A%84%E7%B1%BB/">如何替换 JDK 的类</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/15/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/03/%E6%97%A5%E6%8B%B1%E4%B8%80%E5%8D%92/">日拱一卒</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/30/%E6%89%8B%E5%86%99RPC%E6%A1%86%E6%9E%B6/">手写RPC框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E7%BC%96%E5%86%99springboot%E5%90%AF%E5%8A%A8%E5%99%A8/">springboot启动器</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/%E9%97%AE%E9%A2%98%E5%A4%A7%E5%85%A8/">问题大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/09/Pinpoint/">Pinpoint安装使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/04/RabbitMQ%E5%91%BD%E4%BB%A4%E8%A1%8C/">RabbitMQ命令行</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%91%BD%E4%BB%A4/">docker 命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/29/docker%20%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dockerfile%E6%8C%87%E4%BB%A4/">docker 容器数据卷</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/">Class文件格式</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Context%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B/">Context初始化流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Docker%E6%90%AD%E5%BB%BAzookeeper%E9%9B%86%E7%BE%A4/">Docker搭建zookeeper集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Dubbo%E8%AF%B7%E6%B1%82%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%91%E9%80%81%E8%BF%87%E7%A8%8B/">Dubbo请求数据的发送过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/GC%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/">GC日志配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AE%9E%E7%8E%B0%E9%93%BE%E8%A1%A8/">Java实现链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E6%94%B6%E9%9B%86%E5%A4%A7%E5%85%A8/">Java字节码指令收集大全</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7/">Java性能调优工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%96%87%E6%A1%A3%E6%91%98%E6%8A%84/">dubbo负载均衡</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">dubbo架构设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/dubbo%E7%9A%84%E5%8E%9F%E7%90%86/">dubbo的原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">java性能优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E6%B3%9B%E5%9E%8B/">java泛型</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/java%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/">java语言特性知识点汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/28/mst/">面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/21/%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E6%A0%B8%E5%BF%83%E5%85%B3%E6%B3%A8%E7%82%B9/">系统性能核心关注点</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Bean的生命周期</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/17/MYSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/">MYSQL数据库设计规范</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/14/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9F%A5%E8%AF%86%E7%82%B9/">程序员必备知识点</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/17/Appollo%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8E%9F%E7%90%86/">Appollo配置中心原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/14/%E7%BC%93%E5%AD%98/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/24/Netty%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/">Netty权威指南目录抄写</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/17/bat/">BAT后端开发面试108题</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/27/MySQL%E6%9D%83%E9%99%90%E5%88%86%E9%85%8D/">MySQL权限分配</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/19/mysql%E5%93%AA%E4%BA%9B%E6%83%85%E5%86%B5%E4%B8%8D%E9%80%82%E5%90%88%E5%BB%BA%E7%B4%A2%E5%BC%95/">mysql哪些情况不适合建索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/10/xpath/">常用xpath例子</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/Netty/">Netty</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/MyBatis%E4%BD%BF%E7%94%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%8C%E5%9C%A8%E6%BA%90%E7%A0%81%E4%B8%8A%E6%98%AF%E5%A6%82%E4%BD%95%E4%BD%93%E7%8E%B0%E7%9A%84%EF%BC%9F/">MyBatis使用了哪些设计模式，在源码上是如何体现的？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/yinyangshi/">我的阴阳师之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/MAT%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B9%8B%E6%B7%B1%E5%A0%86%E5%92%8C%E6%B5%85%E5%A0%86/">MAT工具应用之深堆和浅堆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Markdown%E6%93%8D%E4%BD%9C/">Markdown操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mac%20%E6%8C%89%E9%94%AE%E7%AC%A6%E5%8F%B7/">mac按键符号</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/mylife170320/">mylife170320</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/java1/">pacakge-info.java</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/28/mybatis2/">MyBatis Generator配置文件详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/27/springbatch/">springbatch</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/docker/">Boot2Docker 启动闪退</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/jenkins/">jenkins 安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux2/">linux 端口查看</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/linux1/">linux下的文件结构，每个文件夹用途</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/21/svn1/">linux下svn安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/19/jvm2/">堆分配参数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/16/questions/">开发中遇到的异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/12/mybatis1/">mybatis generator 配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/jinyan/">jinyan</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/08/javaapi1/">Java API 学习之ClassLoader</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/lua1/">Lua语言积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/30/sqljl/">sql语句：根据身份证得到省份、生日、性别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/28/jqiframe/">js与jQuery 获取父窗、子窗的iframe</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/sqlty/">sql优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/usapresident/">美国历任总统，在任年限及所属党派</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/04/xingnen2/">改善性能的几个技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/xingnen/">性能概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/servlet3/">一行配置文件引发的“血案”</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/btyeclass/">Class类文件的结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/24/jvm1/">java虚拟机性能监控与故障管理工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/mvnenvironmentseparate/">Maven 打包实现环境配置分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/huibian/">汇编语言(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/byyl/">byyl</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/shenzhou/">神舟飞船系列</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/mysqlTransaction/">更改MySQL的默认事务隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/angularjs2d1/">angularjs2d1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/11/mvnarchetype/">创建自己maven archetype</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/hexo/">hexo + github建站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongodb/">mongodb</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/society/">房地产资本主义时代</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0923/">微信小程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/essay0922/">个人小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/21/essay/">随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/node15/">Express 框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/node14/">使用 Node 创建 Web 服务器和客户端</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/node13/">Node.js GET/POST请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node12/">Node.js 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/maven/">maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/20/node11/">Node.js 常用工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/19/node10/">Node.js 全局对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/node9/">Node.js 路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node8/">Node.js模块系统</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node7/">Node.js Stream(流)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/vim/">vim命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/16/node6/">Node.js Buffer(缓冲区)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node5/">Node.js EventEmitter</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node4/">Node.js 事件循环</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node3/">Node.js 回调函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/markdown/">markdown语法积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/node2/">NPM 使用介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/sublime/">sublime text 3 使用积累</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/node1/">Node.js 创建第一个应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%8E%92%E5%BA%8F/">排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E6%B7%B1%E5%85%8B%E9%9A%86%E5%92%8C%E6%B5%85%E5%85%8B%E9%9A%86%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB/">深克隆</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/%E7%B1%BB%E8%A3%85%E8%BD%BD/">类装载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/staruml1/">使用快速生成GoF设计模式的类图与代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/builderpattern/">builderpattern</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/DesignPatterns/">设计模式(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/MySQLSP/">MySQL 存储过程的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/storedprodcedure/">存储过程的优缺点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/liyue87/">恭喜张梦雪夺得里约奥运首金</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/nba1/">喜欢的NBA海报</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/mooc10/">10家慕课网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/hexouser/">在多台电脑上使用hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/hi-hexo/">hexo</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i>
+                2016-2026 markee
+            </div>
+            <div class="footer-right">
+                <a href="https://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
