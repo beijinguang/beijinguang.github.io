@@ -15,18 +15,22 @@
 
 
 
-<meta name="description" content="用StartUML生成GoF设计模式类图与代码打开startuml，建立类图，File-&gt;new project by approach-&gt;选择Empty project 选择Model-&gt;Add-&gt;Model">
+<meta name="description" content="VS Code 1.137 将 Agent Automations 带入 Public Preview，可以按小时、天或周运行保存的 Agent 任务。本文梳理它的调度模型、运行条件、权限风险和适合落地的工程实践。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用快速生成GoF设计模式的类图与代码">
-<meta property="og:url" content="https://code.idea4j.com/2016/08/10/staruml1/index.html">
+<meta property="og:title" content="VS Code 1.137 的 Agent Automations：定时任务进入预览，权限边界要先于 Prompt">
+<meta property="og:url" content="https://code.idea4j.com/2026/09/14/2026-VSCode137Agent%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1/index.html">
 <meta property="og:site_name" content="码客Mark">
-<meta property="og:description" content="用StartUML生成GoF设计模式类图与代码打开startuml，建立类图，File-&gt;new project by approach-&gt;选择Empty project 选择Model-&gt;Add-&gt;Model">
+<meta property="og:description" content="VS Code 1.137 将 Agent Automations 带入 Public Preview，可以按小时、天或周运行保存的 Agent 任务。本文梳理它的调度模型、运行条件、权限风险和适合落地的工程实践。">
 <meta property="og:locale">
-<meta property="article:published_time" content="2016-08-10T07:23:00.000Z">
-<meta property="article:modified_time" content="2016-08-10T07:23:00.000Z">
+<meta property="article:published_time" content="2026-09-14T00:01:00.000Z">
+<meta property="article:modified_time" content="2026-09-14T00:01:00.000Z">
 <meta property="article:author" content="markee">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="GitHub Copilot">
+<meta property="article:tag" content="VS Code">
 <meta property="article:tag" content="开发工具">
-<meta property="article:tag" content="设计模式">
+<meta property="article:tag" content="自动化">
 <meta name="twitter:card" content="summary">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -61,7 +65,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>使用快速生成GoF设计模式的类图与代码 | 码客Mark</title>
+<title>VS Code 1.137 的 Agent Automations：定时任务进入预览，权限边界要先于 Prompt | 码客Mark</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -276,11 +280,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-staruml1" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-2026-VSCode137Agent自动化任务" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/08/10/staruml1/" class="article-date">
-      <time datetime="2016-08-10T07:23:00.000Z" itemprop="datePublished">2016-08-10</time>
+      <a href="/2026/09/14/2026-VSCode137Agent%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1/" class="article-date">
+      <time datetime="2026-09-14T00:01:00.000Z" itemprop="datePublished">2026-09-14</time>
 </a>
 
 
@@ -295,7 +299,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      使用快速生成GoF设计模式的类图与代码
+      VS Code 1.137 的 Agent Automations：定时任务进入预览，权限边界要先于 Prompt
     </h1>
   
 
@@ -304,13 +308,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/starUML/">starUML</a>
+    <a class="article-category-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><a class="article-category-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag">开发工具</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI-Agent/" rel="tag">AI Agent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DevOps/" rel="tag">DevOps</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GitHub-Copilot/" rel="tag">GitHub Copilot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VS-Code/" rel="tag">VS Code</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag">开发工具</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/" rel="tag">自动化</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -320,17 +324,120 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h3 id="用StartUML生成GoF设计模式类图与代码"><a href="#用StartUML生成GoF设计模式类图与代码" class="headerlink" title="用StartUML生成GoF设计模式类图与代码"></a>用StartUML生成GoF设计模式类图与代码</h3><pre><code>打开startuml，建立类图，File-&gt;new project by approach-&gt;选择Empty project
-选择Model-&gt;Add-&gt;Model
-</code></pre>
+        <p>VS Code 1.137 带来了一项很容易被低估的能力：Agent Automations 进入 Public Preview。开发者可以把一个带有 Prompt、工作区、模型和权限配置的 Agent 任务保存下来，手动运行，也可以按小时、每天或每周自动运行。</p>
+<p>它适合处理“重复但需要判断”的工作，例如汇总最近的代码变化、整理 Issue、寻找潜在缺陷或检查文档。关键变化不是多了一个定时器，而是定时器会再次启动一个拥有文件读取、命令执行甚至修改权限的 Agent 会话。只要任务进入无人值守状态，Prompt 质量就不再是唯一问题，工作区、权限、运行主机、幂等性和用量预算都需要一起设计。</p>
 <span id="more"></span>
 
-<pre><code>选择Model-&gt;Add-&gt;Diagram-&gt;ClassDiagram
-Tools-&gt;Options-&gt;选Java，勾选生成代码选项
-右键画图区，弹出下图对话框，选择applay pattern,选Gof-&gt;然后 23中模式任你选～
-Tools-&gt;Java-&gt;Generate Code 生成代码
-File-&gt;Export Diagram 生成类图图片
-</code></pre>
+<h2 id="Agent-Automations-具体能做什么"><a href="#Agent-Automations-具体能做什么" class="headerlink" title="Agent Automations 具体能做什么"></a>Agent Automations 具体能做什么</h2><p>VS Code 官方更新说明把 Automations 定义为重复运行的 Agent 任务。打开 Agents window 后，侧边栏会出现 Automations 入口；可以从模板开始，也可以自己填写任务名称、Prompt 和调度计划。</p>
+<p>目前的调度方式包括：</p>
+<table>
+<thead>
+<tr>
+<th>调度方式</th>
+<th>适合的工作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Manual</td>
+<td>先验证 Prompt 和首次运行结果</td>
+</tr>
+<tr>
+<td>Hourly</td>
+<td>需要较短反馈周期的仓库巡检或状态汇总</td>
+</tr>
+<tr>
+<td>Daily</td>
+<td>每日变更摘要、Issue 初筛、文档检查</td>
+</tr>
+<tr>
+<td>Weekly</td>
+<td>周报、依赖观察、长期问题盘点</td>
+</tr>
+<tr>
+<td>On demand</td>
+<td>不改变计划，临时手动触发一次</td>
+</tr>
+</tbody></table>
+<p>这项功能仍在 Preview，并且会逐步向用户开放。需要先启用 <code>chat.automations.enabled</code> 设置，然后在 Agents window 中进入 Automations。预览状态意味着设置入口、运行行为和可用 Agent 可能继续变化，不适合在没有回滚方案的情况下作为关键生产流程的唯一依赖。</p>
+<h2 id="它不是普通的-Cron"><a href="#它不是普通的-Cron" class="headerlink" title="它不是普通的 Cron"></a>它不是普通的 Cron</h2><p>传统 Cron 通常只负责在某个时间启动脚本，脚本的权限和执行环境由服务器固定提供。Agent Automation 的配置对象更丰富：它会保存 Prompt、目标工作区、所选 Agent、模型和 Session configuration，还可能包含权限选项和 Git worktree 设置。</p>
+<p>一次运行大致可以看成下面这条链路：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">调度时间到达</span><br><span class="line">      ↓</span><br><span class="line">加载保存的 Prompt 和 Session configuration</span><br><span class="line">      ↓</span><br><span class="line">连接目标工作区或选择 No workspace</span><br><span class="line">      ↓</span><br><span class="line">启动 Agent 会话</span><br><span class="line">      ↓</span><br><span class="line">按权限读取文件、运行命令或修改内容</span><br><span class="line">      ↓</span><br><span class="line">保存本次运行结果</span><br></pre></td></tr></table></figure>
+
+<p>VS Code 文档明确提醒，Automation 可以按照所选 Agent 的权限读取文件、运行命令和进行修改。保存 Automation 不会绕过组织策略，也不能保证未来每次运行都不需要审批。换句话说，调度计划只是“何时启动”，不是“自动获得一切权限”。</p>
+<h2 id="运行环境决定它会不会真的按时执行"><a href="#运行环境决定它会不会真的按时执行" class="headerlink" title="运行环境决定它会不会真的按时执行"></a>运行环境决定它会不会真的按时执行</h2><p>本地 Automation 有一个与云端定时任务不同的前提：运行它的机器和 Agent 必须可用。官方文档说明，Agent Host-backed 的计划需要 Agent Host 进程保持运行；其他计划则需要 VS Code 窗口保持运行。关闭应用或让机器睡眠后，不能假设任务仍会像服务器上的 Cron 一样正常执行。</p>
+<p>另外还有几个容易被忽略的调度行为：</p>
+<ul>
+<li>每日和每周计划使用本地时区；</li>
+<li>中断后，错过的计划可能触发一次 catch-up，但不保证每次错过的执行都被补回；</li>
+<li>同一个 Automation 一次只运行一个会话，不会因为计划重叠而并行启动多个相同任务；</li>
+<li>每次执行都会消耗所选 Agent 和模型对应的使用额度。</li>
+</ul>
+<p>因此，开发团队在设计计划时要先回答两个问题：这台机器是否真的会在目标时间在线，以及漏跑一次任务会不会影响业务。如果任务具有生产影响，就应该准备一个有稳定运行时的替代方案，而不是把本地 VS Code 当成高可用调度器。</p>
+<h2 id="第一次不要直接设置成每天运行"><a href="#第一次不要直接设置成每天运行" class="headerlink" title="第一次不要直接设置成每天运行"></a>第一次不要直接设置成每天运行</h2><p>官方文档建议先把 Schedule 设为 Manual，检查首次运行结果后，再改成 Hourly、Daily 或 Weekly。这个顺序非常重要，因为 Agent 的错误往往不是“任务没启动”，而是任务启动后理解错范围、调用了不合适的命令，或者生成了没人会消费的输出。</p>
+<p>可以先用一个只读、范围明确的任务做验证：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">汇总当前仓库最近 24 小时的提交和 Pull Request。</span><br><span class="line">只读取 Git 历史、Pull Request 元数据和已有文档，不修改文件、不运行发布命令。</span><br><span class="line">输出：变更摘要、可能需要人工关注的问题、信息来源和未确定事项。</span><br><span class="line">如果没有足够信息，明确写出“无法判断”，不要猜测。</span><br></pre></td></tr></table></figure>
+
+<p>首次运行重点检查四件事：</p>
+<ol>
+<li>Agent 是否打开了预期的工作区。</li>
+<li>读取范围是否超出了任务需要。</li>
+<li>输出是否带有可核对的提交、Issue 或文件引用。</li>
+<li>任务失败、无数据和权限不足时，结果是否清楚表达了状态。</li>
+</ol>
+<p>只有当这四点都稳定后，才适合加入周期计划。</p>
+<h2 id="Prompt-要写成可重复执行的任务"><a href="#Prompt-要写成可重复执行的任务" class="headerlink" title="Prompt 要写成可重复执行的任务"></a>Prompt 要写成可重复执行的任务</h2><p>一次性对话可以依赖上下文，定时 Automation 则不能假设上一次会话的记忆还在。Prompt 最好明确写出输入范围、输出格式、禁止操作和失败处理。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">任务：生成过去 24 小时的仓库变更摘要。</span><br><span class="line"></span><br><span class="line">范围：当前工作区的 Git 提交、Pull Request 和 Issue。</span><br><span class="line">输出：</span><br><span class="line">1. 变更摘要，按主题分组；</span><br><span class="line">2. 需要人工确认的风险；</span><br><span class="line">3. 引用的提交或链接；</span><br><span class="line">4. 没有数据或无法判断的项目。</span><br><span class="line"></span><br><span class="line">约束：只读，不修改文件，不安装依赖，不推送代码，不访问生产凭据。</span><br><span class="line">重复运行：只覆盖本次报告，不修改历史报告。</span><br></pre></td></tr></table></figure>
+
+<p>其中“重复运行”尤其重要。周期任务可能因为手动触发、catch-up 或重复计划而多次运行。输出文件应使用稳定的日期键或写入独立目录，避免每次执行都追加一份重复内容；如果任务会写文件，最好先读取当前状态，再根据差异决定是否修改。</p>
+<h2 id="工作区、权限和隔离怎么选"><a href="#工作区、权限和隔离怎么选" class="headerlink" title="工作区、权限和隔离怎么选"></a>工作区、权限和隔离怎么选</h2><p>VS Code Automations 创建表单允许选择目标工作区，也允许选择 No workspace。一个实用的选择规则是：</p>
+<table>
+<thead>
+<tr>
+<th>任务类型</th>
+<th>建议配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>只做资料汇总或一般问答</td>
+<td>No workspace，或只读工作区</td>
+</tr>
+<tr>
+<td>读取仓库并生成报告</td>
+<td>指定工作区，限制写入权限</td>
+</tr>
+<tr>
+<td>自动修复代码</td>
+<td>使用独立 Git worktree，要求测试和人工审查</td>
+</tr>
+<tr>
+<td>需要发布或改动线上资源</td>
+<td>不要直接交给无人值守 Automation</td>
+</tr>
+</tbody></table>
+<p>如果所选 Agent 支持，Git 工作区可以选择 New Worktree 和基准分支。这样任务产生的修改不会直接落在开发者当前分支上，尤其适合自动修复、批量重构和文档更新。</p>
+<p>“有独立 worktree”不代表风险自动消失。Agent 仍可能运行命令、读取环境变量或访问网络，因此要同时收紧权限级别，并检查组织策略和审批规则。对于包含密钥、客户数据或内部配置的仓库，不要因为任务只是“整理 Issue”就默认开放完整文件和网络访问。</p>
+<h2 id="适合优先自动化的三类工作"><a href="#适合优先自动化的三类工作" class="headerlink" title="适合优先自动化的三类工作"></a>适合优先自动化的三类工作</h2><h3 id="变更摘要和交接信息"><a href="#变更摘要和交接信息" class="headerlink" title="变更摘要和交接信息"></a>变更摘要和交接信息</h3><p>每天汇总过去一段时间的提交、Pull Request 和 Issue，输出面向开发者的变更摘要。这类任务结果容易人工核对，失败时也不会直接改变系统状态。</p>
+<h3 id="Issue-初筛"><a href="#Issue-初筛" class="headerlink" title="Issue 初筛"></a>Issue 初筛</h3><p>让 Agent 按既定标签和模板检查新 Issue，提取复现步骤、影响范围和缺失信息。自动化只负责整理和提出问题，不要在没有人工确认时自动关闭 Issue 或修改优先级。</p>
+<h3 id="文档和工程卫生检查"><a href="#文档和工程卫生检查" class="headerlink" title="文档和工程卫生检查"></a>文档和工程卫生检查</h3><p>周期检查过期链接、缺失变更记录、重复配置或明显的文档漂移。第一阶段只生成报告，确认误报率后，再考虑让 Agent 在 worktree 中提交修改。</p>
+<p>相反，自动发布、删除数据、修改生产配置、轮换凭据和直接合并代码，都不适合一开始交给本地预览功能承担。它们需要更明确的身份、审批、审计和恢复机制。</p>
+<h2 id="如何验收一个-Automation"><a href="#如何验收一个-Automation" class="headerlink" title="如何验收一个 Automation"></a>如何验收一个 Automation</h2><p>可以用一周的试运行建立最小验收表：</p>
+<ul>
+<li>计划是否在预期时区触发；</li>
+<li>机器休眠或 VS Code 关闭后，任务如何表现；</li>
+<li>运行失败时是否产生明确的错误记录；</li>
+<li>输出是否重复、遗漏或引用过期信息；</li>
+<li>Agent 是否执行了 Prompt 之外的命令；</li>
+<li>任务每次运行的模型、时间和使用量是否可追踪；</li>
+<li>产生代码修改时，是否留在 worktree 而不是当前工作分支。</li>
+</ul>
+<p>这些问题比“Prompt 写得像不像人话”更能决定周期任务是否值得长期保留。对于真正重要的任务，还应把结果发送到已有的监控、Issue 或审批流程，而不是只留在某个本地 VS Code 窗口里。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>VS Code 1.137 的 Agent Automations 让开发者可以把一些重复的工程工作交给周期运行的 Agent，小时、天、周三种调度粒度覆盖了从频繁巡检到周报整理的常见场景。它最有价值的地方，是把 Prompt、工作区、模型和权限配置放在同一个可重复运行的任务里。</p>
+<p>但它仍然是 Preview 功能，也依赖本地运行环境。更重要的是，每次自动运行都可能拥有真实的文件和命令权限。先用 Manual 验证，再使用最小权限、独立 worktree 和明确的输出约束，最后才设置周期计划，才能让 Agent Automations 成为工程流程的一部分，而不是一个会在夜里悄悄改文件的黑盒定时器。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.blog/changelog/2026-09-10-github-copilot-weekly-releases-september-7">GitHub Copilot weekly releases — September 7 - GitHub Changelog</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/updates/v1_137">VS Code 1.137 release notes</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/agents/run/automations">Automations - Visual Studio Code Docs</a></li>
+</ul>
 
       
     </div>
@@ -339,13 +446,13 @@ File-&gt;Export Diagram 生成类图图片
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/08/10/staruml1/">使用快速生成GoF设计模式的类图与代码</a></p>
+        <p><span>本文标题:</span><a href="/2026/09/14/2026-VSCode137Agent%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1/">VS Code 1.137 的 Agent Automations：定时任务进入预览，权限边界要先于 Prompt</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">markee</a></p>
-        <p><span>发布时间:</span>2016-08-10, 15:23:00</p>
-        <p><span>最后更新:</span>2016-08-10, 15:23:00</p>
+        <p><span>发布时间:</span>2026-09-14, 08:01:00</p>
+        <p><span>最后更新:</span>2026-09-14, 08:01:00</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/08/10/staruml1/" title="使用快速生成GoF设计模式的类图与代码">https://code.idea4j.com/2016/08/10/staruml1/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://code.idea4j.com/2016/08/10/staruml1/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2026/09/14/2026-VSCode137Agent%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1/" title="VS Code 1.137 的 Agent Automations：定时任务进入预览，权限边界要先于 Prompt">https://code.idea4j.com/2026/09/14/2026-VSCode137Agent%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://code.idea4j.com/2026/09/14/2026-VSCode137Agent%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1/　　作者: markee" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -357,16 +464,10 @@ File-&gt;Export Diagram 生成类图图片
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2016/08/14/%E7%B1%BB%E8%A3%85%E8%BD%BD/">
-                    类装载
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2016/08/10/builderpattern/">
-                    builderpattern
+                <a href="/2026/09/13/2026-GitHub-Copilot%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E8%87%AA%E5%8A%A8%E8%A7%A3%E5%86%B3%E4%B8%8E%E5%A4%9AAgent%E5%88%86%E6%9E%90/">
+                    GitHub Copilot Code Review 更新：评论自动解决与 Lite 模式多 Agent 分析
                 </a>
             </div>
         
@@ -379,7 +480,7 @@ File-&gt;Export Diagram 生成类图图片
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8StartUML%E7%94%9F%E6%88%90GoF%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE%E4%B8%8E%E4%BB%A3%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">用StartUML生成GoF设计模式类图与代码</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-Automations-%E5%85%B7%E4%BD%93%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">Agent Automations 具体能做什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%83%E4%B8%8D%E6%98%AF%E6%99%AE%E9%80%9A%E7%9A%84-Cron"><span class="toc-number">2.</span> <span class="toc-text">它不是普通的 Cron</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E5%86%B3%E5%AE%9A%E5%AE%83%E4%BC%9A%E4%B8%8D%E4%BC%9A%E7%9C%9F%E7%9A%84%E6%8C%89%E6%97%B6%E6%89%A7%E8%A1%8C"><span class="toc-number">3.</span> <span class="toc-text">运行环境决定它会不会真的按时执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8D%E8%A6%81%E7%9B%B4%E6%8E%A5%E8%AE%BE%E7%BD%AE%E6%88%90%E6%AF%8F%E5%A4%A9%E8%BF%90%E8%A1%8C"><span class="toc-number">4.</span> <span class="toc-text">第一次不要直接设置成每天运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Prompt-%E8%A6%81%E5%86%99%E6%88%90%E5%8F%AF%E9%87%8D%E5%A4%8D%E6%89%A7%E8%A1%8C%E7%9A%84%E4%BB%BB%E5%8A%A1"><span class="toc-number">5.</span> <span class="toc-text">Prompt 要写成可重复执行的任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E3%80%81%E6%9D%83%E9%99%90%E5%92%8C%E9%9A%94%E7%A6%BB%E6%80%8E%E4%B9%88%E9%80%89"><span class="toc-number">6.</span> <span class="toc-text">工作区、权限和隔离怎么选</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E5%90%88%E4%BC%98%E5%85%88%E8%87%AA%E5%8A%A8%E5%8C%96%E7%9A%84%E4%B8%89%E7%B1%BB%E5%B7%A5%E4%BD%9C"><span class="toc-number">7.</span> <span class="toc-text">适合优先自动化的三类工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E6%9B%B4%E6%91%98%E8%A6%81%E5%92%8C%E4%BA%A4%E6%8E%A5%E4%BF%A1%E6%81%AF"><span class="toc-number">7.1.</span> <span class="toc-text">变更摘要和交接信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Issue-%E5%88%9D%E7%AD%9B"><span class="toc-number">7.2.</span> <span class="toc-text">Issue 初筛</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E5%92%8C%E5%B7%A5%E7%A8%8B%E5%8D%AB%E7%94%9F%E6%A3%80%E6%9F%A5"><span class="toc-number">7.3.</span> <span class="toc-text">文档和工程卫生检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%AA%8C%E6%94%B6%E4%B8%80%E4%B8%AA-Automation"><span class="toc-number">8.</span> <span class="toc-text">如何验收一个 Automation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">9.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">10.</span> <span class="toc-text">参考来源</span></a></li></ol>
         
     </div>
     <style>
@@ -415,7 +516,7 @@ File-&gt;Export Diagram 生成类图图片
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"使用快速生成GoF设计模式的类图与代码　| 码客Mark　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"VS Code 1.137 的 Agent Automations：定时任务进入预览，权限边界要先于 Prompt　| 码客Mark　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -432,15 +533,13 @@ File-&gt;Export Diagram 生成类图图片
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/08/14/%E7%B1%BB%E8%A3%85%E8%BD%BD/" title="上一篇: 类装载">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/08/10/builderpattern/" title="下一篇: builderpattern">
+            <a href="/2026/09/13/2026-GitHub-Copilot%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E8%87%AA%E5%8A%A8%E8%A7%A3%E5%86%B3%E4%B8%8E%E5%A4%9AAgent%E5%88%86%E6%9E%90/" title="下一篇: GitHub Copilot Code Review 更新：评论自动解决与 Lite 模式多 Agent 分析">
                 <i class="fa fa-angle-right"></i>
             </a>
         
