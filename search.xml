@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title>GitHub Copilot 将在 10 月 19 日弃用 6 个模型：迁移不只是改一个下拉框</title>
+      <link href="/2026/09/21/2026-GitHubCopilot%E6%A8%A1%E5%9E%8B%E5%BC%83%E7%94%A8%E8%BF%81%E7%A7%BB%E6%B8%85%E5%8D%95/"/>
+      <url>/2026/09/21/2026-GitHubCopilot%E6%A8%A1%E5%9E%8B%E5%BC%83%E7%94%A8%E8%BF%81%E7%A7%BB%E6%B8%85%E5%8D%95/</url>
+      
+        <content type="html"><![CDATA[<p>GitHub 宣布，2026 年 10 月 19 日起，将在 GitHub Copilot 的多个使用场景中弃用 6 个 AI 模型，范围包括 Copilot Chat、内联编辑、Ask 模式、Agent 模式和代码补全。官方同时给出了建议替代模型，但这不是一次简单的“把下拉框选项换掉”：模型切换可能改变响应速度、代码风格、工具调用路径、上下文使用方式和请求成本。</p><p>这次变更值得开发者提前处理的原因，是很多团队已经把模型选择写进了使用规范、Agent 提示词、评测记录和开发流程。模型名字从产品界面消失只是最后一步，真正需要迁移的是围绕旧模型形成的质量基线和使用预期。现在先盘点引用、建立小型回归集，通常比 10 月 19 日之后才发现 Agent 行为改变更从容。</p><span id="more"></span><h2 id="先看清楚：这次具体弃用了哪些模型"><a href="#先看清楚：这次具体弃用了哪些模型" class="headerlink" title="先看清楚：这次具体弃用了哪些模型"></a>先看清楚：这次具体弃用了哪些模型</h2><p>GitHub Changelog 给出了明确的弃用日期和建议替代模型：</p><table><thead><tr><th>将被弃用的模型</th><th>弃用日期</th><th>官方建议替代模型</th></tr></thead><tbody><tr><td>Gemini 3.7 Flash</td><td>2026-10-19</td><td>Gemini 3.8 Flash</td></tr><tr><td>GPT-5.5</td><td>2026-10-19</td><td>GPT-5.6 Sol</td></tr><tr><td>GPT-5.4</td><td>2026-10-19</td><td>GPT-5.6 Sol</td></tr><tr><td>GPT-5.4 mini</td><td>2026-10-19</td><td>GPT-5.6 Luna</td></tr><tr><td>GPT-5 mini</td><td>2026-10-19</td><td>GPT-5.6 Luna</td></tr><tr><td>Grok 4.5</td><td>2026-10-19</td><td>Grok 4.6</td></tr></tbody></table><p>这里有三个边界需要先说清楚。</p><p>第一，这不是 Copilot 整体停止服务，也不是所有模型同时退役，而是公告列出的 6 个模型在指定日期后不再继续提供。第二，表格里的替代模型是 GitHub 给出的建议，不意味着两者在代码风格、推理深度、延迟或计费权重上完全一致。第三，变更覆盖的不只是聊天窗口，也包括代码补全和 Agent 相关体验，因此“我平时不用 Copilot Chat”并不能自动排除影响。</p><h2 id="为什么模型迁移会影响工程结果"><a href="#为什么模型迁移会影响工程结果" class="headerlink" title="为什么模型迁移会影响工程结果"></a>为什么模型迁移会影响工程结果</h2><p>模型选择常被当作个人偏好：觉得某个模型写代码顺手，就在设置里一直选它。但一旦模型参与 Agent 或团队协作，它实际上已经成为工程流程的一部分。</p><h3 id="代码补全影响的是节奏和局部风格"><a href="#代码补全影响的是节奏和局部风格" class="headerlink" title="代码补全影响的是节奏和局部风格"></a>代码补全影响的是节奏和局部风格</h3><p>代码补全通常发生在编辑器的高频交互中。模型切换后，最先被感知的可能不是“能不能写出来”，而是建议出现的速度、补全长度、对局部上下文的取舍，以及对项目现有命名和风格的贴合程度。</p><p>如果团队把生成结果直接纳入日常开发，建议至少抽取一组真实但不含敏感信息的代码片段，比较新旧模型的接受率、修改次数和明显错误类型。不要只用一个算法题或一段人工编写的 Prompt，因为那样测到的更像模型演示效果，而不是团队自己的编辑器工作流。</p><h3 id="Agent-模式影响的是完整执行链"><a href="#Agent-模式影响的是完整执行链" class="headerlink" title="Agent 模式影响的是完整执行链"></a>Agent 模式影响的是完整执行链</h3><p>Agent 不只返回一段代码，它还可能读取文件、规划步骤、调用工具、运行测试，再根据结果继续修改。模型换代后，变化可能出现在：</p><ul><li>是否能准确理解仓库约束和已有实现；</li><li>是否会把一个简单任务拆成过多步骤；</li><li>工具调用参数是否更稳健，失败后是否能恢复；</li><li>是否倾向于修改更多文件，或留下更大的审查面；</li><li>测试失败时，是修复根因还是反复尝试表面改动。</li></ul><p>因此，Agent 的迁移不能只比较最终补丁是否能通过一次测试，还要记录修改范围、命令调用、失败次数和人工返工量。</p><h3 id="团队策略影响的是可用性和治理"><a href="#团队策略影响的是可用性和治理" class="headerlink" title="团队策略影响的是可用性和治理"></a>团队策略影响的是可用性和治理</h3><p>GitHub 公告说明，在默认模型启用的情况下，Copilot Business 和 Copilot Enterprise 客户的建议替代模型会自动启用，前提是管理员没有关闭全局默认设置或显式禁用对应模型。如果组织关闭了全局默认启用，则需要在 Copilot 设置中的模型策略里主动开放替代模型。</p><p>这意味着个人用户和组织管理员面对的迁移动作不完全一样：个人需要重新确认常用模型和工作习惯；管理员还要检查模型策略、默认模型、团队文档和内部培训材料，避免用户在弃用后才发现替代模型根本没有权限。</p><h2 id="一份不依赖具体平台配置的迁移清单"><a href="#一份不依赖具体平台配置的迁移清单" class="headerlink" title="一份不依赖具体平台配置的迁移清单"></a>一份不依赖具体平台配置的迁移清单</h2><h3 id="1-盘点旧模型出现在哪里"><a href="#1-盘点旧模型出现在哪里" class="headerlink" title="1. 盘点旧模型出现在哪里"></a>1. 盘点旧模型出现在哪里</h3><p>先不要急着修改所有文档，先把引用位置找出来。可以从仓库里的工作流、开发工具配置、脚本和文档开始：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rg -n -i \</span><br><span class="line">  <span class="string">&quot;gpt-5(\.4|\.5)?|gpt-5 mini|gemini 3\.7 flash|grok 4\.5|model&quot;</span> \</span><br><span class="line">  .github .vscode scripts docs README* 2&gt;/dev/null</span><br></pre></td></tr></table></figure><p>仓库搜索只能覆盖代码和配置，不能代替平台设置检查。还应盘点：</p><ul><li>团队是否在 Copilot 使用规范中指定了某个模型；</li><li>Agent 或提示词模板是否暗含某个模型的能力假设；</li><li>评测报告和示例截图是否仍然以旧模型为基线；</li><li>组织或企业的模型策略是否关闭了建议替代模型；</li><li>自动化脚本、内部代理或网关是否保存了旧模型名称。</li></ul><p>不要把官方建议替代模型直接写成一个全局硬编码值。模型可用性还会受到 Copilot 计划、使用客户端、组织策略和平台发布节奏影响，应该以实际支持列表为准。</p><h3 id="2-给每类任务建立最小回归集"><a href="#2-给每类任务建立最小回归集" class="headerlink" title="2. 给每类任务建立最小回归集"></a>2. 给每类任务建立最小回归集</h3><p>迁移评测不需要一开始就做成复杂基准。一个有代表性的最小集合，通常包含：</p><table><thead><tr><th>任务类型</th><th>需要观察的结果</th></tr></thead><tbody><tr><td>补全一个已有函数</td><td>采纳率、无关改动、类型和边界错误</td></tr><tr><td>修改一个跨文件功能</td><td>依赖理解、修改范围、测试是否完整</td></tr><tr><td>修复一个带失败测试的缺陷</td><td>定位速度、修复根因、回归测试质量</td></tr><tr><td>编写脚本或查询</td><td>命令安全性、异常处理、可维护性</td></tr><tr><td>让 Agent 运行测试并迭代</td><td>工具调用、失败恢复、总步骤和总耗时</td></tr></tbody></table><p>每个任务保留输入提交、允许使用的工具、测试命令和验收标准。这样比较的是模型迁移前后的工程结果，而不是某一次回答是否“看起来更聪明”。</p><h3 id="3-把模型切换和代码变更分开"><a href="#3-把模型切换和代码变更分开" class="headerlink" title="3. 把模型切换和代码变更分开"></a>3. 把模型切换和代码变更分开</h3><p>迁移期间尽量不要同时升级框架、重写提示词、调整测试和更换模型。否则即使结果变好或变坏，也很难判断原因。</p><p>可以给团队保留一份简单的迁移记录：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">任务：为订单查询增加分页</span><br><span class="line">旧模型：GPT-5.4</span><br><span class="line">建议替代：GPT-5.6 Sol</span><br><span class="line">输入提交：abc123</span><br><span class="line">验证命令：./gradlew test --tests OrderQueryTest</span><br><span class="line">旧模型结果：通过，修改 3 个文件</span><br><span class="line">新模型结果：通过，修改 4 个文件，新增 1 个无关重构</span><br><span class="line">人工结论：功能可接受，需收紧修改范围</span><br></pre></td></tr></table></figure><p>这种记录比一句“新模型也能用”更有价值。它可以帮助团队决定哪些任务适合自动迁移，哪些任务需要保留人工检查或改用另一个受支持模型。</p><h3 id="4-提前检查配额和计费影响"><a href="#4-提前检查配额和计费影响" class="headerlink" title="4. 提前检查配额和计费影响"></a>4. 提前检查配额和计费影响</h3><p>替代模型可能拥有不同的请求乘数、速率限制或上下文特性。即使功能结果相近，Agent 的多轮调用也可能放大成本差异。</p><p>在迁移评估中，建议同时记录：单任务请求次数、输入输出规模、总耗时、失败重试次数和实际计费指标。不要只比较一次回答的价格，尤其是 Agent 任务；真正的成本往往来自多轮规划、工具调用和失败后的再次执行。</p><h2 id="管理员和平台团队应该提前做什么"><a href="#管理员和平台团队应该提前做什么" class="headerlink" title="管理员和平台团队应该提前做什么"></a>管理员和平台团队应该提前做什么</h2><p>管理员可以把这次弃用当作一次模型治理演练，而不只是被动通知用户。</p><p>首先，在 10 月 19 日前确认组织和企业策略没有无意中阻止建议替代模型。其次，把模型弃用日期、替代关系和支持范围放进团队的变更记录。再次，为 Agent、代码审查和代码补全分别设置反馈渠道，因为同一个替代模型在这三个场景里的表现未必相同。</p><p>如果团队有内部质量门禁，还可以把“模型名称”从唯一的配置维度改成更稳定的任务能力描述。例如，文档可以记录“用于快速补全的低延迟模型”或“用于跨文件 Agent 的高质量模型”，同时保留当前实际选择的模型和评测日期。这样下一次模型退役时，迁移的是能力目标，而不是到处搜索一串旧名字。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>GitHub Copilot 的这次变更给了开发者一个很具体的提醒：模型不是永远存在的工具开关，而是有生命周期的工程依赖。官方已经给出了 2026 年 10 月 19 日这个明确日期和替代建议，剩下的工作是确认组织策略、盘点旧引用，并用自己的代码和 Agent 任务做一次小规模回归。</p><p>最稳妥的迁移方式，不是等旧模型从列表里消失后临时选择一个新模型，而是提前把“模型更换”变成可观察、可比较、可回滚的工程变更。这样模型升级带来的不确定性，才不会直接传导到代码质量和交付节奏上。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol><li>GitHub Changelog： <a href="https://github.blog/changelog/2026-09-18-upcoming-deprecation-of-selected-github-copilot-models-in-mid-october">Upcoming deprecation of selected GitHub Copilot models in mid-October</a></li><li>GitHub Docs： <a href="https://docs.github.com/en/copilot/reference/ai-models/supported-models">Supported AI models in GitHub Copilot</a></li><li>GitHub Docs： <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-organization/configure-access-to-ai-models">Managing access to AI models for your organization</a></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 人工智能 </category>
+          
+          <category> 软件工程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GitHub Copilot </tag>
+            
+            <tag> 开发工具 </tag>
+            
+            <tag> Agent </tag>
+            
+            <tag> AI模型 </tag>
+            
+            <tag> 代码补全 </tag>
+            
+            <tag> 模型迁移 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub Actions Ubuntu 26.04 Runner 正式 GA：ubuntu-latest 迁移前如何守住构建可重复性</title>
       <link href="/2026/09/20/2026-GitHubActionsUbuntu2604Runner%E6%AD%A3%E5%BC%8FGA/"/>
       <url>/2026/09/20/2026-GitHubActionsUbuntu2604Runner%E6%AD%A3%E5%BC%8FGA/</url>
