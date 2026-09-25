@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title>GitHub 企业版为高影响操作引入 Proof of Presence：会话有效不等于本人在场</title>
+      <link href="/2026/09/25/2026-GitHub%E9%AB%98%E5%BD%B1%E5%93%8D%E6%93%8D%E4%BD%9C%E5%BC%95%E5%85%A5Proof-of-Presence/"/>
+      <url>/2026/09/25/2026-GitHub%E9%AB%98%E5%BD%B1%E5%93%8D%E6%93%8D%E4%BD%9C%E5%BC%95%E5%85%A5Proof-of-Presence/</url>
+      
+        <content type="html"><![CDATA[<p>企业账号已经登录，不代表眼前的操作者此刻仍是本人。被盗的会话 Cookie 或长期有效的认证凭据，可能让攻击者绕过一次性的登录检查，继续尝试创建令牌、修改 Webhook 或调整组织安全设置。GitHub 在 2026 年 9 月 24 日公布 Proof of Presence（PoP，存在性证明）预览：在部分高影响操作发生前，把成员送回企业身份提供方重新验证，确认这次操作有新鲜的身份凭据支撑。</p><p>PoP 不是每点一次按钮都重新登录，也不是新的通用 MFA 服务。它扩展了 GitHub 的 sudo mode，把“这次操作前是否刚刚验证过”提升为企业可配置的安全策略。对 DevOps 团队来说，关键问题是哪些账号和操作真正受支持、身份提供方会要求什么挑战，以及自动化流程是否依赖这些交互式操作。</p><span id="more"></span><h2 id="这次更新的范围先要看清"><a href="#这次更新的范围先要看清" class="headerlink" title="这次更新的范围先要看清"></a>这次更新的范围先要看清</h2><p>GitHub 公告将 PoP 描述为 GitHub Enterprise Cloud 的企业级设置，但当前公开预览有明确边界：适用于使用 Enterprise Managed Users（EMU）的企业账号，部署在 github.com 或 GitHub Enterprise Cloud with data residency（GHEC-DR），并使用 Microsoft Entra ID 作为 SSO 身份提供方；SAML 和 OIDC 都在公告列出的范围内。</p><p>因此，不能把它理解成所有 GitHub 账号、所有 Enterprise Cloud 组织都已经可以启用的通用开关。GitHub 文档说明该能力仍处于 public preview，身份提供方支持范围目前是 Microsoft Entra ID。准备试用前，应以企业自己的管理页面和最新文档确认资格，不要仅凭套餐名称判断是否适用。</p><p>公告举出的受保护操作包括：创建令牌、编辑 Webhook、修改组织安全设置、查看恢复代码。GitHub 文档进一步说明，PoP 与 sudo mode 使用同一套受保护操作和会话模型。它关注的是需要较高信任等级的管理动作，而不是把普通浏览、代码查看等所有操作都变成重新登录流程。</p><h2 id="PoP-如何确认“此刻有人在操作”"><a href="#PoP-如何确认“此刻有人在操作”" class="headerlink" title="PoP 如何确认“此刻有人在操作”"></a>PoP 如何确认“此刻有人在操作”</h2><p>可以把一次受保护操作简化成以下流程：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">成员已登录 GitHub</span><br><span class="line">       ↓</span><br><span class="line">尝试执行受保护的高影响操作</span><br><span class="line">       ↓</span><br><span class="line">GitHub 将成员重定向到企业 IdP（预览期为 Entra ID）</span><br><span class="line">       ↓</span><br><span class="line">IdP 执行企业策略要求的重新认证或 MFA</span><br><span class="line">       ↓</span><br><span class="line">验证通过：返回 GitHub 并继续操作；未通过：操作不执行</span><br></pre></td></tr></table></figure><p>这条链路的重点不是“GitHub 再保存一份密码”，而是由企业已经配置的身份提供方判断本次认证是否满足策略。企业可以选择两种要求：</p><ul><li><strong>重新认证（Re-authentication）</strong>：成员再次向 IdP 证明身份。具体挑战取决于 Entra ID 策略；在某些策略下，重新输入密码就可能满足要求。</li><li><strong>多因素认证（MFA）</strong>：除重新认证外，还必须通过额外因子，例如验证器应用或生物识别。是否出现哪种挑战由企业 IdP 策略决定。</li></ul><p>公告还提到，企业可以通过 IdP 策略检查设备合规性等条件。也就是说，PoP 把“什么时候需要重新验证”的触发点放在 GitHub，把“用什么条件证明身份”的规则交给企业身份系统。它让 GitHub 的高风险动作能复用现有的身份治理，而不是再维护一套孤立的认证规则。</p><h2 id="它与-SSO、MFA-和-sudo-mode-的区别"><a href="#它与-SSO、MFA-和-sudo-mode-的区别" class="headerlink" title="它与 SSO、MFA 和 sudo mode 的区别"></a>它与 SSO、MFA 和 sudo mode 的区别</h2><table><thead><tr><th>机制</th><th>主要回答的问题</th><th>典型触发时机</th></tr></thead><tbody><tr><td>SSO 登录</td><td>用户是否能进入企业账号</td><td>建立或恢复登录会话时</td></tr><tr><td>MFA 策略</td><td>这次认证需要哪些身份因子</td><td>由 IdP 在认证流程中判定</td></tr><tr><td>GitHub sudo mode</td><td>近期是否进行过敏感操作所需的重新认证</td><td>用户尝试受保护操作时</td></tr><tr><td>Proof of Presence</td><td>企业能否要求敏感操作重新经过企业 IdP，并满足指定策略</td><td>成员发起高影响操作时</td></tr></tbody></table><p>PoP 可视为企业把 IdP 策略接入 sudo mode 的扩展。成员通过一次挑战后，后续高影响操作沿用同一浏览器会话的 sudo-mode 时间窗口；GitHub 公告给出的窗口是两小时。它不是每次操作都执行一次 MFA，因此也不是“持续认证”。管理员需要把两小时窗口纳入威胁模型，而不能把一次挑战等同于整天都安全。</p><p>还要区分“要求重新认证”和“要求 MFA”。如果企业只选择重新认证，而 IdP 策略允许密码单独满足要求，那么 PoP 提供的是身份新鲜度，不一定增加第二个认证因子。需要更强保证的团队应核对 Entra ID 的条件访问与认证强度策略，确保 GitHub 发起的挑战确实要求预期的 MFA 或设备状态。</p><h2 id="管理员如何启用，以及上线前要测什么"><a href="#管理员如何启用，以及上线前要测什么" class="headerlink" title="管理员如何启用，以及上线前要测什么"></a>管理员如何启用，以及上线前要测什么</h2><p>GitHub 文档给出的配置入口是企业账号中的 <strong>Settings → Authentication security → Proof of presence</strong>，管理员选择重新认证或 MFA。开启后，策略适用于整个企业，不是仅对某一个仓库或某个组织单独生效。</p><p>上线前可以按下面的顺序验证：</p><ol><li><strong>先确认资格与身份链路。</strong> 核对企业是否属于预览覆盖范围，Entra ID 的 SAML&#x2F;OIDC SSO 是否已正确配置，负责维护 IdP 策略的团队是否参与测试。</li><li><strong>选定挑战强度。</strong> 明确选择重新认证还是 MFA，并在 Entra ID 中确认密码、验证器、设备合规等条件的实际组合。不要把“菜单里选了 MFA”当成策略已经验证完成。</li><li><strong>用测试账号覆盖代表性动作。</strong> 分别检查令牌创建、Webhook 修改、组织安全设置和恢复代码等公告列出的场景，确认未通过挑战时操作确实被阻止，通过后能正常完成。</li><li><strong>验证两小时内外的会话表现。</strong> 检查一次成功验证后哪些动作可以继续进行，以及会话过期后的重新挑战体验；同时确认浏览器切换、IdP 超时和用户无法访问第二因子时的支持流程。</li><li><strong>盘点人工与自动化边界。</strong> 如果运维手册要求管理员临时创建令牌或修改 Webhook，应明确由谁完成交互式认证。不要让无人值守脚本依赖人工身份验证；自动化应使用适当的专用凭据与最小权限，并按现有凭据轮换和审计要求管理。</li></ol><p>由于设置会作用于整个企业，最好先在专门的测试企业或可控的预览环境验证，而不是直接在生产企业里试探配置。还应安排紧急访问和 IdP 故障的恢复流程，避免身份提供方短时不可用时，管理员无法完成必要的安全维护。</p><h2 id="它能降低什么风险，又不能替代什么"><a href="#它能降低什么风险，又不能替代什么" class="headerlink" title="它能降低什么风险，又不能替代什么"></a>它能降低什么风险，又不能替代什么</h2><p>PoP 针对的是一种常见的凭据风险：攻击者拿到仍有效的会话或长期凭据后，尝试执行需要更高权限的操作。把敏感动作前的认证重新交给企业 IdP，可以增加“仅有旧会话还不够”的一道门槛，也能复用企业关于 MFA 和设备合规的策略。</p><p>但它不是对账户接管的完整防护，也不会自动消除已经泄露的密钥或令牌。企业仍需限制令牌权限和有效期，审计令牌创建与 Webhook 变更，妥善管理恢复代码，并对异常操作设置告警。PoP 保护的是特定交互式动作的验证环节；它不能替代权限最小化、凭据轮换、审计和事件响应。</p><p>公告指出，GitHub 正在计划为 Pull Request 合并增加 PoP 支持，但截至公告发布时这项能力尚未提供。现阶段不应假设合并请求已经受到这项新策略保护；需要针对关键仓库继续使用现有分支保护、审批规则和部署环境门禁。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>GitHub Proof of Presence 的意义，在于把企业 IdP 的新鲜认证要求放到高影响操作的执行时刻。它让被盗会话面对一个额外障碍，也让企业能把 MFA 或设备策略复用到令牌、Webhook 和安全设置等关键动作上。</p><p>不过，PoP 的价值取决于边界是否理解准确：当前是范围有限的公开预览，启用后按企业范围生效，验证通过后仍有两小时会话窗口，而且 PR 合并支持尚在后续计划中。先核对覆盖对象，再在测试环境验证 IdP 挑战、运维流程和故障恢复，才是把这项能力安全落地的稳妥做法。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol><li>GitHub Changelog： <a href="https://github.blog/changelog/2026-09-24-require-proof-of-presence-for-high-impact-actions/">Require proof of presence for high-impact actions</a></li><li>GitHub Docs： <a href="https://docs.github.com/en/enterprise-cloud@latest/admin/configuring-settings/hardening-security-for-your-enterprise/configuring-proof-of-presence">Configuring Proof of Presence</a></li><li>GitHub Docs： <a href="https://docs.github.com/en/enterprise-cloud@latest/authentication/keeping-your-account-and-data-secure/sudo-mode">Sudo mode</a></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 安全 </category>
+          
+          <category> GitHub </category>
+          
+          <category> DevOps </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 供应链安全 </tag>
+            
+            <tag> GitHub Enterprise Cloud </tag>
+            
+            <tag> SSO </tag>
+            
+            <tag> Proof of Presence </tag>
+            
+            <tag> Entra ID </tag>
+            
+            <tag> MFA </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub Copilot 接入 OpenTelemetry：Agent 可观测性开始进入企业治理</title>
       <link href="/2026/09/24/2026-GitHub-CopilotOpenTelemetryAgent%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/"/>
       <url>/2026/09/24/2026-GitHub-CopilotOpenTelemetryAgent%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</url>
