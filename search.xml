@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title>Cloudflare Threat Signals：把 RSS 威胁报告变成可追溯的 WAF 情报</title>
+      <link href="/2026/10/01/2026-CloudflareThreatSignalsRSS%E6%83%85%E6%8A%A5%E8%BD%ACWAF%E8%A7%84%E5%88%99/"/>
+      <url>/2026/10/01/2026-CloudflareThreatSignalsRSS%E6%83%85%E6%8A%A5%E8%BD%ACWAF%E8%A7%84%E5%88%99/</url>
+      
+        <content type="html"><![CDATA[<p>安全团队通常不缺威胁报告，真正费时间的是把长篇文章里的线索整理成工具能用的数据，同时保留“这个指标为什么值得关注”的上下文。Cloudflare 于 9 月 29 日发布 Threat Signals，将指定 RSS 源中的报告转成带来源和标签的威胁事件，并允许分析人员把指标用于 WAF 规则。</p><p>这项服务已通过 API 和控制台向所有 Cloudflare 账户开放。公告所述的基础范围是每个账户选择一个 RSS 源，源内容会进入该账户私有的数据集，保留最长 30 天。它不是一个自动封禁所有指标的黑盒；更值得借鉴的是，系统把提取结果与原始报告、标签和事件关联起来，让分析结论仍可追溯。</p><span id="more"></span><h2 id="从文章到可用指标，中间有一段人工流程"><a href="#从文章到可用指标，中间有一段人工流程" class="headerlink" title="从文章到可用指标，中间有一段人工流程"></a>从文章到可用指标，中间有一段人工流程</h2><p>结构化威胁情报源可以直接导入 SIEM 或 WAF。难点往往是研究人员写的报告：分析员要读文章、找出域名或其他指标、统一格式、按内部分类打标签，再把数据录入情报平台并保留出处。若只把一个 IP 或域名塞进封锁列表，过几周就可能没人记得它来自哪篇报告、针对什么活动、是否仍然有效。</p><p>Threat Signals 面向的正是这段整理工作。Cloudflare 将 Skills 描述为一组细致的分析指令，用来重复执行摘要、指标提取和分类等任务。它处理的是用户选择的开放报告源，并不等同于覆盖所有互联网威胁的完整情报库。</p><h2 id="处理链路：抓取、提取，再把证据连回去"><a href="#处理链路：抓取、提取，再把证据连回去" class="headerlink" title="处理链路：抓取、提取，再把证据连回去"></a>处理链路：抓取、提取，再把证据连回去</h2><p>Cloudflare 公告描述的流程可以概括为：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">RSS 2.0 / Atom / RDF</span><br><span class="line">        ↓</span><br><span class="line">Workflow 定期检查新文章</span><br><span class="line">        ↓</span><br><span class="line">Browser Run 清理正文为 Markdown，原文存入 R2</span><br><span class="line">        ↓</span><br><span class="line">提取并归一化指标，生成摘要、上下文和标签</span><br><span class="line">        ↓</span><br><span class="line">写入账户私有 Threat Intelligence 数据集</span><br><span class="line">        ↓</span><br><span class="line">分析员检索、调查，再决定是否用于 WAF 策略</span><br></pre></td></tr></table></figure><p>RSS 源可以配置名称、分类和检查频率。系统用 Browser Run 的 Markdown 快捷动作抓取并清理正文，再调用指标提取器和 Cloudforce One 提供的默认 Skills，依据账户现有的标签体系生成摘要与上下文。文章、Threat Event、指标和标签保持关联，分析员可以回到原始报告确认判断依据。</p><p>处理结果可从 Threat Signals 和 Threat Events Platform 的 API 或控制台查询。Cloudflare 还允许将相关事件用于创建 WAF 规则。对某些企业方案，公告提到可以扩展 RSS 源数量、接入专有情报数据集、使用自定义 Skills 或增加存储选项；这些能力不应与所有账户的基础配额混为一谈。</p><h2 id="真正影响可信度的是上下文和标签治理"><a href="#真正影响可信度的是上下文和标签治理" class="headerlink" title="真正影响可信度的是上下文和标签治理"></a>真正影响可信度的是上下文和标签治理</h2><p>Cloudflare 分享的一个设计选择很实用：系统不随意发明新标签，而是把自动分类限制在每个账户已有的标签目录里。这样不同分析员和系统不会因为分类词汇不一致，再制造一套需要人工对照的体系。</p><p>另一个细节是记录标签由系统自动添加还是分析员手动添加。来源越多，自动化结果越需要说明“谁做了什么”。如果指标旁边看不到原始报告链接、抽取上下文和自动化标记，摘要再流畅也难以支持后续调查。</p><p>因此，Threat Signals 的价值不应只用“每小时处理多少篇文章”衡量。更应检查指标能否回溯到原文、标签是否符合团队约定、同一指标在不同报告中的上下文是否被保留，以及分析员是否能修正错误并看清系统做过哪些变更。</p><h2 id="接入前要留意配额、时效和误报"><a href="#接入前要留意配额、时效和误报" class="headerlink" title="接入前要留意配额、时效和误报"></a>接入前要留意配额、时效和误报</h2><p>Cloudflare 的公告没有公布指标抽取的准确率或误报率。将结果接入 WAF 前，建议先用团队熟悉的报告做样本核对，关注误提取、过期指标、共享云地址和上下文歧义等情况。对会影响真实用户的封锁动作，应由分析员确认范围和证据，不要因为某个域名或 IP 被抽取出来，就默认它可以立即全局阻断。</p><p>基础账户只可选择一个 RSS 源，私有数据集最长保留 30 天。这意味着接入前应挑选信噪比高、更新稳定的源，并明确保留期结束后的处理方式。数据集保留时间也不代表其中每个指标的有效期；指标是否继续用于规则，应根据报告时间、后续证据和内部策略单独判断。</p><p>对安全团队来说，可以先让 Threat Signals 生成和归档事件，再由分析员审查高影响指标，最后按既有 WAF 流程决定是否启用规则。这样既能减少重复整理，也保留对误报、过期和业务影响的控制。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Threat Signals 把 AI 放在一个边界清楚的环节里：它负责把开放报告整理成结构化线索，系统负责保留来源和工作状态，是否把线索升级成防护规则仍需要安全团队判断。</p><p>自动化情报的关键不是让指标更快进入封锁列表，而是让每一条判断都找得到出处、看得懂上下文、查得到处理记录。Cloudflare 的这套做法给出了一个可以借鉴的方向，团队仍应依据自己的情报源质量、审查能力和业务风险设定接入方式。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol><li>Cloudflare Blog：<a href="https://blog.cloudflare.com/threat-signals/">Introducing Threat Signals: agentic skills for open-source threat intelligence, free for every Cloudflare account</a>，2026 年 9 月 29 日。</li><li>Cloudflare Developers：<a href="https://developers.cloudflare.com/api/resources/cloudforce_one/subresources/threat_signals/">Threat Signals API</a>。</li><li>Cloudflare Developers：<a href="https://developers.cloudflare.com/changelog/post/2026-06-08-create-waf-rules-from-threat-events/">Create WAF rules from threat events</a>。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 网络安全 </category>
+          
+          <category> 人工智能 </category>
+          
+          <category> 云计算 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> Threat Signals </tag>
+            
+            <tag> 威胁情报 </tag>
+            
+            <tag> RSS </tag>
+            
+            <tag> WAF </tag>
+            
+            <tag> IOC </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cloudflare 用 AI 盘点代码里的密码学：后量子迁移先要找到“用在哪”</title>
       <link href="/2026/09/30/2026-Cloudflare%E7%94%A8AI%E7%9B%98%E7%82%B9%E5%AF%86%E7%A0%81%E5%AD%A6%E4%B8%BA%E5%90%8E%E9%87%8F%E5%AD%90%E8%BF%81%E7%A7%BB%E5%BB%BA%E8%B4%A6/"/>
       <url>/2026/09/30/2026-Cloudflare%E7%94%A8AI%E7%9B%98%E7%82%B9%E5%AF%86%E7%A0%81%E5%AD%A6%E4%B8%BA%E5%90%8E%E9%87%8F%E5%AD%90%E8%BF%81%E7%A7%BB%E5%BB%BA%E8%B4%A6/</url>
