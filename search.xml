@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title>Apache Ossie：微软与谷歌参与语义互换，指标迁移还要过哪些关</title>
+      <link href="/2026/10/02/2026-ApacheOssie%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%E4%BA%92%E6%8D%A2%E4%B8%8E%E6%8C%87%E6%A0%87%E8%BF%81%E7%A7%BB/"/>
+      <url>/2026/10/02/2026-ApacheOssie%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%E4%BA%92%E6%8D%A2%E4%B8%8E%E6%8C%87%E6%A0%87%E8%BF%81%E7%A7%BB/</url>
+      
+        <content type="html"><![CDATA[<p>同一家公司，“收入”这个指标可能在 Power BI、数据仓库和 AI 问答工具里各有一份定义。换一个分析平台，团队便要重新解释哪些订单计入收入、退款怎样扣除、日期按哪个时区划分。表已经接通，数字却未必对得上。</p><p>2026 年 10 月 1 日，CIO 报道微软支持 Apache Ossie，谷歌也正在办理加入该项目的流程。微软的参与包括开发 Power BI 语义模型与 Ossie 之间的双向转换器；谷歌尚未披露具体贡献计划。对数据开发者来说，这条消息值得关注的地方是，业务指标和 AI 所需的业务上下文，有机会通过开放格式跨工具复用。</p><p>但接入同一种格式，只解决了迁移工作的一部分。Ossie 官方核心规范当前的开发版本是 <code>0.2.0.dev0</code>，明确标注为草案，结构仍可能变化。转换后的模型是否算出相同结果、是否保留访问限制，还需要团队验证。</p><span id="more"></span><h2 id="语义模型保存的是“这张表该怎样用”"><a href="#语义模型保存的是“这张表该怎样用”" class="headerlink" title="语义模型保存的是“这张表该怎样用”"></a>语义模型保存的是“这张表该怎样用”</h2><p>Apache Ossie 的前身是 Open Semantic Interchange（OSI）。项目官方更新页于 2026 年 7 月 10 日介绍了进入 Apache 孵化器后的新名称；目前项目仍处于孵化阶段。</p><p>它面向的是分析工具之间的语义模型交换。数据库表结构能告诉我们有一个 <code>amount</code> 字段，却不一定能说明它是含税金额、实付金额，还是扣除退款后的净额。语义模型进一步描述数据集、字段、关联关系和聚合指标，让使用这些数据的工具能看到业务口径。</p><p>AI 分析也需要这层信息。用户问“上月收入下降的原因”，系统除了找到订单表，还要识别“收入”对应哪个指标，以及“上月”使用什么日期口径。若每个工具分别维护这些解释，修改一个业务定义就可能留下多份不一致的版本。</p><p>Ossie 尝试把这类定义保存为可交换的 JSON 或 YAML 文档。按照当前核心规范，常见内容包括：</p><table><thead><tr><th>规范中的结构</th><th>描述的内容</th><th>开发者需要关注的地方</th></tr></thead><tbody><tr><td><code>datasets</code> 和 <code>fields</code></td><td>逻辑数据集、物理来源及字段表达式</td><td>迁移后来源映射与字段含义是否保留</td></tr><tr><td><code>relationships</code></td><td>数据集之间的关联列</td><td>关联方向、键和数据粒度是否正确</td></tr><tr><td><code>metrics</code></td><td>聚合计算及业务说明</td><td>表达式能否执行，结果是否符合口径</td></tr><tr><td><code>ai_context</code></td><td>使用说明、同义词和示例问题</td><td>AI 工具是否真正读取并使用这些信息</td></tr><tr><td><code>custom_extensions</code></td><td>厂商特有的附加信息</td><td>目标工具能否理解和保留扩展内容</td></tr></tbody></table><p>这些结构让业务定义可以进入版本管理和代码审查。它们依然需要清楚的描述、明确的负责人，以及能验证计算结果的样本数据。</p><h2 id="公共格式减少重复转换，方言差异仍然存在"><a href="#公共格式减少重复转换，方言差异仍然存在" class="headerlink" title="公共格式减少重复转换，方言差异仍然存在"></a>公共格式减少重复转换，方言差异仍然存在</h2><p>CIO 的报道将 Ossie 的互操作方式描述为中心式转换：各平台围绕同一种公共格式开发转换器，减少每两个平台之间都单独维护一套映射的工作。</p><p>微软正在开发的 Power BI 双向转换器属于这条路径。不过，参与项目和开发转换器，并不代表所有复杂模型都已经可以直接迁移。报道没有给出完整模型无损转换的保证，也不能据此推断相关能力已经普遍上线。</p><p>官方开发版核心规范在表达式方言列表中已经列出 <code>DAX</code> 和 <code>BIGQUERY</code>，字段或指标也可以携带多个方言版本的表达式。这有助于明确一段计算逻辑属于哪个平台，但把语言名称写进规范，不能自动完成语言翻译。</p><p>例如，Power BI 中某个指标依赖筛选上下文，另一平台用 SQL 计算时，可能需要不同的查询结构。即使两边都能表达求和，关联造成的重复行、空值处理、时间划分和筛选条件，也可能让最终数字不同。</p><p>因此，应分别检查文档能否解析、表达式能否执行、业务结果是否一致。一个 YAML 文件成功导入，只能说明迁移完成了其中一个环节。</p><h2 id="AI-上下文可以随模型迁移，权限需要另行核对"><a href="#AI-上下文可以随模型迁移，权限需要另行核对" class="headerlink" title="AI 上下文可以随模型迁移，权限需要另行核对"></a>AI 上下文可以随模型迁移，权限需要另行核对</h2><p><code>ai_context</code> 是 Ossie 与 AI 应用联系较紧的部分。官方规范允许它使用字符串或结构化对象，并给出 <code>instructions</code>、<code>synonyms</code>、<code>examples</code> 等推荐字段。</p><p>团队可以借此记录“净收入”有哪些常用叫法、这个模型适合回答哪些问题，减少在不同 AI 工具中重复维护业务说明的工作。接收端是否消费这些字段、如何将它们用于查询，仍取决于具体实现。模型文档带有说明，也不能证明 AI 生成的查询一定符合说明。</p><p>权限是另一个必须单独检查的部分。当前核心规范的模型结构包含数据集、关系、字段、指标和扩展，并没有将行级安全策略列为独立的一等字段。厂商可以通过扩展保存附加信息，但目标平台是否识别这些信息，需要看转换器和平台能力。</p><p>如果原模型限制销售人员只能看到所属区域的数据，迁移后的验证就必须使用不同身份检查实际查询结果。仅检查指标定义是否存在，无法确认这条访问限制仍然有效。</p><h2 id="从一个指标开始做迁移实验"><a href="#从一个指标开始做迁移实验" class="headerlink" title="从一个指标开始做迁移实验"></a>从一个指标开始做迁移实验</h2><p>对已有 BI 或 AI 分析系统的团队，比较实际的起点是选一个重要、口径清楚、便于对账的指标，验证完整的往返转换流程。</p><ol><li><strong>固定规范和转换器版本。</strong> 当前 <code>0.2.0.dev0</code> 草案采用一个文档表示一个模型的扁平结构，并移除了此前的 <code>semantic_model</code> 数组。试验时应记录使用的具体版本或提交，避免后续结构变化干扰判断。</li><li><strong>准备边界数据。</strong> 样本应覆盖退款、空值、重复关联、跨月交易和时区边界。预期结果来自已有业务口径，而非转换后的模型自身。</li><li><strong>比较转换前后的结果。</strong> 保持数据、筛选条件和执行身份一致，逐项核对计算值、关联逻辑与访问范围，并记录丢失的扩展信息。</li><li><strong>试验往返转换。</strong> 除了“原平台到 Ossie 再到目标平台”，也检查转换回来后发生了哪些变化。核心规范目前尚未定义模型打包格式或跨模型引用，涉及多个相互依赖模型时，还需要额外设计交换方式。</li></ol><p>这套验证也能帮助团队区分问题来源：是业务定义本来就含糊，还是转换器遗漏字段，或者两边执行引擎的行为不同。先把一个指标迁移清楚，再扩大模型范围，比较容易估算后续工作的成本。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>微软和谷歌的参与让 Apache Ossie 更值得数据团队跟进。开放格式可以让分散在不同工具里的指标、关系和上下文进入共同的维护流程，减少重复建模。</p><p>它能走多远，还要看转换器覆盖范围、规范稳定性和实际平台行为。对开发者而言，现在可以做的是把关键业务口径写清楚、纳入版本管理，并建立转换前后的对账样本。这样，无论最终使用哪个平台，都有证据判断模型迁移是否保留了原来的含义。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol><li>CIO：<a href="https://www.cio.com/article/4229751/microsoft-google-back-apache-ossie-to-make-enterprise-data-and-ai-platforms-more-interoperable.html">Microsoft, Google back Apache Ossie to make enterprise data and AI platforms more interoperable</a>，2026 年 10 月 1 日。微软参与范围和谷歌正在加入的状态依据该报道；其中谷歌信息来自其代表的邮件回复。</li><li>Apache Ossie：<a href="https://github.com/apache/ossie/blob/main/core-spec/spec.md">Core Metadata Specification</a>，2026 年 10 月 2 日查阅，当前开发版为 <code>0.2.0.dev0</code>。本文的结构、方言、上下文及版本边界依据此规范。</li><li>Apache Ossie：<a href="https://ossie.apache.org/updates/">官方更新页</a>，包含 2026 年 7 月 10 日关于 OSI 更名和 Apache 孵化状态的说明。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据工程 </category>
+          
+          <category> 人工智能 </category>
+          
+          <category> 开源技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Apache Ossie </tag>
+            
+            <tag> Open Semantic Interchange </tag>
+            
+            <tag> Power BI </tag>
+            
+            <tag> BigQuery </tag>
+            
+            <tag> 语义模型 </tag>
+            
+            <tag> 数据治理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cloudflare Threat Signals：把 RSS 威胁报告变成可追溯的 WAF 情报</title>
       <link href="/2026/10/01/2026-CloudflareThreatSignalsRSS%E6%83%85%E6%8A%A5%E8%BD%ACWAF%E8%A7%84%E5%88%99/"/>
       <url>/2026/10/01/2026-CloudflareThreatSignalsRSS%E6%83%85%E6%8A%A5%E8%BD%ACWAF%E8%A7%84%E5%88%99/</url>
