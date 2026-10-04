@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title>Cloudflare Quick Tunnels 加入邮箱验证：本地预览链接如何限制访问</title>
+      <link href="/2026/10/04/2026-Cloudflare%E4%B8%B4%E6%97%B6%E9%9A%A7%E9%81%93%E5%8A%A0%E5%85%A5%E9%82%AE%E7%AE%B1%E9%AA%8C%E8%AF%81/"/>
+      <url>/2026/10/04/2026-Cloudflare%E4%B8%B4%E6%97%B6%E9%9A%A7%E9%81%93%E5%8A%A0%E5%85%A5%E9%82%AE%E7%AE%B1%E9%AA%8C%E8%AF%81/</url>
+      
+        <content type="html"><![CDATA[<p>本地页面做好了，想让同事用手机看看，往往还要临时部署一遍。Cloudflare Quick Tunnels 可以用一条命令把本地 HTTP 服务映射到随机的 <code>trycloudflare.com</code> 地址，不需要注册账户或配置域名。它省掉了部署步骤，却也留下一个问题：默认情况下，拿到链接的人都能打开服务。</p><p>2026 年 10 月 2 日，Cloudflare 发布 Protected Quick Tunnels 技术公告。从 <code>cloudflared 2026.9.3</code> 开始，启动命令可以增加 <code>--allowed-mail</code>，允许指定邮箱或邮箱域名的访问者通过一次性 PIN 验证后进入应用。开发者和访问者都不需要 Cloudflare 账户，邮箱保护也免费。</p><p>这项更新适合临时页面评审、手机端检查和小范围演示。它把访问控制放进启动命令，但仍保留了 Quick Tunnels 的开发工具定位。理解它怎样验证身份、在哪里检查名单，以及哪些客户端无法使用，会比单纯记住一个新参数更有帮助。</p><span id="more"></span><h2 id="给临时链接加一道入口检查"><a href="#给临时链接加一道入口检查" class="headerlink" title="给临时链接加一道入口检查"></a>给临时链接加一道入口检查</h2><p>原有 Quick Tunnel 命令仍然可用。以运行在本地 <code>5173</code> 端口的开发服务器为例：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cloudflared tunnel --url http://localhost:5173</span><br></pre></td></tr></table></figure><p>这会生成一个公开的随机地址。若要把预览限定给一个人，可以在符合版本要求的 <code>cloudflared</code> 中使用：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cloudflared tunnel --url http://localhost:5173 \</span><br><span class="line">  --allowed-mail alice@example.com</span><br></pre></td></tr></table></figure><p>这里的邮箱是示例，应替换为实际受邀者的地址。对方打开链接后输入邮箱，再输入收到的一次性 PIN。输入的邮箱必须与允许名单匹配。</p><p>多人预览可以重复参数，也可以使用逗号分隔的名单：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cloudflared tunnel --url http://localhost:5173 \</span><br><span class="line">  --allowed-mail <span class="string">&#x27;alice@example.com,bob@example.com&#x27;</span></span><br></pre></td></tr></table></figure><p>如果确实要允许整个邮箱域名，则可写成：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cloudflared tunnel --url http://localhost:5173 \</span><br><span class="line">  --allowed-mail <span class="string">&#x27;*@example.com&#x27;</span></span><br></pre></td></tr></table></figure><p>通配符需要加引号，以免被 shell 展开。域名名单会放行该域下的所有邮箱，权限范围明显大于几名指定同事，应按实际评审范围选择。</p><p>还有一个容易忽略的行为：不传 <code>--allowed-mail</code>，隧道就沿用原来的公开模式。升级客户端本身不会自动限制预览链接的访问者。</p><h2 id="邮箱由-Access-验证，名单由本地连接器检查"><a href="#邮箱由-Access-验证，名单由本地连接器检查" class="headerlink" title="邮箱由 Access 验证，名单由本地连接器检查"></a>邮箱由 Access 验证，名单由本地连接器检查</h2><p>普通账户型访问控制，可以把应用和策略保存在账户下面。Quick Tunnels 没有这个账户归属，每条隧道又可能只存在几分钟。若为每个随机地址都建立一套中央策略对象，会增加临时服务的管理负担。</p><p>Cloudflare 的设计将身份验证和访问授权分开处理：</p><table><thead><tr><th>组件</th><th>负责的工作</th></tr></thead><tbody><tr><td>Cloudflare Access</td><td>通过邮箱一次性 PIN，验证访问者能够控制该邮箱</td></tr><tr><td>运行在 Workers 上的认证 broker</td><td>将经过验证的身份转成短期、带签名的交接凭据</td></tr><tr><td>本地 <code>cloudflared</code></td><td>验证交接凭据，将邮箱与允许名单比较，并管理本地会话</td></tr><tr><td>本地应用</td><td>接收通过检查后转发的业务请求</td></tr></tbody></table><p>根据官方公告，broker 不存储隧道策略、访问者会话或身份记录，也看不到邀请名单。允许名单留在开发者机器上的 <code>cloudflared</code> 内存中。</p><p>这使策略的生命周期与隧道进程一致，也避免了登录后的每个请求都去中央服务查询名单。不过，“名单留在本地”不意味着整个流程都在本地完成：邮箱验证仍依赖 Cloudflare Access，流量也经过 Cloudflare 的基础设施。</p><h2 id="登录交接怎样绑定到这一条隧道"><a href="#登录交接怎样绑定到这一条隧道" class="headerlink" title="登录交接怎样绑定到这一条隧道"></a>登录交接怎样绑定到这一条隧道</h2><p>访问者首次打开受保护的地址时，本地连接器发现没有会话，会将浏览器重定向到登录服务，并附带一个随机、单次使用的状态值。公告说明，这个状态与该浏览器绑定，有效期为十分钟。</p><p>Access 验证邮箱后，broker 返回带签名的短期断言，并将它绑定到隧道主机名和上述状态。浏览器通过表单 POST 交回凭据，避免把凭据放进 URL。<code>cloudflared</code> 随后验证签名和绑定关系、消耗状态值，再检查邮箱是否在允许名单中。</p><p>通过检查的访问者会获得本地会话。公告给出的会话时长上限是四小时；若 Access 登录更早失效，会话也会更早结束。停止 <code>cloudflared</code> 同样会终止访问。</p><p>之后的请求使用该会话，连接器会在转发前剥离认证凭据。因此，本地应用不必为了这次预览自行实现邮箱登录，检查失败的请求也不会被转发给本地服务。这个入口授权控制的是谁能进入隧道；应用内部若还需要区分用户角色，仍应保留自己的权限逻辑。</p><p>启动时也有一个关键约束。按照公告，客户端只向隧道服务发送需要邮箱验证的认证模式，不发送允许名单；服务端若没有确认该模式，客户端会拒绝启动。受保护隧道在检查失败时不会降级成公开模式。</p><h2 id="适合页面评审，自动化客户端要另选方案"><a href="#适合页面评审，自动化客户端要另选方案" class="headerlink" title="适合页面评审，自动化客户端要另选方案"></a>适合页面评审，自动化客户端要另选方案</h2><p>官方文档把 Quick Tunnels 定位为测试和开发工具。新增邮箱验证后，有几项限制仍直接影响选型。</p><p>邮箱验证需要交互式浏览器会话，不支持非交互式客户端。因此，浏览器中的临时页面预览很合适，而不能假设普通脚本、webhook 或托管助手会自动完成邮箱 PIN 登录。若用途是机器间调用，需要选择支持相应认证方式的方案。</p><p>Quick Tunnels 也不支持 Server-Sent Events（SSE）。演示聊天页面时，即使首页和普通接口都正常，依赖 SSE 的流式回复仍可能无法工作。遇到这种情况，应先核对传输方式，而不是把故障归因于邮箱验证。</p><p>每条 Quick Tunnel 最多支持 200 个正在处理的请求，超过限制会返回 <code>429</code>。这是并发请求限制，不能直接理解成每秒 200 次请求。服务没有可用性保证，每次创建隧道，随机主机名也会变化。</p><p>这些特点决定了它适合短期、小范围的共享。需要稳定地址、生产流量或更丰富的身份规则时，官方建议使用正式的 Cloudflare Tunnel，并按需求配置 Access。</p><h2 id="把启动和结束都纳入预览流程"><a href="#把启动和结束都纳入预览流程" class="headerlink" title="把启动和结束都纳入预览流程"></a>把启动和结束都纳入预览流程</h2><p>对使用编码代理生成预览链接的团队，默认模板可以带上指定邮箱，但仍要检查实际执行的命令。Cloudflare 公告说明，<code>cloudflared</code> 会输出是否启用邮箱认证以及规则数量，同时不打印具体邮箱地址。启动输出因此可以成为人工复核或自动检查的依据。</p><p>实际分享前，建议用受邀邮箱验证页面能正常打开，再用未受邀邮箱确认无法进入本地应用。这样既能发现名单填写问题，也能确认运行中的隧道启用了预期的认证模式。</p><p>修改允许名单需要停止进程，并重新启动 Quick Tunnel；新的隧道地址也会变化。如果需要撤销当前共享，应结束 <code>cloudflared</code> 进程。评审结束后主动关闭隧道，可以让临时入口和这次演示一起结束。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Protected Quick Tunnels 的实用之处，是让一次性本地共享多了一个明确的访问条件，而没有引入账户和域名配置流程。Access 验证邮箱，本地连接器检查名单，两者共同完成临时入口的访问控制。</p><p>下次分享本地页面，可以把受邀者名单和隧道生命周期一并写进预览流程。对浏览器评审，它能减少配置工作；对流式应用和机器调用，则应先核对客户端及传输方式的限制，再决定是否使用。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol><li>Cloudflare：<a href="https://blog.cloudflare.com/protected-quick-tunnels/">Protected Quick Tunnels: simple accountless authentication for your next dev project</a>，发布于 2026 年 10 月 2 日 13:00 UTC，即北京时间 21:00。版本要求、认证架构及会话流程依据该公告。</li><li>Cloudflare Docs：<a href="https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/">Quick Tunnels</a>，2026 年 10 月 4 日查阅。命令、邮箱名单写法和并发请求、SSE、交互式登录等限制依据此文档。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 网络技术 </category>
+          
+          <category> 云计算 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> Quick Tunnels </tag>
+            
+            <tag> cloudflared </tag>
+            
+            <tag> Cloudflare Access </tag>
+            
+            <tag> 本地开发 </tag>
+            
+            <tag> 身份验证 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Apache Ossie：微软与谷歌参与语义互换，指标迁移还要过哪些关</title>
       <link href="/2026/10/02/2026-ApacheOssie%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%E4%BA%92%E6%8D%A2%E4%B8%8E%E6%8C%87%E6%A0%87%E8%BF%81%E7%A7%BB/"/>
       <url>/2026/10/02/2026-ApacheOssie%E8%AF%AD%E4%B9%89%E6%A8%A1%E5%9E%8B%E4%BA%92%E6%8D%A2%E4%B8%8E%E6%8C%87%E6%A0%87%E8%BF%81%E7%A7%BB/</url>
