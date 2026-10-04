@@ -4,6 +4,47 @@
   
     
     <entry>
+      <title>uv 0.12.23 的锁文件预览能力：Python 构建流程可以怎样拆分</title>
+      <link href="/2026/10/04/2026-uv%E9%94%81%E6%96%87%E4%BB%B6%E7%8B%AC%E7%AB%8B%E4%BD%BF%E7%94%A8%E4%B8%8EPython%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B/"/>
+      <url>/2026/10/04/2026-uv%E9%94%81%E6%96%87%E4%BB%B6%E7%8B%AC%E7%AB%8B%E4%BD%BF%E7%94%A8%E4%B8%8EPython%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<p>Python 项目的依赖已经锁定，为什么构建任务还要带上项目清单，甚至工作区里多个成员的配置文件？在容器构建和依赖分析中，这些额外输入会让流程更难拆分：有的任务只想安装外部依赖，有的只想生成一份依赖清单，却仍与完整项目布局绑定。</p><p>Astral 发布的 uv 0.12.23，为这类场景新增了 <code>frozen-lockfile</code> 预览能力。GitHub 记录的发布时间是 2026 年 10 月 3 日 17:34 UTC，即北京时间 10 月 4 日 01:34。同步、导出、查看依赖树和读取工作区元数据，现在可以在缺少工作区清单时发现并使用 <code>uv.lock</code>。</p><p>它让锁文件能承担更多构建输入的职责，但仍有版本和内容要求。本地包安装需要源码和构建元数据，某些配置也没有写进锁文件。真正值得尝试的，是把依赖准备、应用构建和清单分析拆成职责更清楚的步骤。</p><span id="more"></span><h2 id="从依赖声明到安装计划，中间已有一次解析"><a href="#从依赖声明到安装计划，中间已有一次解析" class="headerlink" title="从依赖声明到安装计划，中间已有一次解析"></a>从依赖声明到安装计划，中间已有一次解析</h2><p>在 uv 的项目流程里，<code>pyproject.toml</code> 保存项目元数据和依赖声明，<code>uv.lock</code> 保存解析后的依赖结果。锁定依赖与同步环境是两个不同的动作：前者决定版本和依赖关系，后者将选定的包安装到环境中。</p><p>uv 默认会自动锁定和同步。例如，运行项目命令或查看依赖树时，工具可能先检查并更新锁文件，以便与当前项目保持一致。这适合日常开发，却让只消费已有依赖结果的任务仍然需要项目清单。</p><p>0.12.23 的变化集中在冻结操作上。工具可以从已有锁文件读取必要信息，在工作区清单不在场的情况下继续处理。根据对应代码变更说明，如果清单仍然存在，工具依旧会读取其中的配置；独立锁文件模式提供的是额外的发现和执行路径。</p><h2 id="四类任务可以围绕锁文件拆开"><a href="#四类任务可以围绕锁文件拆开" class="headerlink" title="四类任务可以围绕锁文件拆开"></a>四类任务可以围绕锁文件拆开</h2><p>发布说明将这次新增能力全部列在 Preview features 下，涉及以下操作：</p><table><thead><tr><th>操作</th><th>缺少工作区清单时新增的能力</th><th>适合拆出的任务</th></tr></thead><tbody><tr><td><code>uv sync --frozen</code></td><td>从锁文件同步选定的环境依赖</td><td>容器中的依赖准备阶段</td></tr><tr><td><code>uv export --frozen</code></td><td>从锁文件导出其他格式</td><td>与其他工具对接的依赖清单生成</td></tr><tr><td><code>uv tree --frozen</code></td><td>从锁文件查看依赖树</td><td>CI 中的依赖关系检查</td></tr><tr><td><code>uv workspace metadata --frozen</code></td><td>从锁文件读取工作区元数据</td><td>工作区成员和环境信息分析</td></tr></tbody></table><p>官方预览文档支持通过 <code>--preview-features frozen-lockfile</code> 明确启用这一项。相关变更说明还指出，某些冻结操作在没有显式启用时会输出预览警告。因此，给团队编写示例时，最好直接写出具体预览项，让读者知道使用的是哪项尚未稳定的能力。</p><p>在 uv 0.12.23、符合要求的锁文件和适当的依赖布局下，一个只准备外部依赖的示例是：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">uv <span class="built_in">sync</span> --frozen \</span><br><span class="line">  --preview-features frozen-lockfile \</span><br><span class="line">  --no-install-workspace \</span><br><span class="line">  --no-default-groups</span><br></pre></td></tr></table></figure><p>这里显式跳过工作区成员的安装，并排除默认依赖组。它适合演示依赖层与应用层的分离；若项目还有额外的本地路径依赖，仍需提供那些包所需的文件。项目需要哪些依赖组，也应根据实际用途选择。</p><p>只查看依赖或导出清单，可以使用：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">uv tree --frozen --preview-features frozen-lockfile</span><br><span class="line"></span><br><span class="line">uv <span class="built_in">export</span> --frozen \</span><br><span class="line">  --preview-features frozen-lockfile \</span><br><span class="line">  --format requirements.txt</span><br></pre></td></tr></table></figure><p><code>uv export</code> 默认输出到标准输出。导出的 <code>requirements.txt</code> 是与其他工具对接的结果，不必再成为另一份独立维护的依赖来源。</p><h2 id="冻结使用与检查新鲜度，需要安排在不同步骤"><a href="#冻结使用与检查新鲜度，需要安排在不同步骤" class="headerlink" title="冻结使用与检查新鲜度，需要安排在不同步骤"></a>冻结使用与检查新鲜度，需要安排在不同步骤</h2><p>这次更新也让 <code>--locked</code> 和 <code>--frozen</code> 的差别更值得关注。</p><p>按照 uv 官方文档，<code>--locked</code> 会检查锁文件是否与项目元数据一致；发现需要更新时，工具报错，而非自动修改锁文件。<code>--frozen</code> 则使用已有锁文件，并跳过这项新鲜度检查。</p><p>在完整仓库中，可以先执行：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uv lock --check</span><br></pre></td></tr></table></figure><p>这一步确认提交中的清单与锁文件一致。后续构建阶段再以冻结方式消费同一份锁文件，就能减少与完整项目布局的耦合。</p><p>如果项目声明已经改变，而构建阶段只收到旧的 <code>uv.lock</code>，冻结操作本身不会替前置步骤发现这一差异。因此，应把清单校验和锁文件生成留在能够读取完整仓库的任务里，再将通过检查的结果交给后续任务。</p><h2 id="仅有锁文件时，仍要确认三个输入边界"><a href="#仅有锁文件时，仍要确认三个输入边界" class="headerlink" title="仅有锁文件时，仍要确认三个输入边界"></a>仅有锁文件时，仍要确认三个输入边界</h2><p>首先是锁文件的修订号。同步、导出和工作区元数据相关变更说明要求独立锁文件操作使用 revision 5 或更高版本。这里的 <code>revision</code> 是锁文件内部格式信息，与 uv 的 <code>0.12.23</code> 版本号不同。旧锁文件应由合适版本的工具生成或更新，并审查差异，不能靠手工修改修订号补齐缺失的信息。</p><p>其次是本地包的源码和构建元数据。锁文件可以记录依赖关系与来源，但安装本地包仍需要其源码树和构建信息。<code>--no-install-workspace</code> 可以跳过工作区成员的安装，同时保留它们所需依赖的安装；它不会自动解决所有本地路径包缺失的问题。若要构建应用本身，后续阶段仍须加入应用源码及相应清单。</p><p>第三是没有被写入锁文件的配置。导出功能的变更说明明确指出，<code>--emit-index-url</code> 和 <code>--emit-find-links</code> 仍要求 <code>pyproject.toml</code>，因为相应配置没有记录在锁文件中。同步时，如果清单在场，工具也会利用其中的额外构建依赖来源配置。</p><p>因此，迁移现有流水线前，应列清楚它依赖哪些清单配置、包索引和本地文件。冻结安装仍可能下载包或执行构建，实际运行环境也需要具备相应网络和构建条件。</p><h2 id="CI-和容器构建，可以先从依赖层试起"><a href="#CI-和容器构建，可以先从依赖层试起" class="headerlink" title="CI 和容器构建，可以先从依赖层试起"></a>CI 和容器构建，可以先从依赖层试起</h2><p>对以外部依赖为主的项目，这项能力提供了一种更直接的分层方式：在完整仓库里校验并生成锁文件，让依赖准备阶段消费它，随后再加入应用源码并完成应用构建。</p><p>当依赖层的输入保持不变时，业务代码修改有机会复用已有依赖层。实际缓存效果仍取决于构建文件、依赖来源和流水线布局，发布说明没有给出可直接套用到所有项目的加速比例。</p><p>可以先选一个代表性项目验证三个问题：新旧流程安装的依赖集合是否一致，选定的依赖组和 Python 要求是否正确，本地包与额外构建依赖是否仍能正常处理。对于多成员工作区，还应覆盖单独选择成员和组合选择成员的情况。</p><p>在这些检查通过后，再扩大使用范围，并固定 CI 使用的 uv 版本。预览能力仍可能调整，保留原有完整项目构建流程，也便于在出现兼容问题时定位和恢复。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>uv 0.12.23 让锁文件在依赖同步和分析中承担了更独立的角色。对构建流程的价值，是让已经解析好的依赖结果更容易交给后续任务使用，减少这些任务对完整项目布局的依赖。</p><p>使用时，应同时保留前置清单校验，并识别源码、构建元数据和未记录配置的边界。这样拆分出来的流水线，才既能利用锁文件的确定性，也能清楚说明每个阶段还需要哪些输入。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol><li>Astral：<a href="https://github.com/astral-sh/uv/releases/tag/0.12.23">uv 0.12.23 发布说明</a>，发布说明日期为 2026 年 10 月 3 日；GitHub 发布时间为北京时间 10 月 4 日 01:34。</li><li>uv：<a href="https://github.com/astral-sh/uv/pull/22018">冻结同步与缺少工作区清单的支持变更</a>，包含锁文件修订号、本地包和构建元数据的限制。</li><li>uv：<a href="https://github.com/astral-sh/uv/pull/22007">冻结导出与缺少工作区清单的支持变更</a>，包含导出所需配置的边界。</li><li>uv：<a href="https://github.com/astral-sh/uv/blob/0.12.23/docs/concepts/projects/sync.md">0.12.23 版本的锁定与同步文档</a>，用于核对 <code>--locked</code>、<code>--frozen</code>、依赖组及部分安装选项。</li><li>uv：<a href="https://github.com/astral-sh/uv/blob/0.12.23/docs/concepts/preview.md">0.12.23 版本的预览功能文档</a>，用于核对预览项的启用方式。</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> Python </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> uv </tag>
+            
+            <tag> Astral </tag>
+            
+            <tag> uv.lock </tag>
+            
+            <tag> CI </tag>
+            
+            <tag> 容器构建 </tag>
+            
+            <tag> 依赖管理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cloudflare Quick Tunnels 加入邮箱验证：本地预览链接如何限制访问</title>
       <link href="/2026/10/04/2026-Cloudflare%E4%B8%B4%E6%97%B6%E9%9A%A7%E9%81%93%E5%8A%A0%E5%85%A5%E9%82%AE%E7%AE%B1%E9%AA%8C%E8%AF%81/"/>
       <url>/2026/10/04/2026-Cloudflare%E4%B8%B4%E6%97%B6%E9%9A%A7%E9%81%93%E5%8A%A0%E5%85%A5%E9%82%AE%E7%AE%B1%E9%AA%8C%E8%AF%81/</url>

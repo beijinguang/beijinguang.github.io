@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://code.idea4j.com/2026/10/04/2026-uv%E9%94%81%E6%96%87%E4%BB%B6%E7%8B%AC%E7%AB%8B%E4%BD%BF%E7%94%A8%E4%B8%8EPython%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B/</loc>
+    
+    <lastmod>2026-10-04</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://code.idea4j.com/2026/10/04/2026-Cloudflare%E4%B8%B4%E6%97%B6%E9%9A%A7%E9%81%93%E5%8A%A0%E5%85%A5%E9%82%AE%E7%AE%B1%E9%AA%8C%E8%AF%81/</loc>
     
     <lastmod>2026-10-04</lastmod>
@@ -3793,6 +3802,48 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://code.idea4j.com/tags/uv/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/Astral/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/uv-lock/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/CI/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -4679,6 +4730,20 @@
   
   <url>
     <loc>https://code.idea4j.com/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/Python/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/Python/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/</loc>
     <lastmod>2026-10-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
