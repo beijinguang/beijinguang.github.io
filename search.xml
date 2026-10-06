@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title>GitHub 新增 Lovable、Supabase 密钥扫描：检测覆盖扩大，凭证仍要分清</title>
+      <link href="/2026/10/06/2026-GitHub%E6%96%B0%E5%A2%9ELovable%E4%B8%8ESupabase%E5%AF%86%E9%92%A5%E6%89%AB%E6%8F%8F/"/>
+      <url>/2026/10/06/2026-GitHub%E6%96%B0%E5%A2%9ELovable%E4%B8%8ESupabase%E5%AF%86%E9%92%A5%E6%89%AB%E6%8F%8F/</url>
+      
+        <content type="html"><![CDATA[<p>GitHub 在 2026 年 10 月 5 日的更新公告中，为 secret scanning 增加了五类凭证检测，覆盖 Lovable Labs、Pydantic Services Inc. 和 Supabase。公告发布时间换算到北京时间是 10 月 6 日早晨，属于本次晨间更新的近期动态。</p><p>对使用这些服务的开发团队，这次变化提供了一个检查旧仓库和交付流程的契机。不过，新增检测器只说明 GitHub 能识别更多凭证类型；它不代表每一类都支持推送拦截、有效性检查或自动撤销。尤其是 Supabase，前端可公开的项目密钥与这次新增的访问凭证，需要分开理解。</p><span id="more"></span><h2 id="这次具体增加了什么"><a href="#这次具体增加了什么" class="headerlink" title="这次具体增加了什么"></a>这次具体增加了什么</h2><p>官方公告列出了以下检测类型，同时宣布 Lovable Labs 加入 secret scanning 合作伙伴计划。</p><table><thead><tr><th>提供方</th><th>新增检测类型</th><th>阅读时要注意的区别</th></tr></thead><tbody><tr><td>Lovable Labs</td><td><code>lovable_api_key</code></td><td>API 凭证；不要与普通项目配置混放</td></tr><tr><td>Pydantic Services Inc.</td><td><code>logfire_token</code></td><td>Logfire 服务的 token</td></tr><tr><td>Pydantic Services Inc.</td><td><code>pydantic_ai_gateway_api_key</code></td><td>AI Gateway 的 API 凭证</td></tr><tr><td>Supabase</td><td><code>supabase_oauth_access_token</code></td><td>OAuth 访问凭证，并非项目 publishable key</td></tr><tr><td>Supabase</td><td><code>supabase_scoped_personal_access_token</code></td><td>带作用域的个人访问凭证，并非项目 publishable key</td></tr></tbody></table><p>这是一份检测类型清单，不是各平台的权限清单。具体凭证能访问什么资源、何时失效，仍应以它的授权配置和提供方文档为准。名称里带有作用域，也不意味着可以公开；作用域限制的是授权范围。</p><p>公告没有声称这次更新来自某起公开泄露事件，因此不应把新增检测解读成这些服务已经发生安全事故。</p><h2 id="检测、拦截和撤销，发生在不同环节"><a href="#检测、拦截和撤销，发生在不同环节" class="headerlink" title="检测、拦截和撤销，发生在不同环节"></a>检测、拦截和撤销，发生在不同环节</h2><p>GitHub 的 secret scanning 会查找仓库中的已知凭证类型。官方文档说明，其扫描范围包括所有分支的完整 Git 历史；新增凭证类型后，GitHub 也会定期重新扫描仓库。</p><p>这让历史记录同样值得关注。密钥从当前文件中删掉以后，可能仍留在旧提交里。扫描可以帮助定位这些残留，但发现告警之后，还需要有人负责处理。</p><p>推送保护（push protection）则试图在凭证进入仓库前阻止推送。GitHub 的支持矩阵将用户告警、推送保护、合作伙伴通知和有效性检查分别列出，因为它们不是一项能力。判断某种凭证是否受到拦截，应检查它对应的支持情况，以及仓库实际启用的设置。</p><p>有效性检查又是另一层。它帮助判断检测出的凭证是否仍然有效；启用后，GitHub 可能联系凭证签发服务确认状态。合作伙伴通知则将支持的泄露信息报告给相应提供方，后续处置取决于该提供方的流程。不能因为出现告警，就认定凭证已经被撤销。</p><p>对本次新增的五类凭证，本文只确认公告明确发布了检测支持，不将其他保护能力一并视为已启用。</p><h2 id="Supabase-的密钥为什么特别容易混淆"><a href="#Supabase-的密钥为什么特别容易混淆" class="headerlink" title="Supabase 的密钥为什么特别容易混淆"></a>Supabase 的密钥为什么特别容易混淆</h2><p>很多应用把 Supabase 项目 URL 和 publishable key 写入前端初始化代码，这是其设计允许的用法。Supabase 官方文档区分了两类现代项目 API 密钥：</p><ul><li><code>sb_publishable_...</code> 用于浏览器、移动应用等公开组件，不能依靠隐藏它来保护数据。</li><li><code>sb_secret_...</code> 提供高权限访问，只应留在受控后端；它对应的 <code>service_role</code> 可绕过行级安全策略（RLS）。</li></ul><p>旧版 <code>anon</code> 和 <code>service_role</code> 则是 JWT 格式的项目密钥，权限定位与上述两类分别对应。</p><p>本次新增的 <code>supabase_oauth_access_token</code> 和 <code>supabase_scoped_personal_access_token</code> 是另外两种凭证类型。看到公告中的 Supabase，不应推断“前端里的 publishable key 从此必须保密”，也不能反过来把 OAuth 或个人访问 token 当成可公开配置。</p><p>更可靠的判断方式，是查看凭证的用途、授权范围和运行位置，而不只看变量名是否含有 <code>KEY</code> 或 <code>TOKEN</code>。</p><p>对于公开组件，Supabase 的数据访问边界仍要靠用户认证、数据库授权和正确配置的 RLS。官方文档提醒，公开密钥本身并不能替代这些控制。高权限 secret key 也不能靠浏览器限制兜底：即使某种浏览器调用被拒绝，泄露的凭证仍可能被其他工具使用。</p><h2 id="新检测器上线后，团队可以做哪些检查"><a href="#新检测器上线后，团队可以做哪些检查" class="headerlink" title="新检测器上线后，团队可以做哪些检查"></a>新检测器上线后，团队可以做哪些检查</h2><p>先确认仓库能够使用哪些功能。GitHub 官方文档说明，公开仓库的 secret scanning 自动运行且免费；组织拥有的私有或内部仓库，则需要符合相应套餐及 GitHub Secret Protection 的启用条件。不能假设公开仓库的配置会自动覆盖组织里的所有私有项目。</p><p>接下来检查告警入口和负责人。扫描发现问题后，谁确认凭证归属，谁能撤销或轮换，谁负责更新部署环境，这些安排决定了告警能否被真正处理。可以围绕本次新增的五种类型，核对现有集成是否使用了相应服务。</p><p>代码模板也需要一起看。建议用 <code>.env.example</code> 记录变量名和明显的占位值，把真实凭证留在受控的密钥存储或 CI 平台 secrets 中。给浏览器使用的公开配置，应与服务器端凭证分开命名、注入和构建，避免因为复制一段示例而把高权限值带入前端产物。</p><p>这属于针对更新提出的工程检查建议，并非本文已经对某个业务仓库完成了扫描。不要为了验证检测器，向公开仓库提交真实凭证，也不要把真实值复制进工单、聊天或截图。</p><h2 id="收到真实泄露告警，删除文件还不够"><a href="#收到真实泄露告警，删除文件还不够" class="headerlink" title="收到真实泄露告警，删除文件还不够"></a>收到真实泄露告警，删除文件还不够</h2><p>GitHub 文档建议收到泄露告警后尽快轮换受影响凭证，防止未经授权的访问。处理时应结合提供方的流程、凭证权限和业务连续性，控制暴露，撤销或轮换受影响凭证，并同步更新所有使用它的组件。</p><p>Supabase 对项目 API 密钥的轮换给出了具体流程，包括创建替代密钥、更新应用、确认组件已经切换，以及停用受影响密钥。这个流程不能直接当作 OAuth 或个人访问 token 的操作手册；凭证类型不同，应使用对应的撤销或轮换入口。</p><p>轮换之后，还要追查泄露原因。真实值为什么进入了源码，日志是否记录了请求头，构建产物是否包含服务器端配置，文档是否复制了生产凭证，都值得核对。清理 Git 历史可以减少残留，但不能让已经被复制的有效凭证失去权限。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这次更新让 Lovable、Logfire、Pydantic AI Gateway 和 Supabase 的部分凭证更容易被 GitHub 识别。它为开发团队补上了新的检测覆盖，也提醒我们把公开配置、项目高权限密钥和服务访问 token 分开管理。</p><p>团队需要确认的，仍然是具体而可执行的几件事：仓库启用了哪些保护，告警由谁处理，凭证可以怎样撤销，以及发布流程是否把它放到了正确的位置。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more">GitHub 10 月 5 日更新：新增 Lovable、Supabase 等凭证检测</a>，用于核对发布时间、合作伙伴和五项新增类型。</li><li><a href="https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning">GitHub Docs：About secret scanning</a>，用于核对历史扫描、告警处理、有效性检查和功能使用条件。</li><li><a href="https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns">GitHub Docs：Supported secret scanning patterns</a>，用于区分用户告警、推送保护和合作伙伴通知等能力。支持范围会随更新变化。</li><li><a href="https://supabase.com/docs/guides/api/api-keys">Supabase Docs：API keys</a>，用于核对项目 API 密钥分类、RLS 边界和高权限密钥处理要求。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GitHub </tag>
+            
+            <tag> Secret scanning </tag>
+            
+            <tag> Lovable </tag>
+            
+            <tag> Supabase </tag>
+            
+            <tag> Pydantic </tag>
+            
+            <tag> 密钥管理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Linux 7.2.9 修复连接跟踪问题：网络节点升级该检查什么</title>
       <link href="/2026/10/05/2026-Linux729%E8%BF%9E%E6%8E%A5%E8%B7%9F%E8%B8%AA%E4%BF%AE%E5%A4%8D%E4%B8%8E%E7%BD%91%E7%BB%9C%E8%8A%82%E7%82%B9%E5%8D%87%E7%BA%A7/"/>
       <url>/2026/10/05/2026-Linux729%E8%BF%9E%E6%8E%A5%E8%B7%9F%E8%B8%AA%E4%BF%AE%E5%A4%8D%E4%B8%8E%E7%BD%91%E7%BB%9C%E8%8A%82%E7%82%B9%E5%8D%87%E7%BA%A7/</url>
