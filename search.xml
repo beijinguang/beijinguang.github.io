@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title>GitHub 堆叠 PR 正式发布：拆分评审以后，合并和 CI 怎么安排</title>
+      <link href="/2026/10/07/2026-GitHub%E5%A0%86%E5%8F%A0PR%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83%E4%B8%8ECI%E8%AE%BE%E8%AE%A1/"/>
+      <url>/2026/10/07/2026-GitHub%E5%A0%86%E5%8F%A0PR%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83%E4%B8%8ECI%E8%AE%BE%E8%AE%A1/</url>
+      
+        <content type="html"><![CDATA[<p>GitHub 在 2026 年 10 月 6 日宣布堆叠 Pull Request（stacked PRs）正式可用。公告发布于北京时间 10 月 7 日凌晨，目前覆盖 github.com 所有套餐，GitHub Enterprise Server 的支持则将在后续版本中提供。</p><p>这项功能适合一种常见处境：一项改动包含数据结构、业务接口和调用端，拆成几个 PR 更容易审查，但后面的代码又依赖前面的改动。堆叠 PR 将这种依赖变成平台能识别的关系。正式版还改进了审批保留、重写提交的签名和合并队列，不过拆分评审并不会自动减少 CI 用量。</p><span id="more"></span><h2 id="每层评审自己的增量，依赖关系仍然存在"><a href="#每层评审自己的增量，依赖关系仍然存在" class="headerlink" title="每层评审自己的增量，依赖关系仍然存在"></a>每层评审自己的增量，依赖关系仍然存在</h2><p>普通做法往往是让多个分支都针对 <code>main</code> 创建 PR。如果上层分支包含下层尚未合并的提交，审查者可能反复看到同一段基础代码；如果等待下层合入再继续，上层开发又会被迫停下来。</p><p>按 GitHub 官方文档，堆叠 PR 是同一仓库中两个或更多 PR 构成的依赖链。最底层针对栈的主干分支，通常是 <code>main</code>，也可以是其他分支；后续 PR 分别针对下一层的分支。</p><p>以一项接口改造为例，可以这样安排。这是说明依赖的示意，不是本文已经创建的分支。</p><table><thead><tr><th>层次</th><th>分支</th><th>PR 的目标分支</th><th>该层负责的改动</th></tr></thead><tbody><tr><td>底层</td><td><code>feat/types</code></td><td><code>main</code></td><td>共享类型和基础结构</td></tr><tr><td>中层</td><td><code>feat/api</code></td><td><code>feat/types</code></td><td>使用新类型实现接口</td></tr><tr><td>顶层</td><td><code>feat/ui</code></td><td><code>feat/api</code></td><td>调用接口并调整界面</td></tr></tbody></table><p>每个 PR 展示当前分支与下一层分支之间的差异，审查者可以集中看这一层新增了什么。上层代码依赖的内容，应当位于同一层或更低的层次。</p><p>因此，拆分边界应跟着依赖和评审职责走，而不是简单按文件数切割。独立改动没有必要硬塞进同一个栈；如果某层必须依赖更高层才能工作，说明依赖方向还需要重新整理。</p><h2 id="审批保留有前提，提交签名也要分清"><a href="#审批保留有前提，提交签名也要分清" class="headerlink" title="审批保留有前提，提交签名也要分清"></a>审批保留有前提，提交签名也要分清</h2><p>正式版一个实用变化，是 <code>main</code> 前进后对栈做更新，不一定要让审查者重新批准相同代码。</p><p>公告给出了明确条件：当栈中的代码原本没有变化，只因基础分支前进而使用 <strong>Rebase stack</strong> 更新时，GitHub 会保留已有批准，即使仓库启用了过期审批自动撤销规则。</p><p>这不等于所有 rebase 都保留批准。作者修改了实现、解决了会影响代码的冲突，或加入新改动以后，仍应遵守仓库的评审规则。把“基础分支更新”与“评审对象改变”分开，才能避免重复审批，也不放过实际变化。</p><p>签名方面，GitHub 在 <strong>Rebase stack</strong> 中创建带签名的替代提交，并保留原始作者信息。部分合并触发自动 rebase 时，如果分支规则要求签名，或任一原始提交已有签名，替代提交也会被签名。</p><p>这里要区分作者信息、原提交和替代提交。rebase 会重写提交，公告描述的是新提交的签名行为，并非原提交哈希与原始签名原样保留。团队若有审计工具，应检查它怎样识别重写后的提交及其关联关系。</p><h2 id="合并队列按整组处理，不代表历史只剩一个提交"><a href="#合并队列按整组处理，不代表历史只剩一个提交" class="headerlink" title="合并队列按整组处理，不代表历史只剩一个提交"></a>合并队列按整组处理，不代表历史只剩一个提交</h2><p>正式版公告说明，栈现在会作为一个 merge group 进入并通过合并队列。当使用 merge commit 方式时，GitHub 为每个 PR 创建一个合并提交，而不再给整个合并组只创建一个合并提交。</p><p>这提供了两个不同层面的组织方式：队列将相关 PR 作为一组合入，提交历史仍能保留逐个 PR 的合并边界。对审查记录和后续问题定位，这些边界可能很有用。</p><p>但保留合并边界，不意味着每层都能安全单独回退。比如顶层界面已经依赖中层接口，直接撤销中层可能破坏顶层。回退方案仍需考虑依赖，数据库迁移和外部协议变化更不能只靠一个 revert 操作兜底。</p><p>公告还提到，栈的基础分支被删除时，GitHub 会自动重新设置栈的目标分支，而非关闭最底层 PR。这有助于处理从另一个栈分叉出来的工作，但作者仍需核对新的目标和最终差异。</p><p>整栈自动合并则是另一个推出节奏。官方称它将在接下来几周逐步开放，所选 PR 全部满足仓库合并要求后一起合入。正式发布公告并不保证每个账号已经出现这一入口，团队应以自己的界面和设置为准。</p><h2 id="每层-PR-仍会触发工作流，CI-用量可能增加"><a href="#每层-PR-仍会触发工作流，CI-用量可能增加" class="headerlink" title="每层 PR 仍会触发工作流，CI 用量可能增加"></a>每层 PR 仍会触发工作流，CI 用量可能增加</h2><p>GitHub 的 CI 文档解释了一个容易误判的行为：栈中每个 PR 都按针对栈主干分支的方式参与工作流触发判断。</p><p>例如，已有工作流配置为在针对 <code>main</code> 的 <code>pull_request</code> 事件上运行，它会在栈的每个 PR 上触发，而不只运行在最底层。因此，团队不用为了覆盖上层 PR，把所有工作流的目标分支过滤改成临时分支名。</p><p>相应的代价是，一个大栈可能让同一套工作流运行多次。“作为一个合并组进入队列”和“每层 PR 的工作流分别运行”，描述的是不同环节，不能把前者理解成所有 CI 只执行一次。</p><p>文档提供了栈元数据入口 <code>github.event.pull_request.stack</code>。它只在 PR 属于栈时出现，因此使用其中字段前，应先判断该对象是否存在。比如 <code>stack.number</code> 是仓库范围内的栈编号，<code>stack.size</code> 表示栈中的 PR 数量。</p><p>这些信息可以辅助成本统计，也能参与任务选择。不过，本文不建议照着一个通用条件就跳过所有必需检查。质量门禁、工作流触发和 job 条件需要一起验证，避免出现检查缺失或一直等待结果的情况。</p><p>可以先把检查分成两种职责：每层都需要的基础验证，以及成本较高的集成测试。前者确保每次评审看到的代码具备基本质量；后者需要针对包含完整依赖的组合验证。如何安排取决于项目，跳过某层的集成测试也不能替代最终组合的测试。</p><h2 id="用一个小栈试点，比立刻全面切换更容易看清收益"><a href="#用一个小栈试点，比立刻全面切换更容易看清收益" class="headerlink" title="用一个小栈试点，比立刻全面切换更容易看清收益"></a>用一个小栈试点，比立刻全面切换更容易看清收益</h2><p>适合试点的任务，通常有清楚的依赖方向，并能拆出几层职责明确的改动。可以先选择一个包含基础类型、接口和调用端的任务，约定每层说明自己的变更，以及它依赖哪些下层内容。</p><p>审查时，可以检查三个问题：当前增量是否足够聚焦，下层更新后上层行为是否正确，整个栈是否覆盖了交付所需的测试。对影响发布顺序的变更，还应检查中间状态是否会进入生产环境，以及如何处理回滚。</p><p>正式版也改善了导航和自动化入口：栈信息会一直显示在 PR 页面头部，<code>Shift</code>+<code>J</code> 和 <code>Shift</code>+<code>K</code> 可在栈中切换 PR；GitHub CLI 的 <code>gh stack</code> 扩展新增 Git worktree 支持。这里的扩展与普通 <code>gh</code> 命令不同，团队采用前应查看官方安装和使用文档。</p><p>以上是依据公告和文档提出的工程建议，本文没有安装扩展、创建业务 PR，或对某个团队的吞吐量做实测。试点后可以对比审查等待、重复评审、CI 用量和冲突处理情况，再决定是否扩大使用范围。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>堆叠 PR 为相互依赖的大改动提供了更清楚的评审边界。正式版减少了部分重复审批，也让签名和合并队列的行为更一致。</p><p>真正采用时，还需要把依赖方向、每层检查和最终交付一起设计。PR 变小之后，审查更容易聚焦；只有组合验证和回退方案也明确，拆分才不会把复杂性转移到合并和发布阶段。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-10-06-stacked-pull-requests-generally-available">GitHub 10 月 6 日公告：Stacked pull requests generally available</a>，用于核对正式发布范围、审批保留、签名、合并队列及逐步推出的自动合并。</li><li><a href="https://docs.github.com/en/pull-requests/get-started/about-stacked-prs">GitHub Docs：About stacked pull requests</a>，用于核对分支依赖、主干和增量评审方式。</li><li><a href="https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/optimizing-ci-for-stacked-pull-requests">GitHub Docs：Optimizing CI for stacked pull requests</a>，用于核对工作流触发、栈元数据与 CI 用量。</li><li><a href="https://gh.io/stacks">GitHub 官方堆叠 PR 文档入口</a>，包含创建、管理、合并及 CLI 使用说明。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GitHub </tag>
+            
+            <tag> Pull Request </tag>
+            
+            <tag> Git </tag>
+            
+            <tag> CI </tag>
+            
+            <tag> Stacked PRs </tag>
+            
+            <tag> 代码审查 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub 新增 Lovable、Supabase 密钥扫描：检测覆盖扩大，凭证仍要分清</title>
       <link href="/2026/10/06/2026-GitHub%E6%96%B0%E5%A2%9ELovable%E4%B8%8ESupabase%E5%AF%86%E9%92%A5%E6%89%AB%E6%8F%8F/"/>
       <url>/2026/10/06/2026-GitHub%E6%96%B0%E5%A2%9ELovable%E4%B8%8ESupabase%E5%AF%86%E9%92%A5%E6%89%AB%E6%8F%8F/</url>
