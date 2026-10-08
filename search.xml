@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title>GitHub Copilot 本地沙箱正式可用：Agent 的执行权限要由策略说清楚</title>
+      <link href="/2026/10/08/2026-GitHubCopilot%E6%9C%AC%E5%9C%B0%E6%B2%99%E7%AE%B1%E6%AD%A3%E5%BC%8F%E5%8F%AF%E7%94%A8%E4%B8%8E%E6%9D%83%E9%99%90%E8%BE%B9%E7%95%8C/"/>
+      <url>/2026/10/08/2026-GitHubCopilot%E6%9C%AC%E5%9C%B0%E6%B2%99%E7%AE%B1%E6%AD%A3%E5%BC%8F%E5%8F%AF%E7%94%A8%E4%B8%8E%E6%9D%83%E9%99%90%E8%BE%B9%E7%95%8C/</url>
+      
+        <content type="html"><![CDATA[<p>GitHub 于 2026 年 10 月 7 日宣布，Copilot 本地沙箱正式可用，覆盖 GitHub Copilot CLI、Copilot app，以及使用 Agent Host 的 VS Code 会话。公告发布于北京时间 10 月 7 日 23:46，属于本次晨间更新的近期动态。</p><p>这项能力约束 Agent 在开发者机器上运行的工具和命令，让文件、网络及凭证访问受到策略限制。但正式可用不等于已经启用，也不等于所有工具都处于同样的隔离环境。采用前最需要确认的，是执行边界在哪里、哪些路径不经过它，以及隔离不可用时系统会怎样处理。</p><span id="more"></span><h2 id="从逐条批准命令，到限制命令实际能做什么"><a href="#从逐条批准命令，到限制命令实际能做什么" class="headerlink" title="从逐条批准命令，到限制命令实际能做什么"></a>从逐条批准命令，到限制命令实际能做什么</h2><p>编码 Agent 执行一次构建，可能涉及脚本、编译器和子进程。仅凭命令看起来像普通的测试或构建任务，很难判断这些程序会访问哪些目录、发起哪些连接。</p><p>本地沙箱提供的是另一层控制。工具调用获得授权后，其进程仍要遵守文件系统、网络和其他资源的访问策略。授权解决“是否允许调用”，沙箱约束“调用后能触及什么”，两者需要配合。</p><p>GitHub 将这套实现建立在 Microsoft eXecution Container（MXC）上。MXC 把共同的策略描述转换为不同操作系统的原生隔离机制；它面向具体工具执行，不要求每次启动一个完整容器或虚拟机。</p><p>公告也明确区分了模型执行与工具隔离。沙箱策略作用于工具执行，与 Copilot 选择哪个模型是两件事。因此，不能因为启用了本地沙箱，就推断模型也运行在本地，或代码与上下文完全不会离开机器。</p><h2 id="跨平台的策略，不代表跨平台的机制完全一样"><a href="#跨平台的策略，不代表跨平台的机制完全一样" class="headerlink" title="跨平台的策略，不代表跨平台的机制完全一样"></a>跨平台的策略，不代表跨平台的机制完全一样</h2><p>官方文档列出的基础实现如下。表格描述本地沙箱的底层方式，不是本文已经安装或测试的环境。</p><table><thead><tr><th>平台</th><th>官方说明的实现</th><th>部署前应核对什么</th></tr></thead><tbody><tr><td>Windows</td><td>受支持 Windows 版本上的原生隔离机制</td><td>主机版本和客户端是否支持；网络限制还需验证代理配合</td></tr><tr><td>macOS</td><td>Seatbelt</td><td>系统版本、目录权限及网络访问的实际效果</td></tr><tr><td>Linux</td><td>bubblewrap</td><td>安装 bubblewrap，并确认主机允许所需的 user namespace 操作</td></tr></tbody></table><p>Linux 文档还提到，某些主机即使安装了 bubblewrap，也可能因为安全策略限制 user namespace 而无法使用本地沙箱。网络限制同样不能只看配置文件：文档指出 Linux 支持更完整的网络隔离，Windows 和 macOS 的网络控制则依赖命令配合代理设置，忽略代理的工具仍可能建立连接。</p><p>这些差异意味着，同一份逻辑策略最好在团队实际使用的操作系统上分别验证。某个命令在 Linux 被拒绝，不能直接作为它在其他平台也会被拒绝的证据。</p><h2 id="默认关闭，而且不同客户端要分别检查"><a href="#默认关闭，而且不同客户端要分别检查" class="headerlink" title="默认关闭，而且不同客户端要分别检查"></a>默认关闭，而且不同客户端要分别检查</h2><p>GitHub 当前文档说明，本地沙箱默认关闭。在 CLI 中，可以用以下会话命令启用：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sandbox enable</span><br></pre></td></tr></table></figure><p>Copilot app 则在项目设置中配置。CLI 和 app 的沙箱设置相互独立，启用一处不会自动启用另一处。VS Code 的公告范围限定为使用 Agent Host 的会话，也不能据此假设所有扩展工具或旧会话已经获得相同保护。</p><p>对团队来说，更可靠的验收方式是检查当前执行入口，而不是只确认“电脑上装了新版 Copilot”。同一个开发者可能同时使用 CLI、app 和编辑器，权限要求应覆盖这些实际入口。</p><p>企业托管设置可以要求沙箱并约束开发者能够修改的策略。公告所说的“不额外收费”，也只是在说明这项本地沙箱能力包含在 Copilot 中，不代表机器已经满足要求或组织策略自动生效。</p><h2 id="Shell、内置文件工具和-MCP，边界并不相同"><a href="#Shell、内置文件工具和-MCP，边界并不相同" class="headerlink" title="Shell、内置文件工具和 MCP，边界并不相同"></a>Shell、内置文件工具和 MCP，边界并不相同</h2><p>最需要仔细读的部分，是哪些工具受到怎样的约束。</p><p>按照官方文档，Shell 命令在支持且启用了沙箱的环境中受到操作系统级约束。CLI 自身并不运行在这个操作系统沙箱里，其内置文件工具在进程内部执行，只使用尽力而为的路径检查。这不是同等强度的 OS 级隔离，应与 Shell 工具分别理解。</p><p>对于 MCP，也要区分本地进程与远程服务。通过标准输入输出方式运行的本地 MCP 服务，在支持的环境中可以放进沙箱，但应启用相应沙箱设置。远程 MCP 不属于本机启动的进程，因此不受这层本地进程沙箱约束。</p><p>还有一种容易遗漏的情况：本地 MCP 把工作交给另一个宿主进程。例如，访问已有浏览器实例时，MCP 所在进程的隔离不意味着浏览器宿主也被隔离。官方文档特别提醒，这类外部进程需要自己限制访问能力。</p><p>所以，盘点工具时应沿着调用链继续看。一个工具显示为“本地”，并不足以说明所有后续操作都留在它的沙箱内。远程服务的权限、现有浏览器会话和凭证提供方式，仍要单独管理。</p><h2 id="沙箱不可用时，不一定自动停止"><a href="#沙箱不可用时，不一定自动停止" class="headerlink" title="沙箱不可用时，不一定自动停止"></a>沙箱不可用时，不一定自动停止</h2><p>正式版仍有一个影响安全要求的默认行为。官方文档说明：当主机不支持本地沙箱，或者隔离运行时缺少所需权限时，默认可能回退到不受沙箱约束的执行方式，并发出警告。</p><p>这有利于任务继续运行，却不能满足“没有隔离就禁止执行”的要求。如果组织要求工具始终在沙箱中运行，需要检查 <code>sandbox.failIfUnavailable</code>。文档说明，将它设置为 <code>true</code> 可以让这种情况失败退出，而不是回退；该要求也可以通过企业托管设置强制执行。</p><p>这里的建议是核对并验证相应设置，不是本文已经替任何组织修改了配置。团队应在受控测试环境中模拟隔离不可用的条件，确认看到的是拒绝执行，而不只是警告。只测试沙箱正常时的表现，容易漏掉真正需要兜底的路径。</p><h2 id="先验证有限权限，再增加自主执行"><a href="#先验证有限权限，再增加自主执行" class="headerlink" title="先验证有限权限，再增加自主执行"></a>先验证有限权限，再增加自主执行</h2><p>可以从一个不含生产凭证的代表性项目开始。明确哪些工作区目录可以读取、哪些输出目录可以写入，构建需要哪些网络目的地，哪些本地工具或 MCP 服务参与执行。</p><p>验证时，既要覆盖正常构建，也要在受控测试环境中检查边界，例如尝试读取无关测试目录、写入工作区之外的测试路径，以及连接未批准的测试服务。不要拿真实私人文件或生产密钥做验证材料。网络测试要包含团队实际使用的工具，因为代理支持会影响结果。</p><p>对凭证，官方列出了 Git 和 GitHub CLI 凭证访问的控制。配置时应明确任务是否真的需要仓库外的账号权限，避免把“构建需要联网”扩大成“允许读取所有凭证”。即使任务最终需要发布，也可以将验证和发布安排成权限不同的步骤。</p><p>这些是依据官方文档提出的部署建议，不是本文已完成的客户端安全测试。沙箱也不会替团队审查业务代码是否正确；正确性测试、代码审查与发布审批仍然需要保留。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Copilot 本地沙箱正式可用，让更多开发者能够给 Agent 的工具执行划出资源边界。采用时，最值得先弄清的不是能否减少确认次数，而是当前入口是否启用了隔离、每个工具是否经过这条边界，以及失效时是否按要求停止。</p><p>把这些条件验证清楚，再增加自主执行范围，团队才知道授出的权限究竟覆盖了什么。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-10-07-local-sandboxing-for-github-copilot-now-generally-available">GitHub 10 月 7 日公告：Local sandboxing for GitHub Copilot now generally available</a>，用于核对发布时间、客户端范围、企业策略及模型与工具隔离的区别。</li><li><a href="https://docs.github.com/copilot/concepts/security-governance-and-network-settings/about-cloud-and-local-sandboxes">GitHub Docs：About cloud and local sandboxes</a>，用于核对默认设置、平台前提、MCP 与内置工具边界、代理限制及不可用时的回退行为。</li><li><a href="https://github.com/microsoft/mxc">Microsoft MXC 官方项目</a>，用于了解跨平台策略映射及轻量工具执行隔离的设计。具体 Copilot 行为以对应客户端和 GitHub 文档为准。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GitHub Copilot </tag>
+            
+            <tag> MCP </tag>
+            
+            <tag> Agent </tag>
+            
+            <tag> 沙箱 </tag>
+            
+            <tag> MXC </tag>
+            
+            <tag> 权限管理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub 堆叠 PR 正式发布：拆分评审以后，合并和 CI 怎么安排</title>
       <link href="/2026/10/07/2026-GitHub%E5%A0%86%E5%8F%A0PR%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83%E4%B8%8ECI%E8%AE%BE%E8%AE%A1/"/>
       <url>/2026/10/07/2026-GitHub%E5%A0%86%E5%8F%A0PR%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83%E4%B8%8ECI%E8%AE%BE%E8%AE%A1/</url>
