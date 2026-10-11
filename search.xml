@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title>Deno 团队加入 Cloudflare：运行时与 Deploy 的迁移时钟已经启动</title>
+      <link href="/2026/10/11/2026-Deno%E5%8A%A0%E5%85%A5Cloudflare%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%97%B6%E8%BF%81%E7%A7%BB%E8%A7%84%E5%88%92/"/>
+      <url>/2026/10/11/2026-Deno%E5%8A%A0%E5%85%A5Cloudflare%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%97%B6%E8%BF%81%E7%A7%BB%E8%A7%84%E5%88%92/</url>
+      
+        <content type="html"><![CDATA[<p>2026 年 10 月 9 日，Deno 与 Cloudflare 宣布 Deno 团队加入 Cloudflare，未来将围绕 Workers 与 Durable Objects 的编程模型合作。Cloudflare 公告发布于北京时间当晚，处于本次更新的近 48 小时范围内。</p><p>对已经使用 Deno 的团队，更紧迫的消息来自 Deno 自己的说明：运行时将继续维护一年，Deno Deploy 继续运营六个月后关闭，JSR 则继续运营。与此同时，workerd 与 celld 的整合仍是后续工作，不能把它理解为一套已经完成交付的通用迁移方案。</p><span id="more"></span><h2 id="运行时、托管服务和包注册表，要分开看"><a href="#运行时、托管服务和包注册表，要分开看" class="headerlink" title="运行时、托管服务和包注册表，要分开看"></a>运行时、托管服务和包注册表，要分开看</h2><p>“Deno 加入 Cloudflare”并不意味着所有 Deno 产品在同一天结束。官方公告给出的安排不同，也影响不同的使用方式。</p><table><thead><tr><th>项目</th><th>Deno 官方明确的安排</th><th>现有用户需要关注什么</th></tr></thead><tbody><tr><td>Deno runtime</td><td>继续支持一年，每月发布错误修复和安全更新；之后团队结束对该运行时的开发</td><td>长期维护来源、运行时依赖和替代方案</td></tr><tr><td>Deno Deploy</td><td>继续运营六个月后关闭；为迁往 Workers 的付费客户提供迁移支持</td><td>部署替换、数据与配置迁移、切换窗口</td></tr><tr><td>JSR</td><td>继续运营，基础设施迁往 Cloudflare</td><td>注册表与托管服务是不同产品，不要一并判定为关闭</td></tr><tr><td><code>rusty_v8</code></td><td>继续支持，并推进与 workerd 的整合</td><td>底层技术路线；不能据此推断上层 API 已经统一</td></tr></tbody></table><p>运行时仍然开源，官方也欢迎其他人继续开发。团队结束开发与代码立即消失，是两回事；但社区可以接手，同样不等于已有明确的长期维护承诺。</p><p>公告使用一年、六个月这类相对时间。本文不把它们换算成未经单独确认的精确停服日，项目计划应继续跟踪正式迁移通知。对 Deploy 用户来说，这个窗口也不宜当成最后一个月才开始准备的期限。</p><h2 id="合作重点从运行时，转向有状态应用的基础设施"><a href="#合作重点从运行时，转向有状态应用的基础设施" class="headerlink" title="合作重点从运行时，转向有状态应用的基础设施"></a>合作重点从运行时，转向有状态应用的基础设施</h2><p>Deno 提供了 JavaScript&#x2F;TypeScript 运行时和工具链，但一个网络应用仍需要处理计算分布、状态协调、持久化与扩容。Cloudflare 联合公告中，Ryan Dahl 把这些运行时之外的问题作为 celld 的动机。</p><p>Durable Objects 将计算与持久化状态放在一起。按现有官方文档，每个对象具有可全局寻址的唯一身份，并附带自己的持久化存储，适合让多个客户端围绕同一个状态协作。它采用单线程、协作式多任务模型，而不是让业务线程共同修改一块共享内存。</p><p>聊天室是一个直观例子。以房间作为对象身份，可以让房间内的连接和消息状态进入同一个协调点，不同房间则分散到不同对象。联合公告用这一方式解释分区如何成为编程模型的一部分。</p><p>不过，多个对象能够横向扩展，不代表某个特别热门的对象可以无限承载流量。对象边界仍要对应业务的协调范围；需要跨房间、跨租户汇总的数据，也要另外设计访问与聚合方式。</p><p>现有文档还提醒，内存状态会在休眠后重置，需要以后继续使用的数据应写入持久化存储。SQLite 后端提供 SQL 与 KV API，旧存储后端则只有 KV API。迁移时要核对实际使用的存储模型，不能仅凭“都叫 Durable Objects”就认定行为完全一致。</p><h2 id="workerd-开源，仍不等于整套分布式平台都可直接搬走"><a href="#workerd-开源，仍不等于整套分布式平台都可直接搬走" class="headerlink" title="workerd 开源，仍不等于整套分布式平台都可直接搬走"></a>workerd 开源，仍不等于整套分布式平台都可直接搬走</h2><p>Cloudflare 早已开源 Workers 运行时 workerd，联合公告明确说它与线上使用的运行时代码同源。此次新闻并不是 workerd 第一次开源。</p><p>公告也坦率指出了自托管的一处缺口：workerd 的 Durable Objects 支持局限于单实例方式，适合本地测试，却不能直接提供托管平台那种可扩展的分布式对象能力。运行 JavaScript，与跨机器放置对象、路由请求并保存状态，是不同层面的工作。</p><p>celld 正是面向这个问题。按 Ryan Dahl 在公告中的介绍，它采用 Rust 编写，目标是简化自托管分布式应用，以对象存储作为唯一外部服务依赖。这个描述说明的是其基础设施设计，并非“随便启动一个进程就无需运维”。</p><p>联合公告中的后续计划，是由 Ryan Dahl 和 Bert Belder 领导新的自托管工作，把 celld 的代码与设计整合回 workerd，并在未来几个月继续公布进展。因此，有关兼容性、发布形态和支持范围，应以之后实际交付的版本为准。</p><p>把运行时装到自己的机器上，可以获得更多部署控制；对象放置、故障恢复、升级、备份和监控的责任，却不会因此消失。技术评估应区分“能运行代码”和“能稳定运营分布式状态”。</p><h2 id="Deploy-用户先盘点依赖，不要直接做语言层面的替换"><a href="#Deploy-用户先盘点依赖，不要直接做语言层面的替换" class="headerlink" title="Deploy 用户先盘点依赖，不要直接做语言层面的替换"></a>Deploy 用户先盘点依赖，不要直接做语言层面的替换</h2><p>对使用 Deno Deploy 的应用，比较有价值的第一步，是列出它依赖的平台行为。HTTP 服务之外，还可能涉及运行时 API、文件访问、定时任务、环境变量、密钥、数据库以及长连接。</p><p>这些都是需要验证的项目，不是本文断言某个应用已经不兼容。团队可以选一条具有代表性的业务路径，确认目标环境能够处理相同输入、产生相同输出，再逐步扩大覆盖范围。</p><p>若应用使用持久化数据，迁移方案还应回答几个具体问题：数据怎样导出和校验，切换期间谁可以写入，客户端怎样重新建立连接，以及发生异常时如何退回旧环境。尤其不要把基础设施变更和业务数据结构改造挤在同一次上线里，导致问题难以定位。</p><p>官方提到为迁往 Workers 的付费 Deploy 客户提供支持，但没有在这篇公告中公布一套适用于所有项目的步骤。因此，团队应通过服务方核对支持安排；不宜推断免费用户获得相同服务，也不能把“提供支持”理解成自动完成迁移。</p><h2 id="只使用-Deno-CLI-的项目，可以有不同的节奏"><a href="#只使用-Deno-CLI-的项目，可以有不同的节奏" class="headerlink" title="只使用 Deno CLI 的项目，可以有不同的节奏"></a>只使用 Deno CLI 的项目，可以有不同的节奏</h2><p>如果项目只是用 Deno 跑本地脚本、测试或自建服务，它不属于 Deploy 的六个月停服范围。但运行时团队一年后的开发安排，仍会影响后续安全维护与兼容性决策。</p><p>可以先固定当前运行时版本，整理依赖和测试，再比较继续使用社区维护版本、迁移其他运行时或改用 Workers 编程模型的成本。JavaScript&#x2F;TypeScript 相同，并不意味着各运行时 API、权限和部署环境相同。</p><p>JSR 继续运营也是一个需要单独理解的事实。一个包继续可以下载，不等于应用所需的运行时就自动获得长期维护；运行时与包依赖应分别记录维护来源。</p><p>这些是依据公告提出的工程建议。本文没有对业务应用做兼容性测试，也没有执行迁移、安装运行时或修改任何云服务。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Deno 团队加入 Cloudflare，为 Workers 编程模型的自托管方向带来了新的投入；对现有 Deno 用户，它同时启动了不同产品的维护与迁移窗口。</p><p>现在最实用的动作，是分清自己依赖的是运行时、Deploy、JSR，还是更底层的技术库，再据此安排验证和切换。自托管整合值得跟踪，现有服务的迁移准备则不应等待它全部完成。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://blog.cloudflare.com/deno-joins-cloudflare/">Cloudflare 10 月 9 日联合公告：Deno is joining Cloudflare</a>，用于核对团队合作、workerd 现有缺口及 celld 整合计划。</li><li><a href="https://deno.com/blog/cloudflare">Deno 官方公告：Deno is joining Cloudflare</a>，用于核对运行时一年支持期、Deploy 六个月安排、JSR 与 rusty_v8 的后续方向。</li><li><a href="https://developers.cloudflare.com/durable-objects/concepts/what-are-durable-objects/">Cloudflare Docs：What are Durable Objects?</a>，用于核对现有托管平台的身份、存储、并发模型和内存状态限制。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 云计算 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> Durable Objects </tag>
+            
+            <tag> Deno </tag>
+            
+            <tag> workerd </tag>
+            
+            <tag> celld </tag>
+            
+            <tag> 迁移规划 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cloudflare 上线生产火焰图：Workers 的 CPU 热点和内存分配该怎样查</title>
       <link href="/2026/10/10/2026-Cloudflare%E7%94%9F%E4%BA%A7%E7%81%AB%E7%84%B0%E5%9B%BE%E4%B8%8E%E6%8C%89%E9%9C%80%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/"/>
       <url>/2026/10/10/2026-Cloudflare%E7%94%9F%E4%BA%A7%E7%81%AB%E7%84%B0%E5%9B%BE%E4%B8%8E%E6%8C%89%E9%9C%80%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</url>
