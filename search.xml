@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title>Copilot for JetBrains 更新：默认模型、MCP 启动和诊断修复要分开管理</title>
+      <link href="/2026/10/12/2026-CopilotJetBrains%E9%BB%98%E8%AE%A4%E6%A8%A1%E5%9E%8B%E4%B8%8EMCP%E5%90%AF%E5%8A%A8%E6%8E%A7%E5%88%B6/"/>
+      <url>/2026/10/12/2026-CopilotJetBrains%E9%BB%98%E8%AE%A4%E6%A8%A1%E5%9E%8B%E4%B8%8EMCP%E5%90%AF%E5%8A%A8%E6%8E%A7%E5%88%B6/</url>
+      
+        <content type="html"><![CDATA[<p>GitHub 在 2026 年 10 月 10 日公告中，介绍了 Copilot for JetBrains 的新控制能力：企业可以指定新会话的默认 Agent 模型，开发者可以关闭 MCP 服务自动启动，诊断菜单也增加了请求修复的 <strong>Fix</strong> 入口。公告发布时间换算为北京时间是 10 月 11 日凌晨，处于本次更新的近 48 小时范围内。</p><p>这几项变化分别作用于模型选择、工具服务生命周期和发起修复的入口，不能当成同一种权限控制。与此同时，插件已结束对 JetBrains IDE 2025.1 的支持。升级前除了看功能，还要核对 IDE 版本、插件分支和现有工具配置。</p><span id="more"></span><h2 id="先确认版本，不要只看“最新版”"><a href="#先确认版本，不要只看“最新版”" class="headerlink" title="先确认版本，不要只看“最新版”"></a>先确认版本，不要只看“最新版”</h2><p>JetBrains Marketplace 的官方版本页列出了对应的 1.19 系列构建，上传日期为 10 月 9 日。这个日期与 GitHub 10 月 10 日发布更新公告的日期不同，本文的近期动态以公告为时间依据。</p><p>官方记录显示，<code>1.19.0-252</code> 面向 2025.2&#x2F;2025.3 系列，<code>1.19.0-261</code> 则提供面向 2026.1+ 的不同平台构建。具体产品和补丁版本仍应查看各构建的兼容范围，不宜把最低要求“2025.2 或更高”理解成任意构建都适用于所有较新的 IDE。</p><p>这对团队部署很重要。开发者可能分别使用 IntelliJ IDEA、PyCharm、WebStorm 或 Android Studio，机器架构也可能不同。验证某台机器安装成功，不代表其他产品与平台组合都已经通过验证。</p><p>本次公告明确结束对 JetBrains IDE 2025.1 的支持。仍停留在该系列的团队，应先评估 IDE、其他插件和构建工具的升级兼容性，再决定如何使用新插件，而不是直接把一份安装包分发到所有机器。</p><h2 id="企业默认模型，管理的是新会话起点"><a href="#企业默认模型，管理的是新会话起点" class="headerlink" title="企业默认模型，管理的是新会话起点"></a>企业默认模型，管理的是新会话起点</h2><p>企业管理员现在可以通过托管设置，将任一可用的 Copilot Agent 模型指定为新对话的默认模型。GitHub 同时强调，显式的模型选择仍会保留。</p><p>这里的区别值得注意。统一默认模型，可以减少每个人开始任务时的重复设置，帮助团队形成较一致的起点；它不等于禁止用户切换模型，也不意味着现有对话都会被改写成相同模型。</p><p>版本记录还修复了一个相关问题：初始空白 Agent 对话在托管设置加载后，没有应用可用的企业默认模型。修复仍保留了显式选择。因此，验证这项功能时，应分别检查“没有手动选择的新会话”和“已经明确选择模型的会话”，而不只看模型列表是否出现某个名称。</p><p>企业托管设置的官方文档也说明，不是每个客户端都支持所有属性。团队在 CLI、VS Code 和 JetBrains 之间推广同一套治理要求时，需要逐个确认支持情况和实际生效结果，不能只检查服务端配置文件存在。</p><h2 id="MCP-自动启动开关，不等于工具权限开关"><a href="#MCP-自动启动开关，不等于工具权限开关" class="headerlink" title="MCP 自动启动开关，不等于工具权限开关"></a>MCP 自动启动开关，不等于工具权限开关</h2><p>本次新增 MCP 设置，允许禁用 Copilot 和 Claude 的服务自动启动。官方插件版本说明补充，手动 <strong>Start</strong> 和 <strong>Restart</strong> 仍然可用。</p><p>它控制的是已配置服务何时变成活跃服务。这有助于把日常编辑与需要外部工具的任务分开，也让开发者更容易看清当前会话涉及哪些服务。但关闭自动启动，不代表删除配置、撤销凭证或限制某个工具可以执行的动作。</p><p>可以把几项控制放到不同层次理解：</p><table><thead><tr><th>控制</th><th>直接影响什么</th><th>不应据此推断什么</th></tr></thead><tbody><tr><td>企业默认模型</td><td>新会话从哪个可用模型开始</td><td>所有用户选择都被强制覆盖</td></tr><tr><td>MCP 自动启动设置</td><td>已配置服务是否自动启动</td><td>服务已被删除或账号授权已撤销</td></tr><tr><td>诊断 Fix 入口</td><td>从诊断信息发起一次修复请求</td><td>建议已经通过测试或可以直接发布</td></tr></tbody></table><p>版本记录还修复了 Agent 会话忽略仓库根目录 <code>.mcp.json</code> 中 MCP 服务配置的问题。升级后，之前没有被会话采用的仓库配置可能开始生效，这是值得主动核对的行为变化。</p><p>团队可以先查看仓库与 IDE 中分别配置了哪些服务、它们从哪里取得凭证，以及哪些需要自动启动。检查的目标是建立明确的服务清单，而不是为了消除启动失败就扩大所有工具的权限。</p><h2 id="Fix-缩短操作路径，修复责任仍然保留"><a href="#Fix-缩短操作路径，修复责任仍然保留" class="headerlink" title="Fix 缩短操作路径，修复责任仍然保留"></a>Fix 缩短操作路径，修复责任仍然保留</h2><p>诊断 intention 菜单中的 <strong>Fix</strong> 会打开 inline chat，请求 Copilot 修复问题。Agent mode 可用时使用 Agent mode，否则使用 Ask mode。</p><p>这让开发者更容易从诊断提示进入协作过程，但两种模式并不是相同的执行路径。发起请求后，应确认当前模式及后续行为，不能因为入口相同，就假设每次都会以相同方式修改代码。</p><p>诊断消失也不是完整的正确性证明。一个修改可能消除了类型或语法提示，却影响边界行为、异常处理或测试覆盖。对于团队代码，仍应查看 diff，运行对应测试，必要时保留人工审查。</p><p>版本页还记录了语言服务器启动较慢时请求失败的修复。这个变化与诊断协作有关，但不应被解释为所有初始化问题都已解决。升级验证可以覆盖 IDE 刚启动、项目索引和稳定运行几种状态，检查实际任务是否表现一致。</p><h2 id="Worktree-修复值得验证，不能只看聊天界面"><a href="#Worktree-修复值得验证，不能只看聊天界面" class="headerlink" title="Worktree 修复值得验证，不能只看聊天界面"></a>Worktree 修复值得验证，不能只看聊天界面</h2><p>除了新入口，1.19 版本记录包含多项工作区修复，例如大小写不敏感文件系统中的 Diff、Undo、Apply 操作，以及 Windows 下向 WSL 项目应用 worktree 改动的行为。</p><p>它也记录了 Copy Changes 在创建 Copilot CLI worktree 时隐藏本地编辑或影响已暂存文件的修复，并修正了取消创建时的清理问题。对使用 worktree 的团队，这些变化比聊天排版更值得纳入验收。</p><p>建议在专用测试仓库中准备一份已暂存修改和一份未暂存修改，分别验证创建、复制改动、取消和应用结果。先记录预期状态，再比较操作后的 diff 与 Git 状态。不要拿真实未备份的业务改动做第一次升级试验。</p><p>这些是根据官方变更记录提出的测试建议。本文没有安装插件、操作用户的 JetBrains IDE，或对某个业务项目执行 worktree 测试，也不把公告中的修复当成所有场景已经通过验证的保证。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这次 Copilot for JetBrains 更新把几个日常入口做得更明确：新会话从哪个模型开始，MCP 服务何时启动，以及如何从诊断信息发起修复。</p><p>采用时，应分别核对默认值、服务生命周期和执行结果，再检查 IDE 兼容分支与工作区行为。这样，新增控制才能真正减少不确定性，而不是让一个默认选项承担它并不具备的权限或质量保证。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-10-10-new-controls-and-chat-improvements-in-copilot-for-jetbrains">GitHub 10 月 10 日公告：New controls and chat improvements in Copilot for JetBrains</a>，用于核对发布时间、新能力、显式模型选择和 IDE 支持门槛。</li><li><a href="https://plugins.jetbrains.com/plugin/17718-github-copilot--your-ai-pair-programmer/versions/stable/1190135">JetBrains Marketplace：Copilot 1.19.0-252 官方版本记录</a>，用于核对构建日期、兼容范围、手动 MCP 启动及工作区修复。</li><li><a href="https://plugins.jetbrains.com/plugin/17718-github-copilot--your-ai-pair-programmer/versions">JetBrains Marketplace：Copilot 版本列表</a>，用于核对各平台和 IDE 分支；列表会随更新变化。</li><li><a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/get-started">GitHub Docs：Getting started with enterprise-managed settings</a>，用于核对托管设置的客户端支持与生效验证要求。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GitHub Copilot </tag>
+            
+            <tag> MCP </tag>
+            
+            <tag> 企业治理 </tag>
+            
+            <tag> 代码审查 </tag>
+            
+            <tag> JetBrains </tag>
+            
+            <tag> IntelliJ IDEA </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Deno 团队加入 Cloudflare：运行时与 Deploy 的迁移时钟已经启动</title>
       <link href="/2026/10/11/2026-Deno%E5%8A%A0%E5%85%A5Cloudflare%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%97%B6%E8%BF%81%E7%A7%BB%E8%A7%84%E5%88%92/"/>
       <url>/2026/10/11/2026-Deno%E5%8A%A0%E5%85%A5Cloudflare%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%97%B6%E8%BF%81%E7%A7%BB%E8%A7%84%E5%88%92/</url>
