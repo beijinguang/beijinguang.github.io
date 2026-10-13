@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title>Cloudflare Logpush Transformers：导出前脱敏，失败时为什么不能发送原始日志</title>
+      <link href="/2026/10/13/2026-CloudflareLogpush%E5%AF%BC%E5%87%BA%E5%89%8D%E8%BD%AC%E6%8D%A2%E4%B8%8E%E8%84%B1%E6%95%8F%E8%BE%B9%E7%95%8C/"/>
+      <url>/2026/10/13/2026-CloudflareLogpush%E5%AF%BC%E5%87%BA%E5%89%8D%E8%BD%AC%E6%8D%A2%E4%B8%8E%E8%84%B1%E6%95%8F%E8%BE%B9%E7%95%8C/</url>
+      
+        <content type="html"><![CDATA[<p>Cloudflare 在 2026 年 10 月 12 日的技术文章中，披露了 Logpush Transformers 的执行机制：日志在导出前经过 SQL 过滤和字段改写，查询引擎内嵌在交付服务中，转换失败时不会改发原始日志。</p><p>Transformers 此前已经正式可用，本次近期动态是实现细节的公开说明，并非功能首次上线。对需要向 SIEM、分析平台或对象存储发送日志的团队，它提供了减少无用记录和敏感字段的新处理位置；采用时也要考虑转换失败、旧过滤规则迁移以及下游 schema 变化。</p><span id="more"></span><h2 id="把清洗放在出口，而不是等下游收完再删除"><a href="#把清洗放在出口，而不是等下游收完再删除" class="headerlink" title="把清洗放在出口，而不是等下游收完再删除"></a>把清洗放在出口，而不是等下游收完再删除</h2><p>日志管道常见的一种流程，是先导出完整记录，再在下游丢弃健康检查、删除敏感字段或转换字段名。这样，最终不用的数据仍然经过传输、接收和部分处理步骤，团队也可能需要维护独立清洗服务。</p><p>Transformer 将这些工作移到 Logpush 的导出流程中。查询针对特定数据集执行，<code>WHERE</code> 决定保留哪些记录，<code>SELECT</code> 决定剩下的记录导出哪些字段，以及字段如何表达。输出为 NDJSON。</p><p>这是一种记录内容和结构的转换，不是把任意输入格式改成另一种格式的通用转换器。官方文档要求 Logpush job 使用 NDJSON，并与 Transformer 的 <code>FROM</code> 数据集匹配；CSV job 不属于可挂载目标。</p><p>对字段控制，一个容易审查的起点是明确列出需要导出的字段，而不是先保留全部字段再逐个遮盖。例如，下面是面向 <code>http_requests</code> 的示意查询，本文没有在实际日志任务中运行它：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  EdgeStartTimestamp <span class="keyword">AS</span> ts,</span><br><span class="line">  ClientRequestMethod <span class="keyword">AS</span> <span class="keyword">method</span>,</span><br><span class="line">  EdgeResponseStatus <span class="keyword">AS</span> status,</span><br><span class="line">  RayID <span class="keyword">AS</span> request_id,</span><br><span class="line">  <span class="string">&#x27;cloudflare&#x27;</span> <span class="keyword">AS</span> provider</span><br><span class="line"><span class="keyword">FROM</span> http_requests</span><br><span class="line"><span class="keyword">WHERE</span> ClientRequestPath <span class="operator">&lt;&gt;</span> <span class="string">&#x27;/healthz&#x27;</span></span><br><span class="line">   <span class="keyword">OR</span> EdgeResponseStatus <span class="operator">&gt;=</span> <span class="number">400</span></span><br></pre></td></tr></table></figure><p>它保留原始时间字段并改名，未选入客户端 IP、User-Agent 和请求路径；过滤条件保留非 <code>/healthz</code> 请求以及该路径的错误响应。这个例子只展示一种选择，不是所有团队的日志保留方案。路径匹配范围、空值处理和错误状态约定，都要结合真实数据验证。</p><p>移除 IP 也不等于完成匿名化。其他标识及数据关联仍可能识别用户或请求，实际导出字段应根据用途确定。导出前处理更不能替代已导出副本的访问控制和保留策略。</p><h2 id="为什么最终没有在导出路径里远程调用-Worker"><a href="#为什么最终没有在导出路径里远程调用-Worker" class="headerlink" title="为什么最终没有在导出路径里远程调用 Worker"></a>为什么最终没有在导出路径里远程调用 Worker</h2><p>Cloudflare 文章介绍，早期原型曾在 Workers 上运行客户定义的 WebAssembly 转换逻辑。但远程调用会给导出路径增加一次网络依赖，可能带来瞬时超时、重试和交付延迟。</p><p>最终方案将转换内嵌在 Go 编写的 Logpush 交付服务 Bufstream 中，选择 Rust 编写的 Apache DataFusion 执行 SQL。DataFusion 基于 Apache Arrow，提供查询规划和列式、向量化执行能力。</p><p>查询在 job 的一个数据时间片内准备为可复用的逻辑计划，随后用于该时间片中的各批次。这样可以减少重复准备工作，同时使用原有交付系统的调度、批处理和目的地控制，而不用再增加独立的转换网络层。</p><p>这是针对导出路径可靠性和吞吐要求的设计选择，不能推成“远程转换服务在所有场景都不好”。复杂跨系统处理仍可能需要独立服务；选择处理位置时，要看它引入的依赖、故障和运维责任。</p><h2 id="Arrow-让数据交换按批次进行，不代表零拷贝"><a href="#Arrow-让数据交换按批次进行，不代表零拷贝" class="headerlink" title="Arrow 让数据交换按批次进行，不代表零拷贝"></a>Arrow 让数据交换按批次进行，不代表零拷贝</h2><p>Bufstream 从内部消息系统取得压缩批次后，解析符合条件的记录，并构造带类型的 Arrow RecordBatch。Go 与 Rust 通过 C ABI 和 cgo 交换 Arrow IPC 数据，而不是先逐条转成 JSON，再由 Rust 解析并重建列。</p><p>公告明确说明了内存所有权：Go 输入缓冲区的指针只在 cgo 调用期间传给 Rust，Rust 返回后不保留它；转换后的输出由 Rust 分配，Go 复制到自己管理的内存，再显式释放 Rust 分配。</p><p>所以这里的价值是批次化、类型一致和生命周期明确，不能简单称作“零拷贝”。序列化、解码、复制与内存管理仍然有成本。</p><p>每个数据集的 schema 来自其规格，而非按当前批次猜测。字段类型、空值和嵌套值因此能够在语言边界两侧保持一致，查询也可以在保存时按目标 schema 校验。DataFusion 本身是可扩展查询引擎，但 Logpush 暴露的是受产品规则限制的转换能力，不能把完整引擎能力都当成该服务已经支持的功能。</p><h2 id="转换失败不回退原始日志，是数据契约的一部分"><a href="#转换失败不回退原始日志，是数据契约的一部分" class="headerlink" title="转换失败不回退原始日志，是数据契约的一部分"></a>转换失败不回退原始日志，是数据契约的一部分</h2><p>如果下游约定收到的记录已经去掉某些字段，转换失败后临时发送原始记录，会破坏这个约定。即使下游 schema 还能接收，敏感信息也可能进入原本不应该接收它的目的地。</p><p>Cloudflare 的设计因此选择 fail closed。公告说明，转换无法执行时，Bufstream 不推进该批次对应的交付 offset，也不发送未转换数据，而是重试。为避免异常 job 持续占用资源，系统会逐步延后重试并报告错误，长期失败的 job 会被禁用。</p><p>但这不意味着日志会被无限保留。产品文档特别指出，持续失败时，受影响批次的记录最终可能被丢弃且无法恢复。保住脱敏契约与保证日志完整交付，是两个需要分别监控的目标。</p><table><thead><tr><th>情况</th><th>平台行为或风险</th><th>团队应检查什么</th></tr></thead><tbody><tr><td>查询不能按 schema 保存</td><td>无效语法、字段或类型会被拒绝</td><td>上传校验错误及目标数据集</td></tr><tr><td>运行批次转换失败</td><td>不交付该批次，不回退发送原始日志，并记录错误、重试</td><td>job 的 <code>last_error</code> 和转换健康状态</td></tr><tr><td>持续失败</td><td>可能禁用任务，受影响记录最终可能不可恢复</td><td>告警响应、数据缺口及恢复方案</td></tr></tbody></table><p>因此，不能把“没有原始日志泄露”作为唯一验收标准。还要看转换成功率、前后数据量、耗时，以及下游是否出现无法解释的日志断层。</p><h2 id="迁移已有-job-时，旧-filter-不能直接保留"><a href="#迁移已有-job-时，旧-filter-不能直接保留" class="headerlink" title="迁移已有 job 时，旧 filter 不能直接保留"></a>迁移已有 job 时，旧 filter 不能直接保留</h2><p>官方文档规定，一个 Logpush job 可以使用 Transformer 或原有 filter，不能同时使用两者。</p><p>控制台的 Transformer Studio 会把原 filter 转为等价 SQL 条件供迁移使用。操作者需要把该条件放入查询的 <code>WHERE</code>，确认挂载后，Studio 移除原 filter 并关联 Transformer。</p><p>API 不会替团队完成这项转换。通过 API 迁移时，需要自行保留等价过滤逻辑，并在同一次 job 更新中清空 <code>filter</code>、设置 <code>transformer_id</code>；只设置后者而保留原 filter，会得到 <code>400</code> 响应。</p><p>这不是简单的配置字段替换。遗漏旧条件可能扩大导出范围，条件合并错误则可能丢掉关键记录。可以先用健康检查、错误响应、空字段和不同请求路径构造测试样本，核对新旧保留结果，再验证下游是否接受新的字段名与结构。</p><p>预览也有范围限制。Studio 使用目标数据集的示例记录，虽然校验和执行逻辑一致，单个样本仍不能代表所有生产记录。上线后应观察转换健康状态，并提前明确出现数据缺口时谁负责处理。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Logpush Transformers 的工程价值，是把记录过滤和字段契约放到数据离开导出管道之前，并让执行复用现有交付基础设施。它减少了一些独立清洗层的需求，也让失败时的处理选择更明确。</p><p>真正采用时，需要同时守住三件事：导出的字段符合用途，旧过滤逻辑没有丢失，转换异常不会悄悄形成长期数据缺口。脱敏逻辑与交付可靠性一起验证，才是一套完整的日志出口设计。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://blog.cloudflare.com/transformers-on-logpush/">Cloudflare 10 月 12 日技术文章：Filter, reshape, and redact logs before export with Transformers</a>，用于核对 SQL 在交付管道中的位置、DataFusion 内嵌执行及 Go&#x2F;Rust 所有权设计。</li><li><a href="https://developers.cloudflare.com/logs/logpush/transformers/">Cloudflare Docs：Transformers</a>，用于核对 NDJSON 与数据集匹配、filter 迁移、预览及持续失败时的数据丢失限制。</li><li><a href="https://datafusion.apache.org/">Apache DataFusion 官方文档</a>，用于核对查询引擎与 Arrow 的关系；具体 Logpush 支持范围以 Cloudflare 文档为准。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 云计算 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> Logpush </tag>
+            
+            <tag> DataFusion </tag>
+            
+            <tag> Apache Arrow </tag>
+            
+            <tag> 日志处理 </tag>
+            
+            <tag> 数据脱敏 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Copilot for JetBrains 更新：默认模型、MCP 启动和诊断修复要分开管理</title>
       <link href="/2026/10/12/2026-CopilotJetBrains%E9%BB%98%E8%AE%A4%E6%A8%A1%E5%9E%8B%E4%B8%8EMCP%E5%90%AF%E5%8A%A8%E6%8E%A7%E5%88%B6/"/>
       <url>/2026/10/12/2026-CopilotJetBrains%E9%BB%98%E8%AE%A4%E6%A8%A1%E5%9E%8B%E4%B8%8EMCP%E5%90%AF%E5%8A%A8%E6%8E%A7%E5%88%B6/</url>
