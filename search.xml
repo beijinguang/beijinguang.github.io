@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title>Linux 7.3 正式发布：Samsung 990 SSD 的一次复位，为何会让 VFIO 直通失败</title>
+      <link href="/2026/10/19/2026-Linux73%E4%B8%89%E6%98%9F990%E5%A4%8D%E4%BD%8D%E4%B8%8EVFIO%E7%9B%B4%E9%80%9A%E4%BF%AE%E5%A4%8D/"/>
+      <url>/2026/10/19/2026-Linux73%E4%B8%89%E6%98%9F990%E5%A4%8D%E4%BD%8D%E4%B8%8EVFIO%E7%9B%B4%E9%80%9A%E4%BF%AE%E5%A4%8D/</url>
+      
+        <content type="html"><![CDATA[<p>Linux 7.3 已正式发布。上游版本提交时间为 UTC 2026 年 10 月 18 日 23:14，对应北京时间 10 月 19 日早上。这次不罗列整版新功能，单看其中一个直接影响虚拟化用户的修复：部分 Samsung 990 PRO 和 990 EVO Plus SSD 宣告支持“立即就绪”，实际复位后却还不能马上访问。</p><p>问题出在 PCIe 配置恢复的时序上，已经有 VFIO 设备直通失败的报告。修复没有关闭整块硬盘的复位功能，而是让内核不再相信这两类设备宣告的 Immediate Readiness 能力，恢复必要的等待。</p><span id="more"></span><h2 id="硬盘平时可用，不代表复位后也已经准备好"><a href="#硬盘平时可用，不代表复位后也已经准备好" class="headerlink" title="硬盘平时可用，不代表复位后也已经准备好"></a>硬盘平时可用，不代表复位后也已经准备好</h2><p>把 NVMe 设备直通给虚拟机时，宿主机需要在设备生命周期中处理复位、重新配置和交接。FLR，即 Function Level Reset，是 PCIe 的功能级复位机制。</p><p>复位发出后，软件不能总是假设设备立即接受后续配置访问。Immediate Readiness 能力给了内核一条更快的路径：设备如果宣告支持，内核可以跳过通常的复位后等待。</p><p>上游修复说明指出，Samsung 990 PRO 的某些固件虽然宣告了这项能力，FLR 后的配置读取却会在最长约 7 毫秒内返回全一值。这里的异常来自 PCI 配置访问，不是说用户数据读出来都变成了全一，也不能据此判断闪存已经损坏。</p><p>真正触发故障的是后续配置恢复发生得太早。之前的提交 <code>10baa9b4df40</code> 移除了恢复 BAR 时不必要的重试；设备尚未就绪时，配置恢复没能生效，从而破坏了 VFIO 直通。</p><p>BAR 是 Base Address Register，用来描述设备寄存器等资源的地址映射。这个环节出错后，即便 SSD 日常存储读写正常，经过特定复位与重新分配流程仍然可能失败。</p><p>这也是硬件兼容性问题难查的一点：故障不一定在持续读写时发生，可能集中出现在虚拟机再次启动、设备重新交接或某次复位之后。</p><h2 id="两个设备-ID，几个已报告的固件版本"><a href="#两个设备-ID，几个已报告的固件版本" class="headerlink" title="两个设备 ID，几个已报告的固件版本"></a>两个设备 ID，几个已报告的固件版本</h2><p>补丁没有只按产品名称模糊匹配，而是在 PCI 层对两个设备 ID 设置兼容性处理。</p><table><thead><tr><th>设备</th><th>PCI 厂商与设备 ID</th><th>上游提交记录</th></tr></thead><tbody><tr><td>Samsung 990 PRO</td><td><code>144d:a80c</code></td><td>较旧固件如 <code>1B2QJXD7</code> 在 FLR 后不能立即响应；<code>8B2QJXD7</code> 则能立即响应</td></tr><tr><td>Samsung 990 EVO Plus</td><td><code>144d:a80d</code></td><td><code>2B2QKXG7</code> 被报告似乎有同类问题</td></tr></tbody></table><p>这里需要保留提交说明中的强度。990 EVO Plus 的描述是“似乎有同样的问题”，不能把它扩写成对所有容量、所有固件的全面测试结论。</p><p>990 PRO 的新固件表现也不构成所有同型号设备都已经修好的保证。上游说明，执行这段 PCI 兼容性处理时看不到 NVMe 固件版本，所以补丁选择按设备 ID 处理，没有在这里再细分新旧固件。</p><p>如果你只在普通桌面环境使用这些硬盘，没有直通失败或复位异常，不必仅凭型号就断言机器已经受影响。应把设备 ID、固件、实际内核补丁与故障场景放在一起判断。</p><h2 id="补丁做的是取消信任，不是禁止-FLR"><a href="#补丁做的是取消信任，不是禁止-FLR" class="headerlink" title="补丁做的是取消信任，不是禁止 FLR"></a>补丁做的是取消信任，不是禁止 FLR</h2><p>核心修复位于 <code>drivers/pci/quirks.c</code>。它给上述两个设备注册了一个兼容性函数：如果设备宣告 Immediate Readiness，就清除内核中的 <code>imm_ready</code> 标志，并打印说明日志。</p><p>关键动作是：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dev-&gt;imm_ready = <span class="number">0</span>;</span><br></pre></td></tr></table></figure><p>这不会给 SSD 刷写固件，也不是禁用 NVMe，更没有关闭整个 FLR 路径。它改变的是内核对设备复位完成速度的判断。</p><p>对照 Linux v7.3 的 <code>pcie_flr()</code> 可以看到，<code>imm_ready</code> 为真时会跳过等待；否则代码先等待 100 毫秒，再调用 <code>pci_dev_wait()</code> 检查设备就绪情况。因此，不能把报告中“最长约 7 毫秒不可访问”理解成补丁只增加 7 毫秒延时。</p><p>100 毫秒等待的注释依据是 PCIe 对 FLR 的时序要求。修复回到了更保守的标准路径，以避免在设备仍可能丢弃请求时开始配置访问。</p><p>这点延时发生在相应复位流程中，不是对每次文件读取或每个 NVMe 请求统一加延迟。讨论性能代价时，也应区分复位耗时和正常工作负载的吞吐量。</p><h2 id="新版发布了，发行版有没有补丁要另外查"><a href="#新版发布了，发行版有没有补丁要另外查" class="headerlink" title="新版发布了，发行版有没有补丁要另外查"></a>新版发布了，发行版有没有补丁要另外查</h2><p>Linux 7.3 的最终版本包含这项修复，但生产系统不应只看 <code>uname</code> 中的主版本号。</p><p>发行版可能把补丁回移到较老的内核分支，也可能尚未提供对应更新。自行构建的内核是否包含修复，同样取决于实际源码和补丁集。主线正式发布，也不代表所有发行版已经完成硬件验证或推送更新。</p><p>核对时，最直接的线索是提交 <code>0f8b5d90d179b9639be1dbeff59d6d971e6b0527</code>，标题为 <code>PCI: Ignore Immediate Readiness on Samsung 990 PRO and 990 EVO Plus NVMe</code>。</p><p>如果发行版使用不同的回移提交哈希，可以再按标题及两个设备 ID 查找。不要因为没有搜到同一个哈希，就认定回移不存在。</p><p>这项提交是兼容性修复。本文没有依据将它归类为某个新 CVE，也没有把它当成磁盘介质损坏、数据已丢失或所有 VFIO 故障的统一解释。</p><h2 id="先做只读核对，不要在生产盘上试复位"><a href="#先做只读核对，不要在生产盘上试复位" class="headerlink" title="先做只读核对，不要在生产盘上试复位"></a>先做只读核对，不要在生产盘上试复位</h2><p>受影响场景适合先建立基本记录。下面的命令示例用于 Linux 主机上的只读检查，需要安装相应工具，部分信息可能要求管理员权限。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 当前运行内核</span></span><br><span class="line"><span class="built_in">uname</span> -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按 PCI 设备 ID 查找目标设备及驱动</span></span><br><span class="line">lspci -nnk -d 144d:a80c</span><br><span class="line">lspci -nnk -d 144d:a80d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 若设备由宿主机 NVMe 驱动管理，查看控制器信息</span></span><br><span class="line"><span class="built_in">sudo</span> nvme id-ctrl /dev/nvme0</span><br></pre></td></tr></table></figure><p><code>/dev/nvme0</code> 只是示例，必须先确认对应控制器。已经绑定给 vfio-pci 的设备，通常不能再通过宿主机 NVMe 设备节点直接读取这类信息，不能为了查固件就随意解除生产设备绑定。</p><p>内核日志也是线索。补丁中的提示为：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ignoring incorrectly advertised Immediate Readiness support</span><br></pre></td></tr></table></figure><p>不过，没有这条日志不一定表示缺少修复。日志可能已轮转，当前设备也可能没有宣告对应能力；容器或受限环境可能根本看不到完整宿主机日志。设备清单、内核源码或发行版变更记录仍要交叉核对。</p><p>共享排障信息前，应去除硬盘序列号、主机标识、业务路径等不必要的信息。本文没有读取当前机器的硬件信息，也没有在任何设备上触发复位。</p><h2 id="升级验证要覆盖完整设备生命周期"><a href="#升级验证要覆盖完整设备生命周期" class="headerlink" title="升级验证要覆盖完整设备生命周期"></a>升级验证要覆盖完整设备生命周期</h2><p>如果确有直通故障，建议优先使用发行版支持的更新路径，在维护窗口验证。升级前应有备份、可用的旧内核启动项，以及必要的远程控制台或救援方式。对启动盘与生产数据盘，不应直接执行破坏当前访问状态的复位实验。</p><p>验证重点也不只是虚拟机能否首次启动。首次交接成功之后，再次启动、重启与重新交接是否稳定，往往更能暴露这种时序问题。测试设备应当可停机、数据已备份，并且不会影响其他运行中的工作负载。</p><p>本文建议将以下几项变化分开记录：内核版本与补丁状态、SSD 固件版本、设备绑定方式，以及虚拟机启动和停止流程。如果同时升级内核、固件与虚拟化平台，即使问题消失，也很难确定哪个变化起了作用。</p><p>固件升级应遵循厂商工具和适用性说明。上游记录的新固件表现可作为调查线索，不能代替厂商对具体设备、容量和升级路径的确认。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Linux 7.3 中这项小补丁，说明硬件宣告的能力也需要操作系统根据真实行为校正。跳过等待看似只是优化，遇到不守时序的固件，就可能让后面的配置恢复失效。</p><p>对使用 NVMe 直通的团队，最有用的下一步是确认设备、固件和实际补丁，而非立即给所有主机换上主线内核。把复位与重新交接纳入测试，才能发现那些在正常读写基准中看不出来的问题。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.com/torvalds/linux/commit/c03c1a14507dfaf8b856c2608f9ac216021fc222">Linux 7.3 上游版本提交</a>，提交时间为 UTC 2026 年 10 月 18 日 23:14，本文近期选题的版本依据。</li><li><a href="https://github.com/torvalds/linux/commit/0f8b5d90d179b9639be1dbeff59d6d971e6b0527">Linux 上游补丁：Ignore Immediate Readiness on Samsung 990 PRO and 990 EVO Plus NVMe</a>，问题描述、设备 ID、固件记录和修复实现的主要来源。</li><li><a href="https://github.com/torvalds/linux/blob/v7.3/drivers/pci/pci.c">Linux v7.3：drivers&#x2F;pci&#x2F;pci.c</a>，核对 <code>pcie_flr()</code> 的等待逻辑；<a href="https://github.com/torvalds/linux/blob/v7.3/drivers/pci/quirks.c">drivers&#x2F;pci&#x2F;quirks.c</a>，核对设备兼容性处理。</li><li><a href="https://www.phoronix.com/news/Linux-7.3-Released">Phoronix：Linux 7.3 Released</a> 与 <a href="https://www.phoronix.com/news/Linux-7.3-Samsung-990-Immediate">Samsung 990 SSD 修复报道</a>，新闻线索与发布背景，技术判断以上游代码为准。</li></ul><p>本文根据 2026 年 10 月 19 日查阅资料整理；发行版更新和厂商固件适用性应另行确认。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> PCIe </tag>
+            
+            <tag> NVMe </tag>
+            
+            <tag> VFIO </tag>
+            
+            <tag> 虚拟化 </tag>
+            
+            <tag> 硬件兼容性 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub 开源许可证合规正式可用：把依赖政策放进 PR，也要留好例外边界</title>
       <link href="/2026/10/18/2026-GitHub%E8%AE%B8%E5%8F%AF%E8%AF%81%E5%90%88%E8%A7%84%E4%B8%8E%E4%BE%8B%E5%A4%96%E5%AE%A1%E6%89%B9%E8%BE%B9%E7%95%8C/"/>
       <url>/2026/10/18/2026-GitHub%E8%AE%B8%E5%8F%AF%E8%AF%81%E5%90%88%E8%A7%84%E4%B8%8E%E4%BE%8B%E5%A4%96%E5%AE%A1%E6%89%B9%E8%BE%B9%E7%95%8C/</url>
