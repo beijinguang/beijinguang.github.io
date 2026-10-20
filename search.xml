@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>GitHub 推出软件包防火墙预览：把依赖检查放到安装之前</title>
+      <link href="/2026/10/21/2026-GitHub%E8%BD%AF%E4%BB%B6%E5%8C%85%E9%98%B2%E7%81%AB%E5%A2%99%E4%B8%8E%E5%AE%89%E8%A3%85%E5%89%8D%E4%BE%9D%E8%B5%96%E6%8B%A6%E6%88%AA/"/>
+      <url>/2026/10/21/2026-GitHub%E8%BD%AF%E4%BB%B6%E5%8C%85%E9%98%B2%E7%81%AB%E5%A2%99%E4%B8%8E%E5%AE%89%E8%A3%85%E5%89%8D%E4%BE%9D%E8%B5%96%E6%8B%A6%E6%88%AA/</url>
+      
+        <content type="html"><![CDATA[<p>代码还没开始测试，安装依赖的机器就可能已经暴露了凭据。npm 包的安装脚本可以在安装阶段执行命令，等仓库里出现漏洞告警后再处理，未必来得及保护这一次构建。</p><p>北京时间 2026 年 10 月 21 日凌晨，GitHub 公布 package firewall 公开预览。它在开发机器、AI 编码智能体或 CI runner 与上游包仓库之间增加策略检查，覆盖包元数据请求和实际下载。当前服务面向 GitHub Enterprise Cloud 客户，包括数据驻留版本，仅支持 npm 包。它提供了一道更早的检查，但是否覆盖真实安装过程，仍取决于请求有没有经过这个入口。</p><span id="more"></span><h2 id="安装过程本身就是执行边界"><a href="#安装过程本身就是执行边界" class="headerlink" title="安装过程本身就是执行边界"></a>安装过程本身就是执行边界</h2><p>不少团队把依赖安全放在合并检查和定期扫描中。这些检查有价值，但安装依赖通常发生得更早，也可能发生在开发者本地或智能体临时环境里。</p><p>一个包即使尚未被应用显式导入，也可能通过 <code>preinstall</code>、<code>postinstall</code> 等生命周期脚本执行命令。runner 上的令牌、工作目录里的配置文件、可以访问的内部服务，都可能成为安装阶段的风险来源。</p><p>GitHub 此次产品的切入点，是让取包请求先接受企业策略判定。管理员配置规则，终端再把包管理器的 registry 指向防火墙。不能把它理解成仓库后台多开一个选项，就自动保护了所有开发机器。</p><p>它与仓库告警也不处于完全相同的位置。告警帮助团队发现和处置已有依赖中的问题；安装入口可以在一次取包请求发生时作出阻止决定。后续出现的新漏洞，仍需要持续监测和修复。</p><h2 id="预览版检查哪些信号"><a href="#预览版检查哪些信号" class="headerlink" title="预览版检查哪些信号"></a>预览版检查哪些信号</h2><p>GitHub 的接入文档列出了五类策略。截至本文查阅时，其默认值如下，公开预览期间仍可能调整。</p><table><thead><tr><th>策略</th><th>判定依据</th><th>当前默认值</th></tr></thead><tbody><tr><td>已知恶意软件</td><td>GitHub Advisory Database 中有效的恶意软件通告</td><td>开启</td></tr><tr><td>漏洞通告</td><td>请求版本是否受指定严重程度的漏洞影响</td><td>只阻止 Critical</td></tr><tr><td>证明降级</td><td>之前版本有 SLSA 证明，而请求版本没有</td><td>开启</td></tr><tr><td>新增安装脚本</td><td>包近期是否新增安装时运行的脚本</td><td>开启</td></tr><tr><td>最低包龄</td><td>版本发布时间是否已超过冷却期</td><td>1 天</td></tr></tbody></table><p>最低包龄可以设为 1 至 365 天，设为 0 则关闭。漏洞阈值可以选择仅 Critical、High 及以上、Medium 及以上，或任意严重程度。</p><p>这几类信号各有盲区。已知恶意软件和漏洞策略依赖通告收录，不能证明尚未收录的包安全；冷却期为风险发现留出时间，也不能保证等满一天就没有问题。</p><p>证明降级关注的是发布过程的变化。之前一直有证明，某次发布突然没有，值得进一步核实；但缺失也可能源于正常的发布流程调整。它不是对包内容的完整安全判断，更不意味着没有历史证明的包一定会被这条规则挡住。</p><p>新增安装脚本同样属于变化信号。有些正常工具需要安装脚本，已有脚本也可能产生风险。文档描述的策略不能被扩写成“阻止一切安装脚本”，更不能据此声称安装阶段已经完全隔离。</p><h2 id="冷却期会挡住攻击，也可能挡住修复"><a href="#冷却期会挡住攻击，也可能挡住修复" class="headerlink" title="冷却期会挡住攻击，也可能挡住修复"></a>冷却期会挡住攻击，也可能挡住修复</h2><p>给新版本设置等待时间，可以减少团队刚好踩中恶意发布窗口的机会。然而，新发布的安全修复也属于新版本。</p><p>例如，一个包刚发布漏洞修复，企业要求版本至少存在一天，安装就可能被冷却规则拒绝。直接长期关闭规则，会影响所有后续取包；更小的调整是核实修复版本后，为确有需要的版本申请例外。</p><p>按官方流程，阻止发生时，npm 输出或 CI 日志会包含例外申请链接。申请中需要说明仓库、生态、包名、版本和原因，由企业管理员或企业安全管理者审批。</p><p>审批可以针对版本，也可以扩大到版本范围，甚至使用 <code>*</code> 放行该包所有版本。这个通配符会改变未来版本的处理方式，不应被当成一次构建失败后的方便按钮。实践中宜优先批准必要的精确版本，保留核实依据，并定期复查不再需要的例外。这是使用建议，不是预览版自动提供了到期回收机制。</p><h2 id="接入的关键是请求路径"><a href="#接入的关键是请求路径" class="headerlink" title="接入的关键是请求路径"></a>接入的关键是请求路径</h2><p>官方给出的 npm 接入方式是在用户级 <code>.npmrc</code> 配置企业专属入口。以下为文档中的配置格式示意，需要替换企业标识并按团队的凭据方案使用，本文没有对实际企业环境执行接入测试。</p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">registry</span>=https://package-firewall.githubapp.com/npm/enterprises/ENTERPRISE</span><br><span class="line">//package-firewall.githubapp.com/npm/enterprises/ENTERPRISE/:<span class="attr">_authToken</span>=<span class="variable">$&#123;GITHUB_TOKEN&#125;</span></span><br></pre></td></tr></table></figure><p>每次请求需要携带企业成员用户或机器人账号关联的令牌。官方说明，权限不需要超出公共仓库只读访问；账号归属企业这一条件也必须满足。不要把这里的变量名误认为任意工作流令牌都天然符合要求，应按官方认证要求核实实际令牌身份。</p><p>真实令牌应放在安全的凭据存储或 CI secret 中，不要提交到仓库，也不要打印到构建日志。依赖安装本身可能执行脚本，所以接入下载策略之后，runner 的最小权限和敏感信息隔离仍然重要。</p><p>接入验证不能只看 <code>npm config get registry</code> 的结果。项目级配置、作用域包的 registry、锁文件里的下载地址、工作流临时覆盖，都可能影响实际请求。对于已有锁文件，应检查实际下载日志并验证覆盖情况，不宜为了改变地址就盲目重建整个依赖树。</p><p>缓存也是单独的边界。如果构建直接使用已经存在的本地内容，不能假设它刚刚经过了一次新的防火墙判定。测试时应分开观察冷缓存和热缓存路径，避免只验证了一次成功安装就宣布完成接入。</p><h2 id="已有私有镜像不必全部推倒"><a href="#已有私有镜像不必全部推倒" class="headerlink" title="已有私有镜像不必全部推倒"></a>已有私有镜像不必全部推倒</h2><p>很多团队通过 Artifactory 统一提供公共包和内部包。官方文档给出了把 GitHub 防火墙作为 Artifactory 远端上游，再通过虚拟 npm 仓库提供给终端的方式。不过，Artifactory 支持目前被标注为实验性。</p><p>这种布局下，终端仍使用企业已有镜像，公共包经过防火墙再进入镜像，内部私有包走原来的来源。文档特别要求排除直接访问公共 npm registry 的远端，否则下载可能从另一条路径取得包，绕过策略。</p><p>同样需要考虑镜像里已经缓存的内容。更换上游不等于旧缓存自动重新接受全部检查。覆盖验证、旧缓存的处理和紧急例外应一起规划，不能只完成远端配置就结束迁移。</p><p>对个人开发者而言，目前也不宜把这个产品当作免费的通用 npm 镜像。公告明确限定 Enterprise Cloud 客户，预览期间免费；正式可用后计划按用量计费，公告没有给出具体单价。采购和推广时都应保留这个成本变量。</p><h2 id="从一条真实构建开始试点"><a href="#从一条真实构建开始试点" class="headerlink" title="从一条真实构建开始试点"></a>从一条真实构建开始试点</h2><p>较稳妥的试点，是选择依赖结构清楚、能回滚环境配置的一条构建链路，先记录它使用的 registry、包缓存和凭据来源。接入后验证正常包能否安装、被策略拒绝时日志是否足够定位、申请例外能否走通，再逐步扩大范围。</p><p>观察指标也不应只有阻止次数。新版本等待造成的构建延误、误拦截的处理时间、安全补丁的例外周转，以及还在直连上游的终端数量，都关系到这道检查能否长期使用。</p><p>不论由人还是智能体触发安装，都应沿用同一套企业策略。一次被拒绝后，自动改回公共 registry 重试，会让原本的阻止决定失去意义。失败应进入诊断或审批流程，而不是悄悄换个下载入口。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>GitHub package firewall 把依赖策略执行点放到了元数据请求和下载阶段，为安装前检查提供了一个集中入口。它能否发挥作用，取决于策略是否合适，也取决于开发机、runner、代理和缓存是否真正纳入覆盖。</p><p>锁文件、仓库扫描、最小权限和安装环境隔离仍有各自的职责。试点这项预览功能时，先确认一条真实安装链路受到检查，再讨论铺到多少仓库，会比只统计开启数量更有帮助。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview/">GitHub Changelog：GitHub package firewall in public preview</a>，发布于 UTC 2026 年 10 月 20 日 16:11，北京时间 10 月 21 日 00:11。用于核对发布范围、npm 限制和计费安排。</li><li><a href="https://docs.github.com/enterprise-cloud@latest/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/protecting-endpoints-with-package-firewall">GitHub Docs：Protecting endpoints with GitHub package firewall</a>，访问日期为 2026 年 10 月 21 日。用于核对策略默认值、令牌要求、npm&#x2F;Artifactory 接入和例外审批；公开预览内容可能变化。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CI/CD </tag>
+            
+            <tag> npm </tag>
+            
+            <tag> GitHub </tag>
+            
+            <tag> 软件供应链 </tag>
+            
+            <tag> 依赖管理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>AI 代码审查降本 68%：为什么缓存命中率 97%，账单仍在上涨</title>
       <link href="/2026/10/20/2026-Cloudflare%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E9%99%8D%E6%9C%AC%E4%B8%8E%E5%89%8D%E7%BC%80%E7%BC%93%E5%AD%98/"/>
       <url>/2026/10/20/2026-Cloudflare%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E9%99%8D%E6%9C%AC%E4%B8%8E%E5%89%8D%E7%BC%80%E7%BC%93%E5%AD%98/</url>
