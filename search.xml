@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>GitHub CLI 支持自动刷新令牌：登录更省心，脚本却不能再缓存凭据</title>
+      <link href="/2026/10/22/2026-GitHubCLI%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0%E4%BB%A4%E7%89%8C%E4%B8%8E%E8%84%9A%E6%9C%AC%E8%AE%A4%E8%AF%81%E8%BE%B9%E7%95%8C/"/>
+      <url>/2026/10/22/2026-GitHubCLI%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0%E4%BB%A4%E7%89%8C%E4%B8%8E%E8%84%9A%E6%9C%AC%E8%AE%A4%E8%AF%81%E8%BE%B9%E7%95%8C/</url>
+      
+        <content type="html"><![CDATA[<p>在终端登录一次 GitHub，后续命令就能持续使用，这种便利过去常常依赖长期有效的访问令牌。问题是，泄露出去的令牌也可能长期有效。</p><p>北京时间 2026 年 10 月 22 日凌晨，GitHub 宣布在 GitHub CLI 中公开预览可过期、自动刷新的 OAuth 凭据，要求 <code>gh</code> 2.103.0 或更新版本。用户主动选择后，<code>gh</code> 保存短期访问令牌和轮换的刷新令牌，在需要时刷新凭据。日常操作可以继续，但那些“登录时取一次 token，之后一直复用”的脚本需要重新检查。</p><span id="more"></span><h2 id="登录状态可以持续，访问令牌不必长期有效"><a href="#登录状态可以持续，访问令牌不必长期有效" class="headerlink" title="登录状态可以持续，访问令牌不必长期有效"></a>登录状态可以持续，访问令牌不必长期有效</h2><p>这项变化把两件事分开了：保持用户已授权的使用体验，以及让同一串访问令牌长期有效。</p><p>访问令牌用于实际请求，按官方描述会在数小时内到期；刷新令牌用于换取后续凭据，并随刷新过程轮换。<code>gh</code> 在需要新访问令牌时完成交换，用户不必每次都重新打开浏览器授权。</p><p>因此，单独泄露的访问令牌，其可用时间有了更短的上限。不过，这不等于可以忽略泄露。在有效期内，令牌仍可能被使用；如果刷新令牌或整台开发机也遭到控制，风险又是另一回事。缩短访问令牌寿命不能替代最小权限、及时撤销和终端保护。</p><p>官方没有在这篇公告中承诺所有环境都使用同一个精确小时数。接入时应检查服务器实际签发的凭据和到期状态，不宜把“数小时”写死成脚本里的刷新定时器。</p><h2 id="当前需要主动启用，升级不会替你完成迁移"><a href="#当前需要主动启用，升级不会替你完成迁移" class="headerlink" title="当前需要主动启用，升级不会替你完成迁移"></a>当前需要主动启用，升级不会替你完成迁移</h2><p>对于交互式开发环境，官方给出的单次登录选择是：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gh auth login --expiring</span><br></pre></td></tr></table></figure><p>若希望后续登录都优先请求此类凭据，可以设置：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gh config <span class="built_in">set</span> expiring_credentials enabled</span><br></pre></td></tr></table></figure><p>这些是供读者评估后使用的官方命令示例，本文没有对实际账号执行重新登录或配置修改。设置登录偏好也不等于已有登录会话已经自动换成新凭据。</p><p>该功能目前是主动选择、向后兼容的公开预览。未选择的用户、已有登录和手动提供的令牌继续按原方式工作。GitHub 表示计划在未来版本中将其作为新登录的默认方式，不能据此声称今天所有账号已经切换。</p><p>服务器支持同样重要。公告列出的可用范围包括 github.com 和 ghe.com；GitHub Enterprise Server 从 GHES 3.23 开始签发此类凭据。旧服务器不支持时，<code>--expiring</code> 会回退为普通不过期令牌，所以命令成功并不能单独证明拿到了短期凭据。</p><p>检查时可以使用默认隐藏令牌内容的 <code>gh auth status</code>，关注凭据是否可刷新及到期信息。文档还提醒，该命令在令牌临近到期时也可能触发刷新，不能把它当成完全不改变认证状态的静态查看。</p><h2 id="最容易出问题的是“先取出，再长期保存”"><a href="#最容易出问题的是“先取出，再长期保存”" class="headerlink" title="最容易出问题的是“先取出，再长期保存”"></a>最容易出问题的是“先取出，再长期保存”</h2><p>以前，有的脚本在启动时调用一次 <code>gh auth token</code>，把结果存进变量、配置文件或另一个工具的凭据缓存。只要访问令牌一直有效，这种写法可能很久都不出错。</p><p>换成短期凭据后，<code>gh</code> 管理的登录仍然有效，外部工具拿着的旧字符串却已经到期。这会形成一种很难凭直觉排查的现象：终端里 <code>gh</code> 能用，旁边的脚本持续收到认证失败。</p><p>官方建议，外部工具每次需要令牌时重新通过 <code>gh auth token</code> 获取，该命令会在需要时刷新后再返回。这里说的是新的访问令牌应在使用时获取，不是把刷新令牌交给每个脚本自行管理。</p><p>如果功能本来就能由 <code>gh api</code> 或其他 <code>gh</code> 子命令完成，直接让 <code>gh</code> 发起请求，通常比把令牌复制到多个程序更容易维护。确实需要交给外部客户端时，应限制传递和保存范围，避免日志回显、调试追踪和错误报告收集到凭据。</p><p>官方也明确说，如果某条工作流依赖一个长期不变的令牌，应暂缓为该工作流选择新模式，先解决凭据获取和更新方式。仅仅加上 <code>--expiring</code>，不会自动修好第三方工具的缓存逻辑。</p><h2 id="环境变量里的-token-不在自动刷新范围内"><a href="#环境变量里的-token-不在自动刷新范围内" class="headerlink" title="环境变量里的 token 不在自动刷新范围内"></a>环境变量里的 token 不在自动刷新范围内</h2><p>GitHub CLI 的认证来源不止一种。新功能没有把所有来源统一变成可刷新凭据。</p><table><thead><tr><th>使用方式</th><th>本次变化的边界</th></tr></thead><tbody><tr><td>通过支持的服务器登录并选择 <code>--expiring</code></td><td><code>gh</code> 管理访问令牌和轮换的刷新令牌</td></tr><tr><td>用 <code>GH_TOKEN</code> 或 <code>GITHUB_TOKEN</code> 提供令牌</td><td>这些手动提供的令牌不会由 <code>gh</code> 自动刷新</td></tr><tr><td>把 <code>gh auth token</code> 的输出复制到其他工具</td><td>外部副本不会随 <code>gh</code> 的后续刷新而变化</td></tr><tr><td>Git 使用 SSH 密钥认证</td><td>不由这套 OAuth 访问令牌刷新机制接管</td></tr></tbody></table><p>官方发布说明直接强调，<code>GH_TOKEN</code> 和 <code>GITHUB_TOKEN</code> 提供的令牌从不由 <code>gh</code> 刷新。文档也说明，相关认证环境变量会优先于存储的凭据。因此，在排查“已经登录但脚本还是失败”时，要确认脚本实际使用的是哪一种来源，而不只看交互终端的账号状态。</p><p>在 GitHub Actions 中，文档推荐把平台提供的 <code>GITHUB_TOKEN</code> 通过 <code>GH_TOKEN</code> 环境变量传给 <code>gh</code>。它的权限和生命周期按 Actions 的规则管理，不能用这次交互登录功能的行为来推断。</p><p>对无人值守任务，更合适的问题是“这项任务应使用什么身份、多少权限、怎样取得凭据”，而不是把开发机登录状态长期搬进 CI。</p><h2 id="HTTPS-和-SSH-要分开排查"><a href="#HTTPS-和-SSH-要分开排查" class="headerlink" title="HTTPS 和 SSH 要分开排查"></a>HTTPS 和 SSH 要分开排查</h2><p>如果 Git 通过 HTTPS 访问 GitHub，且希望使用这套可过期凭据，官方推荐让 <code>gh</code> 担任 Git credential helper：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gh auth setup-git</span><br></pre></td></tr></table></figure><p>由 <code>gh</code> 为 Git 提供和刷新凭据，可以避免把短期令牌交给不会更新它的独立缓存。官方同时建议使用 Git 2.46 或更新版本，以便标记令牌的到期信息，避免缓存超过其有效期。旧 Git 仍可配合使用，但会收到升级建议，不能把推荐版本误写为绝对运行门槛。</p><p>如果远端使用 SSH，<code>git push</code> 的认证通常由 SSH 密钥、代理和服务器侧授权决定。启用新的 OAuth 模式不等于轮换 SSH 密钥，也不会让 SSH 私钥自动过期。反过来，SSH 推送成功也不能证明 <code>gh api</code> 的认证正常。</p><p>在同一个项目里，Git 推送与 API 调用完全可能走两条认证路径。排查时先确认失败的是哪一条，再检查对应凭据，能少做很多没有必要的重新登录。</p><h2 id="调整权限时，别把凭据类型换回去"><a href="#调整权限时，别把凭据类型换回去" class="headerlink" title="调整权限时，别把凭据类型换回去"></a>调整权限时，别把凭据类型换回去</h2><p>还有一个容易被忽略的迁移细节。<code>gh auth refresh</code> 常用于调整授权 scopes，它与日常自动刷新访问令牌不是同一件事。</p><p>官方文档提醒，使用可过期凭据后，如果运行该命令调整权限，应同时传入 <code>--expiring</code>，或启用 <code>expiring_credentials</code> 偏好。否则，调整 scopes 的过程可能把现有凭据替换为不过期令牌。</p><p>这也说明团队验证不能止于首次登录。较完整的试点需要覆盖令牌到期后的命令调用、外部脚本再次取令牌、HTTPS helper，以及后续权限变更。多账号、多主机环境还要确认读取和刷新的确实是目标主机下的凭据。</p><p>凭据存储也值得检查。文档说明，<code>gh</code> 优先使用可用的操作系统 keyring，缺少相应支持时会回退到明文配置文件。短期访问令牌并不会消除本地存储的敏感性，刷新令牌尤其需要妥善保护。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>GitHub CLI 这次更新改善了一个长期存在的取舍：用户不必频繁登录，同时可以缩短单个访问令牌泄露后的有效窗口。</p><p>迁移的关键落在凭据使用方式上。把请求交给能刷新的组件，让外部工具在需要时取得新令牌，并分清环境变量、HTTPS 和 SSH 的边界，才能避免出现“登录没问题，自动化却坏了”的情况。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-10-21-github-cli-opt-in-to-expiring-auto-refreshing-oauth-tokens/">GitHub Changelog：GitHub CLI: Opt in to expiring, auto-refreshing OAuth tokens</a>，发布于 UTC 2026 年 10 月 21 日 16:43，北京时间 10 月 22 日 00:43。用于核对公开预览、版本门槛、服务器支持和兼容行为。</li><li><a href="https://github.com/cli/cli/releases/tag/v2.103.0">GitHub CLI v2.103.0 发布说明</a>，发布于 UTC 2026 年 10 月 21 日 15:33。用于交叉核对自动刷新与环境变量令牌限制。</li><li><a href="https://docs.github.com/github-cli/github-cli/authenticating-with-github-cli">GitHub Docs：Authenticating with GitHub CLI</a>，访问日期为 2026 年 10 月 22 日。用于核对凭据存储、环境变量优先级、Git helper 和 scopes 调整；预览行为可能随版本变化。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 身份认证 </tag>
+            
+            <tag> GitHub </tag>
+            
+            <tag> 自动化 </tag>
+            
+            <tag> GitHub CLI </tag>
+            
+            <tag> OAuth </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub 推出软件包防火墙预览：把依赖检查放到安装之前</title>
       <link href="/2026/10/21/2026-GitHub%E8%BD%AF%E4%BB%B6%E5%8C%85%E9%98%B2%E7%81%AB%E5%A2%99%E4%B8%8E%E5%AE%89%E8%A3%85%E5%89%8D%E4%BE%9D%E8%B5%96%E6%8B%A6%E6%88%AA/"/>
       <url>/2026/10/21/2026-GitHub%E8%BD%AF%E4%BB%B6%E5%8C%85%E9%98%B2%E7%81%AB%E5%A2%99%E4%B8%8E%E5%AE%89%E8%A3%85%E5%89%8D%E4%BE%9D%E8%B5%96%E6%8B%A6%E6%88%AA/</url>
