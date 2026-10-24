@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Cloudflare 分块回源：大文件为何不必等整包缓存完才开始下载</title>
+      <link href="/2026/10/24/2026-Cloudflare%E5%A4%A7%E6%96%87%E4%BB%B6%E5%88%86%E5%9D%97%E5%9B%9E%E6%BA%90%E4%B8%8ERange%E8%AF%B7%E6%B1%82/"/>
+      <url>/2026/10/24/2026-Cloudflare%E5%A4%A7%E6%96%87%E4%BB%B6%E5%88%86%E5%9D%97%E5%9B%9E%E6%BA%90%E4%B8%8ERange%E8%AF%B7%E6%B1%82/</url>
+      
+        <content type="html"><![CDATA[<p>下载一个大安装包时，用户先等了很久，随后进度条才开始动。这个等待不一定出在带宽不足：当 CDN 缓存未命中，某些缓存处理路径会先取回整个对象，再交给缓存服务向下游返回。</p><p>北京时间 2026 年 10 月 24 日凌晨，Cloudflare 发布 Origin Range Requests 的工程介绍，说明其如何在 CDN 内部把大对象拆成范围请求、分块缓存并预取后续内容。文章报告，灰度流量中未命中缓存的大文件下载，中位耗时降低约 20%。这是特定测试流量的结果，不能等同于所有站点都会快 20%，也不是单独的首字节延迟指标。</p><span id="more"></span><h2 id="一次完整下载，内部可以拆成多次请求"><a href="#一次完整下载，内部可以拆成多次请求" class="headerlink" title="一次完整下载，内部可以拆成多次请求"></a>一次完整下载，内部可以拆成多次请求</h2><p>Cloudflare 所说的旧路径中，缓存服务按完整对象管理文件。对于大对象的缓存未命中，等待整份内容取回会影响用户开始接收数据的时间，也会让后续请求更容易遇到缓存填充尚未完成的状态。</p><p>新实现把文件逻辑拆成较小的块。首块可以先获取、缓存并交付，不必等所有后续字节都准备好。用户仍然可以发起普通的完整文件下载，不需要下载器先手工决定每次请求多少字节。</p><p>这里有两条不同的请求链路：用户向 CDN 请求文件，以及 CDN 向源站读取文件。客户端没有主动发送 <code>Range</code>，并不妨碍 CDN 在回源时按范围获取内容。不能从浏览器的一次完整下载，就推断源站只收到一次整文件读取。</p><p>分块粒度也会影响缓存复用。对于相同对象的重叠范围请求，已缓存的块可以服务多个下游请求，不必每次重复取回整份文件。官方称这也减少了相关请求对齐、缓存填充和重复回源方面的复杂性。</p><p>这不意味着所有 CDN、所有文件此前都必须完整下载后才返回。文章讨论的是 Cloudflare 此次改造的缓存服务路径，不能把其旧行为扩写成 HTTP 或 CDN 的普遍规则。</p><h2 id="Range-是协议能力，分块是服务端策略"><a href="#Range-是协议能力，分块是服务端策略" class="headerlink" title="Range 是协议能力，分块是服务端策略"></a>Range 是协议能力，分块是服务端策略</h2><p>HTTP 本身支持读取资源的一部分。以下只是协议示意，并非 Cloudflare 公布的分块尺寸配置：</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/releases/app.bin</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>downloads.example.com</span><br><span class="line"><span class="attribute">Range</span><span class="punctuation">: </span>bytes=0-1048575</span><br></pre></td></tr></table></figure><p>字节范围从 0 开始，结束位置包含在范围内，所以这里请求的是前 1 MiB。支持并满足该请求的服务器可返回 <code>206 Partial Content</code>，通过 <code>Content-Range</code> 描述实际返回的区间和对象总长度。</p><p>但发送 <code>Range</code> 不保证一定收到局部内容。不支持范围请求的服务器可能忽略该头，返回完整对象和 <code>200 OK</code>；不可满足的范围则可能返回 <code>416 Range Not Satisfiable</code>。中间层不能把任意 <code>200</code> 响应直接当成自己期望的某一块。</p><p>对于内容编码，MDN 还提醒，字节区间对应的是编码后的字节序列，而不是解码后的内容。验证时要确认取回和拼接的是同一个表示形式，不能混用不同编码的偏移量。</p><p>因此，范围读取只是基础。将多个局部响应管理成可靠的下载，还需要处理块边界、响应校验、并发、缓存键和失败回退。Cloudflare 此次工作的重点就在这些内部编排，而不是发明一个新的 HTTP 请求头。</p><h2 id="预取要跟上用户，也不能无限超前"><a href="#预取要跟上用户，也不能无限超前" class="headerlink" title="预取要跟上用户，也不能无限超前"></a>预取要跟上用户，也不能无限超前</h2><p>如果每次只有当前块完全取完才发下一个请求，源站往返延迟会在块与块之间反复出现。首块更早到达，未必意味着整份文件下载更快。</p><p>Cloudflare 的方案会在当前块向下游传输时预取后续块，尽量让回源和交付重叠。官方说明，预取会参考用户的消费速度和源站表现：用户快读完一块时，后续内容应尽量已经准备好。</p><p>这也有反方向的约束。用户取消下载、网络突然变慢，或只读取某一段内容时，提前取太远会浪费源站带宽和缓存空间。较慢的客户端不应迫使系统长期保持很深的预取队列。</p><p>这项优化不是单纯增加并发。预取深度与块尺寸需要一起考虑：块越小，首批数据可能越早可用，但请求数量和调度成本会上升；块越大，开销更容易摊薄，首块等待又可能变长。</p><h2 id="源站收到的请求会变多"><a href="#源站收到的请求会变多" class="headerlink" title="源站收到的请求会变多"></a>源站收到的请求会变多</h2><p>公告明确提醒，源站现在可能看到多个 Range 请求，而不再是一个完整对象请求。字节流量减少，不代表请求次数也减少。</p><p>举一个纯粹的规模计算：若一个 1 GiB 对象按 8 MiB 拆分，完整覆盖它需要 128 块。这里不考虑重试、缓存命中和预取取消，也不是产品实际分块参数，但足以说明对象大小、块尺寸和请求数量的关系。</p><p>对于按请求计费的对象存储、存在连接限制的源站，或者每次请求都要重新执行鉴权和日志处理的系统，额外请求会转化为费用或 CPU 开销。如果源站收到范围请求后仍在后台完整读取大对象，边缘分块也未必减少源站的实际工作量。</p><p>因此，评估时要同时看用户端和源站端。只统计下载耗时，会漏掉请求次数、源站并发、回源字节和请求失败率的变化。分块还会改变重试粒度，不能仅凭多了几次请求就认定退化，也不能仅凭下载变快就认定成本一定下降。</p><h2 id="多块内容必须属于同一版本"><a href="#多块内容必须属于同一版本" class="headerlink" title="多块内容必须属于同一版本"></a>多块内容必须属于同一版本</h2><p>大文件下载常常持续较长时间。如果相同 URL 在下载中途被覆盖，前一块属于旧版本，后一块属于新版本，最终文件可能已经损坏，即使每块单独请求都成功。</p><p>Cloudflare 表示，其实现会利用 <code>ETag</code> 和 <code>Last-Modified</code> 等 HTTP 校验器维持分块一致性，对分段响应的处理也不能破坏条件请求语义。</p><p>从通用 HTTP 机制看，<code>If-Range</code> 可以让范围读取带上版本条件。条件满足时，服务器返回局部内容；条件不满足时，服务器返回完整资源和 <code>200</code>，而不是继续拼接旧版本。MDN 明确说明，<code>If-Range</code> 中不能使用弱 ETag。这里解释的是协议机制，不代表公告披露了每一种内部请求的具体头组合。</p><p>对于发布系统，使用不可变的版本化 URL 或带内容指纹的路径，通常比不断覆盖同一个文件更容易管理。下载完成后校验摘要或签名，也仍有必要。缓存层保证片段一致性，与客户端验证制品完整性和真实性，是不同层面的工作。</p><h2 id="如何读懂“快-20-”"><a href="#如何读懂“快-20-”" class="headerlink" title="如何读懂“快 20%”"></a>如何读懂“快 20%”</h2><p>原文报告，灰度期间比较相近的缓存未命中大文件下载，改造后的中位下载耗时约低 20%，对大对象、高往返延迟链路和未完成填充的缓存场景更有帮助。</p><p>这个数字至少有三个限定：它来自 Cloudflare 的工程报告；对象是相关缓存未命中大文件流量；指标是下载耗时，而非所有 HTTP 请求的统一提速。原文也没有提供足以让读者复现全部流量分布的完整实验材料。</p><p>对自己的站点，可以分别观察首字节时间、完整下载时间和不同分位数，并把缓存命中与未命中分开。再结合文件大小、用户网络和用户中途取消的比例，才能知道改善落在哪些人身上。</p><p>上线前还应使用自有测试对象验证范围请求、版本更新、重试和鉴权。检查日志中的状态码及 <code>Content-Range</code>，确认源站按预期返回局部内容，而不只检查 <code>Accept-Ranges</code> 是否存在。本文未对任何生产源站执行下载压测，也不把协议示意当作实测结果。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>大文件优化不只是扩大带宽。让首批内容更早可用、复用已缓存片段、在合适时机预取后续数据，都可能减少用户等待。</p><p>代价也具体：源站请求更多，调度更复杂，文件版本必须保持一致。把下载体验、回源成本和制品校验一起观察，才更容易判断这类分块方案是否真正适合自己的负载。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://blog.cloudflare.com/origin-range-requests/">Cloudflare：Origin Range Requests: Serving large files without range-request tuning</a>，发布于 UTC 2026 年 10 月 23 日 18:22，北京时间 10 月 24 日 02:22。用于核对分块回源、缓存复用、预取、源站请求变化及灰度性能数据。</li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Range">MDN：Range header</a>，用于核对字节区间、206&#x2F;200&#x2F;416 响应及内容编码语义。</li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Range">MDN：If-Range header</a>，用于核对条件范围请求和弱 ETag 限制。</li></ul><p>资料核对日期为 2026 年 10 月 24 日。产品具体可用范围与行为以当前官方说明为准；本文不提供未获验证的开启参数或统一分块尺寸。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 网络技术 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 性能优化 </tag>
+            
+            <tag> 缓存 </tag>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> HTTP </tag>
+            
+            <tag> CDN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cloudflare WAF 开始关联请求与响应：看见利用迹象之后，还能拦住什么</title>
       <link href="/2026/10/23/2026-CloudflareWAF%E5%AE%8C%E6%95%B4%E4%BA%8B%E5%8A%A1%E6%A3%80%E6%B5%8B%E4%B8%8E%E5%93%8D%E5%BA%94%E6%8B%A6%E6%88%AA%E8%BE%B9%E7%95%8C/"/>
       <url>/2026/10/23/2026-CloudflareWAF%E5%AE%8C%E6%95%B4%E4%BA%8B%E5%8A%A1%E6%A3%80%E6%B5%8B%E4%B8%8E%E5%93%8D%E5%BA%94%E6%8B%A6%E6%88%AA%E8%BE%B9%E7%95%8C/</url>
