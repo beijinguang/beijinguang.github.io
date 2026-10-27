@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://code.idea4j.com/2026/10/28/2026-CopilotSDK%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%AE%A4%E8%AF%81%E4%B8%8E%E7%BB%84%E7%BB%87%E8%B4%B9%E7%94%A8%E8%BE%B9%E7%95%8C/</loc>
+    
+    <lastmod>2026-10-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://code.idea4j.com/2026/10/27/2026-GPT61Terra%E6%8E%A5%E5%85%A5Copilot%E4%B8%8E%E6%A8%A1%E5%9E%8B%E8%AF%95%E7%94%A8%E8%AF%84%E4%BC%B0/</loc>
     
     <lastmod>2026-10-26</lastmod>
@@ -4406,6 +4415,13 @@
   
   <url>
     <loc>https://code.idea4j.com/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/SDK/</loc>
     <lastmod>2026-10-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
