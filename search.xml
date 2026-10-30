@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>GitHub 新增 webhook 投递 IP 段：放行表要更新，签名验证不能省</title>
+      <link href="/2026/10/30/2026-GitHubWebhook%E6%96%B0%E5%A2%9EIP%E6%AE%B5%E4%B8%8E%E6%8A%95%E9%80%92%E9%AA%8C%E8%AF%81/"/>
+      <url>/2026/10/30/2026-GitHubWebhook%E6%96%B0%E5%A2%9EIP%E6%AE%B5%E4%B8%8E%E6%8A%95%E9%80%92%E9%AA%8C%E8%AF%81/</url>
+      
+        <content type="html"><![CDATA[<p>代码推送成功了，内部构建却没有触发，不一定是 GitHub 没有发出事件。webhook 请求可能已经被接收端的网络策略挡在应用之外，业务日志里自然找不到它。</p><p>北京时间 2026 年 10 月 30 日凌晨，GitHub 公布新增三个 webhook 投递 IP 段，已加入 Meta API 现有的 <code>hooks</code> 字段。维护静态来源放行表的团队需要将它们补入现有范围；已经持续同步 Meta API 的团队不必仅为这次新增做额外的手工配置。需要强调的是，IP 放行和 webhook 签名验证解决的是不同问题，前者不能替代后者。</p><span id="more"></span><h2 id="新增的是三个网段，不是新的-API-字段"><a href="#新增的是三个网段，不是新的-API-字段" class="headerlink" title="新增的是三个网段，不是新的 API 字段"></a>新增的是三个网段，不是新的 API 字段</h2><p>官方公告列出的新增 CIDR 为：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">9.234.98.160/28</span><br><span class="line">9.234.98.176/28</span><br><span class="line">9.234.106.48/28</span><br></pre></td></tr></table></figure><p>GitHub 的建议是把它们加到已有 webhook IP 范围旁边，不是用这三项覆盖原来的完整清单。本次核对公开 <code>GET /meta</code> 时，<code>hooks</code> 字段已包含这三项，也仍包含原有的其他 IPv4 和 IPv6 范围。</p><p>这些是 CIDR 前缀，不能把每一行当成一个普通主机地址，也不应为了配置方便自行扩大到整个更大的地址段。应确认接收设备或云安全产品真正按 CIDR 解释规则。</p><p>公告适用于 github.com 的 webhook 投递，覆盖所有套餐，包括 GitHub Enterprise Cloud。它没有宣布所有企业自建实例或其他产品流量都改用这些地址，因此不能顺手把所有网络策略一起替换。</p><h2 id="静态表和自动同步，各自要检查什么"><a href="#静态表和自动同步，各自要检查什么" class="headerlink" title="静态表和自动同步，各自要检查什么"></a>静态表和自动同步，各自要检查什么</h2><p>静态表的风险，是它保存了某次部署时正确、今天却不完整的范围。收到新增公告后，应核对实际生效位置：公网防火墙、负载均衡入口、网关和应用前面的反向代理，都可能存在独立限制。</p><p>以下命令仅用于读取当前 webhook 范围，不会修改网络策略：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsS https://api.github.com/meta | jq -r <span class="string">&#x27;.hooks[]&#x27;</span></span><br></pre></td></tr></table></figure><p>应使用 <code>hooks</code>，而不是把 Meta API 返回的其他用途地址一起加入 webhook 入口。这里也不建议把文章里的快照当成长久有效的地址源，后续应继续以官方 API 为准。</p><p>自动同步并不意味着完全不需要验证。可以检查最近一次成功获取时间、实际应用到设备的清单，以及抓取结果与生效规则之间的差异。脚本按时启动，不代表配置已经正确下发。</p><p>更稳妥的同步流程应校验响应结构和 CIDR 格式，记录变更差异，并保留最近一次有效配置。若 API 获取失败或返回内容异常，不应直接清空规则，也不应自动改成允许所有来源。这些是本文的实现建议，不是本次公告已经替接收端完成的功能。</p><h2 id="来源放行、签名和幂等是三道不同的检查"><a href="#来源放行、签名和幂等是三道不同的检查" class="headerlink" title="来源放行、签名和幂等是三道不同的检查"></a>来源放行、签名和幂等是三道不同的检查</h2><p>一个请求来自允许的网络，并不证明它属于你配置的 webhook。网络层降低入口暴露范围，应用层还需要验证请求内容与共享 secret 的关系。</p><table><thead><tr><th>检查</th><th>主要作用</th><th>无法单独保证的事情</th></tr></thead><tbody><tr><td>来源 IP&#x2F;CIDR</td><td>限制可以到达接收入口的网络来源</td><td>请求确实对应自己的 webhook 配置</td></tr><tr><td>HMAC 签名</td><td>校验请求体与 webhook secret，发现内容变化</td><td>同一个事件尚未被业务处理过</td></tr><tr><td>事件幂等处理</td><td>避免重复投递造成重复副作用</td><td>请求来源可信、正文未被修改</td></tr></tbody></table><p>GitHub 推荐使用 webhook secret，并通过 <code>X-Hub-Signature-256</code> 验证 HMAC SHA-256 签名。计算时应使用收到的原始请求体，而不是先解析 JSON，再按自己的字段顺序重新序列化。</p><p>比较签名也要使用合适的恒定时间比较方法，避免自己用普通字符串逐字比较实现认证逻辑。secret 应安全保存，不放在 payload URL、代码仓库或调试日志里。GitHub 的最佳实践还建议保留 HTTPS 和证书验证。</p><p>这里的 webhook secret 与 GitHub App 私钥、安装访问令牌是不同凭据，不能因为都属于同一项集成，就默认互相替代。本文没有读取或创建任何真实 secret。</p><h2 id="经过代理时，先弄清看到的是谁的-IP"><a href="#经过代理时，先弄清看到的是谁的-IP" class="headerlink" title="经过代理时，先弄清看到的是谁的 IP"></a>经过代理时，先弄清看到的是谁的 IP</h2><p>接收服务前面如果有 CDN、负载均衡器或反向代理，应用看到的连接来源可能只是最后一跳代理。把 GitHub 的 CIDR 直接配置到错误一层，可能导致正常投递仍被拒绝。</p><p>排查时应明确哪一层识别真实来源，哪一层负责放行，以及代理传递的来源信息是否可信。不能直接相信客户端随手填写的转发头，也不能为了让请求通过就把所有代理来源当成已完成身份认证。</p><p>这部分取决于实际部署拓扑，不能靠一份通用配置片段解决。先画清请求从公网入口到应用的路径，再检查各层拒绝日志，通常比只看应用日志更容易找到问题。</p><h2 id="放行修好了，已失败的投递仍要处理"><a href="#放行修好了，已失败的投递仍要处理" class="headerlink" title="放行修好了，已失败的投递仍要处理"></a>放行修好了，已失败的投递仍要处理</h2><p>网络策略恢复，只解决后续请求是否能够到达。此前被拒绝的事件应通过 GitHub 的投递记录核对，按官方重投流程恢复，不要假定所有漏掉的事件都会因为修复策略而自动重放。</p><p>接收端也需要控制响应时间。GitHub 当前最佳实践要求在十秒内返回 <code>2XX</code>，建议异步处理。对需要排队的业务，可以先完成必要的校验和可靠接收，再由后台任务执行构建、发布或数据同步，不要让长任务一直占着 webhook 连接。</p><p>“尽快响应”不等于什么都没保存就返回成功。如果接收方确认成功后，事件又因进程退出而丢失，发送方很难仅凭成功响应知道业务没有完成。可靠入队与后台状态追踪，需要由集成自身设计。</p><p>同样，HTTP 成功不等于业务处理完成。监控应分别记录入口是否收到、签名是否通过、任务是否入队，以及最终业务结果。</p><h2 id="重投要能重做，也要避免做两遍"><a href="#重投要能重做，也要避免做两遍" class="headerlink" title="重投要能重做，也要避免做两遍"></a>重投要能重做，也要避免做两遍</h2><p>GitHub 的最佳实践说明，重投时 <code>X-GitHub-Delivery</code> 与原投递相同。这可以帮助接收方将多次传输关联到同一个交付，但不能把“曾经看见这个 ID”直接当成“业务已经成功”。</p><p>如果首次收到后处理失败，第二次应该允许按既定策略恢复；如果已经完成，则应避免再次触发有副作用的动作。可以区分接收、处理中、成功和失败状态，并针对发布、资源创建等操作设置业务幂等约束。</p><p><code>X-GitHub-Event</code> 和 payload 中的 <code>action</code> 也应按需要检查。来源和签名正确，并不表示每种事件、每种 action 都应该触发同一条流水线。</p><p>验证这次更新时，可以用有权限的测试 webhook 核对正常投递、签名失败和重复投递，检查网络层与应用层各自的结果。本文只读取了公开资料和 Meta API，没有修改生产规则、创建 webhook 或重投任何实际事件。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>此次更新表面上只是多了三个 CIDR，但它提醒我们，事件驱动集成的可靠性跨越了网络入口、身份验证、队列和业务处理几层。</p><p>先确认完整放行表已经生效，再核对签名、处理时限和失败重投，才能避免出现“规则改好了，事件还是没回来”的情况。不要用放宽网络边界代替这些独立检查。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-10-29-webhook-ip-ranges-added-to-the-meta-api">GitHub Changelog：Webhook IP ranges added to the Meta API</a>，发布于 UTC 2026 年 10 月 29 日 17:14，北京时间 10 月 30 日 01:14。用于核对三个新增 CIDR、适用范围和静态放行表处理方式。</li><li><a href="https://api.github.com/meta">GitHub Meta API</a>，本次只读核对 <code>hooks</code> 字段，确认已包含公告新增范围；此接口内容会变化。</li><li><a href="https://docs.github.com/webhooks/using-webhooks/best-practices-for-using-webhooks">GitHub Docs：Best practices for using webhooks</a>，用于核对 IP 清单维护、HTTPS、十秒响应、事件类型检查和重投标识。</li><li><a href="https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries">GitHub Docs：Validating webhook deliveries</a>，用于核对 secret、原始请求体、HMAC SHA-256 和签名比较方式。</li></ul><p>资料核对日期为 2026 年 10 月 30 日；架构与同步流程建议为本文的工程分析，实际网络规则应按部署环境评审。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CI/CD </tag>
+            
+            <tag> 网络安全 </tag>
+            
+            <tag> GitHub </tag>
+            
+            <tag> API </tag>
+            
+            <tag> Webhook </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cloudflare 三季度断网报告：多家运营商，不等于多条独立链路</title>
       <link href="/2026/10/29/2026-Cloudflare%E4%B8%89%E5%AD%A3%E5%BA%A6%E6%96%AD%E7%BD%91%E6%8A%A5%E5%91%8A%E4%B8%8E%E5%85%B1%E4%BA%AB%E6%95%85%E9%9A%9C%E5%9F%9F/"/>
       <url>/2026/10/29/2026-Cloudflare%E4%B8%89%E5%AD%A3%E5%BA%A6%E6%96%AD%E7%BD%91%E6%8A%A5%E5%91%8A%E4%B8%8E%E5%85%B1%E4%BA%AB%E6%95%85%E9%9A%9C%E5%9F%9F/</url>
