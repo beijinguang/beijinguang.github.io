@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Cloudflare 私有源站正式可用：公网入口与私网回源如何分工</title>
+      <link href="/2026/11/01/2026-Cloudflare%E7%A7%81%E6%9C%89%E6%BA%90%E7%AB%99%E6%AD%A3%E5%BC%8F%E5%8F%AF%E7%94%A8%E4%B8%8E%E7%A7%81%E7%BD%91%E5%9B%9E%E6%BA%90/"/>
+      <url>/2026/11/01/2026-Cloudflare%E7%A7%81%E6%9C%89%E6%BA%90%E7%AB%99%E6%AD%A3%E5%BC%8F%E5%8F%AF%E7%94%A8%E4%B8%8E%E7%A7%81%E7%BD%91%E5%9B%9E%E6%BA%90/</url>
+      
+        <content type="html"><![CDATA[<p>内部 API 需要供合作方调用，但团队不想再给源站分配公网入口。这类需求过去常常涉及专门的代理或连接器，也容易把网络连通、应用保护和身份认证混在一起。</p><p>Cloudflare 于 2026 年 10 月 30 日发布公告，宣布面向私有源站的应用服务正式可用。公告发布时间为 UTC 14:23，即北京时间当天 22:23，距本文写作约 34 小时。核心变化是：代理 DNS 记录可以指向私有 IP，Cloudflare 经已有 Cloudflare One 连接回源，同时继续在边缘处理 WAF、缓存、机器人管理和 Workers。</p><p>这让源站不必为了接受公网业务请求而提供直接可达的公网地址，但它既不是自动建好私网连接，也不意味着应用已经具备访问授权。</p><span id="more"></span><h2 id="背景：入口公开与源站公开，不必是同一件事"><a href="#背景：入口公开与源站公开，不必是同一件事" class="headerlink" title="背景：入口公开与源站公开，不必是同一件事"></a>背景：入口公开与源站公开，不必是同一件事</h2><p>一个服务需要让互联网用户访问，不代表承载它的机器也必须能被互联网直接连接。公网入口可以由代理承担，源站则保留在数据中心或云内网中。</p><p>这次公告解决的正是两段路径的衔接：客户端到 Cloudflare 仍是公网应用访问，Cloudflare 到源站则走客户已经接入的私有网络。对于已经运营 IPsec、GRE、Cloudflare Network Interconnect（CNI）、Cloudflare Tunnel 或 Cloudflare Mesh 的团队，重点是复用连通能力，而不是再给每台源站单独开放一个公网入口。</p><p>按官方公告，使用 Cloudflare WAN 时不要求在源站上安装连接器；使用 Mesh 时，连接器位于私有网络内，可以服务多个源站。这不等于所有方案都不需要连接器，具体部署仍取决于选用的接入方式。</p><h2 id="技术核心：DNS-记录同时表达目标地址与回源路径"><a href="#技术核心：DNS-记录同时表达目标地址与回源路径" class="headerlink" title="技术核心：DNS 记录同时表达目标地址与回源路径"></a>技术核心：DNS 记录同时表达目标地址与回源路径</h2><p>传统代理记录告诉 Cloudflare“目标在哪里”。新增的私网路由属性进一步说明“通过哪类网络到达目标”。</p><p>公告给出的 DNS API 示例包含两个关键属性：</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;A&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;app.example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;content&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10.0.0.50&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;proxied&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;private_routing&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><p>这是用于解释配置关系的示例，不是本文执行过的变更。域名和地址均为示意。</p><p><code>proxied: true</code> 表示请求经过 Cloudflare 代理；<code>private_routing: true</code> 表示代理应把回源连接交给私网路由层，而不是尝试在公网直接访问该地址。边缘上的 TLS 终止、WAF、规则和缓存处理仍然存在。</p><p>可以把路径理解为：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">公网客户端 → Cloudflare 边缘应用处理</span><br><span class="line">           → 已接入的 Cloudflare One 私网连接 → 私有源站</span><br></pre></td></tr></table></figure><p>这里不能省掉中间的连通前提。DNS 记录是路由意图的配置，不会凭空建立隧道，也不会替目标网络补齐回程路径。</p><p>官方说明，该能力用于经过代理的 A&#x2F;AAAA 记录。对于 RFC 1918 私有 IPv4、RFC 6598 的 <code>100.64.0.0/10</code> 和 RFC 4193 的 <code>fc00::/7</code>，私网路由会自动启用；对这些地址强行设置 <code>private_routing: false</code> 会返回错误。如果源站使用的是只能经私网到达的公网地址，则需要手动启用该属性。</p><p>另一个容易忽略的细节是同名多记录：文档说明，同一名称下多个 A&#x2F;AAAA 记录只要有一个启用私网路由，该名称下的记录都会使用私网路由。不能只检查其中一条记录，就假定其他目标仍按原来的公网路径处理。</p><h2 id="正式可用，不代表账户条件和产品限制消失"><a href="#正式可用，不代表账户条件和产品限制消失" class="headerlink" title="正式可用，不代表账户条件和产品限制消失"></a>正式可用，不代表账户条件和产品限制消失</h2><p>公告列出了上线前提：账户需要 Private Origins 权益，并已有受支持的 Cloudflare One 连通方式。除 Cloudflare Tunnel 外，还需要启用 Unified Routing。相关开通仍需与账户团队确认，不能把“正式可用”解读成所有账户默认开启，或无需额外确认套餐和费用。</p><p>使用 Cloudflare WAN 或 Mesh 时，还要配置回程到 Cloudflare 指定地址范围的路由。公告列出的是 IPv4 <code>100.64.0.0/12</code> 与 IPv6 <code>2606:4700:cf1:5000::/64</code>。这里的 IPv4 回程范围与前面自动识别私有地址用途的 <code>100.64.0.0/10</code> 不是同一个配置项，不能互换。</p><p>功能上，公告明确支持 WAF 与托管规则、机器人管理、限流、缓存、转换与重写规则及 Workers；同时说明 Argo Smart Routing 和 Dedicated CDN Egress IPs 尚不支持，源站健康检查需要 Load Balancing。已有系统若依赖这些能力，迁移前应逐项核对，而不是只验证首页能打开。</p><p>本次查阅还发现一处资料时差：10 月 30 日公告已宣布正式可用，但 DNS 概览和私网路由文档仍保留 closed beta 标记，概览显示上次更新为 5 月 7 日。因此本文以新公告判断发布状态，以文档补充字段语义；具体账户可用范围和部署条件仍应再次确认。</p><h2 id="工程影响：减少直接入口，不能代替应用授权"><a href="#工程影响：减少直接入口，不能代替应用授权" class="headerlink" title="工程影响：减少直接入口，不能代替应用授权"></a>工程影响：减少直接入口，不能代替应用授权</h2><p>源站没有公网直连地址，可以减少一条绕过边缘控制的访问路径。但当公网域名已经映射到内部服务时，这个服务实际上仍在通过代理接受外部请求。</p><p>因此，以下是本文基于架构提出的实施建议，不是本次发布自动提供的保证。</p><p>首先，重新检查哪些接口允许外部访问。曾经只依赖“部署在内网”保护的管理接口、调试接口和运维端点，不应随着域名接入而一起开放。WAF 检查请求特征，业务认证则决定谁能执行什么操作，两者职责不同。</p><p>其次，单独审视缓存。链路换成私网回源，不会自动改变用户数据的敏感程度。个性化 API、管理页面和带用户身份的响应，应明确缓存策略与缓存键，不能因为支持 CDN 就沿用静态资源的缓存规则。</p><p>最后，把故障排查拆成两段。公网侧能完成 TLS 握手，并不证明私网连接、目标服务和回程路由正常；源站在内网可访问，也不证明外部请求会正确经过规则处理。只看边缘请求量或隧道在线状态，都不足以判断应用可用。</p><h2 id="实践启示：先验证一条完整路径，再迁移业务"><a href="#实践启示：先验证一条完整路径，再迁移业务" class="headerlink" title="实践启示：先验证一条完整路径，再迁移业务"></a>实践启示：先验证一条完整路径，再迁移业务</h2><p>适合先试点的对象，是已经有私网连接、依赖较少、可明确回滚的单个应用。下面是一份建议的验收顺序，本文没有在生产环境实际执行：</p><ol><li>核对账户权益、接入方式及 Unified Routing 要求，确认目标地址可达，回程路由符合所选接入方式。</li><li>用测试域名验证代理 A&#x2F;AAAA 记录和私网路由属性，同时检查同名记录是否受影响。</li><li>分别测试正常请求、无权限请求、源站不可达和私网连接中断，结合边缘与源站日志定位失败发生在哪一段。</li><li>验证应用实际依赖的重写、Workers、缓存和健康检查，不把单个成功响应当作整套功能通过。</li><li>在变更前确定回滚路径，并确认回滚不会意外扩大源站暴露范围。</li></ol><p>这次发布尚不能理解为所有私网流量都能直接套用同样的处理链。公告把 private-to-private 场景列为后续方向；员工访问内部站点、跨云服务间通信等设想，不应写成本次已经交付的全部能力。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>私有源站正式可用的价值，在于让公网应用入口与源站所在网络更容易分开管理。已经接入 Cloudflare One 的团队，可以评估是否复用已有私网路径，减少为源站额外维护公网入口的工作。</p><p>真正的迁移完成标准，仍是一条经过验证的端到端请求路径：入口规则生效、私网连接可达、回程正确、应用授权明确，且故障时有可执行的恢复方案。DNS 配置是其中一环，不是全部。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://blog.cloudflare.com/private-origins-public-to-private/">Cloudflare：Cloudflare services for private origins is now generally available</a>——2026 年 10 月 30 日发布，本文的近期主题来源；包含正式可用范围、前提与限制。</li><li><a href="https://developers.cloudflare.com/dns/private-origins/">Cloudflare DNS：Private origins</a>——补充架构背景；本次查阅时仍有旧的内测标记，与新公告存在更新时差。</li><li><a href="https://developers.cloudflare.com/dns/private-origins/private-network-routing/">Cloudflare DNS：Private network routing</a>——A&#x2F;AAAA、代理状态、地址自动识别和同名记录行为。部署前应再次核对最新文档与账户配置。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 网络技术 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 云计算 </tag>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> CDN </tag>
+            
+            <tag> DNS </tag>
+            
+            <tag> 私有网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub 新增 webhook 投递 IP 段：放行表要更新，签名验证不能省</title>
       <link href="/2026/10/30/2026-GitHubWebhook%E6%96%B0%E5%A2%9EIP%E6%AE%B5%E4%B8%8E%E6%8A%95%E9%80%92%E9%AA%8C%E8%AF%81/"/>
       <url>/2026/10/30/2026-GitHubWebhook%E6%96%B0%E5%A2%9EIP%E6%AE%B5%E4%B8%8E%E6%8A%95%E9%80%92%E9%AA%8C%E8%AF%81/</url>
