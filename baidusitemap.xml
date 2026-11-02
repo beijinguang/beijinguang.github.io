@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://code.idea4j.com/2026/11/03/2026-Workers%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%96%AD%E8%BF%9E%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%8F%96%E6%B6%88%E4%BC%A0%E6%92%AD/</loc>
+    
+    <lastmod>2026-11-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://code.idea4j.com/2026/11/02/2026-Nextjs%E5%B7%B2%E6%8D%95%E8%8E%B7%E7%BC%93%E5%AD%98%E5%BC%82%E5%B8%B8%E4%B8%8E%E9%A2%84%E6%B8%B2%E6%9F%93%E4%BF%AE%E5%A4%8D/</loc>
     
     <lastmod>2026-11-02</lastmod>
@@ -4514,6 +4523,20 @@
   
   <url>
     <loc>https://code.idea4j.com/tags/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/Workers/</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/</loc>
     <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

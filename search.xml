@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Workers 将默认报告客户端断连：取消信号需要传到哪里</title>
+      <link href="/2026/11/03/2026-Workers%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%96%AD%E8%BF%9E%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%8F%96%E6%B6%88%E4%BC%A0%E6%92%AD/"/>
+      <url>/2026/11/03/2026-Workers%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%96%AD%E8%BF%9E%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%8F%96%E6%B6%88%E4%BC%A0%E6%92%AD/</url>
+      
+        <content type="html"><![CDATA[<p>用户关闭页面，服务端是否还要继续生成一份已经没人接收的报告？这个问题不只取决于连接有没有断开，还取决于应用能否收到通知，以及下游操作是否愿意响应取消。</p><p>Cloudflare 在 2026 年 11 月 2 日的更新公告中预告：兼容日期为 <code>2026-11-17</code> 或更晚的 Workers，将默认通过传入请求的 <code>request.signal</code> 报告客户端断连。已有 Worker 不会只因日历走到那一天就统一切换行为。</p><p>这不是首次提供该能力——官方在 2025 年 5 月已开放显式启用。此次新闻是默认行为的调整。对开发者更有实际价值的问题，是如何让取消沿着调用链传播，同时不误伤必须独立完成的工作。</p><span id="more"></span><h2 id="背景：断连通知、停止工作和业务回滚是三件事"><a href="#背景：断连通知、停止工作和业务回滚是三件事" class="headerlink" title="背景：断连通知、停止工作和业务回滚是三件事"></a>背景：断连通知、停止工作和业务回滚是三件事</h2><p>设想一个只读查询接口：Worker 收到请求，访问上游数据服务，整理结果，再返回客户端。如果用户中途退出，剩余结果可能已经没有消费方。</p><p>但收到断连事件，不等于所有后续操作都会自动停止。一个异步函数返回了 Promise，也不意味着它天然具备取消能力。DOM 标准用 <code>AbortSignal</code> 协调取消意图，由接收信号的 API 决定如何响应；Promise 本身没有通用的强制中止机制。</p><p>还要再分开一层：停止等待某个网络请求，不等于远端已经发生的业务写入被撤销。本文建议对写操作始终把“调用方不再等待”与“业务是否成功”分别处理，不能根据断连状态直接推断事务结果。</p><h2 id="生效条件：看兼容日期和标志，不只看发布时间"><a href="#生效条件：看兼容日期和标志，不只看发布时间" class="headerlink" title="生效条件：看兼容日期和标志，不只看发布时间"></a>生效条件：看兼容日期和标志，不只看发布时间</h2><p>根据新公告和兼容标志文档，可以按下表判断：</p><table><thead><tr><th>Worker 配置</th><th>客户端断连信号的启用方式</th></tr></thead><tbody><tr><td>兼容日期早于 <code>2026-11-17</code></td><td>可用 <code>enable_request_signal</code> 显式启用</td></tr><tr><td>兼容日期达到或晚于 <code>2026-11-17</code></td><td>默认启用，不再需要上述启用标志</td></tr><tr><td>需要显式退出该行为</td><td>使用 <code>disable_request_signal</code></td></tr></tbody></table><p>这里的兼容日期是应用选择运行时行为的配置，不是发布到服务器的时间。官方说明，现有 Worker 在修改兼容日期或标志之前保留当前行为。</p><p>因此，今天评估这项能力，不必为了测试它就提前采用一个未来日期。可以保留现有日期，在测试版本的既有标志列表中加入 <code>enable_request_signal</code>，再验证行为；不要用一段示例配置覆盖项目原有的全部兼容标志。</p><p>以后升级兼容日期时，也应审阅这段日期范围内的其他变更。兼容日期可能同时选择多项运行时行为，不是只控制这一个开关。</p><h2 id="技术核心：把信号显式交给下游"><a href="#技术核心：把信号显式交给下游" class="headerlink" title="技术核心：把信号显式交给下游"></a>技术核心：把信号显式交给下游</h2><p>本次调整不会连带开启 <code>request_signal_passthrough</code>。官方特别要求，若要取消支持信号的操作，应明确传入 <code>request.signal</code>。</p><p>例如，下面是用于说明调用关系的只读上游请求片段：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> result = <span class="keyword">await</span> <span class="title function_">fetch</span>(env.<span class="property">READ_API_URL</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&quot;GET&quot;</span>,</span><br><span class="line">  <span class="attr">signal</span>: request.<span class="property">signal</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><p>这里的 <code>request</code> 来自 Worker 的请求处理函数，<code>env.READ_API_URL</code> 表示由应用配置的受信任上游地址。片段没有完整的错误处理，也没有在本文中部署测试。</p><p>信号传递后，底层请求才有机会根据客户端断连执行取消。假如中间还包了一层服务函数，这层接口也应接收并继续传递信号。只在最外层注册一个日志监听器，并不能证明内层请求已经停止。</p><p>反过来，并不是所有 SDK、数据库驱动或任务接口都支持同样的取消参数。应查阅实际依赖的接口定义，不能给任意函数增加一个 <code>signal</code> 字段，就把它视作生效。</p><p>这也解释了为什么应分别观察两件事：应用记录到取消事件，以及上游连接或任务确实结束。前者是通知，后者才是取消策略的实际结果。</p><h2 id="哪些工作随请求取消，哪些需要独立完成"><a href="#哪些工作随请求取消，哪些需要独立完成" class="headerlink" title="哪些工作随请求取消，哪些需要独立完成"></a>哪些工作随请求取消，哪些需要独立完成</h2><p>以下分类是本文的工程建议，不是 Cloudflare 新公告替业务作出的决定。</p><p>只为当前用户生成的查询结果、预览或下载内容，通常值得评估随请求取消。若工作已经没有接收方，继续占用资源可能没有必要；但能节省多少，取决于取消发生的位置、上游是否响应等条件，不能据此给出统一的性能或费用收益。</p><p>审计记录、已经接受的业务任务，则可能不应依赖浏览器连接存活。需要先定义可靠接收的时点，以及客户端重试时如何查询状态或避免重复执行。不能简单规定“只要断连就全部取消”，也不应把每项工作都放到后台继续运行。</p><p><code>ctx.waitUntil()</code> 可以延长 Worker 调用的寿命，但它解决的是任务运行时间的问题，不会抹掉任务自身携带的取消信号。如果传入的异步操作已绑定 <code>request.signal</code>，把它交给 <code>waitUntil()</code> 不会使这个操作自动变成不可取消。</p><p>同时，<code>waitUntil()</code> 不是无限后台执行。官方文档对 HTTP 触发的 Worker 说明：响应发出后或客户端断连后，它最多延长 30 秒，且同一请求内的多个调用共享这段时间。需要可靠重试或更长执行过程的工作，应另行评估 Queues 等独立处理机制，而不是把所有保证都压在这 30 秒上。</p><h2 id="实践启示：把断连纳入测试，而不是只增加一行日志"><a href="#实践启示：把断连纳入测试，而不是只增加一行日志" class="headerlink" title="实践启示：把断连纳入测试，而不是只增加一行日志"></a>实践启示：把断连纳入测试，而不是只增加一行日志</h2><p>建议先在可控环境准备一个慢速、只读、能够观察请求结束状态的上游，再测试取消链路。本文没有对生产 Worker、网络策略或兼容配置作任何改动。</p><p>验收至少包含四类情况：</p><ol><li>正常完成：客户端不断开，响应内容和状态保持预期，清理逻辑不应提前结束有效操作。</li><li>提前取消：在等待上游时中止客户端请求，同时观察 Worker 收到事件的时间与上游实际结束的时间。</li><li>已取消后继续调用：如果业务有多阶段读取，检查后续阶段是否仍会启动无用请求。</li><li>独立后台任务：验证有意保留的任务仍按设计完成，并检查超时、重试和重复处理。</li></ol><p>对于大计算循环，也不能假定一次事件会强行打断正在执行的同步代码。应设计可检查取消状态的阶段，并考虑事件能够被处理的机会，而不是只在工作结束后检查一次。</p><p>观测上，可以区分客户端取消、服务端超时、上游失败和清理失败。不要把每次取消都当成平台故障；也不要反过来，只要发现信号已取消，就忽略同时出现的真实错误。日志中保留必要的关联标识即可，不必记录完整查询参数、请求体或身份凭据。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这次变更让更多采用新兼容日期的 Worker 默认获得客户端断连通知，但真正停止无用工作仍需要应用接好信号链路。</p><p>上线前最值得确认的，是三项彼此独立的约定：什么配置启用了通知，哪些操作接受取消，以及哪些业务结果不能由连接状态决定。把它们分别验证，比仅增加一个断连监听器更接近完整的取消处理。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://developers.cloudflare.com/changelog/post/2026-11-02-request-signal-default/">Cloudflare 更新公告：Request.signal will be enabled by default in Workers on November 17</a>——2026 年 11 月 2 日发布，本次近期主题来源。</li><li><a href="https://developers.cloudflare.com/workers/runtime-apis/request/#properties">Cloudflare Workers：Request API</a>——传入请求的 signal 属性和断连事件。</li><li><a href="https://developers.cloudflare.com/workers/configuration/compatibility-flags/#enable-requestsignal-for-incoming-requests">Cloudflare Workers：Request.signal 兼容标志</a>——启用、退出及显式传递信号的边界。</li><li><a href="https://developers.cloudflare.com/workers/configuration/compatibility-dates/">Cloudflare Workers：兼容日期</a>——日期选择的语义及升级验证要求。</li><li><a href="https://developers.cloudflare.com/workers/runtime-apis/context/#waituntil">Cloudflare Workers：Context 与 waitUntil</a>——调用寿命、时间限制与后台任务处理。</li><li><a href="https://dom.spec.whatwg.org/#aborting-ongoing-activities">WHATWG DOM 标准：Aborting ongoing activities</a>——AbortSignal 的协作式取消模型。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> HTTP </tag>
+            
+            <tag> 错误处理 </tag>
+            
+            <tag> Workers </tag>
+            
+            <tag> 异步编程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Next.js 修复已捕获的缓存异常：日志里有错误，不等于预渲染失败</title>
       <link href="/2026/11/02/2026-Nextjs%E5%B7%B2%E6%8D%95%E8%8E%B7%E7%BC%93%E5%AD%98%E5%BC%82%E5%B8%B8%E4%B8%8E%E9%A2%84%E6%B8%B2%E6%9F%93%E4%BF%AE%E5%A4%8D/"/>
       <url>/2026/11/02/2026-Nextjs%E5%B7%B2%E6%8D%95%E8%8E%B7%E7%BC%93%E5%AD%98%E5%BC%82%E5%B8%B8%E4%B8%8E%E9%A2%84%E6%B8%B2%E6%9F%93%E4%BF%AE%E5%A4%8D/</url>
