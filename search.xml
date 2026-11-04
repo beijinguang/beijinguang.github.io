@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Dependabot 开始更新 Agent 依赖：APM 清单与锁文件该怎么审</title>
+      <link href="/2026/11/04/2026-Dependabot%E6%94%AF%E6%8C%81APM%E4%B8%8EAgent%E4%BE%9D%E8%B5%96%E6%9B%B4%E6%96%B0/"/>
+      <url>/2026/11/04/2026-Dependabot%E6%94%AF%E6%8C%81APM%E4%B8%8EAgent%E4%BE%9D%E8%B5%96%E6%9B%B4%E6%96%B0/</url>
+      
+        <content type="html"><![CDATA[<p>团队共用的代码审查技能、提示词和开发指令，也会随着上游仓库更新。如果每个人都手工复制，难以回答“当前究竟用了哪一版”；如果直接跟随分支，又容易在没有审阅的情况下改变开发工具的行为。</p><p>GitHub 于当地时间 2026 年 11 月 3 日宣布，Dependabot 版本更新开始支持 Agent Package Manager（APM）。公告的原始发布时间是 UTC 20:24，对应北京时间 11 月 4 日 04:24，位于本次写作的最近 24 小时内。</p><p>Dependabot 现在可以为 <code>apm.yml</code> 中受支持的 Git 依赖发起更新请求，并在锁文件已经存在时重新生成它。不过，这不等于自动检查技能是否安全，也不是把所有 Agent 配置都纳入更新管理。</p><span id="more"></span><h2 id="背景：文本配置也有版本依赖"><a href="#背景：文本配置也有版本依赖" class="headerlink" title="背景：文本配置也有版本依赖"></a>背景：文本配置也有版本依赖</h2><p>这里的 APM 指 Agent Package Manager，不是应用性能监控。它通过 <code>apm.yml</code> 声明项目需要的技能、提示词、指令等依赖，再由安装工具部署到相应的 Agent 环境。</p><p>对团队而言，这种清单把原本散落的配置变成了可以追踪的依赖关系。锁文件则记录解析到的具体内容，帮助不同机器使用一致的版本。本文讨论的是 Dependabot 如何维护这些声明，不展开 APM 的全部安装与治理能力。</p><p>值得注意的是，指令文本虽然不是传统的运行库，却可能改变代码审查方式、测试要求或工具使用习惯。把它作为依赖更新，就需要审查实际内容，而不能只看文件扩展名是不是代码。</p><h2 id="核心能力：更新受支持的-Git-引用"><a href="#核心能力：更新受支持的-Git-引用" class="headerlink" title="核心能力：更新受支持的 Git 引用"></a>核心能力：更新受支持的 Git 引用</h2><p>GitHub 文档说明，Dependabot 会处理 <code>dependencies.apm</code> 和 <code>devDependencies.apm</code> 下的受支持 Git 依赖。引用的固定方式，决定了更新请求会改哪些文件。</p><table><thead><tr><th>引用方式</th><th>Dependabot 的更新行为</th><th>审阅重点</th></tr></thead><tbody><tr><td>SemVer 标签</td><td>更新到最新 SemVer 标签，支持普通标签及符合规则的包范围标签</td><td>标签之间的内容与行为变化</td></tr><tr><td>完整提交 SHA</td><td>更新到最新的非预发布版本带注释标签所指向的提交，并添加标签名注释</td><td>新提交对应的发布来源与内容</td></tr><tr><td>分支</td><td>更新到分支最新提交，清单仍保留分支名，只修改锁文件</td><td>锁定提交的变化；必须已有锁文件</td></tr></tbody></table><p>这里不能把“固定 SHA”理解成“从此不再收到更新”。它固定的是当前解析目标；启用相应版本更新后，Dependabot 仍可提出一个新的固定目标，由维护者决定是否合并。</p><p>同样，分支依赖的清单没有变化，也不代表没有更新。真正的变化可能全部落在 <code>apm.lock.yaml</code> 中。审查界面若只关注清单，就会漏看这次更新实际选择的内容。</p><p>已有锁文件时，Dependabot 会运行 <code>apm lock</code> 重新生成它；没有锁文件时，不会替项目新建一个。这一点尤其影响分支依赖：不能只加更新配置、却没有锁文件，再期待分支更新请求正常出现。</p><h2 id="最小配置：指定生态、目录与周期"><a href="#最小配置：指定生态、目录与周期" class="headerlink" title="最小配置：指定生态、目录与周期"></a>最小配置：指定生态、目录与周期</h2><p>若 <code>apm.yml</code> 位于仓库根目录，可以在已有的 <code>.github/dependabot.yml</code> 中增加如下条目：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">updates:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">package-ecosystem:</span> <span class="string">&quot;apm&quot;</span></span><br><span class="line">    <span class="attr">directory:</span> <span class="string">&quot;/&quot;</span></span><br><span class="line">    <span class="attr">schedule:</span></span><br><span class="line">      <span class="attr">interval:</span> <span class="string">&quot;weekly&quot;</span></span><br></pre></td></tr></table></figure><p>这是一份说明性配置，不是本文对博客仓库执行的变更。项目若已经为 npm、pip 等生态配置更新，应合并新的 <code>updates</code> 条目，而不是用示例覆盖整份文件。清单位于子目录时，也应对应调整 <code>directory</code>。</p><p>配置的作用是让 Dependabot 按计划检查版本并提出更新，不是授权自动合并，也不是让开发者电脑上的 Agent 立即安装新内容。</p><p>公告说明，APM 支持已在 github.com 的所有 GitHub 套餐正式可用；GitHub Enterprise Server 则计划随 3.24 提供。自建实例需要核对实际运行版本，不能直接套用云端当前的可用状态。</p><h2 id="支持范围：APM-能声明，不代表-Dependabot-都能更新"><a href="#支持范围：APM-能声明，不代表-Dependabot-都能更新" class="headerlink" title="支持范围：APM 能声明，不代表 Dependabot 都能更新"></a>支持范围：APM 能声明，不代表 Dependabot 都能更新</h2><p>APM 清单的表达能力大于本次更新器支持的范围。GitHub 文档列出的不支持项，包括对象形式的依赖映射、MCP 条目、没有引用的依赖、本地路径和缩写提交 SHA 等。</p><p>这意味着，把一种依赖从带引用的字符串写法改成对象形式，即便 APM 本身可以解析，也不能据此推断 Dependabot 仍会维护它。使用 Azure DevOps 来源，或使用 <code>http://</code>、<code>git://</code> 克隆地址的条目，也在当前不支持清单中。</p><p>还有一个较隐蔽的条件：当清单设置了 <code>registries.default</code>，简写形式的依赖不被更新，但使用显式克隆 URL 的条目仍可更新。私有 Git 仓库的访问，则需要按 Dependabot 的 Git registry 配置相应凭据，不能假设它继承开发者本机的登录状态。</p><p>本文只概括常见限制；部署前应对照官方支持矩阵逐项核对。没有更新请求，可能是已经最新，也可能是条目不受支持、目录配置不正确或访问失败，不能仅凭“机器人没有动静”判断一切正常。</p><h2 id="为什么它不能替代安全更新和行为审查"><a href="#为什么它不能替代安全更新和行为审查" class="headerlink" title="为什么它不能替代安全更新和行为审查"></a>为什么它不能替代安全更新和行为审查</h2><p>这次公告明确覆盖版本更新，不覆盖安全更新。因此，看到 APM 更新请求，不能推断它对应一个漏洞；反过来，没有安全告警，也不能推断某个技能或提示词没有风险。</p><p>对 Agent 依赖，更需要审阅的是内容变化。以下是本文的工程建议，并非 Dependabot 自动完成的检查：</p><p>先查看新增或修改的指令，尤其是测试、工具调用、数据处理和外部服务相关约定。若包依赖发生变化，还要审查锁文件是否引入了意料之外的来源，而不只核对顶层版本号。</p><p>再用固定样例比较升级前后的行为。例如，同一组代码审查样例是否仍能发现既定问题，是否开始忽略必要测试，或者把原本需要人工确认的操作当作默认步骤。测试通过与否应由明确的验收条件决定，不能只让 Agent 自己评价“效果更好了”。</p><p>最后保留回滚依据。合并前记录清单、锁文件和工具版本；回滚时恢复相互匹配的一组文件，而不是只把清单里的标签改回去。这样才能知道恢复的是否真是原来的依赖状态。</p><h2 id="实践启示：先验证更新链路，再扩大覆盖"><a href="#实践启示：先验证更新链路，再扩大覆盖" class="headerlink" title="实践启示：先验证更新链路，再扩大覆盖"></a>实践启示：先验证更新链路，再扩大覆盖</h2><p>试点可以从一个来源明确、影响范围较小的技能包开始。先确认依赖写法处于支持范围、目录正确、锁文件已纳入版本管理，再观察首个版本更新请求。</p><p>验收不宜停留在“机器人创建了请求”。还应确认变更文件符合所用引用方式，锁定提交确实发生预期变化，并在隔离的测试环境中验证更新后的内容。</p><p>对分支依赖，重点检查锁文件差异；对标签或 SHA 依赖，重点核对目标发布及提交。不能为了让机器人更容易更新，就不经评估地把所有依赖改成跟随分支。</p><p>本文核对了官方公告、支持矩阵和 APM 项目介绍，没有安装 APM、改写博客的 Dependabot 配置，也没有实际触发依赖更新。这些验证步骤是实施建议，不是本次已完成的测试结果。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Dependabot 的 APM 支持，让技能、提示词和指令依赖获得了熟悉的版本更新入口：变更可以先以更新请求出现，再由团队审阅和验证。</p><p>真正值得建立的流程，是把清单、锁文件和行为验收一起纳入审查。机器人负责提出可见的版本变化，维护者仍需决定这些变化是否适合进入自己的开发环境。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-11-03-dependabot-version-updates-support-agent-package-manager/">GitHub 官方公告：Dependabot version updates support Agent Package Manager</a>——本次近期主题来源，说明正式可用范围及版本更新与安全更新的区别。</li><li><a href="https://docs.github.com/en/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories#apm">GitHub 文档：APM 支持范围与更新规则</a>——引用类型、锁文件处理、不支持条目及私有仓库访问。</li><li><a href="https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-version-updates">GitHub 文档：配置 Dependabot 版本更新</a>——配置文件位置、生态、目录与计划。</li><li><a href="https://microsoft.github.io/apm/">Microsoft APM 项目介绍</a>——依赖清单与 Agent 资源管理的背景。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AI </tag>
+            
+            <tag> GitHub </tag>
+            
+            <tag> Dependabot </tag>
+            
+            <tag> 依赖管理 </tag>
+            
+            <tag> APM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Workers 将默认报告客户端断连：取消信号需要传到哪里</title>
       <link href="/2026/11/03/2026-Workers%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%96%AD%E8%BF%9E%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%8F%96%E6%B6%88%E4%BC%A0%E6%92%AD/"/>
       <url>/2026/11/03/2026-Workers%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%96%AD%E8%BF%9E%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%8F%96%E6%B6%88%E4%BC%A0%E6%92%AD/</url>
