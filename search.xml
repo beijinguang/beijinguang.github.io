@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>Cloudflare AI Gateway 新增模型别名：调用名不变，换模怎么验收</title>
+      <link href="/2026/11/05/2026-Cloudflare%E6%A8%A1%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E5%88%87%E6%8D%A2%E9%AA%8C%E6%94%B6/"/>
+      <url>/2026/11/05/2026-Cloudflare%E6%A8%A1%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E5%88%87%E6%8D%A2%E9%AA%8C%E6%94%B6/</url>
+      
+        <content type="html"><![CDATA[<p>2026 年 11 月 4 日，Cloudflare 宣布 AI Gateway 支持模型别名。应用可以用 <code>custom/ticket-classifier</code> 这样的名称调用一组候选模型。只要调用名和网关不变，团队就可以在网关侧调整模型或路由策略，不必为每次换模重新发布应用。</p><p>这省下了一次应用部署，但也把影响业务结果的变更移到了网关。一个工单分类接口仍然返回 HTTP 200，前端也没有任何代码变动，分类标签却可能已经变了。准备上线模型别名时，应该从这里设计验收。</p><span id="more"></span><h2 id="把业务用途和模型版本分开"><a href="#把业务用途和模型版本分开" class="headerlink" title="把业务用途和模型版本分开"></a>把业务用途和模型版本分开</h2><p>假设客服系统把分类请求直接发给某个厂商的模型 ID。要换供应商，调用方就得改配置；如果网页端、批处理和后台服务各有一份配置，还要确认它们是否同时切换。模型别名提供了一个共同入口：调用方声明自己需要工单分类，网关决定这次由哪个合格的模型处理。</p><p>Cloudflare 的别名作用域是单个网关。测试网关和生产网关即使都有 <code>custom/ticket-classifier</code>，也可以指向不同候选池。通过官方 REST API 调用时，别名填在请求体的 <code>model</code> 字段，<code>cf-aig-gateway-id</code> 请求头选择创建该别名的网关。排查找不到模型的问题时，应同时检查这两处。</p><h2 id="候选模型怎么选"><a href="#候选模型怎么选" class="headerlink" title="候选模型怎么选"></a>候选模型怎么选</h2><p>别名支持两种路由方式。按默认顺序（<code>preferred</code>）时，网关依次尝试符合条件的候选，失败时可以转向下一项。智能路由（<code>smart</code>）则按请求选择；无法对候选排序时，仍使用配置顺序。请求中传入的路由选项可覆盖别名保存的算法。因此，看到控制台设了某种策略，还要核对调用方有没有传入覆盖参数。</p><p>进入候选池也不意味着能处理所有请求。模型和供应商仍须支持当前请求格式，并满足网关检查；认证、计费和网关策略不会因使用别名而跳过。如果业务需要按条件分支、按比例分流或在路由流程中设置限额，官方文档指向动态路由。这与给一组模型起一个稳定的调用名是不同需求。</p><p>特别容易误会的是回退的成功标准。网关能处理一次调用失败，但一个技术上成功的响应也可能对业务没用。比如模型输出“订单咨询”，而下游只接受枚举值 <code>order_question</code>；如果应用没有校验，问题可能直到工单分派才暴露。不要把业务格式不合规视为网关一定会自动换模型的条件。</p><h2 id="换模时，验证同一批请求的结果"><a href="#换模时，验证同一批请求的结果" class="headerlink" title="换模时，验证同一批请求的结果"></a>换模时，验证同一批请求的结果</h2><p>先选一条可复核的业务路径。以工单分类为例，可以准备一小批脱敏样本，其中有普通问题，也有信息缺失、多个意图和容易混淆的类别。用同一批输入分别测试主模型与备用模型，检查标签枚举、解析失败率和误分情况。需要工具调用的接口，还应核对工具参数和允许的操作。测试环境的响应格式应尽量贴近生产，否则通过的可能只是另一套接口。</p><p>然后单独验收失败路径。在受控环境中观察首选不可用时能否落到备用、没有合格候选时客户端如何报错、总延迟是否超过调用方预算。若应用本身也会重试，应把网关尝试和应用重试放在一起看，避免两层分别放大请求。具有写入副作用的业务操作，还要用自身的幂等或状态查询机制防止重复执行，不能由模型路由配置代替。</p><p>把别名当作生产配置来发布。变更前保存候选列表、顺序及路由设置，必要时也记录供应商限制；变更后用少量请求验证实际生效的配置，再逐步扩大使用范围。官方文档提示，配置传播需要时间，部分请求可能短暂使用缓存配置。回退到旧候选时，同样需要观察结果，而不能把控制台保存成功当成所有请求已恢复。</p><p>以上是工程验收建议，不是对某个模型的实测排名，也不承诺使用别名就能降低费用或提高响应质量。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>模型别名让应用不必跟着每一次供应商或模型版本调整而发布。对团队来说，更有价值的是把换模变成一项可比较、可复核、可回滚的配置变更。验收时检查两件事就能抓住重点：失败时请求实际去了哪里，成功时返回的结果还能不能被业务正确消费。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://developers.cloudflare.com/changelog/post/2026-11-04-model-aliases/">Cloudflare 2026 年 11 月 4 日更新公告：模型别名</a></li><li><a href="https://developers.cloudflare.com/ai-gateway/features/routing/model-aliases/">Cloudflare AI Gateway：模型别名配置与限制</a></li><li><a href="https://developers.cloudflare.com/ai-gateway/features/routing/">Cloudflare AI Gateway：路由能力对比</a></li><li><a href="https://developers.cloudflare.com/ai-gateway/usage/rest-api/">Cloudflare AI Gateway：REST API</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> AI </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AI 网关 </tag>
+            
+            <tag> 大模型 </tag>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> 模型路由 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Dependabot 开始更新 Agent 依赖：APM 清单与锁文件该怎么审</title>
       <link href="/2026/11/04/2026-Dependabot%E6%94%AF%E6%8C%81APM%E4%B8%8EAgent%E4%BE%9D%E8%B5%96%E6%9B%B4%E6%96%B0/"/>
       <url>/2026/11/04/2026-Dependabot%E6%94%AF%E6%8C%81APM%E4%B8%8EAgent%E4%BE%9D%E8%B5%96%E6%9B%B4%E6%96%B0/</url>
