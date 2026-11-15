@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Browser Run 支持本地 Quick Actions：JSON 占位数据不能当抽取结果</title>
+      <link href="/2026/11/15/2026-BrowserRun%E6%9C%AC%E5%9C%B0QuickActions%E4%B8%8EJSON%E5%8D%A0%E4%BD%8D%E6%95%B0%E6%8D%AE/"/>
+      <url>/2026/11/15/2026-BrowserRun%E6%9C%AC%E5%9C%B0QuickActions%E4%B8%8EJSON%E5%8D%A0%E4%BD%8D%E6%95%B0%E6%8D%AE/</url>
+      
+        <content type="html"><![CDATA[<p>页面抽取接口返回了 JSON，字段类型正确，测试也通过了，但这些值可能根本不是从页面里提取出来的。</p><p>Cloudflare 在 2026 年 11 月 13 日宣布，Browser Run Quick Actions 支持本地开发。官方 RSS 将该公告的发布时间标为 UTC 18:00，对应北京时间 11 月 14 日 02:00，距本文写作约 32 小时。现在，在 <code>npx wrangler dev</code> 下调用浏览器绑定的 <code>.quickAction()</code>，可以使用本机 Chrome。</p><p>这对截图、页面内容处理等开发流程很实用。不过，本地 <code>json</code> 动作仍是模拟：它返回符合 schema 的占位数据，并不调用真实抽取模型。如何区分“接口接通了”和“内容提取对了”，是这次更新最值得注意的地方。</p><span id="more"></span><h2 id="背景：把常见浏览器操作放进本地开发循环"><a href="#背景：把常见浏览器操作放进本地开发循环" class="headerlink" title="背景：把常见浏览器操作放进本地开发循环"></a>背景：把常见浏览器操作放进本地开发循环</h2><p>Quick Actions 将截图、获取 HTML、生成 PDF、提取 Markdown 等常见浏览器任务封装为简单接口。开发者既可以使用 REST API，也可以通过 Worker 的浏览器绑定调用。</p><p>此前，公告所述的本地调用会因未实现 <code>quickAction</code> 方法而失败，需要切到远端模式。此次更新让这些调用能进入本地调试流程，不必只为验证每一处接口调整就依赖远端浏览器。</p><p>这里应区分两条路径：Worker 代码在哪里运行，以及浏览器操作由哪里执行。开启本地开发并不意味着所有相关服务都在本机实现；本地浏览器能够打开页面，也不意味着依赖 AI 的动作已经具备本地推理能力。</p><h2 id="技术边界：真实浏览器与模拟抽取同时存在"><a href="#技术边界：真实浏览器与模拟抽取同时存在" class="headerlink" title="技术边界：真实浏览器与模拟抽取同时存在"></a>技术边界：真实浏览器与模拟抽取同时存在</h2><p>官方 Quick Actions 文档说明，本地模式使用本机 Chrome，但 <code>json</code> 与 Kitesurf 有例外。</p><p><code>json</code> 的占位结果按 <code>response_format.json_schema</code> 生成。字段指定 <code>const</code>、<code>enum</code> 或 <code>default</code> 时，会使用相应值，枚举采用首项；其他字段可能得到空字符串、零、<code>false</code> 或空数组等值。Wrangler 也会输出警告。</p><p>假设一个产品页面的 schema 包含以下字段：</p><table><thead><tr><th>字段设计</th><th>本地结果可能表达什么</th><th>不能证明什么</th></tr></thead><tbody><tr><td>普通字符串标题</td><td>用空字符串走通解析流程</td><td>页面标题已被识别</td></tr><tr><td>布尔型库存状态</td><td>用 <code>false</code> 检查数据类型和分支</td><td>产品确实缺货</td></tr><tr><td>带枚举的分类</td><td>用第一项检查枚举处理逻辑</td><td>模型判断产品属于该类</td></tr></tbody></table><p>这些是根据官方占位规则构造的说明性例子，并非本文运行得到的结果。</p><p>另一个限制是 Kitesurf 暂不支持本地模拟。如果传入 <code>browser: &quot;kitesurf&quot;</code>，本地调用会报错。不能把这类失败直接归因于目标页面，也不能因为 Chrome 路径通过，就认为另一种浏览器路径已验证。</p><h2 id="启用方式：检查绑定，也检查兼容日期"><a href="#启用方式：检查绑定，也检查兼容日期" class="headerlink" title="启用方式：检查绑定，也检查兼容日期"></a>启用方式：检查绑定，也检查兼容日期</h2><p>通过 Worker 使用该能力，需要配置浏览器绑定。官方要求 <code>.quickAction()</code> 的兼容日期为 <code>2026-03-24</code> 或更晚。</p><p>对已有项目，应先核对当前兼容日期和 Wrangler 配置，而不是把文档示例整份覆盖进去。为一个接口调整日期，也可能同时采用其他运行时行为，仍需按项目测试流程验证。</p><p>如果需要真实的 <code>json</code> 抽取结果，或要在开发阶段使用 Kitesurf，文档给出的方式是将浏览器绑定设为远端：</p><figure class="highlight jsonc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;browser&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;binding&quot;</span><span class="punctuation">:</span> <span class="string">&quot;BROWSER&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;remote&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><p>这只是绑定配置片段，不是完整项目文件，也不是本文已经执行的部署。已有绑定包含其他选项时，应保留并合并。</p><p>远端模式改变了浏览器操作的执行位置，验证时应确认目标页面可达、账户配置可用，并关注实际服务用量。使用受保护页面时，也应明确哪些内容允许发送到远端，不把本地测试数据未经检查地搬过去。</p><h2 id="实践启示：结构测试和质量测试各自负责什么"><a href="#实践启示：结构测试和质量测试各自负责什么" class="headerlink" title="实践启示：结构测试和质量测试各自负责什么"></a>实践启示：结构测试和质量测试各自负责什么</h2><p>本地占位并非没有价值。它可以帮助检查字段解析、序列化、返回结构以及业务代码对空值的处理。例如，标题为空时界面是否崩溃，空数组是否触发异常，布尔值是否被错误当成字符串。这些测试不需要模型真实理解页面。</p><p>但占位值会让某些测试显得过于顺利。假如分类字段的枚举首项恰好是测试期望值，仅比较分类结果就可能得到一个没有实际意义的成功。测试应该明确标记数据来源，不要让模拟路径参与抽取准确率统计。</p><p>下面是本文建议的分层验证方法，不是平台自动执行的验收：</p><ul><li>本地阶段检查请求构造、schema、结果解析和错误处理，主动覆盖空值及不完整数据。</li><li>远端阶段使用少量可公开访问或获准使用的固定样本，比较字段内容与人工确定的预期值。</li><li>上线前检查实际目标页面的加载时机、登录条件和失败处理，不只判断请求是否成功。</li></ul><p>真实的 <code>/json</code> 接口允许通过 prompt 或 JSON schema 描述预期输出。schema 能约束数据形状，仍不能证明内容正确。标题取错区域、库存状态理解错误，即便结果符合类型定义，也属于需要单独发现的问题。</p><p>对 JavaScript 动态页面，还应确认所需内容已经渲染。官方抽取文档提供等待页面或指定元素的选项，但等待条件要根据页面设计，不能把某一种等待策略当成所有站点的通用答案。</p><h2 id="把模拟结果留在测试边界内"><a href="#把模拟结果留在测试边界内" class="headerlink" title="把模拟结果留在测试边界内"></a>把模拟结果留在测试边界内</h2><p>开发环境的占位数据不应默默进入正式索引、业务数据库或对外报告。可以在测试流水线中明确区分本地模拟与远端抽取，并为质量验收保留样本、预期结果和执行模式。</p><p>同时，不应仅凭空字符串或 <code>false</code> 判断“这一定是模拟”。真实页面也可能缺少字段，真实模型也可能提取失败。更可靠的办法是记录测试时的配置与执行环境，再检查结果，而不是通过结果猜测运行路径。</p><p>本文只核对了官方公告、RSS 和文档，没有安装浏览器、执行 Quick Actions、调用付费抽取服务或修改生产配置。因此，上面的步骤属于实施建议，不代表已完成的实测结论。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本地 Quick Actions 缩短了浏览器任务的开发反馈路径，但本地通过的含义需要说清楚：有时验证的是程序能否处理一份 JSON，有时验证的才是网页信息是否抽取准确。</p><p>把这两类测试分开，既能利用本地模拟提高开发效率，也能避免把一个格式正确的占位结果当成上线依据。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://developers.cloudflare.com/changelog/post/2026-11-13-quick-actions-local-dev/">Cloudflare：Browser Run Quick Actions now work in local development</a>；<a href="https://developers.cloudflare.com/changelog/rss/index.xml">官方 RSS</a>。近期公告及发布时间依据。</li><li><a href="https://developers.cloudflare.com/browser-run/quick-actions/#test-quick-actions-locally">Browser Run：Quick Actions 与本地测试</a>。绑定、兼容日期、占位规则及远端模式。</li><li><a href="https://developers.cloudflare.com/browser-run/quick-actions/json-endpoint/">Browser Run：JSON 结构化抽取</a>。真实抽取输入、输出与动态页面处理背景。</li><li><a href="https://developers.cloudflare.com/browser-run/reference/wrangler/">Browser Run：Wrangler 配置</a>。浏览器绑定配置参考。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> 本地开发 </tag>
+            
+            <tag> 软件测试 </tag>
+            
+            <tag> Browser Run </tag>
+            
+            <tag> 数据抽取 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Cloudflare AI Gateway 新增模型别名：调用名不变，换模怎么验收</title>
       <link href="/2026/11/05/2026-Cloudflare%E6%A8%A1%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E5%88%87%E6%8D%A2%E9%AA%8C%E6%94%B6/"/>
       <url>/2026/11/05/2026-Cloudflare%E6%A8%A1%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E5%88%87%E6%8D%A2%E9%AA%8C%E6%94%B6/</url>
