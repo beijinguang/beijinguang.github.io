@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Next.js 清理开发态残留类型：路由删了，为什么类型检查还在报错</title>
+      <link href="/2026/11/16/2026-Nextjs%E6%B8%85%E7%90%86%E5%BC%80%E5%8F%91%E6%80%81%E6%AE%8B%E7%95%99%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%9E%84%E5%BB%BA%E9%9A%94%E7%A6%BB/"/>
+      <url>/2026/11/16/2026-Nextjs%E6%B8%85%E7%90%86%E5%BC%80%E5%8F%91%E6%80%81%E6%AE%8B%E7%95%99%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%9E%84%E5%BB%BA%E9%9A%94%E7%A6%BB/</url>
+      
+        <content type="html"><![CDATA[<p>路由已经删除，TypeScript 却还在寻找旧文件。重新生成类型也没有消除报错。这类问题容易被误判成业务代码没有改干净，实际参与检查的可能还有上一次开发会话留下的生成文件。</p><p>Next.js 于 UTC 2026 年 11 月 15 日 23:49 发布 <code>16.5.0-canary.52</code>，北京时间为 11 月 16 日 07:49。发布说明收录了修复 #100612，让 <code>next typegen</code> 和 <code>next build</code> 在适当条件下清理残留的开发态类型。该修复于 UTC 11 月 15 日合并，发布时间和合并时间均在本次写作的过去 48 小时内。</p><p>这是 canary 预发布中的变化，不能据此推断所有稳定版已经包含修复。本文依据上游说明、代码和测试分析，没有在这个 Hexo 博客中安装、升级或实测 Next.js。</p><span id="more"></span><h2 id="背景：生成目录分开，不代表类型检查自然隔离"><a href="#背景：生成目录分开，不代表类型检查自然隔离" class="headerlink" title="背景：生成目录分开，不代表类型检查自然隔离"></a>背景：生成目录分开，不代表类型检查自然隔离</h2><p>默认配置下，<code>next dev</code> 将自己的类型写入 <code>.next/dev/types</code>；<code>next typegen</code> 的输出通常在 <code>.next/types</code>。这次修改也纠正了 CLI 文档中容易混淆两者的表述。</p><p>目录分开解决了文件写到哪里的问题，却没有自动解决哪些文件会进入 TypeScript 检查。上游代码注释指出，项目的 <code>tsconfig</code> 会包含两套类型。开发服务器停止后，开发态生成文件不再随路由变化更新，但仍可能处于检查范围内。</p><p>例如，开发期间访问过 <code>/before</code>，生成的校验文件会引用对应页面和布局。停掉开发服务器，把路由移到 <code>/after</code>，再生成生产侧类型，旧的开发态校验文件仍可能引用已经不存在的路径，或者保留不再成立的路由约束。新类型生成正确，也不足以让旧类型自动失效。</p><p>这解释了为什么同一份源码在干净的 CI 中通过，在用过 <code>next dev</code> 的本地目录里却失败。这里描述的是问题机制，不是说所有本地与 CI 的差异都能归因于它。</p><h2 id="核心修复：只清理已经失去维护者的类型"><a href="#核心修复：只清理已经失去维护者的类型" class="headerlink" title="核心修复：只清理已经失去维护者的类型"></a>核心修复：只清理已经失去维护者的类型</h2><p>新增的 <code>removeStaleDevTypes</code> 处理的是配置目录下的 <code>dev/types</code>。<code>next typegen</code> 在生成类型后调用它，构建流程也在类型检查前接入清理。</p><p>直接删除这个目录并不安全。开发服务器可能仍在运行，它既需要这些类型，也会继续更新它们。实现因此复用了开发服务器的 <code>dev/lock</code>，先尝试拿锁，再决定是否删除。</p><table><thead><tr><th>当前状态</th><th>清理行为</th><th>需要避免的问题</th></tr></thead><tbody><tr><td>没有 <code>dev/types</code></td><td>直接返回</td><td>不产生多余操作</td></tr><tr><td>开发服务器持有目录锁</td><td>保留类型</td><td>不删除正在维护的生成文件</td></tr><tr><td>可以取得目录锁</td><td>持锁删除 <code>dev/types</code>，随后释放</td><td>避免并发启动的开发服务器刚写完就被删</td></tr></tbody></table><p>锁的作用不止是探测“开发服务器在不在”。清理期间继续持锁，才覆盖了检查之后、删除之前另一个进程启动的时间窗口。如果探测完马上释放，删除动作仍可能与新的生成动作交错。</p><p>不过，上游明确保留了限制。在禁用 <code>lockDistDir</code> 或使用 WASM bindings、无法获得真正锁保护的情况下，这仍是尽力清理，不能承诺同样的并发保证。清理遇到异常会输出警告，不直接让命令失败；残留类型引起的后续检查错误依然可能出现。</p><h2 id="清理边界比“删一次-next”更重要"><a href="#清理边界比“删一次-next”更重要" class="headerlink" title="清理边界比“删一次 .next”更重要"></a>清理边界比“删一次 .next”更重要</h2><p>修复只移除 <code>dev/types</code>，保留 <code>.next/dev</code> 中的其他内容，例如缓存和日志。下次启动开发服务器时，所需类型会重新生成。它没有把整个构建目录当成可随意丢弃的垃圾箱。</p><p>另一个容易漏掉的细节是自定义输出路径。上游针对 <code>output: &#39;export&#39;</code> 搭配自定义 <code>distDir</code> 的场景增加了测试。在该场景中，构建产物可能进入 <code>.next</code>，开发态类型却位于配置的 <code>&lt;distDir&gt;/dev/types</code>。因此，清理路径需要从配置中的目录根定位，不能只盯着本次构建的实际输出目录。</p><p>这对维护内部脚本也有启示。若项目自定义了目录，先确认文件由谁生成、由哪项配置决定路径，再设计清理动作。硬编码 <code>.next/dev/types</code> 的脚本即使在默认项目中有效，也不能直接推广到所有配置。</p><h2 id="回归测试验证了什么"><a href="#回归测试验证了什么" class="headerlink" title="回归测试验证了什么"></a>回归测试验证了什么</h2><p>上游新增或扩展的测试没有只验证“目录消失”，而是沿着实际开发操作检查结果。</p><p>删除路由的测试先启动开发服务器并访问页面，确认校验文件确实引用旧路径；停服、删除页面后再构建。它同时覆盖 TypeScript API 与 CLI 检查路径。CLI 相关测试还确认类型目录被移除，但开发目录本身仍然存在。</p><p>路由移动的测试把 <code>/before</code> 改为 <code>/after</code>，运行 <code>next typegen</code> 后再执行 <code>tsc --noEmit</code>，检查旧路径引用以及相关类型错误是否消失。此外，测试还覆盖开发服务器运行时执行类型生成或构建，要求其正在使用的开发态类型保持完整。</p><p>这些用例给出了修复目标和保护范围，但不等于所有操作系统、WASM 环境以及并发交错都已经得到穷尽验证。本文也不据此提出构建速度提升的结论，这项修复关注的是生成状态与检查结果的正确性。</p><h2 id="实践启示：把生成文件纳入排错链路"><a href="#实践启示：把生成文件纳入排错链路" class="headerlink" title="实践启示：把生成文件纳入排错链路"></a>实践启示：把生成文件纳入排错链路</h2><p>遇到“源码里已经没有这个路由，检查却还引用它”的问题，可以先查看报错指向的是源码还是生成文件，再核对本地使用的 Next.js 版本、类型目录和 <code>tsconfig</code> 的包含范围。不要一开始就通过忽略类型错误掩盖症状。</p><p>如果需要验证修复，适合在独立分支或临时测试项目中固定版本，复现“启动开发服务、访问旧路由、停服、移动或删除路由、生成类型、执行检查”的完整过程。随后再验证开发服务仍运行时的行为，以及项目实际使用的自定义目录配置。以上是建议的验收步骤，不是本博客已经执行的测试结果。</p><p>对生产项目，不建议仅因这一条修复就直接追随最新 canary。先确认故障是否匹配，再评估预发布版本的其他变化；采用稳定版本时，也应核对相应发布说明或代码，而不是只比较版本号大小。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>构建工具的生成文件既是输出，也可能成为下一次检查的输入。只要它们跨开发会话存活，就需要明确的更新和清理规则。</p><p>这次 Next.js 修复把规则落到了具体位置：停止维护的开发态类型可以清理，运行中服务的类型需要保留，并用同一把目录锁协调两者。排查类似问题时，除了问“源码改对了吗”，也要看看检查器究竟读进了哪些旧文件。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.52">Next.js 16.5.0-canary.52 发布说明</a>，UTC 2026 年 11 月 15 日发布，收录 #100612。</li><li><a href="https://github.com/vercel/next.js/pull/100612">上游修复 #100612：Remove stale .next&#x2F;dev&#x2F;types in next typegen and next build</a>，包含设计说明、适用范围和验证限制。</li><li><a href="https://github.com/vercel/next.js/pull/100612/files">修复代码、CLI 文档与回归测试差异</a>，用于核对清理目录、锁保护、自定义 distDir 及运行中开发服务器的行为。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Next.js </tag>
+            
+            <tag> 软件测试 </tag>
+            
+            <tag> TypeScript </tag>
+            
+            <tag> 构建工具 </tag>
+            
+            <tag> 并发控制 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Browser Run 支持本地 Quick Actions：JSON 占位数据不能当抽取结果</title>
       <link href="/2026/11/15/2026-BrowserRun%E6%9C%AC%E5%9C%B0QuickActions%E4%B8%8EJSON%E5%8D%A0%E4%BD%8D%E6%95%B0%E6%8D%AE/"/>
       <url>/2026/11/15/2026-BrowserRun%E6%9C%AC%E5%9C%B0QuickActions%E4%B8%8EJSON%E5%8D%A0%E4%BD%8D%E6%95%B0%E6%8D%AE/</url>
