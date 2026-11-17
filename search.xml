@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Cloudflare Artifacts 支持本地仓库：能 push，不等于能验证推送触发工作流</title>
+      <link href="/2026/11/17/2026-CloudflareArtifacts%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E6%B5%8B%E8%AF%95%E8%BE%B9%E7%95%8C/"/>
+      <url>/2026/11/17/2026-CloudflareArtifacts%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E6%B5%8B%E8%AF%95%E8%BE%B9%E7%95%8C/</url>
+      
+        <content type="html"><![CDATA[<p>测试一个会创建仓库、签发凭据并响应仓库事件的应用，如果每轮调试都接触线上资源，既不方便清理，也容易把测试操作混进真实数据。Cloudflare 在 2026 年 11 月 16 日宣布 Artifacts 支持本地开发，让这部分流程可以先在开发机器上运行。公告日期位于本次写作的过去 48 小时内。</p><p>这项更新值得关注的地方，是 Git 操作与 Workers 应用可以一起调试。不过，本地模拟没有覆盖整个线上服务。尤其要注意，本地 Git push 可用，并不代表依赖推送事件的工作流也能在本地启动。</p><p>本文依据官方公告与开发指南整理，没有在本博客项目中安装 Wrangler、创建 Artifacts 仓库或进行推送实验。</p><span id="more"></span><h2 id="背景：这里的-Artifacts-是-Git-兼容存储"><a href="#背景：这里的-Artifacts-是-Git-兼容存储" class="headerlink" title="背景：这里的 Artifacts 是 Git 兼容存储"></a>背景：这里的 Artifacts 是 Git 兼容存储</h2><p>Cloudflare Artifacts 用于保存和版本化文件、代码与项目，提供 Git 兼容接口，也能通过 Workers 绑定或 REST API 操作。它适合由应用按项目、会话或任务创建仓库，再交给工具或自动化程序继续处理。</p><p>因此，这次本地开发更新并非给普通 Git 客户端增加一个新命令，而是让使用 Artifacts 绑定的应用，在开发环境中获得一套独立的仓库和令牌状态。创建、删除本地仓库，或向其推送，都不会改变已部署的 Artifacts 仓库。同名 namespace 也不会自动把远端数据导入本地。</p><p>官方指南列出的工具要求包括 Git 2.32 或更新版本，以及 Wrangler 4.163.0、Cloudflare Vite plugin 2.0.0-rc.0 或 <code>@cloudflare/vitest-plugin</code> 1.8.3 及其后续版本。Git 必须位于启动开发服务或测试进程的 <code>PATH</code> 中；仅在另一个终端里能运行 Git，并不足以证明测试进程也能找到它。</p><h2 id="默认行为变了，配置最好写明白"><a href="#默认行为变了，配置最好写明白" class="headerlink" title="默认行为变了，配置最好写明白"></a>默认行为变了，配置最好写明白</h2><p>在支持新默认行为的工具中，本地运行 Worker 时，Artifacts 绑定省略 <code>remote</code> 或设置为 <code>false</code>，都会使用本地模拟器。设为 <code>true</code> 则访问已部署的服务，并需要相应的 Cloudflare 身份认证。</p><p>对已有项目，最容易出现的误会是“同样的配置文件，升级前后却读到了不同的数据”。指南明确提示，依赖此前远端默认行为的开发流程，需要显式配置远端模式。反过来，如果目标是隔离测试，也不应只凭“启动的是本地开发服务”就认为所有绑定都在本机。</p><p>以已有 Wrangler 项目为例，可以在绑定中明确选择本地模式：</p><figure class="highlight jsonc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;artifacts-worker&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;src/index.ts&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;compatibility_date&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-11-17&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;artifacts&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;binding&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ARTIFACTS&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;namespace&quot;</span><span class="punctuation">:</span> <span class="string">&quot;default&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;remote&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><p>示例假定项目已具备对应 Worker 入口，仅展示绑定配置，不是完整应用。使用 <code>cloudflare.config.ts</code> 时，对应设置位于 <code>dev: { remote }</code>，不能照搬 Wrangler 配置字段的位置。</p><p>旧工具还有例外。Vite plugin 1.x 保留之前的默认行为，在启用远端绑定且省略 <code>remote</code> 时会使用远端仓库，应显式设为 <code>false</code> 才选择本地。已弃用的 <code>@cloudflare/vitest-pool-workers</code> 也保留早先的远端默认行为；官方要求迁移到新的 Vitest 插件来使用本地模拟器。升级检查需要同时看工具名称、版本和配置，而不只是搜索一个布尔值。</p><h2 id="本地-remote-是地址，不是环境隔离的证明"><a href="#本地-remote-是地址，不是环境隔离的证明" class="headerlink" title="本地 remote 是地址，不是环境隔离的证明"></a>本地 remote 是地址，不是环境隔离的证明</h2><p>应用通过 <code>env.ARTIFACTS.create()</code> 创建本地仓库后，返回的 <code>remote</code> 指向本地开发会话，标准 Git 客户端可以据此克隆和推送。这个响应字段表示 Git 地址，与绑定配置里的 <code>remote: false</code> 含义不同。</p><p>本地 Git 接口使用回环 HTTP。模拟器不提供本地 SSH 端点，也没有完整的本地 REST API、Artifacts CLI、控制台或 Git LFS 服务。项目若依赖其中某项能力，绑定调用通过还不能代表整套集成已经通过。</p><p>仓库令牌也是独立凭据，不是 Cloudflare API token。指南要求避免把它写入源码、Git 配置和日志。即使是本地开发，也没有必要为了方便调试，把创建仓库时返回的完整令牌打印到共享终端记录中。</p><p>还要区分“本地仓库隔离”与“完全离线”。通过 HTTPS 导入仓库时，Git 在开发机器上连接源地址；这个地址必须从该机器可达。官方要求只导入可信 URL，并使用最终 HTTPS Git 地址，因为导入不会跟随 HTTP 重定向。</p><h2 id="事件模拟有明确缺口"><a href="#事件模拟有明确缺口" class="headerlink" title="事件模拟有明确缺口"></a>事件模拟有明确缺口</h2><p>本地模拟器可以发出仓库创建、导入、分叉、删除，以及令牌创建和撤销事件，用于测试响应这些变化的 Workflows。事件使用与部署环境一致的消息结构，本地的 <code>metadata.accountId</code> 为 <code>local</code>。</p><p>但不要把线上事件列表直接当成本地能力清单：</p><table><thead><tr><th>测试目标</th><th>当前本地支持情况</th></tr></thead><tbody><tr><td>创建、导入、分叉、删除仓库后启动处理</td><td>支持对应生命周期事件</td></tr><tr><td>创建或撤销仓库令牌后执行处理</td><td>支持对应令牌事件</td></tr><tr><td>push 后触发构建、clone 或 fetch 后触发处理</td><td>暂不发布这些事件</td></tr><tr><td>将 Artifacts 事件投递到队列</td><td>本地不支持，仅投递至 Workflows</td></tr></tbody></table><p>此外，Vite plugin 1.x 暂不支持由本地事件启动 Workflows。具体能测什么，还取决于所用工具链。</p><p>事件投递本身也不应被理解为同步事务。文档说明，本地事件可能乱序；仓库变更完成后才发布事件。如果投递失败，开发服务记录错误，不重试，仓库操作仍可能已经成功。</p><p>据此可以推导出一个验收要求：只检查“创建仓库接口返回成功”是不够的，还要观察目标 Workflow 是否真正启动，并检查处理结果。这是基于投递语义给出的测试建议，不是对线上事件重试机制的推断。</p><h2 id="实践启示：把一次集成验收拆成不同证据"><a href="#实践启示：把一次集成验收拆成不同证据" class="headerlink" title="实践启示：把一次集成验收拆成不同证据"></a>实践启示：把一次集成验收拆成不同证据</h2><p>对仓库驱动的应用，本地模拟可以先验证绑定调用、数据读写和已支持的生命周期事件。测试数据应使用明确的 namespace 与仓库名，断言也应检查目标仓库状态，而不只看命令退出码。</p><p>如果应用的核心是“收到 push 后构建并部署”，可以先独立测试事件处理函数和 Workflow 逻辑，但端到端验收仍需要在隔离的远端测试资源中补上真实推送及触发链路。本地 push 成功只能证明 Git 操作这一段，不能替代事件投递证据。</p><p>开发数据还可能跨重启保留。指南说明，在启用持久化时，Wrangler 与 Vite plugin 1.x 通常使用 <code>.wrangler/state/</code>，Vite plugin 2.x 使用 <code>.cloudflare/state/</code>。切换为远端绑定不会同步这些本地仓库和令牌。因此，不应把模式切换当作数据迁移，也不必为重置一组测试仓库而删除整个项目状态目录。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Artifacts 本地开发把仓库操作和部分事件驱动逻辑带到了同一套开发环境中，适合缩短日常调试反馈。但测试报告需要写清楚覆盖了哪一段：绑定能调用、Git 能推送、事件能投递、Workflow 能完成，是不同的检查结果。</p><p>把默认绑定模式与模拟缺口写进验收条件，才能知道哪些问题已经在本地排除，哪些仍需要远端验证。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://developers.cloudflare.com/changelog/post/2026-11-16-local-artifacts-development/">Cloudflare 官方公告：Artifacts now supports local development</a>，2026 年 11 月 16 日发布，是本文新闻来源。</li><li><a href="https://developers.cloudflare.com/artifacts/guides/local-development/">Artifacts 本地开发指南</a>，用于核对版本要求、绑定模式、持久化及事件限制。</li><li><a href="https://developers.cloudflare.com/artifacts/">Artifacts 产品概览</a>，用于说明 Git 兼容存储的背景，不作为本次新发布的证据。</li><li><a href="https://developers.cloudflare.com/artifacts/guides/event-subscriptions/">Artifacts 事件订阅指南</a>，用于对照线上事件类型；本地支持范围以本地开发指南为准。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> Git </tag>
+            
+            <tag> 软件测试 </tag>
+            
+            <tag> Workers </tag>
+            
+            <tag> Artifacts </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Next.js 清理开发态残留类型：路由删了，为什么类型检查还在报错</title>
       <link href="/2026/11/16/2026-Nextjs%E6%B8%85%E7%90%86%E5%BC%80%E5%8F%91%E6%80%81%E6%AE%8B%E7%95%99%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%9E%84%E5%BB%BA%E9%9A%94%E7%A6%BB/"/>
       <url>/2026/11/16/2026-Nextjs%E6%B8%85%E7%90%86%E5%BC%80%E5%8F%91%E6%80%81%E6%AE%8B%E7%95%99%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%9E%84%E5%BB%BA%E9%9A%94%E7%A6%BB/</url>
