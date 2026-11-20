@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>GitHub 托管 RHEL runner 正式可用：让 CI 更接近生产，还差哪些验证</title>
+      <link href="/2026/11/20/2026-GitHubRHEL%E6%89%98%E7%AE%A1Runner%E6%AD%A3%E5%BC%8F%E5%8F%AF%E7%94%A8%E4%B8%8E%E5%85%BC%E5%AE%B9%E6%80%A7%E9%AA%8C%E6%94%B6/"/>
+      <url>/2026/11/20/2026-GitHubRHEL%E6%89%98%E7%AE%A1Runner%E6%AD%A3%E5%BC%8F%E5%8F%AF%E7%94%A8%E4%B8%8E%E5%85%BC%E5%AE%B9%E6%80%A7%E9%AA%8C%E6%94%B6/</url>
+      
+        <content type="html"><![CDATA[<p>CI 在一种 Linux 发行版上编译、测试，生产环境却使用另一种，问题往往到部署阶段才暴露。把测试系统换得更接近生产，有助于提前发现差异，但同一个发行版名称还不足以证明环境完全一致。</p><p>GitHub 于 2026 年 11 月 19 日宣布，GitHub 托管 larger runners 的 RHEL 9 和 RHEL 10 镜像正式可用。公告标注的发布时间为 UTC 18:48，对应北京时间 11 月 20 日 02:48，处于本次写作的过去 24 小时内。</p><p>对部署在 Red Hat Enterprise Linux 上的项目，这增加了一条托管 CI 路径。本文依据官方公告和 Actions 文档分析，没有在本博客项目中创建 runner、运行 RHEL 作业或变更付费资源。</p><span id="more"></span><h2 id="背景：正式可用的是特定-runner-镜像"><a href="#背景：正式可用的是特定-runner-镜像" class="headerlink" title="背景：正式可用的是特定 runner 镜像"></a>背景：正式可用的是特定 runner 镜像</h2><p>这批镜像此前已在 2026 年六月进入公开预览。此次变化是正式支持生产工作流，不能把它写成 GitHub 第一次提供 RHEL 镜像。</p><p>公告给出的入口是创建 Linux x64 larger runner，在合作伙伴镜像中选择 RHEL 9 或 RHEL 10。适用套餐为 GitHub Team 和 GitHub Enterprise Cloud。已使用预览镜像的用户无需因转为正式可用而迁移，现有 runner 与工作流可以继续运行。</p><p>这里需要分清产品边界。它不是给所有标准 runner 增加一个无需配置的 RHEL 标签，也不是宣布所有 CPU 架构都已开放。是否能在某个仓库中使用，还要检查组织配置和 runner 访问权限。</p><h2 id="核心分析：操作系统对齐，只解决了一部分变量"><a href="#核心分析：操作系统对齐，只解决了一部分变量" class="headerlink" title="核心分析：操作系统对齐，只解决了一部分变量"></a>核心分析：操作系统对齐，只解决了一部分变量</h2><p>使用 RHEL 测试，可以把发行版环境纳入持续集成，而不只在上线前检查一次。但兼容性问题可能出现在不同层面：构建工具能否运行，生成的程序能否启动，动态库是否齐全，应用启动后能否连接依赖服务。</p><p>例如，一个带原生扩展的项目，单元测试通过后仍可能在另一套运行环境中加载失败。这个假设场景说明的是验收对象不同，并非本次发现的 RHEL runner 缺陷。测试源码、测试构建过程和测试最终安装包，各自提供的证据不能互相替代。</p><p>如果生产仍使用 RHEL 9，在 RHEL 10 上通过 CI 也不能直接替代目标环境验收。更有用的做法是列出真正需要匹配的条件，再决定哪些测试留在现有环境，哪些增加到目标系统中。</p><table><thead><tr><th>验收对象</th><th>建议记录的条件</th><th>测试结果能说明什么</th></tr></thead><tbody><tr><td>构建过程</td><td>系统版本、编译器、依赖来源</td><td>代码能否在这套工具链下生成产物</td></tr><tr><td>可交付产物</td><td>安装包版本、运行库、启动命令</td><td>实际发布内容能否安装并启动</td></tr><tr><td>业务运行</td><td>配置、外部服务、网络和访问权限</td><td>应用在预期依赖条件下能否完成任务</td></tr></tbody></table><p>这是建议的验证划分，不是 GitHub 对每个镜像预装内容的承诺。镜像正式可用，也不等于它已经包含项目需要的所有工具。</p><h2 id="工作流需要选中真实存在的-runner"><a href="#工作流需要选中真实存在的-runner" class="headerlink" title="工作流需要选中真实存在的 runner"></a>工作流需要选中真实存在的 runner</h2><p>官方管理文档允许组织为 larger runner 选择镜像、硬件规格、并发上限和 runner group，并通过组的访问范围控制哪些仓库可以使用。工作流随后按组、标签，或两者共同匹配来路由作业。</p><p>larger runner 会获得与其名称对应的工作流标签，因此，示例中的名称必须与管理员实际创建的资源一致。不要把一个自行命名的 <code>rhel-latest</code> 当成 GitHub 提供的通用标签。</p><p>下面只展示环境诊断，假定组织已经创建名为 <code>rhel9-ci</code> 的 Linux x64 larger runner，选择了 RHEL 9 镜像，并允许当前仓库访问：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">inspect-rhel-environment</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">workflow_dispatch</span></span><br><span class="line"><span class="attr">permissions:</span></span><br><span class="line">  <span class="attr">contents:</span> <span class="string">read</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">inspect:</span></span><br><span class="line">    <span class="attr">runs-on:</span></span><br><span class="line">      <span class="attr">labels:</span> <span class="string">rhel9-ci</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Record</span> <span class="string">operating</span> <span class="string">system</span> <span class="string">and</span> <span class="string">architecture</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          cat /etc/os-release</span></span><br><span class="line"><span class="string">          uname -m</span></span><br><span class="line"><span class="string">          getconf GNU_LIBC_VERSION</span></span><br></pre></td></tr></table></figure><p><code>rhel9-ci</code> 是示例中的自定义名称，需要替换为实际标签。这段工作流没有检出源码，也没有构建或测试业务程序；它只能帮助确认作业落到了什么环境，不能作为生产兼容性测试。</p><p>排查作业没有运行时，也应区分资源选择与构建失败。标签写错、仓库无权访问 runner group，与依赖安装失败是不同的问题。先确认作业能被正确调度，再分析运行日志，能减少无效地调整构建脚本。</p><h2 id="自定义镜像把准备工作前移，也带来维护责任"><a href="#自定义镜像把准备工作前移，也带来维护责任" class="headerlink" title="自定义镜像把准备工作前移，也带来维护责任"></a>自定义镜像把准备工作前移，也带来维护责任</h2><p>公告同时指出，RHEL 可以作为自定义镜像的基础。对每次都安装相同工具的工作流，这提供了把公共准备步骤移到镜像生成阶段的选择。</p><p>官方文档说明，自定义镜像由专门的镜像生成 runner 通过工作流生成，再由其他 runner 使用。使用前还需满足组织或企业策略及管理权限要求。镜像存储单独计费，频繁生成并保留旧版本会增加存储用量；采用前应核对当前规格与保留策略，本文不作成本或提速承诺。</p><p>从可复现性看，预装工具不等于固定了所有输入。如果后续步骤仍下载浮动版本，或依赖外部服务的实时状态，作业结果依然可能变化。镜像构建脚本、工具版本和后续依赖解析都应进入变更记录。</p><p>也不宜为了“环境稳定”长期停止更新镜像。更合理的目标是更新有记录、更新后有回归测试、出现问题能定位到具体变化，而不是把一个能运行的环境永远冻结。这里是镜像维护建议，不是 RHEL 托管镜像已经为用户完成了项目级维护。</p><h2 id="实践启示：先增加目标环境证据，再考虑替换原有流程"><a href="#实践启示：先增加目标环境证据，再考虑替换原有流程" class="headerlink" title="实践启示：先增加目标环境证据，再考虑替换原有流程"></a>实践启示：先增加目标环境证据，再考虑替换原有流程</h2><p>已有 CI 的团队，可以先增加一项范围明确的 RHEL 验收任务，例如安装最终产物并完成启动检查。保留现有测试作为对照，有助于判断新失败来自应用、环境还是工作流迁移。</p><p>对于自定义镜像，还可以用“干净基础镜像加安装脚本”与“预装镜像”分别验证关键路径。如果只有预装环境能通过，就应调查是否存在未声明依赖。这是建议的诊断方法，并非本文已经执行的对比实验。</p><p>推广时应记录使用的镜像、runner 规格、工具版本、工作流提交和产物标识。验收目标应是让团队知道每项结果覆盖了什么，而不是只把工作流页面变成绿色。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>托管 RHEL runner 让使用企业 Linux 的团队更容易把目标系统纳入日常 CI。真正的收益取决于测试对象是否接近最终交付：操作系统对齐之后，还要核对工具链、产物、配置和外部依赖。</p><p>把环境诊断与应用验收分开记录，才更容易解释一次通过意味着什么，以及上线前还缺哪些证据。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-11-19-red-hat-enterprise-linux-runner-images-now-generally-available/">GitHub 官方公告：Red Hat Enterprise Linux runner images now generally available</a>，UTC 2026 年 11 月 19 日发布，是本文新闻来源。</li><li><a href="https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/manage-larger-runners">GitHub Docs：Managing larger runners</a>，用于核对组织配置、镜像选择及访问控制。</li><li><a href="https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/use-larger-runners">GitHub Docs：Running jobs on larger runners</a>，用于核对组与标签的路由方式。</li><li><a href="https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/use-custom-images">GitHub Docs：Using custom images</a>，用于核对镜像生成、前置条件和存储计费说明。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> GitHub Actions </tag>
+            
+            <tag> CI </tag>
+            
+            <tag> 软件测试 </tag>
+            
+            <tag> RHEL </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub Copilot 团队定制正式可用：默认插件不是强制策略</title>
       <link href="/2026/11/19/2026-GitHubCopilot%E5%9B%A2%E9%98%9F%E9%BB%98%E8%AE%A4%E6%8F%92%E4%BB%B6%E4%B8%8E%E7%AD%96%E7%95%A5%E8%BE%B9%E7%95%8C/"/>
       <url>/2026/11/19/2026-GitHubCopilot%E5%9B%A2%E9%98%9F%E9%BB%98%E8%AE%A4%E6%8F%92%E4%BB%B6%E4%B8%8E%E7%AD%96%E7%95%A5%E8%BE%B9%E7%95%8C/</url>
