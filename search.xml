@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>GitHub Issue 新状态进入预览：拖动看板，也可能触发关闭和工作流</title>
+      <link href="/2026/11/25/2026-GitHubIssue%E7%8A%B6%E6%80%81%E9%A2%84%E8%A7%88%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BA%8B%E4%BB%B6%E8%BE%B9%E7%95%8C/"/>
+      <url>/2026/11/25/2026-GitHubIssue%E7%8A%B6%E6%80%81%E9%A2%84%E8%A7%88%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BA%8B%E4%BB%B6%E8%BE%B9%E7%95%8C/</url>
+      
+        <content type="html"><![CDATA[<p>一个 Issue 还开着，并不能说明它在排期、开发还是等待审查。过去，团队常用标签或 Projects 字段补充进度；GitHub 这次把更细的状态直接放到了 Issue 上，并让仓库看板能够按状态组织工作。</p><p>GitHub 于 2026 年 11 月 23 日发布 Issue 状态与仓库看板公开预览公告，页面标注的时间为 UTC 20:37，北京时间为 11 月 24 日 04:37，位于本次写作的过去 48 小时内。公告列出了 Backlog、Todo、In progress、In review、Done、Not planned、Duplicate 七种状态，并宣布 GraphQL、REST API 和 MCP server 支持相关读写。</p><p>对已有自动化的仓库，最值得先检查的却不是看板外观。选择状态可能改变 Issue 的开关状态，还可能让原有 Actions 工作流多运行一次。本文依据官方公告与文档分析，没有为这个博客仓库开通预览、拖动 Issue 或部署示例工作流。</p><span id="more"></span><h2 id="背景：仓库看板让进度更容易看见"><a href="#背景：仓库看板让进度更容易看见" class="headerlink" title="背景：仓库看板让进度更容易看见"></a>背景：仓库看板让进度更容易看见</h2><p>公告中的仓库看板建立在 repository saved views 上，可以把视图切换为 board 布局，按状态分列，并通过拖动 Issue 改变状态。它给单仓库协作提供了较轻的进度视图；需要更完整的跨仓库规划时，仍应评估 GitHub Projects，而不必把两者当成互相替代的产品。</p><p>这次更新也调整了 Issue 字段与类型的关系。字段可以通过侧边栏入口添加，不再要求先映射到某个 Issue 类型；与类型绑定的固定显示规则仍有作用。官方字段文档同时区分了 Issue 字段与 Project 字段：前者的值属于 Issue，后者可以只属于某个 Project。</p><p>这种区分对迁移很实用。假如团队已经用 Project 的 Priority 字段排期，又增加一个同名 Issue 字段，页面上可能出现两个看似相同的优先级。应先约定哪一个是权威值，再逐步调整视图，避免仅为统一界面而同时维护两套含义相近的数据。</p><h2 id="核心机制：状态名称之外，还有开关状态和类别"><a href="#核心机制：状态名称之外，还有开关状态和类别" class="headerlink" title="核心机制：状态名称之外，还有开关状态和类别"></a>核心机制：状态名称之外，还有开关状态和类别</h2><p>官方状态事件文档把状态对象拆成 <code>id</code>、<code>name</code> 和 <code>category</code>。三者承担不同用途：需要匹配某一个具体状态时用它的 ID，需要匹配一组语义相近的状态时用类别，显示名称则可能发生变化。</p><p>例如，In progress 与 In review 都属于 <code>started</code> 类别。一个“开始工作后发送提醒”的集成可以按类别判断；一个“进入审查阶段后执行检查”的集成则需要精确匹配对应状态。不能因为两个状态属于同一类别，就认为它们代表同一个业务阶段。</p><p>更重要的是，细分状态没有与 <code>open</code> &#x2F; <code>closed</code> 完全脱离。文档说明，<code>completed</code>、<code>not_planned</code>、<code>duplicate</code> 类别用于已关闭的 Issue。给开放的 Issue 选择这些状态会关闭它；给已关闭的 Issue 选择其他类别的状态，则会重新打开它。</p><p>因此，把卡片拖到 Done 列，可能并非一次纯粹的视觉整理。它还会影响依赖关闭事件的提醒、统计或下游同步。团队在开放拖动权限之前，应先确认“移动到这列”是否真的等于业务上的完成。</p><h2 id="一个操作，为什么可能得到两类事件"><a href="#一个操作，为什么可能得到两类事件" class="headerlink" title="一个操作，为什么可能得到两类事件"></a>一个操作，为什么可能得到两类事件</h2><p>状态变化会产生 <code>issues</code> Webhook 的 <code>status_changed</code> action。如果这次变化同时关闭或重新打开 Issue，还会有 <code>closed</code> 或 <code>reopened</code> 事件，两次投递的到达顺序并不固定。</p><p>这对已有工作流有直接影响。官方文档特别提醒，没有指定 <code>types</code> 的 <code>issues</code> 工作流也会响应 <code>status_changed</code>。过去在创建或关闭时运行的自动化，接入新状态后可能额外运行。若任务会创建工单或发送提醒，重复执行就不只是多消耗一次 runner 时间。</p><p>接入前应把工作流需要的事件写清楚。下面只是监听状态变化的触发器片段，不是完整工作流：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">issues:</span></span><br><span class="line">    <span class="attr">types:</span> [<span class="string">status_changed</span>]</span><br></pre></td></tr></table></figure><p>已有的创建、关闭处理器不必都改成这个配置。应根据每个任务的职责分别限定事件，再检查它是否会与另一个处理器对同一业务动作重复响应。需要同时接收两类事件时，可以把“当前 Issue 是否已经同步到目标状态”作为执行前的核对条件，而不是收到事件就无条件写入外部系统。</p><h2 id="变更记录与当前状态，不是同一份证据"><a href="#变更记录与当前状态，不是同一份证据" class="headerlink" title="变更记录与当前状态，不是同一份证据"></a>变更记录与当前状态，不是同一份证据</h2><p>状态事件文档还指出了一个容易忽略的细节：顶层 <code>status</code> 和 <code>changes</code> 描述保存变更时发生的事情；<code>issue.status</code> 描述构建投递内容时的 Issue。若用户很快从 In progress 移到 In review，再移到 Done，前一次变化的投递里可能已经带着较后的 <code>issue.status</code>。</p><p>可以用下面的方式区分用途：</p><table><thead><tr><th>要回答的问题</th><th>应优先读取什么</th></tr></thead><tbody><tr><td>这一次具体从什么状态变到什么状态</td><td><code>changes.status.from</code> 与顶层 <code>status</code></td></tr><tr><td>程序现在是否还需要执行某项工作</td><td>重新获取 Issue 后核对当前状态</td></tr><tr><td>是否已经处理过同一次 Webhook 投递</td><td>记录并检查 <code>X-GitHub-Delivery</code></td></tr></tbody></table><p>重新查询也有边界。预览期间，个人账户仓库的 REST 响应是否包含状态，与请求代表的用户是否拥有预览资格有关。响应没有 <code>status</code>，不应直接推断为 Issue 已回到 Backlog。字段缺失、值为 <code>null</code>、有明确状态，应当分别处理。</p><p>去重也不能解决所有问题。同一个投递 ID 可以帮助识别重投，但关闭与状态变化是两次不同投递。若两个处理器都会创建一份外部任务，只按投递 ID 去重仍可能创建两份。更稳妥的做法，是按仓库、Issue 和目标业务动作建立可重复执行的同步逻辑。</p><h2 id="实践启示：先审计事件，再推广状态规则"><a href="#实践启示：先审计事件，再推广状态规则" class="headerlink" title="实践启示：先审计事件，再推广状态规则"></a>实践启示：先审计事件，再推广状态规则</h2><p>对于准备接入预览的团队，建议先盘点仓库中监听 <code>issues</code> 的工作流，以及已有的 Webhook 消费者。重点检查两件事：事件类型是否限定清楚，重复执行是否会产生外部副作用。涉及生产发布、收费操作或对外消息的流程，不宜只凭一次状态拖动就直接放行。</p><p>随后，用少量测试 Issue 验证状态与关闭、重新打开操作之间的关系，并观察真实投递。旧 Issue 可能尚未设置状态，集成不能假设每一条数据都有完整的状态对象。团队也应检查现有 Projects 同步是否会与自建机器人相互改写，先确定状态维护责任。</p><p>公告与当前事件文档对部分 PR 关联后的自动流转描述并不完全一致，本文不把某一种 PR 关联操作必然到达某一状态，写成通用保证。预览功能的规则仍可能调整，应以账号实际能力、当前文档与隔离验证结果共同判断。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Issue 新状态让团队更容易看见工作进度，但它也进入了关闭逻辑、事件投递和自动化执行链路。看板上的一次移动，可能同时改变数据状态并启动多个处理器。</p><p>接入时最先要做的，是弄清哪些事件会运行、处理器能否安全地重复执行，以及查询不到状态时该如何退让。把这些边界验证好，再推广新的协作规则，才能避免进度更清楚了，自动化反而更难解释。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://github.blog/changelog/2026-11-23-issue-statuses-and-repository-boards-are-in-public-preview/">GitHub Changelog：Issue statuses and repository boards are in public preview（2026-11-23）</a></li><li><a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/issue-status-webhooks-and-workflows">GitHub Docs：Issue status webhooks and workflows</a></li><li><a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/managing-issue-fields">GitHub Docs：Managing issue fields</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 项目管理 </tag>
+            
+            <tag> GitHub </tag>
+            
+            <tag> GitHub Actions </tag>
+            
+            <tag> Webhook </tag>
+            
+            <tag> Issues </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GitHub 覆盖率上传开始校验格式：CI 变红，也可能是补上了数据检查</title>
       <link href="/2026/11/24/2026-GitHub%E8%A6%86%E7%9B%96%E7%8E%87%E4%B8%8A%E4%BC%A0%E6%A0%BC%E5%BC%8F%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%B4%A8%E9%87%8F%E9%97%A8%E7%A6%81/"/>
       <url>/2026/11/24/2026-GitHub%E8%A6%86%E7%9B%96%E7%8E%87%E4%B8%8A%E4%BC%A0%E6%A0%BC%E5%BC%8F%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%B4%A8%E9%87%8F%E9%97%A8%E7%A6%81/</url>

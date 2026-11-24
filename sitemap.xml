@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://code.idea4j.com/2026/11/25/2026-GitHubIssue%E7%8A%B6%E6%80%81%E9%A2%84%E8%A7%88%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E4%BA%8B%E4%BB%B6%E8%BE%B9%E7%95%8C/</loc>
+    
+    <lastmod>2026-11-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://code.idea4j.com/2026/11/24/2026-GitHub%E8%A6%86%E7%9B%96%E7%8E%87%E4%B8%8A%E4%BC%A0%E6%A0%BC%E5%BC%8F%E6%A0%A1%E9%AA%8C%E4%B8%8E%E8%B4%A8%E9%87%8F%E9%97%A8%E7%A6%81/</loc>
     
     <lastmod>2026-11-24</lastmod>
@@ -4764,6 +4773,13 @@
   
   <url>
     <loc>https://code.idea4j.com/tags/Turbopack/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.idea4j.com/tags/Issues/</loc>
     <lastmod>2026-11-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
