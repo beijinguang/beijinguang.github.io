@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Workers 图片 URL 转换下沉到 Worker：本地能跑，上线为何仍可能失败</title>
+      <link href="/2026/11/27/2026-Workers%E5%9B%BE%E7%89%87URL%E8%BD%AC%E6%8D%A2%E4%B8%8E%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%BE%B9%E7%95%8C/"/>
+      <url>/2026/11/27/2026-Workers%E5%9B%BE%E7%89%87URL%E8%BD%AC%E6%8D%A2%E4%B8%8E%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%BE%B9%E7%95%8C/</url>
+      
+        <content type="html"><![CDATA[<p>图片在本地可以缩放，部署后相同 URL 却失败，问题未必出在图片文件。转换请求由谁接收、源图片是否在白名单中，以及本地环境模拟了多少生产行为，都可能改变结果。</p><p>Cloudflare 在 2026 年 11 月 25 日的官方更新中宣布，Workers 可以通过新的 Worker 级设置，直接在 <code>workers.dev</code> 子域名上使用 Images 的 URL 转换接口，本地开发也支持相同入口。此前，这种 URL 接口需要通过已启用相关功能的自定义域名使用。</p><p>这条近两天的更新降低了接入门槛，但没有消除环境差异。对开发者，更值得关注的是配置作用域与发布方式：Worker 设置会覆盖相关域级设置，本地图片处理也不等同于完整的线上服务。本文依据官方公告和文档分析，没有为这个 Hexo 博客安装 Wrangler、启用 Images 或部署测试 Worker。</p><span id="more"></span><h2 id="背景：转换参数可以直接写进-URL"><a href="#背景：转换参数可以直接写进-URL" class="headerlink" title="背景：转换参数可以直接写进 URL"></a>背景：转换参数可以直接写进 URL</h2><p>Images URL 接口把处理选项和源图片放在请求路径中。例如，公告给出的形式是：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://image-app.&lt;YOUR_SUBDOMAIN&gt;.workers.dev/cdn-cgi/image/format=auto,width=400/image.png</span><br></pre></td></tr></table></figure><p>这个请求表达的是按指定选项转换源图，而不是要求开发者先手工生成一张 400 像素宽的文件。生产环境会缓存转换结果；再次命中缓存时，可以直接返回处理后的图片。</p><p>新增能力主要改变了配置和入口。开发者不必先连接自定义域名，就能在 <code>workers.dev</code> 上使用这条路径。URL 转换也不要求额外配置 <code>IMAGES</code> binding。不要因此认为 Images binding 与 URL 接口是同一条调用链：它们有不同的配置边界。</p><h2 id="核心分析：请求落到哪个作用域，决定哪份配置生效"><a href="#核心分析：请求落到哪个作用域，决定哪份配置生效" class="headerlink" title="核心分析：请求落到哪个作用域，决定哪份配置生效"></a>核心分析：请求落到哪个作用域，决定哪份配置生效</h2><p>现有域级设置和新 Worker 级设置可以同时存在。官方文档说明，对于路由到 Worker、由该 Worker 处理的请求，只要存在 Worker 级配置，就会覆盖域级配置。来源白名单也按对应作用域生效，不能把两份名单想当然地取并集。</p><p>路由本身也要匹配转换请求。图片接口的路径是 <code>/cdn-cgi/image/*</code>，覆盖整个域名的 <code>example.com/*</code> 可以匹配，而只覆盖 <code>example.com/foo/*</code> 的路由不匹配这条路径。遇到配置看似正确、请求却没有按预期处理时，应先检查实际请求路径与路由规则。</p><p>使用 Wrangler 的现有项目，可以在配置文件中加入如下片段。主机名是占位示例，需要替换为实际图片源和 Worker 域名；这不是一份完整的 Worker 项目配置。</p><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[images.url_transformations]</span></span><br><span class="line"><span class="attr">enabled</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">allowed_origins</span> = [</span><br><span class="line">  <span class="string">&quot;images.example.com&quot;</span>,</span><br><span class="line">  <span class="string">&quot;image-app.&lt;YOUR_SUBDOMAIN&gt;.workers.dev&quot;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure><p>Cloudflare CLI 的 <code>cloudflare.config.ts</code> 则使用 <code>worker.images.urlTransformations</code> 和 <code>allowedOrigins</code>。两种格式不要混写，也不必为了采用图片功能而同时迁移 CLI。应沿用项目已有工具，再核对所用版本是否支持新配置。</p><h2 id="最容易漏验的差异：本地相对源与生产白名单"><a href="#最容易漏验的差异：本地相对源与生产白名单" class="headerlink" title="最容易漏验的差异：本地相对源与生产白名单"></a>最容易漏验的差异：本地相对源与生产白名单</h2><p>来源白名单决定 URL 转换可以读取哪些图片源。官方来源文档特别提醒，配置 Worker 白名单后，生产环境中用于相对路径或同主机图片的域名，也需要明确包含在名单里，包括 <code>workers.dev</code> 主机名与相关自定义域名。</p><p>例如，开发者只把 <code>images.example.com</code> 加入名单，然后测试 <code>/image.png</code> 这样的相对图片源。本地开发仍可能通过，因为本地转换始终接受相对源；生产环境则要按对应主机名与生效的白名单判断。它们不能作为同一个验收用例的两次等价执行。</p><p>因此，测试清单应把来源分开记录：允许的外部主机、相对图片源、连接的自定义域名，以及不允许的外部源。正向样例证明正常请求可用，反向样例则检查限制是否确实生效。不要为了让所有测试都通过，就直接把来源改成通配符。</p><p>这个白名单只约束 <code>/cdn-cgi/image/</code> URL 接口，不约束 Images binding，也不约束 Worker 通过 <code>fetch()</code> 的 <code>cf.image</code> 选项发起的子请求。审查图片源访问策略时，必须确认项目究竟使用哪种接口，不能用一条配置替代所有路径的检查。</p><h2 id="本地支持，不代表生产行为被完整复现"><a href="#本地支持，不代表生产行为被完整复现" class="headerlink" title="本地支持，不代表生产行为被完整复现"></a>本地支持，不代表生产行为被完整复现</h2><p>官方文档把本地转换描述为低保真的离线实现，只支持缩放、旋转、格式转换等部分功能。完整生产行为仍需部署后验证。</p><p>这意味着本地测试的价值是尽早发现 URL 拼接、基础尺寸和应用集成问题，不能据此确认所有格式协商、来源校验或缓存行为。尤其是 <code>format=auto</code>，仅看到浏览器显示出图片，还不足以证明不同客户端得到了预期格式。</p><p>上线前，可以在隔离环境里选择少量样图，记录请求 URL、状态码、响应内容类型与实际尺寸；再检查允许和拒绝的来源是否符合预期。涉及缓存时，应区分首次请求与后续请求，不要只依据一次成功响应推断整条缓存链路正确。上述是根据环境差异提出的验收建议，并非本文已经完成的测试结果。</p><h2 id="发布边界：代码版本与转换设置不是一回事"><a href="#发布边界：代码版本与转换设置不是一回事" class="headerlink" title="发布边界：代码版本与转换设置不是一回事"></a>发布边界：代码版本与转换设置不是一回事</h2><p>这项功能还有几条容易影响发布流程的规则，适合单独写入部署检查表：</p><table><thead><tr><th>操作或环境</th><th>官方文档说明的行为</th></tr></thead><tbody><tr><td>使用命名 Wrangler 环境</td><td>不继承 <code>images.url_transformations</code>，需要各自配置</td></tr><tr><td>执行 <code>wrangler versions upload</code></td><td>不更新这项转换设置</td></tr><tr><td>访问 Version URL</td><td>使用 Worker 已部署的设置，而非版本独有设置</td></tr><tr><td>删除本地配置段</td><td>已部署设置仍然保留；关闭时需明确设置 <code>enabled = false</code> 并部署</td></tr></tbody></table><p>这些规则说明，不能仅靠对比代码提交来判断线上转换是否开启。一个候选版本的 Version URL 测试成功，可能使用的是 Worker 当前已经部署的配置，并没有证明候选版本携带了独立、正确的转换策略。</p><p>同样，回滚代码或删掉配置，不应被当成关闭功能的可靠步骤。运维手册需要分别说明代码如何回滚、转换设置如何核对，以及如何显式关闭。对于 staging 和 production 两个命名环境，最好逐项记录实际配置，避免在默认环境测试通过后就跳过其他环境的验收。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Worker 级图片 URL 转换让开发入口更直接了，尤其适合先用 <code>workers.dev</code> 验证应用集成。但这次更新的实践重点仍在边界：谁处理请求、哪份白名单生效、本地模拟覆盖什么，以及哪一步部署真正更新设置。</p><p>把这些信息纳入测试与发布记录，才有助于解释“本地能跑，线上失败”。接入少一层域名准备工作，不等于可以少做环境和配置验收。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://developers.cloudflare.com/changelog/post/2026-11-25-worker-scoped-url-transformations/">Cloudflare Changelog：URL-based image optimization in Workers（2026-11-25）</a></li><li><a href="https://developers.cloudflare.com/images/optimization/transformations/url/">Cloudflare Images：Transform via URL</a>，用于核对 Worker 作用域、本地模拟、命名环境和版本发布规则。</li><li><a href="https://developers.cloudflare.com/images/optimization/transformations/sources/">Cloudflare Images：Define source origins</a>，用于核对白名单适用范围及生产与本地的相对源差异。</li></ul><p>资料核对日期为 2026 年 11 月 27 日。公告只标注发布日期，本文不推定其具体发布时间；实际能力应结合当前文档、工具版本与部署环境确认。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> Workers </tag>
+            
+            <tag> Images </tag>
+            
+            <tag> Wrangler </tag>
+            
+            <tag> 图片优化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Copilot 代码审查将默认由组织付费：先分清“未设置”和“明确选择”</title>
       <link href="/2026/11/26/2026-Copilot%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E9%BB%98%E8%AE%A4%E8%AE%A1%E8%B4%B9%E4%B8%8E%E6%98%BE%E5%BC%8F%E7%AD%96%E7%95%A5/"/>
       <url>/2026/11/26/2026-Copilot%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E9%BB%98%E8%AE%A4%E8%AE%A1%E8%B4%B9%E4%B8%8E%E6%98%BE%E5%BC%8F%E7%AD%96%E7%95%A5/</url>
