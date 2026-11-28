@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Cloudflare 新增响应 Cookie 匹配：同名数组、raw 字段与规则阶段该怎样理解</title>
+      <link href="/2026/11/28/2026-Cloudflare%E5%93%8D%E5%BA%94Cookie%E5%8C%B9%E9%85%8D%E4%B8%8E%E9%98%B6%E6%AE%B5%E5%BF%AB%E7%85%A7/"/>
+      <url>/2026/11/28/2026-Cloudflare%E5%93%8D%E5%BA%94Cookie%E5%8C%B9%E9%85%8D%E4%B8%8E%E9%98%B6%E6%AE%B5%E5%BF%AB%E7%85%A7/</url>
+      
+        <content type="html"><![CDATA[<p>想判断响应是否设置了某个 Cookie，直接在 <code>Set-Cookie</code> 字符串中搜索，往往会把名称、值和属性混在一起。Cloudflare 新增的解析字段，让规则可以按 Cookie 名称读取值，但这个便利也带来几个必须理解的数据边界。</p><p>Cloudflare 在 2026 年 11 月 27 日的官方更新中公布两个 Rules 字段：<code>http.response.set_cookies</code> 读取当前响应中的解析结果，<code>raw.http.response.set_cookies</code> 保留原始响应中的解析结果。这是本次检索窗口内的新公告，页面只提供发布日期，本文不推定其具体发布时间。</p><p>这项能力适合减少响应规则里的手工字符串处理。它不等于浏览器 Cookie 存储的完整视图，也不能单凭一个值证明会话有效。真正影响规则正确性的，是同名条目如何分组、名称和值如何解码，以及表达式读取的是哪个阶段的字段。</p><span id="more"></span><h2 id="背景：从头部字符串转向名称和值"><a href="#背景：从头部字符串转向名称和值" class="headerlink" title="背景：从头部字符串转向名称和值"></a>背景：从头部字符串转向名称和值</h2><p>官方公告给出的使用场景，是在 Response Header Transform Rule 中匹配一个设置了特定 Cookie 值的响应。例如：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.response.set_cookies[&quot;app&quot;][0] eq &quot;preview&quot;</span><br></pre></td></tr></table></figure><p>这里读取 <code>app</code> 对应数组中的第一项。它没有遍历整个 <code>Set-Cookie</code> 头部，也没有把 <code>Path</code>、<code>Secure</code> 或 <code>HttpOnly</code> 当成 Cookie 值的一部分。</p><p>两个字段的类型都是 <code>Map&lt;Array&lt;String&gt;&gt;</code>。可以把它理解为“名称到值数组的映射”，而不是常见的“一个名称对应一个字符串”。这个类型差异不是语法细节：如果响应里有多个同名条目，只检查 <code>[0]</code> 就只检查了第一项。</p><p>字段参考页同时提醒，HTTP 响应字段的可用范围取决于所用 Cloudflare 功能和套餐。因此，看到公告里的表达式，不应直接推断所有规则产品、所有套餐都能使用。接入时要确认实际编辑器和目标规则阶段支持该字段。</p><h2 id="核心分析：名称解码，值不解码"><a href="#核心分析：名称解码，值不解码" class="headerlink" title="核心分析：名称解码，值不解码"></a>核心分析：名称解码，值不解码</h2><p>官方文档规定，映射的键来自 URL 解码后的 Cookie 名称；解码后相同的名称，共享一个按出现顺序排列的值数组。Cookie 值本身不做 URL 解码。</p><p>下面是用于解释数据结构的合成响应，不含真实会话信息，也不是本文已发起的线上测试：</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Set-Cookie</span><span class="punctuation">: </span>app=test; Path=/</span><br><span class="line"><span class="attribute">Set-Cookie</span><span class="punctuation">: </span>%61pp=preview%2Fbeta; Path=/preview; HttpOnly</span><br></pre></td></tr></table></figure><p>按文档描述的解析规则，<code>%61pp</code> 的名称会解码为 <code>app</code>，而第二个值仍保留 <code>%2F</code>。因此，可以用下面的形式表示相关字段内容：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;app&quot;: [&quot;test&quot;, &quot;preview%2Fbeta&quot;]&#125;</span><br></pre></td></tr></table></figure><p>这个例子说明两件事。其一，不能仅凭原始名称字符串不同，就认为它们一定落在不同映射键里。其二，比较值时不能擅自假设它已经变成 <code>preview/beta</code>。如果应用层另有编码约定，需要单独说明，不能把它归功于这个字段。</p><p><code>Path</code> 和 <code>HttpOnly</code> 也不在数组值中。因此，这份映射不足以区分两个条目的路径属性，更不能拿它完成 Cookie 属性审计。需要检查属性时，应选用能保留对应信息的方式，并另行核对其规则支持范围。</p><p>这里描述的是 Cloudflare 字段的解析结果，不应据此推断浏览器一定会把这两个原始名称当成同一个 Cookie 存储。边缘规则的数据模型和客户端存储行为，需要分别验证。</p><h2 id="raw-保留原始来源，但没有关闭解析"><a href="#raw-保留原始来源，但没有关闭解析" class="headerlink" title="raw 保留原始来源，但没有关闭解析"></a>raw 保留原始来源，但没有关闭解析</h2><p><code>raw.http.response.set_cookies</code> 中的 raw，容易被误读为“未经处理的原始字节”。字段文档明确说明，它同样执行名称解码、同名分组和属性排除；raw 只是让数据不受后续响应头修改影响。</p><p>两者可以这样区分：</p><table><thead><tr><th>字段</th><th>数据来源与变化边界</th></tr></thead><tbody><tr><td><code>http.response.set_cookies</code></td><td>当前响应，反映此前阶段的响应头变化</td></tr><tr><td><code>raw.http.response.set_cookies</code></td><td>原始响应，保留最初的解析结果，不随后续响应头变化</td></tr></tbody></table><p>选择字段之前，应先明确问题。如果规则关心经过前面阶段处理后的响应，应核对当前字段；如果需要保留对原始响应 Cookie 的判断，应考虑 raw 字段。不要因为名字看起来更接近“底层”，就默认 raw 一定更适合所有场景。</p><p>也不要把“原始响应”随意扩大为从应用内部到客户端全链路都未被任何组件处理过的状态。本文采用的是 Cloudflare 文档对该字段的定义，具体系统中仍要弄清各组件处理响应的顺序。</p><h2 id="同阶段规则并非逐行改写变量"><a href="#同阶段规则并非逐行改写变量" class="headerlink" title="同阶段规则并非逐行改写变量"></a>同阶段规则并非逐行改写变量</h2><p>当前字段会反映此前阶段的变更，却不意味着同一阶段的后续规则能读到前一条规则刚改出的值。Ruleset Engine 文档说明，请求和响应字段在每个阶段内保持不可变，阶段之间才可能变化。</p><p>因此，不能把规则列表当成普通程序里的连续赋值：先改一个响应头，再让同阶段的下一条表达式按修改后的 Cookie 字段判断。根据阶段不可变原则，这种依赖关系不能仅凭列表顺序成立。</p><p>这是字段读取语义，不是在说所有动作都不会执行。排查问题时，应分别检查表达式看到了什么、动作做了什么，以及后续阶段又能读到什么。把这三件事混在一起，很容易误判为规则顺序失效。</p><p>对复杂规则链，可以给每条规则写一句简短说明：它依赖原始响应还是当前阶段快照，希望产生什么动作，以及哪个后续阶段会消费结果。先把依赖说清楚，再决定是否需要调整处理位置，避免只靠反复拖动规则顺序试错。</p><h2 id="实践启示：测试同名、缺失与阶段变化"><a href="#实践启示：测试同名、缺失与阶段变化" class="headerlink" title="实践启示：测试同名、缺失与阶段变化"></a>实践启示：测试同名、缺失与阶段变化</h2><p>接入这类字段时，一个正常的单 Cookie 样例只能验证基本语法。建议在隔离环境中增加同名多值、编码名称、编码值、空值和名称缺失的样例，并观察实际匹配结果。对不存在的键或索引，本文不假定特定行为，应按当前表达式引擎实际结果验收。</p><p>如果业务要求“任意一个同名值符合条件”，就不能把 <code>[0]</code> 的示例直接当成完整实现。应核对受支持的数组表达式，并用不同排列顺序测试。若业务只接受单值，也应把重复条目的处理规则写清楚，而不是悄悄取第一项。</p><p>还需要构造存在前置响应头修改的测试，分别观察当前字段与 raw 字段；对于同阶段的多条规则，则确认它们读取的是同一阶段快照。测试记录至少保留合成响应、规则表达式、阶段和实际结果，不必记录真实 Cookie 内容。</p><p>最后，按名称读到一个值，只能证明解析结果中出现了这个值。签名是否正确、会话是否过期、用户是否有权访问资源，仍是其他验证逻辑的职责。不要把便利的响应筛选条件升级为未经验证的身份判断。</p><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这次更新把响应 Cookie 从一串难处理的头部文本，变成可按名称读取的结构化数据。它减少了字符串匹配负担，但也要求规则作者接受这份结构的边界：名称会解码，值不会，同名条目是数组，raw 仍然经过解析。</p><p>把这些边界与规则阶段一起写进测试，比只确认一条表达式能够保存更有价值。规则不仅要能匹配正常响应，也应在重复、编码和前置修改出现时，仍然给出可以解释的结果。</p><h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul><li><a href="https://developers.cloudflare.com/changelog/post/2026-11-27-parsed-response-cookies/">Cloudflare Changelog：Match response cookies by name in Rules expressions（2026-11-27）</a></li><li><a href="https://developers.cloudflare.com/ruleset-engine/rules-language/fields/reference/http.response.set_cookies/">Cloudflare 字段参考：http.response.set_cookies</a></li><li><a href="https://developers.cloudflare.com/ruleset-engine/rules-language/fields/reference/raw.http.response.set_cookies/">Cloudflare 字段参考：raw.http.response.set_cookies</a></li><li><a href="https://developers.cloudflare.com/ruleset-engine/about/rules/#field-values-during-rule-evaluation">Cloudflare Ruleset Engine：Field values during rule evaluation</a></li></ul><p>资料核对日期为 2026 年 11 月 28 日。本文没有创建或修改线上规则，也没有采集真实 Cookie。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开发工具 </category>
+          
+          <category> 工程实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cloudflare </tag>
+            
+            <tag> HTTP </tag>
+            
+            <tag> Rules </tag>
+            
+            <tag> Cookie </tag>
+            
+            <tag> 边缘计算 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Workers 图片 URL 转换下沉到 Worker：本地能跑，上线为何仍可能失败</title>
       <link href="/2026/11/27/2026-Workers%E5%9B%BE%E7%89%87URL%E8%BD%AC%E6%8D%A2%E4%B8%8E%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%BE%B9%E7%95%8C/"/>
       <url>/2026/11/27/2026-Workers%E5%9B%BE%E7%89%87URL%E8%BD%AC%E6%8D%A2%E4%B8%8E%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%BE%B9%E7%95%8C/</url>
